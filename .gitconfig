@@ -1,0 +1,36 @@
+[user]
+	name = Shiv Venkatasubrahmanyam
+	email = shvenkat@amgen.com
+[core]
+	editor = vim
+	autocrlf = input
+[http]
+	sslCAinfo = /home/shvenkat/.certs/cacert.pem
+[github]
+	user = shvenkat
+[color]
+	diff = always
+	status = always
+	ui = always
+	branch = always
+	interactive = always
+[color "diff"]
+	plain = white
+	old = cyan
+	new = magenta bold
+	frag = cyan bold
+	func = cyan bold
+	meta = yellow
+	commit = red
+[log]
+	decorate = full
+[alias]
+	logs = log --decorate --oneline
+	; repo Overview
+	logo = log --graph --all --simplify-by-decoration --date-order \
+	         --format=format:'%C(bold cyan)%h%C(reset)  %C(bold magenta)%ar%C(reset) %C(red)%d%C(reset)  %C(normal)%s%C(reset) %C(bold cyan)- %an%C(reset)'
+	; Graphical branch history
+	logg = log --graph --date-order --decorate \
+	         --format=format:'%C(bold cyan)%h%C(reset)  %C(bold magenta)%ar%C(reset) %C(ul red)%d%C(reset)  %C(normal)%s%C(reset) %C(bold cyan)- %an%C(reset)'
+	; First common ancestor (as opposed to last common ancestor returned by merge-base)
+	fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
