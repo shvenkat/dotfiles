@@ -1,4 +1,3 @@
-.rc
-===
+# .rc
 
-dotfiles
+dotfiles. At home anywhere.
