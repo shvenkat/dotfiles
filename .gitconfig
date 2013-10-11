@@ -9,11 +9,11 @@
 [github]
 	user = shvenkat
 [color]
-	diff = always
-	status = always
-	ui = always
-	branch = always
-	interactive = always
+	diff = auto
+	status = auto
+	ui = auto
+	branch = auto
+	interactive = auto
 [color "diff"]
 	plain = white
 	old = cyan

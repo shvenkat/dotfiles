@@ -1,0 +1,10 @@
+!! xterm font
+XTerm*faceName:         Droid Sans Mono for Powerline
+XTerm*faceSize:         15
+
+!! xterm UI
+XTerm*scrollBar:        true
+XTerm*rightScrollBar:   true
+XTerm*loginShell:       false
+XTerm*geometry:         127x34
+XTerm*toolBar:          false
