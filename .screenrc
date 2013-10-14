@@ -29,8 +29,8 @@ fit
 setenv SSH_AUTH_SOCK $HOME/.ssh/.ssh-agent
 
 # Status bar
-caption always "%{ rw}%?%h%?"
-hardstatus string "%-w%{= BW}%50>%n* %t%{-}%+w%<"
+#caption always "%{= r}%=%?%h%?"
+hardstatus string "%{= dd}%-w%{= BW}%50L>%n* %t%{-}%+w%<  %{= r}%-90=%?%h%?"
 
 ###
 ### Key Bindings
