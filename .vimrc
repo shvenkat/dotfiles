@@ -15,8 +15,16 @@ set confirm
 set wildchar=<Tab> wildmenu wildmode=full
 
 " vim-colors-solarized
-set background=light
-colorscheme solarized
+func! SetColorschemeSolarizedLight()
+  set background=light
+  colorscheme solarized
+endfunc
+noremap <leader>l :call SetColorschemeSolarizedLight()<CR>
+func! SetColorschemeSolarizedDark()
+  set background=dark
+  colorscheme solarized
+endfunc
+noremap <leader>d :call SetColorschemeSolarizedDark()<CR>
 
 " vim-markdown
 let g:vim_markdown_folding_disabled=1
