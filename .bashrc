@@ -9,6 +9,7 @@ shopt -s histappend
 shopt -s cdspell
 export HISTCONTROL="ignoredups"
 export HISTSIZE=1000000
+export HISTFILESIZE=1000000
 export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
 #export PROMPT_COMMAND="history -a"
 
@@ -105,7 +106,9 @@ export EDITOR=vim
 #    echo "Setting SSH_AUTH_SOCK ..."
 #    export SSH_AUTH_SOCK=$(find /tmp -type s -user ${USER} -wholename '/tmp/ssh-*/agent*' 2>/dev/null | head -n1)
 #fi
-export SSH_AUTH_SOCK=$HOME/.ssh/.ssh-agent
+if [[ $HOSTNAME == "tengu.amgen.com" ]]; then
+  export SSH_AUTH_SOCK=$HOME/.ssh/.ssh-agent
+fi
 
 set completion-ignore-case On
 
