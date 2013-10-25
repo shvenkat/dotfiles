@@ -41,10 +41,15 @@ let g:changes_verbose=0
 "let g:changes_vcs_system='git'
 
 " vim-airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#whitespace#show_message = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_powerline_fonts = 1
+let g:airline#extensions#default#section_truncate_width = {
+    \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
 " whitespace management
 set tabstop=8                   "A tab is 8 spaces

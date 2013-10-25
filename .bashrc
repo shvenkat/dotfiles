@@ -10,7 +10,7 @@ shopt -s cdspell
 export HISTCONTROL="ignoredups"
 export HISTSIZE=1000000
 export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
-export PROMPT_COMMAND="history -a"
+#export PROMPT_COMMAND="history -a"
 
 if [ -f $HOME/.aliases ]; then
 	. $HOME/.aliases
@@ -19,15 +19,17 @@ fi
 ## User specific aliases and functions
 
 # prompt
-PS1="\[\e[0;36m\][\h \W] \[\e[0m\]"
+export PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
+  echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:3}; done; 
+  echo -n "${q:3}")'
 case $TERM in
     xterm*|screen*)
-        PS1="\[\033]0;\h \w\007\]$PS1"
+        export PS1='\[\033]0;\h $PS1X\007\]\[\e[0;36m\][\h \W] \[\e[0m\]'
         ;;
     *)
+	export PS1='\[\e[0;36m\][\h \W] \[\e[0m\]'
         ;;
 esac
-export PS1
 
 # ls color
 if [ "$TERM" = "rxvt-cygwin-native" ]; then 
@@ -58,7 +60,8 @@ export PATH
 #export PERL5LIB="/home/shvenkat/perl5/lib/perl5/x86_64-linux-thread-multi:/home/shvenkat/perl5/lib/perl5"
 #export PATH="/home/shvenkat/perl5/bin:$PATH"
 
-LD_LIBRARY_PATH=/usr/lib64/R/lib
+LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
+LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib64/R/lib
 #LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/lib/amd64/server
 #LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/lib/amd64
 #LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/shvenkat/bin/lib
