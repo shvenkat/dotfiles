@@ -3,3 +3,4 @@
 .ssh/config
 .ssh/authorized_keys
 .ssh/known_hosts
+.vim/.netrwhist
