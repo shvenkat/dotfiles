@@ -15,9 +15,9 @@
 	branch = auto
 	interactive = auto
 [color "diff"]
-	plain = white
+	plain = green bold
 	old = cyan
-	new = magenta bold
+	new = magenta
 	frag = cyan bold
 	func = cyan bold
 	meta = yellow

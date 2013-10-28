@@ -13,9 +13,8 @@ export HISTFILESIZE=1000000
 export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
 #export PROMPT_COMMAND="history -a"
 
-if [ -f $HOME/.aliases ]; then
-	. $HOME/.aliases
-fi
+[ -f $HOME/.aliases ] && . $HOME/.aliases
+[ -f $HOME/.aliases.local ] && . $HOME/.aliases.local
 
 ## User specific aliases and functions
 

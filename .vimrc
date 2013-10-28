@@ -25,6 +25,8 @@ func! SetColorschemeSolarizedDark()
   colorscheme solarized
 endfunc
 noremap <leader>d :call SetColorschemeSolarizedDark()<CR>
+set background=dark
+colorscheme solarized
 
 " vim-markdown
 let g:vim_markdown_folding_disabled=1

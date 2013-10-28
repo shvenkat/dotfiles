@@ -19,7 +19,7 @@ color_patches=no
 # aliases for the same thing, namely "don't colour highlight
 # this, use the default output colour"
 #
-plain=darkwhite
+plain=green
 oldtext=darkcyan
 newtext=magenta
 diffstuff=cyan
