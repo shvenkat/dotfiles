@@ -21,6 +21,6 @@ color_patches=no
 #
 plain=green
 oldtext=darkcyan
-newtext=magenta
+newtext=darkmagenta
 diffstuff=cyan
 cvsstuff=darkyellow
