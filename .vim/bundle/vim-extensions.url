@@ -5,7 +5,8 @@ vim-colors-solarized 	https://github.com/altercation/vim-colors-solarized.git
 vim-commentary 	https://github.com/tpope/vim-commentary.git
 vim-eunuch 	https://github.com/tpope/vim-eunuch.git
 vim-fugitive 	https://github.com/tpope/vim-fugitive.git
-vim-markdown 	https://github.com/plasticboy/vim-markdown.git
+vim-markdown 	https://github.com/tpope/vim-markdown
+vim-markdown-folding 	https://github.com/nelstrom/vim-markdown-folding
 vim-obsession 	https://github.com/tpope/vim-obsession
 vim-repeat 	https://github.com/tpope/vim-repeat.git
 vim-sensible 	https://github.com/tpope/vim-sensible.git
