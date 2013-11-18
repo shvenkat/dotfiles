@@ -13,3 +13,6 @@ vim-sensible 	https://github.com/tpope/vim-sensible.git
 vim-sleuth 	https://github.com/tpope/vim-sleuth.git
 vim-unimpaired 	https://github.com/tpope/vim-unimpaired.git
 vim-vividchalk 	https://github.com/tpope/vim-vividchalk.git
+screen  https://github.com/ervandew/screen.git
+vim-r-plugin    https://github.com/jcfaria/Vim-R-plugin.git
+showMarks	https://github.com/vim-scripts/ShowMarks.git

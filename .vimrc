@@ -10,21 +10,72 @@ filetype plugin indent on
 syntax on
 set nowrap
 set autoindent
+"set foldmethod=indent
 set hidden
 set confirm
 set wildchar=<Tab> wildmenu wildmode=full
+"set backspace=indent,eol,start
+"set number
+"set ruler
+
+" When editing a file, jump to the last known cursor position
+autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal g`\"" |
+  \ endif
+
+let mapleader=","
+set pastetoggle=<F2>
+"map Q gq " Don't use Ex mode, use Q for formatting
+
+set omnifunc=syntaxcomplete#Complete
+inoremap <leader>, <C-x><C-o>
+"inoremap <Nul> <C-x><C-o>
+"if has("gui_running")
+"    " C-Space seems to work under gVim on both Linux and win32
+"    inoremap <C-Space> <C-n>
+"else " no gui
+"  if has("unix")
+"    inoremap <Nul> <C-n>
+"  else
+"  " I have no idea of the name of Ctrl-Space elsewhere
+"  endif
+"endif
+
+" whitespace management
+set tabstop=8                   "A tab is 8 spaces
+set expandtab                   "Always uses spaces instead of tabs
+set softtabstop=4               "Insert 4 spaces when tab is pressed
+set shiftwidth=4                "An indent is 4 spaces
+set smarttab                    "Indent instead of tab at start of line
+set shiftround                  "Round spaces to nearest shiftwidth multiple
+set nojoinspaces                "Don't convert spaces to tabs
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//e
+  exe "normal `z"
+endfunc
+noremap <leader>w :call DeleteTrailingWS()<CR>
+
+" line width
+"set textwidth=79
+if exists('+colorcolumn')
+  set colorcolumn=80
+else
+  autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
+endif
 
 " vim-colors-solarized
 func! SetColorschemeSolarizedLight()
   set background=light
   colorscheme solarized
 endfunc
-noremap <leader>l :call SetColorschemeSolarizedLight()<CR>
+noremap <leader>sl :call SetColorschemeSolarizedLight()<CR>
 func! SetColorschemeSolarizedDark()
   set background=dark
   colorscheme solarized
 endfunc
-noremap <leader>d :call SetColorschemeSolarizedDark()<CR>
+noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
 set background=dark
 colorscheme solarized
 
@@ -53,25 +104,24 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
-" whitespace management
-set tabstop=8                   "A tab is 8 spaces
-set expandtab                   "Always uses spaces instead of tabs
-set softtabstop=4               "Insert 4 spaces when tab is pressed
-set shiftwidth=4                "An indent is 4 spaces
-set smarttab                    "Indent instead of tab at start of line
-set shiftround                  "Round spaces to nearest shiftwidth multiple
-set nojoinspaces                "Don't convert spaces to tabs
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//e
-  exe "normal `z"
-endfunc
-noremap <leader>w :call DeleteTrailingWS()<CR>
+" screen
+"let g:ScreenImpl = 'Tmux'
+"let g:ScreenShellHeight = 15
+"let g:ScreenShellWidth = -1
+"let g:ScreenShellQuitOnVimExit = 1
+"let g:ScreenShellInitialFocus = 'vim'
+"let g:ScreenShellAttachTargetCurrent = 0
+"let g:ScreenShellExpandTabs = 0
 
-" line width
-"set textwidth=79
-if exists('+colorcolumn')
-  set colorcolumn=80
-else
-  autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
-endif
+" showMarks
+let marksCloseWhenSelected = 0
+let showmarks_include = "abcdefghijklmnopqrstuvwxyz"
+
+" vim-r-plugin
+"let r_indent_align_args = 0
+let r_syntax_folding = 1
+let vimrplugin_assign = 0
+"let vimrplugin_screenvsplit = 1    " For vertical tmux split
+"let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
+"vmap <Space> <Plug>RDSendSelection
+"nmap <Space> <Plug>RDSendLine

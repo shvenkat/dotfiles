@@ -43,9 +43,9 @@ fi
 PATH=/usr/local/sbin:/sbin:/usr/sbin
 PATH=${PATH}:${HOME}/bin
 PATH=${PATH}:${HOME}/bin/util
-PATH=${PATH}:${HOME}/opt/screen-4.1.0/bin
+#PATH=${PATH}:${HOME}/opt/screen-4.1.0/bin
 PATH=${PATH}:/scratch/shvenkat/opt/git-1.8.4/bin
-PATH=${PATH}:${HOME}/opt/R-2.14.0/bin
+#PATH=${PATH}:${HOME}/opt/R-2.14.0/bin
 PATH=${PATH}:${HOME}/opt/texlive-20120710/2012/bin/x86_64-linux
 PATH=${PATH}:/usr/local/bin:/bin:/usr/bin
 PATH=${PATH}:/usr/hs/bin:/usr/hs/gcc/bin:/usr/hs/binutils/bin:${HOME}/.cabal/bin
@@ -85,7 +85,7 @@ export MANPATH
 INFOPATH=/home/shvenkat/opt/texlive-20120710/2012/texmf/doc/info
 export INFOPATH
 
-export R_HOME=/usr/lib64/R
+#export R_HOME=/usr/lib64/R
 
 #TEXMFCNF=/home/shvenkat/texlive-20120710
 #TEXMFCNF=${TEXMFCNF}:/home/shvenkat/texlive-20120710/texmf-var/web2c
