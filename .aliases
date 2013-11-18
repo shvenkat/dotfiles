@@ -1,5 +1,6 @@
+alias la='ls -aF --color=tty'
 alias lt='ls -At --color=tty'
-alias ll='ls -lah --color=tty'
+alias ll='ls -alFh --color=tty'
 alias rm='rm -i'
 alias mv='mv -i'
 alias cp='cp -i'
