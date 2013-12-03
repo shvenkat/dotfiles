@@ -16,3 +16,6 @@ vim-vividchalk 	https://github.com/tpope/vim-vividchalk.git
 screen  https://github.com/ervandew/screen.git
 vim-r-plugin    https://github.com/jcfaria/Vim-R-plugin.git
 showMarks	https://github.com/vim-scripts/ShowMarks.git
+bufexplorer https://github.com/jlanzarotta/bufexplorer.git
+nerdtree    https://github.com/scrooloose/nerdtree.git
+ctrlp.vim   https://github.com/kien/ctrlp.vim.git

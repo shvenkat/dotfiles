@@ -17,6 +17,7 @@ set wildchar=<Tab> wildmenu wildmode=full
 "set backspace=indent,eol,start
 "set number
 "set ruler
+set noswapfile
 
 " When editing a file, jump to the last known cursor position
 autocmd BufReadPost *
@@ -64,6 +65,9 @@ if exists('+colorcolumn')
 else
   autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
 endif
+
+" nerdtree
+map <C-n> :NERDTreeToggle<CR>
 
 " vim-colors-solarized
 func! SetColorschemeSolarizedLight()
@@ -118,7 +122,7 @@ let marksCloseWhenSelected = 0
 let showmarks_include = "abcdefghijklmnopqrstuvwxyz"
 
 " vim-r-plugin
-"let r_indent_align_args = 0
+let r_indent_align_args = 0
 let r_syntax_folding = 1
 let vimrplugin_assign = 0
 "let vimrplugin_screenvsplit = 1    " For vertical tmux split
