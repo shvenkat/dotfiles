@@ -16,8 +16,8 @@
 	interactive = auto
 [color "diff"]
 	plain = green bold
-	old = cyan
-	new = magenta
+	old = magenta
+	new = cyan
 	frag = cyan bold
 	func = cyan bold
 	meta = yellow
