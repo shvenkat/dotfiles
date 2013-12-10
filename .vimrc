@@ -52,9 +52,10 @@ set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
 func! DeleteTrailingWS()
-  exe "normal mz"
+  exe "normal mp"
   %s/\s\+$//e
-  exe "normal `z"
+  exe "normal `p"
+  delmarks p
 endfunc
 noremap <leader>w :call DeleteTrailingWS()<CR>
 
@@ -129,3 +130,4 @@ let vimrplugin_assign = 0
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
+let vimrplugin_r_args = "--interactive"
