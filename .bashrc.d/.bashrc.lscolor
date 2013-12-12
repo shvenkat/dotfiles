@@ -1,0 +1,6 @@
+# ls color
+if [ "$TERM" = "rxvt-cygwin-native" ]; then 
+	eval $( TERM="xterm" dircolors $HOME/.dir_colors )
+else
+	eval $( dircolors $HOME/.dir_colors )
+fi

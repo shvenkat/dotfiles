@@ -1,0 +1,19 @@
+shopt -s cdspell
+set completion-ignore-case On
+
+# Don't wait for job termination notification
+# set -o notify
+
+# Don't use ^D to exit
+# set -o ignoreeof
+
+# Use case-insensitive filename globbing
+# shopt -s nocaseglob
+
+# # start cron
+# if ! ps -es | grep -iqF '/usr/sbin/cron' ; then
+#     echo "starting cron ..."
+#     /usr/sbin/cron
+# else
+#     echo "cron is already running ..."
+# fi

@@ -1,0 +1,2 @@
+[ -f $HOME/.aliases ] && . $HOME/.aliases
+[ -f $HOME/.aliases.local ] && . $HOME/.aliases.local
