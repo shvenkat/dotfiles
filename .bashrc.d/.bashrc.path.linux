@@ -48,11 +48,12 @@ export INFOPATH
 
 #export R_HOME=/usr/lib64/R
 
-#TEXMFCNF=/home/shvenkat/texlive-20120710
-#TEXMFCNF=${TEXMFCNF}:/home/shvenkat/texlive-20120710/texmf-var/web2c
-#TEXMFCNF=${TEXMFCNF}:/home/shvenkat/texlive-20120710/texmf/web2c
-#TEXMFDBS=/home/shvenkat/texlive-20120710/texmf
-#TEXMFDBS=${TEXMFDBS}:/home/shvenkat/texlive-20120710/texmf-dist
-#TEXMFDBS=${TEXMFDBS}:/home/shvenkat/texlive-20120710/texmf-config
-#TEXMFDBS=${TEXMFDBS}:/home/shvenkat/texlive-20120710/texmf-var
-#export TEXMFCNF TEXMFDBS 
+TEXMFCNF=/home/shvenkat/opt/texlive-20120710/2012/texmf/web2c
+TEXMFCNF=${TEXMFCNF}:/home/shvenkat/opt/texlive-20120710/2012/texmf/doc/web2c
+TEXMFCNF=${TEXMFCNF}:/home/shvenkat/opt/texlive-20120710/2012/texmf-var/web2c
+TEXMFCNF=${TEXMFCNF}:/home/shvenkat/opt/texlive-20120710/2012/texmf-dist/web2c
+TEXMFDBS=/home/shvenkat/opt/texlive-20120710/2012/texmf
+TEXMFDBS=${TEXMFDBS}:/home/shvenkat/opt/texlive-20120710/2012/texmf-dist
+TEXMFDBS=${TEXMFDBS}:/home/shvenkat/opt/texlive-20120710/2012/texmf-config
+TEXMFDBS=${TEXMFDBS}:/home/shvenkat/opt/texlive-20120710/2012/texmf-var
+export TEXMFCNF TEXMFDBS 

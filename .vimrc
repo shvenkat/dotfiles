@@ -67,6 +67,9 @@ else
   autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
 endif
 
+" sign column
+autocmd BufEnter * :normal m>
+
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
@@ -119,8 +122,8 @@ let g:airline#extensions#default#section_truncate_width = {
 "let g:ScreenShellExpandTabs = 0
 
 " showMarks
-let marksCloseWhenSelected = 0
-let showmarks_include = "abcdefghijklmnopqrstuvwxyz"
+"let g:showmarks_enable = 0
+let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
 
 " vim-r-plugin
 let r_indent_align_args = 0
