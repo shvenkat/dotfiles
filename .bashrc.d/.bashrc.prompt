@@ -4,7 +4,7 @@ export PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
   echo -n "${q:3}")'
 case $TERM in
     xterm*|screen*)
-        export PS1='\[\033]0;\h $PS1X\007\]\[\e[0;36m\][\h \W] \[\e[0m\]'
+        export PS1='\[\033]0;$PS1X\007\]\[\e[0;36m\][\h \W] \[\e[0m\]'
         ;;
     *)
 	export PS1='\[\e[0;36m\][\h \W] \[\e[0m\]'

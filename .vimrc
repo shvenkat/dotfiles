@@ -69,6 +69,7 @@ endif
 
 " sign column
 autocmd BufEnter * :normal m>
+autocmd ColorScheme * highlight! link SignColumn LineNr
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
