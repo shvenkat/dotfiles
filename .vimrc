@@ -18,6 +18,7 @@ set wildchar=<Tab> wildmenu wildmode=full
 "set number
 "set ruler
 set noswapfile
+set hlsearch
 
 " When editing a file, jump to the last known cursor position
 autocmd BufReadPost *
@@ -28,6 +29,9 @@ autocmd BufReadPost *
 let mapleader=","
 set pastetoggle=<F2>
 "map Q gq " Don't use Ex mode, use Q for formatting
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 set omnifunc=syntaxcomplete#Complete
 inoremap <leader>, <C-x><C-o>
