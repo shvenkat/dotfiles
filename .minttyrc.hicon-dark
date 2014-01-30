@@ -1,6 +1,6 @@
 Term=xterm-16color
 Font=Droid Sans Mono for Powerline
-FontHeight=11
+FontHeight=10
 Columns=127
 Rows=37
 CursorType=block

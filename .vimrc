@@ -82,11 +82,13 @@ map <C-n> :NERDTreeToggle<CR>
 func! SetColorschemeSolarizedLight()
   set background=light
   colorscheme solarized
+  hi Folded term=NONE cterm=NONE gui=NONE
 endfunc
 noremap <leader>sl :call SetColorschemeSolarizedLight()<CR>
 func! SetColorschemeSolarizedDark()
   set background=dark
   colorscheme solarized
+  hi Folded term=NONE cterm=NONE gui=NONE
 endfunc
 noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
 set background=dark
@@ -139,3 +141,32 @@ let vimrplugin_assign = 0
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
 let vimrplugin_r_args = "--interactive"
+
+" Folding
+set foldenable
+" All folds closed by default
+set foldlevelstart=0
+" Space to toggle folds
+nnoremap <Space> za
+vnoremap <Space> za
+" Refocus folds on current line
+nnoremap <leader>z zMzvzz
+" Open current top-level fold
+nnoremap zO zCzO
+" From https://gist.github.com/sjl/3360978
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+ 
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+ 
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+ 
+    let line = strpart(line, 0, windowwidth - 6 -len(foldedlinecount))
+    let fillcharcount = windowwidth - 4 - len(line) - len(foldedlinecount)
+    return line . '...' . repeat(" ",fillcharcount) . '(' . foldedlinecount . ')'
+endfunction " }}}
+set foldtext=MyFoldText()
