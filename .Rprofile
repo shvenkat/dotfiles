@@ -9,6 +9,7 @@ options( menu.graphics=FALSE )
 options('tikzLatex'='/home/shvenkat/texlive/2010/bin/x86_64-linux/pdflatex')
 options('tikzXelatex'='/home/shvenkat/texlive/2010/bin/x86_64-linux/xelatex')
 options('tikzMetricsDictionary' = '/home/shvenkat/R/tikzMetricsDictionary')
+options(width=76)
 
 if(interactive()){
     options(setwidth.verbose = 0,
