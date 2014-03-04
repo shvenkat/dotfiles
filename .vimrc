@@ -20,32 +20,9 @@ set wildchar=<Tab> wildmenu wildmode=full
 set noswapfile
 set hlsearch
 
-" When editing a file, jump to the last known cursor position
-autocmd BufReadPost *
-  \ if line("'\"") > 0 && line("'\"") <= line("$") |
-  \   exe "normal g`\"" |
-  \ endif
-
+" generic key mapping
 let mapleader=","
 set pastetoggle=<F2>
-"map Q gq " Don't use Ex mode, use Q for formatting
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-set omnifunc=syntaxcomplete#Complete
-inoremap <leader>, <C-x><C-o>
-"inoremap <Nul> <C-x><C-o>
-"if has("gui_running")
-"    " C-Space seems to work under gVim on both Linux and win32
-"    inoremap <C-Space> <C-n>
-"else " no gui
-"  if has("unix")
-"    inoremap <Nul> <C-n>
-"  else
-"  " I have no idea of the name of Ctrl-Space elsewhere
-"  endif
-"endif
 
 " whitespace management
 set tabstop=8                   "A tab is 8 spaces
@@ -74,6 +51,65 @@ endif
 " sign column
 autocmd BufEnter * :normal m>
 autocmd ColorScheme * highlight! link SignColumn LineNr
+
+" folding
+set foldenable
+" All folds closed by default
+set foldlevelstart=0
+" Space to toggle folds
+nnoremap <Space> za
+vnoremap <Space> za
+" Refocus folds on current line
+nnoremap <leader>z zMzvzz
+" Open current top-level fold
+nnoremap zO zCzO
+" From https://gist.github.com/sjl/3360978
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 6 -len(foldedlinecount))
+    let fillcharcount = windowwidth - 4 - len(line) - len(foldedlinecount)
+    return line . '...' . repeat(" ",fillcharcount) . '(' . foldedlinecount . ')'
+endfunction " }}}
+set foldtext=MyFoldText()
+" Debug folding/syntax highlighting
+" map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+" \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+" \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+"map Q gq " Don't use Ex mode, use Q for formatting
+
+" syntax completion
+set omnifunc=syntaxcomplete#Complete
+inoremap <leader>, <C-x><C-o>
+" workarounds to remap syntax completion key
+"inoremap <Nul> <C-x><C-o>
+"if has("gui_running")
+"    " C-Space seems to work under gVim on both Linux and win32
+"    inoremap <C-Space> <C-n>
+"else " no gui
+"  if has("unix")
+"    inoremap <Nul> <C-n>
+"  else
+"  " I have no idea of the name of Ctrl-Space elsewhere
+"  endif
+"endif
+
+" When editing a file, jump to the last known cursor position
+autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   exe "normal g`\"" |
+  \ endif
+
+" ---- PLUGINS --------------------------------------------------------------
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
@@ -141,32 +177,3 @@ let vimrplugin_assign = 0
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
 let vimrplugin_r_args = "--interactive"
-
-" Folding
-set foldenable
-" All folds closed by default
-set foldlevelstart=0
-" Space to toggle folds
-nnoremap <Space> za
-vnoremap <Space> za
-" Refocus folds on current line
-nnoremap <leader>z zMzvzz
-" Open current top-level fold
-nnoremap zO zCzO
-" From https://gist.github.com/sjl/3360978
-function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
- 
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
- 
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
- 
-    let line = strpart(line, 0, windowwidth - 6 -len(foldedlinecount))
-    let fillcharcount = windowwidth - 4 - len(line) - len(foldedlinecount)
-    return line . '...' . repeat(" ",fillcharcount) . '(' . foldedlinecount . ')'
-endfunction " }}}
-set foldtext=MyFoldText()
