@@ -87,6 +87,23 @@ set foldtext=MyFoldText()
 
 "map Q gq " Don't use Ex mode, use Q for formatting
 
+" insert closing characters
+" see http://vim.wikia.com/wiki/Automatically_append_closing_characters
+inoremap {      {}<Left>
+inoremap {<CR>  {<CR>}<Esc>O
+inoremap {{     {
+inoremap {}     {}
+
+inoremap (      ()<Left>
+inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+inoremap ((     (
+inoremap ()     ()
+
+inoremap [      []<Left>
+inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+inoremap [[     [
+inoremap []     []
+
 " syntax completion
 set omnifunc=syntaxcomplete#Complete
 inoremap <leader>, <C-x><C-o>
