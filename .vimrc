@@ -75,9 +75,9 @@ function! MyFoldText() " {{{
     let onetab = strpart('          ', 0, &tabstop)
     let line = substitute(line, '\t', onetab, 'g')
 
-    let line = strpart(line, 0, windowwidth - 6 -len(foldedlinecount))
-    let fillcharcount = windowwidth - 4 - len(line) - len(foldedlinecount)
-    return line . '...' . repeat(" ",fillcharcount) . '(' . foldedlinecount . ')'
+    let line = strpart(line, 0, windowwidth - 4 -len(foldedlinecount))
+    let fillcharcount = windowwidth - 2 - len(line) - len(foldedlinecount)
+    return line . '...' . repeat(" ",fillcharcount) . '' . foldedlinecount . ''
 endfunction " }}}
 set foldtext=MyFoldText()
 " Debug folding/syntax highlighting
@@ -89,20 +89,18 @@ set foldtext=MyFoldText()
 
 " insert closing characters
 " see http://vim.wikia.com/wiki/Automatically_append_closing_characters
-inoremap {      {}<Left>
-inoremap {<CR>  {<CR>}<Esc>O
-inoremap {{     {
-inoremap {}     {}
-
-inoremap (      ()<Left>
-inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
-inoremap ((     (
-inoremap ()     ()
-
-inoremap [      []<Left>
-inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
-inoremap [[     [
-inoremap []     []
+" inoremap {      {}<Left>
+" inoremap {<CR>  {<CR>}<Esc>O
+" inoremap {{     {
+" inoremap {}     {}
+" inoremap (      ()<Left>
+" inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+" inoremap ((     (
+" inoremap ()     ()
+" inoremap [      []<Left>
+" inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+" inoremap [[     [
+" inoremap []     []
 
 " syntax completion
 set omnifunc=syntaxcomplete#Complete
@@ -166,7 +164,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#show_message = 1
-let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 0
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#default#section_truncate_width = {
