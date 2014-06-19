@@ -1,7 +1,7 @@
 # prompt
 export PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
-  echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:5}; done;
-  echo -n "${q:5}")'
+  echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:4}; done;
+  echo -n "${q:4}")'
 case $TERM in
     xterm*|screen*)
         export PS1='\[\033]0;\h $PS1X\007\]\[\e[0;36m\][\h \W] \[\e[0m\]'
