@@ -27,3 +27,5 @@ White=232,227,211
 BoldWhite=255,255,255
 Scrollbar=none
 FontIsBold=no
+Locale=en_US
+Charset=UTF-8
