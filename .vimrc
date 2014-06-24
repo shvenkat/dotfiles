@@ -192,4 +192,4 @@ let vimrplugin_rconsole_width = 76
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
-let vimrplugin_r_args = "--interactive"
+let vimrplugin_r_args = "--interactive --quiet"
