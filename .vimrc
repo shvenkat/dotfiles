@@ -1,9 +1,13 @@
+" ---- PACKAGE MANAGEMENT ----------------------------------------------------
+
 " call pathogen to configure extension loading
 " extensions are loaded AFTER .vimrc is read
 execute pathogen#infect()
 
 " load vim-sensible right away, so its options can be over-ridden
 runtime! plugin/sensible.vim
+
+" ---- VIM CORE CONFIG -------------------------------------------------------
 
 " basic options
 filetype plugin indent on
@@ -124,7 +128,7 @@ autocmd BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
-" ---- PLUGINS --------------------------------------------------------------
+" ---- PLUGIN CONFIG ---------------------------------------------------------
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
@@ -142,8 +146,8 @@ func! SetColorschemeSolarizedDark()
   hi Folded term=NONE cterm=NONE gui=NONE
 endfunc
 noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
-set background=dark
-colorscheme solarized
+" set background=dark
+" colorscheme solarized
 
 " vim-markdown
 " vim-markdown-folding
