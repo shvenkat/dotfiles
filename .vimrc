@@ -188,7 +188,7 @@ let g:airline#extensions#default#section_truncate_width = {
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
 
 " vim-r-plugin
-let r_indent_align_args = 0
+" let r_indent_align_args = 0
 let r_syntax_folding = 1
 let vimrplugin_assign = 0
 let vimrplugin_vsplit = 1    " For vertical tmux split
