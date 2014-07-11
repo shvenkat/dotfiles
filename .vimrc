@@ -10,6 +10,7 @@ runtime! plugin/sensible.vim
 " ---- VIM CORE CONFIG -------------------------------------------------------
 
 " basic options
+set nocompatible
 filetype plugin indent on
 syntax on
 set nowrap
@@ -188,7 +189,7 @@ let g:airline#extensions#default#section_truncate_width = {
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
 
 " vim-r-plugin
-" let r_indent_align_args = 0
+let r_indent_align_args = 1
 let r_syntax_folding = 1
 let vimrplugin_assign = 0
 let vimrplugin_vsplit = 1    " For vertical tmux split
@@ -197,3 +198,4 @@ let vimrplugin_rconsole_width = 76
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
 let vimrplugin_r_args = "--interactive --quiet"
+imap <leader>. <Plug>RCompleteArgs
