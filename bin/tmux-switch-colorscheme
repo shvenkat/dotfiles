@@ -1,0 +1,32 @@
+#!/bin/bash
+
+COLORSCHEMES="solarized-light solarized-dark"
+
+usage () {
+  echo "USAGE: $(basename $0) <colorscheme>"
+  echo "    Supported colorschemes: $COLORSCHEMES"
+}
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage error: invalid number of arguments" 1>&2
+  usage
+  exit 1
+fi
+
+case $1 in
+  solarized-light)
+    tmux set-option -g pane-border-fg brightcyan \; \
+         set-option -g pane-active-border-fg brightblack \; \
+         set-option -g status-bg brightcyan > /dev/null
+    ;;
+  solarized-dark)
+    tmux set-option -g pane-border-fg brightgreen \; \
+         set-option -g pane-active-border-fg brightwhite \; \
+         set-option -g status-bg brightgreen > /dev/null
+    ;;
+  *)
+    echo "Usage error: $1 is not a supported colorscheme" 1>&2
+    usage
+    exit 1
+    ;;
+esac
