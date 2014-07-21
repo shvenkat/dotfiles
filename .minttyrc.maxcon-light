@@ -1,6 +1,6 @@
 Term=xterm-16color
 Font=Droid Sans Mono Dotted for Powe
-FontHeight=10
+FontHeight=11
 Columns=127
 Rows=37
 CursorType=block
