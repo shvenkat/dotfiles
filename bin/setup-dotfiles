@@ -1,0 +1,23 @@
+#!/bin/bash
+
+FILES="
+.aliases
+.bash_functions
+.bash_logout
+.bash_profile
+.bashrc
+.bashrc.d
+.certs
+.colordiffrc
+.dir_colors
+.gitconfig
+.inputrc
+.startxwinrc
+.tmux.conf
+.vim
+.vimrc
+.xinitrc"
+
+for file in $FILES; do
+  ln -si .rc/$file ~/$file
+done

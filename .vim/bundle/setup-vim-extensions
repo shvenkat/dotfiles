@@ -1,0 +1,18 @@
+#!/bin/bash
+
+UrlFile=vim-extensions.url
+
+if [[ ! -f $UrlFile ]]; then
+  echo "Usage error: URL file not found; run from within .vim/bundle"
+  exit 1
+fi
+
+cat $UrlFile | while read extension url branch; do
+  git clone $url $extension
+  if [[ ! -z $branch ]]; then
+    cd $extension
+    git branch --track $branch origin/$branch
+    git checkout $branch
+    cd ..
+  fi
+done
