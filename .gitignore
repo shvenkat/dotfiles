@@ -1,6 +1,5 @@
 .aliases.local
 .gnupg/5505C1DC.pgp
-.ssh/config
 .ssh/authorized_keys
 .ssh/known_hosts
 .vim/.netrwhist

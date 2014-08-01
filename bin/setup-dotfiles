@@ -12,12 +12,20 @@ FILES="
 .dir_colors
 .gitconfig
 .inputrc
+.ssh/config
 .startxwinrc
 .tmux.conf
 .vim
 .vimrc
-.xinitrc"
+.xinitrc
+bin/colordiff
+bin/tmux-switch-colorscheme"
 
 for file in $FILES; do
-  ln -si .rc/$file ~/$file
+  if [[ $(basename $file) != $file ]]; then
+    mkdir -p $(dirname $file)
+  fi
+  ln -si ~/.rc/$file ~/$file
 done
+
+chmod 0700 ~/.ssh
