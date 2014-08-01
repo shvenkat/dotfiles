@@ -1,6 +1,6 @@
 #!/bin/bash
 
-COLORSCHEMES="solarized-light solarized-dark"
+COLORSCHEMES="solarized-light|soll solarized-dark|sold"
 
 usage () {
   echo "USAGE: $(basename $0) <colorscheme>"
@@ -14,15 +14,17 @@ if [[ $# -ne 1 ]]; then
 fi
 
 case $1 in
-  solarized-light)
+  solarized-light|soll)
     tmux set-option -g pane-border-fg brightcyan \; \
          set-option -g pane-active-border-fg brightblack \; \
-         set-option -g status-bg brightcyan > /dev/null
+         set-option -g status-fg brightgreen \; \
+         set-option -g status-bg white > /dev/null
     ;;
-  solarized-dark)
+  solarized-dark|sold)
     tmux set-option -g pane-border-fg brightgreen \; \
          set-option -g pane-active-border-fg brightwhite \; \
-         set-option -g status-bg brightgreen > /dev/null
+         set-option -g status-fg brightcyan \; \
+         set-option -g status-bg black > /dev/null
     ;;
   *)
     echo "Usage error: $1 is not a supported colorscheme" 1>&2
