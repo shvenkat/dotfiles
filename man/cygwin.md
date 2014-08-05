@@ -3,3 +3,5 @@ mintty, tmux, terminfo, terminfo-extra, ncurses
 vim
 git, git-completion
 unison
+gnupg
+bind-utils
