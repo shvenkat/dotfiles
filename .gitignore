@@ -1,5 +1,7 @@
-.aliases.local
-.gnupg/5505C1DC.pgp
+.gnupg/private-keys*
+.gnupg/pubring.gpg
+.gnupg/random_seed
+.gnupg/secring.gpg
+.gnupg/trustdb.gpg
 .ssh/authorized_keys
 .ssh/known_hosts
-.vim/.netrwhist
