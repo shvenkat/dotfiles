@@ -195,7 +195,7 @@ let r_indent_align_args = 1
 let r_syntax_folding = 1
 let vimrplugin_assign = 0
 let vimrplugin_vsplit = 1    " For vertical tmux split
-let vimrplugin_rconsole_width = 59
+let vimrplugin_rconsole_width = 68
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
