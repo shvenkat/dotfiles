@@ -19,3 +19,4 @@ showMarks	https://github.com/shvenkat/ShowMarks.git    install
 bufexplorer https://github.com/jlanzarotta/bufexplorer.git
 nerdtree    https://github.com/scrooloose/nerdtree.git
 ctrlp.vim   https://github.com/kien/ctrlp.vim.git
+vim-git     https://github.com/tpope/vim-git.git
