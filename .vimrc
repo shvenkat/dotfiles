@@ -140,6 +140,7 @@ func! SetColorschemeSolarizedLight()
   set background=light
   colorscheme solarized
   hi Folded term=NONE cterm=NONE gui=NONE
+  hi Todo term=reverse cterm=reverse ctermfg=5
 endfunc
 noremap <leader>sl :call SetColorschemeSolarizedLight()<CR>
 func! SetColorschemeSolarizedDark()
@@ -147,6 +148,7 @@ func! SetColorschemeSolarizedDark()
   set background=dark
   colorscheme solarized
   hi Folded term=NONE cterm=NONE gui=NONE
+  hi Todo term=reverse cterm=reverse ctermfg=5
 endfunc
 noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
 " set background=dark

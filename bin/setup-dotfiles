@@ -13,6 +13,7 @@ FILES="
 .gnupg/gpg.conf
 .gnupg/gpg-agent.conf
 .inputrc
+.Rprofile
 .ssh/config
 .startxwinrc
 .tmux.conf

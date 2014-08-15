@@ -30,7 +30,7 @@ if(interactive()){
     suppressMessages(require(colorout))
     suppressMessages(require(setwidth))
     if(Sys.getenv("VIMRPLUGIN_TMPDIR") != "") {
-        suppressMessages(require(vimcom.plus))
+        suppressMessages(require(vimcom))
     }
     if(grepl("^CYGWIN_", Sys.info()["sysname"])) {
         Sys.setenv("LANG" = "en_US.CP1252")
