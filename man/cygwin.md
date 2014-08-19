@@ -25,6 +25,7 @@ libzip2
 fontconfig
 font-util
 font-bitstream-vera
+gettext
 # Build tools
 autoconf
 automake
@@ -37,6 +38,8 @@ libtool
 make
 patch
 pkg-config
+gettext-devel
+libncurses-devel
 # Header files
 libintl-devel
 libpcre-devel
