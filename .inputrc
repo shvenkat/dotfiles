@@ -26,7 +26,7 @@
 $if Bash
   set bell-style none
   set completion-ignore-case on
-  set show-all-if-ambiguous on
+  set show-all-if-ambiguous off
   set show-all-if-unmodified on
   # set expand-tilde on
   set match-hidden-files on
