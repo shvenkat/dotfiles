@@ -37,3 +37,7 @@ export MANPATH
 # TEXMFDBS=${TEXMFDBS}:/home/shvenkat/opt/texlive-20120710/2012/texmf-config
 # TEXMFDBS=${TEXMFDBS}:/home/shvenkat/opt/texlive-20120710/2012/texmf-var
 # export TEXMFCNF TEXMFDBS
+
+if [[ -e /ussf-marin/app/PLATFORM/lsf/conf/profile.lsf ]]; then
+	. /ussf-marin/app/PLATFORM/lsf/conf/profile.lsf
+fi
