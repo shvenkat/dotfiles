@@ -14,7 +14,7 @@ vim-sleuth 	https://github.com/tpope/vim-sleuth.git
 vim-unimpaired 	https://github.com/tpope/vim-unimpaired.git
 vim-vividchalk 	https://github.com/tpope/vim-vividchalk.git
 screen  https://github.com/ervandew/screen.git
-vim-r-plugin    https://github.com/shvenkat/Vim-R-plugin.git    devel
+vim-r-plugin    https://github.com/shvenkat/Vim-R-plugin.git
 showMarks	https://github.com/shvenkat/ShowMarks.git    install
 bufexplorer https://github.com/jlanzarotta/bufexplorer.git
 nerdtree    https://github.com/scrooloose/nerdtree.git

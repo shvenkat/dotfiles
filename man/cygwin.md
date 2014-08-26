@@ -26,6 +26,7 @@ fontconfig
 font-util
 font-bitstream-vera
 gettext
+wget
 # Build tools
 autoconf
 automake
