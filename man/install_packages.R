@@ -11,4 +11,4 @@ system("rm -f /tmp/colorout_1.0-3.tar.gz")
 
 install_github('jalvesaq/VimCom')
 
-install.packages("ggplot2")
+install.packages(c("ggplot2", "roxygen2", "gplots", "kinship2"))

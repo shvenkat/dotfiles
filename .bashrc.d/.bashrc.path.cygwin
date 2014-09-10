@@ -1,2 +1,6 @@
 PATH="$HOME/bin:$PATH"
 export PATH
+
+if [[ -z $LESSOPEN ]]; then
+	export LESSOPEN='||/usr/local/bin/lesspipe.sh %s'
+fi

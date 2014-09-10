@@ -9,6 +9,7 @@ vim
 # VCS
 git
 git-completion
+subversion
 # Sync
 unison
 # MathSci
