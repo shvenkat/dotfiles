@@ -14,6 +14,7 @@ subversion
 unison
 # MathSci
 R
+gnuplot
 # Crypto
 gnupg
 # OS

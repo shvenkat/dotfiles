@@ -59,8 +59,7 @@ autocmd ColorScheme * highlight! link SignColumn LineNr
 
 " folding
 set foldenable
-" All folds closed by default
-set foldlevelstart=0
+set foldlevelstart=99
 " Space to toggle folds
 nnoremap <Space> za
 vnoremap <Space> za

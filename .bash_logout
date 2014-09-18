@@ -1,4 +1,1 @@
-# ~/.bash_logout
-
-#/usr/bin/clear
-
+type -t clear > /dev/null && clear
