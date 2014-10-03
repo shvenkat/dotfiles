@@ -12,9 +12,13 @@ git-completion
 subversion
 # Sync
 unison
-# MathSci
+# Programming
 R
 gnuplot
+python3
+python3-setuptools
+python3-numpy
+python3-openssl
 # Crypto
 gnupg
 # OS
@@ -29,6 +33,7 @@ font-util
 font-bitstream-vera
 gettext
 wget
+sqlite3
 # Build tools
 autoconf
 automake
