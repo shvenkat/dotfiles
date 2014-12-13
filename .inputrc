@@ -1,36 +1,69 @@
 # KEY BINDINGS --------------------------------------------------------------
 
-# set editing-mode vi
+# set editing-mode emacs
 
-# "\C-a": beginning-of-line
-# "\C-e": end-of-line
-"\C-b": backward-word
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+"\M-f": forward-char
+"\M-b": backward-char
 "\C-f": forward-word
-"\C-h": backward-kill-word
-"\C-d": kill-word
-# "\C-u": unix-line-discard
-# "\C-k": kill-line
-# "\C-p: previous-history
-# "\C-n: next-history
+"\C-b": backward-word
+
+"\M-h": delete-char
+"\C-h": backward-delete-char
+"\M-s": kill-word
+"\C-s": backward-kill-word
+"\M-k": kill-line
+"\C-k": backward-kill-line
+
+"\C-v": quoted-insert
+"\C-y": yank
+"\M-\C-y": yank-nth-arg
+"\M-.": yank-last-arg
+
+"\M-]": character-search
+"\C-]": character-search-backward
+
 "\C-r": reverse-search-history
 "\C-t": history-search-backward
+"\C-p": previous-history
+"\C-n": next-history
+"\M-<": beginning-of-history
+"\M->": end-of-history
+
+"\M-l": redraw-current-line
+# "TAB": complete
+"\C-TAB": menu-complete
+"\C-g": abort
+"\C-U": undo
+"\M-SPC": set-mark
 
 # VARIABLES -----------------------------------------------------------------
 
 # Allow 8-bit input/output
-# set meta-flag on
-# set convert-meta off
-# set input-meta on
-# set output-meta on
+set convert-meta off
+set input-meta on
+set output-meta off
+set enable-meta-key on
+
+# set bind-tty-special-chars off
+set colored-stats on
+set completion-ignore-case on
+set completion-map-case on
+# set enable-keypad on
+# set expand-tilde on
+set history-size 0
+set isearch-terminators "C-[ C-j"
+set mark-directories on
+set mark-symlinked-directories on
+set match-hidden-files on
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+set skip-completed-text on
+set visible-stats on
 
 $if Bash
   set bell-style none
-  set completion-ignore-case on
-  set show-all-if-ambiguous off
-  set show-all-if-unmodified on
-  # set expand-tilde on
-  set match-hidden-files on
-  set mark-directories on
-  set mark-symlinked-directories on
-  set visible-stats on
+$else
+  set bell-style audible
 $endif

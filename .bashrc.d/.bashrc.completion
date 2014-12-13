@@ -15,5 +15,3 @@ if ! shopt -oq posix && echo $- | grep -q i; then
     . /etc/bash_completion
   fi
 fi
-
-set completion-ignore-case On
