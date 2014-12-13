@@ -1,66 +1,67 @@
-# KEY BINDINGS --------------------------------------------------------------
+## KEY BINDINGS --------------------------------------------------------------
 
 # set editing-mode emacs
 
 "\C-a": beginning-of-line
 "\C-e": end-of-line
-"\M-f": forward-char
-"\M-b": backward-char
+"\ef":  forward-char
+"\eb":  backward-char
 "\C-f": forward-word
 "\C-b": backward-word
+"\ew":  character-search
+"\C-w": character-search-backward
 
-"\M-h": delete-char
+"\eh":  delete-char
 "\C-h": backward-delete-char
-"\M-s": kill-word
-"\C-s": backward-kill-word
-"\M-k": kill-line
+"\C-o": kill-word
+"\C-l": backward-kill-word
+"\ek":  kill-line
 "\C-k": backward-kill-line
 
-"\C-v": quoted-insert
 "\C-y": yank
-"\M-\C-y": yank-nth-arg
-"\M-.": yank-last-arg
-
-"\M-]": character-search
-"\C-]": character-search-backward
+"\ey":  yank-last-arg
+"\e\C-y": yank-nth-arg
+"\e ":  set-mark
+"\ed":  kill-region
+"\ec":  copy-region-as-kill
 
 "\C-r": reverse-search-history
+"\C-s": forward-search-history
 "\C-t": history-search-backward
 "\C-p": previous-history
 "\C-n": next-history
-"\M-<": beginning-of-history
-"\M->": end-of-history
+"\e,":  beginning-of-history
+"\e.":  end-of-history
 
-"\M-l": redraw-current-line
-# "TAB": complete
-"\C-TAB": menu-complete
+"\C-u": undo
 "\C-g": abort
-"\C-U": undo
-"\M-SPC": set-mark
+"\C-v": quoted-insert
+"\ei":  menu-complete
+"\el":  redraw-current-line
 
-# VARIABLES -----------------------------------------------------------------
+## VARIABLES -----------------------------------------------------------------
 
-# Allow 8-bit input/output
-set convert-meta off
-set input-meta on
-set output-meta off
-set enable-meta-key on
+# 8-bit input/output
+set convert-meta Off
+set enable-meta-key On
+set input-meta On
+set output-meta On
+# set prefix-meta "ESC"
 
-# set bind-tty-special-chars off
-set colored-stats on
-set completion-ignore-case on
-set completion-map-case on
-# set enable-keypad on
-# set expand-tilde on
-set history-size 0
-set isearch-terminators "C-[ C-j"
-set mark-directories on
-set mark-symlinked-directories on
-set match-hidden-files on
-set show-all-if-ambiguous on
-set show-all-if-unmodified on
-set skip-completed-text on
-set visible-stats on
+# set bind-tty-special-chars Off
+set colored-stats On
+set completion-ignore-case On
+set completion-map-case On
+# set enable-keypad On
+set expand-tilde Off
+# set isearch-terminators "C-[ C-j"
+set mark-directories On
+set mark-symlinked-directories On
+set match-hidden-files On
+set show-all-if-ambiguous On
+set show-all-if-unmodified On
+set skip-completed-text On
+set visible-stats On
 
 $if Bash
   set bell-style none
