@@ -2,39 +2,39 @@
 
 # set editing-mode emacs
 
-"\C-a": beginning-of-line
+"\C-w": beginning-of-line
 "\C-e": end-of-line
-"\ef":  forward-char
-"\eb":  backward-char
-"\C-f": forward-word
 "\C-b": backward-word
-"\ew":  character-search
-"\C-w": character-search-backward
+"\C-n": forward-word
+"\eb":  backward-char
+"\en":  forward-char
+"\C-y": character-search-backward
+"\ey":  character-search
 
-"\eh":  delete-char
 "\C-h": backward-delete-char
-"\C-o": kill-word
-"\C-l": backward-kill-word
-"\ek":  kill-line
+"\eh":  delete-char
+"\C-f": backward-kill-word
+"\C-g": kill-word
 "\C-k": backward-kill-line
+"\ek":  kill-line
 
-"\C-y": yank
-"\ey":  yank-last-arg
-"\e\C-y": yank-nth-arg
+"\C-p": yank
+"\ep":  yank-last-arg
+"\e\C-p": yank-nth-arg
 "\e ":  set-mark
 "\ed":  kill-region
 "\ec":  copy-region-as-kill
 
 "\C-r": reverse-search-history
-"\C-s": forward-search-history
-"\C-t": history-search-backward
-"\C-p": previous-history
-"\C-n": next-history
+"\C-t": forward-search-history
+"\C-s": history-search-backward
+"\C-o": previous-history
+"\C-l": next-history
 "\e,":  beginning-of-history
 "\e.":  end-of-history
 
 "\C-u": undo
-"\C-g": abort
+"\C-q": abort
 "\C-v": quoted-insert
 "\ei":  menu-complete
 "\el":  redraw-current-line
@@ -49,7 +49,7 @@ set output-meta On
 # set prefix-meta "ESC"
 
 # set bind-tty-special-chars Off
-set colored-stats On
+set colored-stats Off
 set completion-ignore-case On
 set completion-map-case On
 # set enable-keypad On
