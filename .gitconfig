@@ -1,11 +1,11 @@
 [user]
 	name = Shiv Venkatasubrahmanyam
-	email = shvenkat@amgen.com
+	email = shiv@fake.server
 [core]
 	editor = vim
 	autocrlf = input
 [http]
-	sslCAinfo = /home/shvenkat/.certs/cacert.pem
+	; sslCAinfo = /home/shvenkat/.certs/cacert.pem
 [github]
 	user = shvenkat
 [color]
