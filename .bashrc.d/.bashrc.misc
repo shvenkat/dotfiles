@@ -1,5 +1,6 @@
+umask 0022
+
 shopt -s cdspell
-set completion-ignore-case On
 
 # Don't wait for job termination notification
 # set -o notify

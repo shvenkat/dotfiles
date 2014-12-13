@@ -11,6 +11,10 @@
 #         ;;
 # esac
 
-PS1='\[\e[0;34m\][\h \W] \[\e[0m\]'
+if type -ft tput >/dev/null && tput setaf 1 &>/dev/null; then
+  PS1='\[\e[0;34m\][\h \W] \[\e[0m\]'
+else
+  PS1='[\h \W] '
+fi
 # PS1='\[\033]0;\h\007\]$PS1'
 export PS1
