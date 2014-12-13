@@ -11,6 +11,7 @@ BASHRCD=$HOME/.bashrc.d
 . $BASHRCD/.bashrc.ssh
 . $BASHRCD/.bashrc.completion
 . $BASHRCD/.bashrc.misc
+. $BASHRCD/.bashrc.terminal
 
 export EDITOR=vim
 
