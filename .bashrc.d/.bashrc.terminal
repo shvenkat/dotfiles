@@ -5,5 +5,4 @@ stty quit undef \
      rprnt undef \
      werase undef \
      flush undef
-# stty pass8
 # stty iutf8

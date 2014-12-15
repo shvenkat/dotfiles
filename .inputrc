@@ -41,11 +41,11 @@
 
 ## VARIABLES -----------------------------------------------------------------
 
-# 8-bit input/output
-set convert-meta Off
+# Disable 8-bit input/output for compatibility
+set convert-meta On
 set enable-meta-key On
-set input-meta On
-set output-meta On
+set input-meta Off
+set output-meta Off
 # set prefix-meta "ESC"
 
 # set bind-tty-special-chars Off
