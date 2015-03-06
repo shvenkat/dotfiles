@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SSH_AGENT_ENV=$HOME/.ssh/.ssh-agent.sh
+TMPFILE=$(mktemp)
+
+if [[ -f "$SSH_AGENT_ENV" ]]; then
+    eval $(cat $SSH_AGENT_ENV) 1>/dev/null
+fi
+ssh-agent -k > $TMPFILE \
+  && eval "$(cat $TMPFILE)" \
+  && rm -f $TMPFILE

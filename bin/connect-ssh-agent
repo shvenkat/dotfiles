@@ -1,0 +1,7 @@
+#!/bin/bash
+
+SSH_AGENT_ENV=$HOME/.ssh/.ssh-agent.sh
+
+if [[ -f "$SSH_AGENT_ENV" ]]; then
+    eval $(cat $SSH_AGENT_ENV) 1>/dev/null
+fi

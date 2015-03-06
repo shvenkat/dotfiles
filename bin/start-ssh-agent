@@ -1,8 +1,8 @@
 #!/bin/sh
 
 SSH_AGENT_ENV=$HOME/.ssh/.ssh-agent.sh
-SSH_AGENT_LNK=$HOME/.ssh/.ssh-agent
+# SSH_AGENT_LNK=$HOME/.ssh/.ssh-agent
 
 ssh-agent -s > $SSH_AGENT_ENV
 eval $(cat $SSH_AGENT_ENV) 1>/dev/null
-ln -sf $SSH_AUTH_SOCK $SSH_AGENT_LNK
+# ln -sf $SSH_AUTH_SOCK $SSH_AGENT_LNK
