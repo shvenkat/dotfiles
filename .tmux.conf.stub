@@ -1,0 +1,2 @@
+source-file ~/.rc/.tmux.conf
+source-file ~/.rc/.tmux.conf.colors.solarized-dark

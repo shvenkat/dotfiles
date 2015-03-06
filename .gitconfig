@@ -1,6 +1,3 @@
-[user]
-	name = Shiv Venkatasubrahmanyam
-	email = shiv@fake.server
 [core]
 	editor = vim
 	autocrlf = input
