@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-SSH_AGENT_ENV=$HOME/.ssh/.ssh-agent.sh
-# SSH_AGENT_LNK=$HOME/.ssh/.ssh-agent
+SSH_AGENT_START="/tmp/$(id -un)_${HOSTNAME}_start"
 
-ssh-agent -s > $SSH_AGENT_ENV
-eval $(cat $SSH_AGENT_ENV) 1>/dev/null
-# ln -sf $SSH_AUTH_SOCK $SSH_AGENT_LNK
+touch "$SSH_AGENT_START"
+chmod 0600 "$SSH_AGENT_START"
+ssh-agent -s > "$SSH_AGENT_START"
+echo ". $SSH_AGENT_START"

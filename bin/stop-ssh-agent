@@ -1,11 +1,12 @@
 #!/bin/bash
 
-SSH_AGENT_ENV=$HOME/.ssh/.ssh-agent.sh
-TMPFILE=$(mktemp)
+SSH_AGENT_START="/tmp/$(id -un)_${HOSTNAME}_start"
+SSH_AGENT_STOP="/tmp/$(id -un)_${HOSTNAME}_stop"
 
-if [[ -f "$SSH_AGENT_ENV" ]]; then
-    eval $(cat $SSH_AGENT_ENV) 1>/dev/null
+if [[ -f "$SSH_AGENT_START" ]]; then
+    . "$SSH_AGENT_START" > /dev/null
 fi
-ssh-agent -k > $TMPFILE \
-  && eval "$(cat $TMPFILE)" \
-  && rm -f $TMPFILE
+touch "$SSH_AGENT_STOP"
+chmod 0600 "$SSH_AGENT_STOP"
+ssh-agent -k > "$SSH_AGENT_STOP"
+echo ". $SSH_AGENT_STOP"

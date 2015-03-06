@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SSH_AGENT_ENV=$HOME/.ssh/.ssh-agent.sh
+SSH_AGENT_START="/tmp/$(id -un)_$HOSTNAME_start"
 
-if [[ -f "$SSH_AGENT_ENV" ]]; then
-    eval $(cat $SSH_AGENT_ENV) 1>/dev/null
-fi
+echo ". $SSH_AGENT_START"
