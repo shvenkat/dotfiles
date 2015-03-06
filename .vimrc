@@ -135,7 +135,7 @@ map <C-n> :NERDTreeToggle<CR>
 
 " vim-colors-solarized
 func! SetColorschemeSolarizedLight()
-  let g:solarized_termcolors = 16
+  " let g:solarized_termcolors = 16
   set background=light
   colorscheme solarized
   hi Folded term=NONE cterm=NONE gui=NONE
@@ -143,7 +143,7 @@ func! SetColorschemeSolarizedLight()
 endfunc
 noremap <leader>sl :call SetColorschemeSolarizedLight()<CR>
 func! SetColorschemeSolarizedDark()
-  let g:solarized_termcolors = 16
+  " let g:solarized_termcolors = 16
   set background=dark
   colorscheme solarized
   hi Folded term=NONE cterm=NONE gui=NONE
