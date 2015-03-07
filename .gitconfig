@@ -29,6 +29,8 @@
 	; Graphical branch history
 	logg = log --graph --date-order --decorate \
 	         --format=format:'%C(bold cyan)%h%C(reset)  %C(bold magenta)%ar%C(reset) %C(ul red)%d%C(reset)  %C(normal)%s%C(reset) %C(bold cyan)- %an%C(reset)'
+	logv = log --graph --date-order \
+	         --format=format:'%h %C(bold cyan)%G?%C(reset) %C(bold magenta)%GK%C(reset) %C(red)%ar%C(reset) %C(normal)%s%C(reset)'
 	; First common ancestor (as opposed to last common ancestor returned by merge-base)
 	fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
 [merge]
