@@ -1,6 +1,7 @@
 ## PATHs
 PATH=/usr/local/sbin:/usr/sbin:/sbin
 PATH=${PATH}:/usr/local/bin:/usr/bin:/bin
+# ( echo $PATH | grep $HOME/bin >/dev/null ) || export PATH=$HOME/bin:$PATH
 PATH=${PATH}:${HOME}/bin
 export PATH
 

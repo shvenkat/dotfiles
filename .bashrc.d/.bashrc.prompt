@@ -1,20 +1,54 @@
 # prompt
-# export PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
-#   echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:4}; done;
-#   echo -n "${q:4}")'
-# case $TERM in
-#     xterm*|screen*)
-#         export PS1='\[\033]0;\h $PS1X\007\]\[\e[0;34m\][\h \W] \[\e[0m\]'
-#         ;;
-#     *)
-#         export PS1='\[\e[0;34m\][\h \W] \[\e[0m\]'
-#         ;;
-# esac
 
-if type -ft tput >/dev/null && tput setaf 1 &>/dev/null; then
-  PS1='\[\e[0;34m\][\h \W] \[\e[0m\]'
-else
-  PS1='[\h \W] '
-fi
-# PS1='\[\033]0;\h\007\]$PS1'
+if [ "$PS1" ]; then             # interactive shell
+
+  if type -ft tput >/dev/null && tput setaf 1 &>/dev/null; then
+    # color prompt
+    CYAN="\[\033[0;36m\]"
+    GRAY="\[\033[0;37m\]"
+    BLACK="\[\033[0;30m\]"
+    BLUE="\[\033[0;34m\]"
+    RED="\[\033[0;31m\]"
+    GREEN="\[\033[0;32m\]"
+    PURPLE="\[\033[0;35m\]"
+    BROWN="\[\033[0;33m\]"
+    NONE="\[\e[m\]"
+    ATTN="\[\033[7;31m\]"
+    if [ "$USER" == "root" ]; then
+	# remind if root
+	PROMPT_COLOR=$ATTN
+    else
+	# red on the workstation
+	PROMPT_COLOR=$BLUE
+    fi
+  fi
+
+  # abbreviated path for tmux/screen status line
+  # export PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
+  #   echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:4}; done;
+  #   echo -n "${q:4}")'
+  # case $TERM in
+  #     xterm*|screen*)
+  #         export PS1='\[\033]0;\h $PS1X\007\]\[\e[0;34m\][\h \W] \[\e[0m\]'
+  #         ;;
+  #     *)
+  #         export PS1='\[\e[0;34m\][\h \W] \[\e[0m\]'
+  #         ;;
+  # esac
+
+  # basic prompt
+  PS1='${BLUE}[\h \W] ${NONE}'
+  # PS1='\[\033]0;\h\007\]$PS1'
+
+  # git prompt
+  if [[ -f ~/.rc/.git-completion.sh ]]; then
+    GIT_PS1_SHOWDIRTYSTATE=true
+    GIT_PS1_SHOWSTASHSTATE=true
+    GIT_PS1_SHOWUNTRACKEDFILES=true
+    GIT_PS1_SHOWUPSTREAM='auto verbose git'
+    . ~/.rc/.git-completion.sh
+    PS1=$PROMPT_COLOR'\u@\h '$BROWN'\w'$CYAN'$(__git_ps1 " (%s)")'$BROWN"\n>"$NONE" "
+  fi
+
 export PS1
+fi
