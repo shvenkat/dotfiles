@@ -1,9 +1,0 @@
-case $(uname -o) in
-GNU/Linux)
-    ;;
-Cygwin)
-    alias open=cygstart
-    ;;
-*)
-    ;;
-esac

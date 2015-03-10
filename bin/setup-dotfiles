@@ -1,33 +1,37 @@
 #!/bin/bash
 
-FILES="
-.aliases
-.bash_logout
-.bash_profile
-.bashrc
+mkdir -p ~/.ssh ~/.gnupg
+chmod 0700 ~/.ssh ~/.gnupg
+
+while read file; do
+  if [[ $(basename $file) != $file ]]; then
+    mkdir -p $(dirname $file)
+  fi
+  ln -s ~/.rc/$file ~/$file
+done <<EOF
+bin/connect-ssh-agent
+bin/start-ssh-agent
+bin/stop-ssh-agent
+bin/tmuxcolors
 .bashrc.d
 .certs
 .colordiffrc
 .dir_colors
-.gitconfig
 .gnupg/gpg.conf
 .gnupg/gpg-agent.conf
 .inputrc
 .Rprofile
-.ssh/config
-.startxwinrc
-.tmux.conf
 .vim
-.vimrc
 .xinitrc
-bin/colordiff
-bin/tmux-switch-colorscheme"
+EOF
+# bin/colordiff
 
-for file in $FILES; do
-  if [[ $(basename $file) != $file ]]; then
-    mkdir -p $(dirname $file)
-  fi
-  ln -si ~/.rc/$file ~/$file
-done
-
-chmod 0700 ~/.ssh ~/.gnupg
+while read file; do
+  cp ~/.rc/${file}.stub ~/$file
+done <<EOF
+.aliases
+.bashrc
+.gitconfig
+.tmux.conf
+.vimrc
+EOF

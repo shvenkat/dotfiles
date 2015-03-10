@@ -13,6 +13,7 @@ BASHRCD=$HOME/.bashrc.d
 . $BASHRCD/.bashrc.misc
 . $BASHRCD/.bashrc.terminal
 
-export EDITOR=vim
-
 # for more config options, see http://www.linuxselfhelp.com/HOWTO/Config-HOWTO/config.html
+
+# local settings
+export EDITOR=vim
