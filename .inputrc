@@ -58,8 +58,9 @@ set expand-tilde Off
 set mark-directories On
 set mark-symlinked-directories On
 set match-hidden-files On
-set show-all-if-ambiguous On
+set show-all-if-ambiguous Off
 set show-all-if-unmodified On
+set completion-prefix-display-length 10
 set skip-completed-text On
 set visible-stats On
 

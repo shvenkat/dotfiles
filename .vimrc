@@ -20,7 +20,7 @@ set hidden
 set confirm
 set wildchar=<Tab> wildmenu wildmode=full
 "set backspace=indent,eol,start
-"set number
+set number
 "set ruler
 set noswapfile
 set hlsearch
@@ -195,8 +195,8 @@ let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
 let r_indent_align_args = 1
 let r_syntax_folding = 1
 let vimrplugin_assign = 0
-let vimrplugin_vsplit = 1    " For vertical tmux split
-let vimrplugin_rconsole_width = 68
+let vimrplugin_vsplit = 0    " For vertical tmux split
+let vimrplugin_rconsole_height = 10
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 "vmap <Space> <Plug>RDSendSelection
 "nmap <Space> <Plug>RDSendLine
