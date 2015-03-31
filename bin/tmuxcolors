@@ -15,16 +15,10 @@ fi
 
 case $1 in
   solarized-light|soll)
-    tmux set-option -g pane-border-fg brightcyan \; \
-         set-option -g pane-active-border-fg brightblack \; \
-         set-option -g status-fg brightgreen \; \
-         set-option -g status-bg white > /dev/null
+    tmux source-file ~/.rc/.tmux.conf.colors.solarized-light
     ;;
   solarized-dark|sold)
-    tmux set-option -g pane-border-fg brightgreen \; \
-         set-option -g pane-active-border-fg brightwhite \; \
-         set-option -g status-fg brightcyan \; \
-         set-option -g status-bg black > /dev/null
+    tmux source-file ~/.rc/.tmux.conf.colors.solarized-dark
     ;;
   *)
     echo "Usage error: $1 is not a supported colorscheme" 1>&2
