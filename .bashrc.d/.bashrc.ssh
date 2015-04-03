@@ -1,10 +1,19 @@
 # ssh
+
+# if [[ $TERM =~ ^screen ]]; then
+#   # inside screen or tmux, connect to local or remote ssh-agent
+#   # connect-ssh-agent tmux
+# elif [[ -n $SSH_CONNECTION ]]; then
+#   # ssh login
+#   # start-ssh-agent ssh
+# else
+#   # local machine login
+#   # start-ssh-agent local
+# fi
+
 #if [ -z "$SSH_AUTH_SOCK" ]; then
 #    echo "Setting SSH_AUTH_SOCK ..."
 #    export SSH_AUTH_SOCK=$(find /tmp -type s -user ${USER} -wholename '/tmp/ssh-*/agent*' 2>/dev/null | head -n1)
-#fi
-#if [[ $HOSTNAME == "tengu.amgen.com" || $HOSTNAME == "USSF342612" ]]; then
-#  export SSH_AUTH_SOCK=$HOME/.ssh/.ssh-agent
 #fi
 
 # start ssh-agent

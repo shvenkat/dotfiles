@@ -1,7 +1,18 @@
 # .bashrc
 
-BASHRCD=$HOME/.bashrc.d
+case $(uname) in
+Linux)
+  OSENV=linux
+  ;;
+Darwin)
+  OSENV=macosx
+  ;;
+Cygwin)
+  OSENV=cygwin
+  ;;
+esac
 
+BASHRCD=$HOME/.bashrc.d
 . $BASHRCD/.bashrc.system.linux
 . $BASHRCD/.bashrc.history
 . $BASHRCD/.bashrc.alias
