@@ -1,7 +1,0 @@
-PATH="$PATH:$HOME/bin"
-PATH="$PATH:/cygdrive/c/Program Files (x86)/Java/jre7/bin"
-export PATH
-
-if [[ -z $LESSOPEN ]]; then
-	export LESSOPEN='||/usr/local/bin/lesspipe.sh %s'
-fi

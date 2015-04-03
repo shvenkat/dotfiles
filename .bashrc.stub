@@ -13,12 +13,12 @@ Cygwin)
 esac
 
 BASHRCD=$HOME/.bashrc.d
-. $BASHRCD/.bashrc.system.linux
+. $BASHRCD/.bashrc.system
 . $BASHRCD/.bashrc.history
 . $BASHRCD/.bashrc.alias
 . $BASHRCD/.bashrc.prompt
 . $BASHRCD/.bashrc.lscolor
-. $BASHRCD/.bashrc.path.linux
+. $BASHRCD/.bashrc.path
 . $BASHRCD/.bashrc.ssh
 . $BASHRCD/.bashrc.completion
 . $BASHRCD/.bashrc.misc
