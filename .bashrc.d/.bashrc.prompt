@@ -4,21 +4,27 @@ if [ "$PS1" ]; then             # interactive shell
 
   if type -ft tput >/dev/null && tput setaf 1 &>/dev/null; then
     # color prompt
-    CYAN="\[\033[0;36m\]"
-    GRAY="\[\033[0;37m\]"
+    NONE="\[\e[m\]"
     BLACK="\[\033[0;30m\]"
-    BLUE="\[\033[0;34m\]"
     RED="\[\033[0;31m\]"
     GREEN="\[\033[0;32m\]"
-    PURPLE="\[\033[0;35m\]"
-    BROWN="\[\033[0;33m\]"
-    NONE="\[\e[m\]"
+    YELLOW="\[\033[0;33m\]"
+    BLUE="\[\033[0;34m\]"
+    MAGENTA="\[\033[0;35m\]"
+    CYAN="\[\033[0;36m\]"
+    WHITE="\[\033[0;37m\]"
+    BR_BLACK="\[\033[0;90m\]"
+    BR_RED="\[\033[0;91m\]"
+    BR_GREEN="\[\033[0;92m\]"
+    BR_YELLOW="\[\033[0;93m\]"
+    BR_BLUE="\[\033[0;94m\]"
+    BR_MAGENTA="\[\033[0;95m\]"
+    BR_CYAN="\[\033[0;96m\]"
+    BR_WHITE="\[\033[0;97m\]"
     ATTN="\[\033[7;31m\]"
     if [ "$USER" == "root" ]; then
-	# remind if root
 	PROMPT_COLOR=$ATTN
     else
-	# red on the workstation
 	PROMPT_COLOR=$BLUE
     fi
   fi
@@ -37,7 +43,8 @@ if [ "$PS1" ]; then             # interactive shell
   # esac
 
   # basic prompt
-  PS1='${BLUE}[\h \W] ${NONE}'
+  PS1=$PROMPT_COLOR'\u@\h '$YELLOW'\w'$NONE' '
+  # PS1='${BLUE}[\h \W] ${NONE}'
   # PS1='\[\033]0;\h\007\]$PS1'
 
   # git prompt
@@ -47,7 +54,7 @@ if [ "$PS1" ]; then             # interactive shell
     GIT_PS1_SHOWUNTRACKEDFILES=true
     GIT_PS1_SHOWUPSTREAM='auto verbose git'
     . ~/.rc/.git-completion.sh
-    PS1=$PROMPT_COLOR'\u@\h '$BROWN'\w'$CYAN'$(__git_ps1 " (%s)")'$BROWN"\n>"$NONE" "
+    PS1=$PS1$BR_MAGENTA'$(__git_ps1 "(%s)")'$NONE"\n> "
   fi
 
 export PS1
