@@ -1,0 +1,81 @@
+#!/bin/bash
+
+CANONICAL_AGENT=/tmp/$(id -un)_${HOSTNAME}/keymaster
+CANONICAL_ENV=$(dirname $CANONICAL_AGENT)/gatekeeper
+
+test_socket() {
+  SSH_AUTH_SOCK=$1 ssh-add -l &>/dev/null
+  ret=$?
+  if [[ $ret -eq 2 ]]; then
+    return 1
+  else
+    return 0
+  fi
+}
+
+set_env () {
+  # echo "[$(basename $0)] setting SSH_AUTH_SOCK" 3>&2 2>&1 1>&3
+  echo "export SSH_AUTH_SOCK=$CANONICAL_AGENT"
+}
+
+make_link () {
+  # echo "[$(basename $0)] creating symlink to agent socket" 3>&2 2>&1 1>&3
+  mkdir -p $(dirname $CANONICAL_AGENT)
+  ln -sf $1 $CANONICAL_AGENT
+  set_env
+}
+
+find_socket () {
+  # echo "[$(basename $0)] searching for agent socket" 3>&2 2>&1 1>&3
+  for s in $(find /tmp -type s -user $USER -wholename '/tmp/ssh-*/agent*' \
+               -print | xargs ls -1t); do
+    if test_socket $s; then
+      echo $s
+      break
+    fi
+  done
+}
+
+make_socket () {
+  # echo "[$(basename $0)] starting new agent" 3>&2 2>&1 1>&3
+  touch $CANONICAL_ENV
+  chmod 0600 $CANONICAL_ENV
+  ssh-agent -s > $CANONICAL_ENV
+  . $CANONICAL_ENV >/dev/null
+  make_link $SSH_AUTH_SOCK
+}
+
+connect_agent () {
+  # if symlink is valid, just update the environment
+  if test -h $CANONICAL_AGENT && test_socket $CANONICAL_AGENT; then
+    set_env
+    return
+  fi
+
+  # if socket is known, set up the symlink and update the env
+  if test -n $SSH_AUTH_SOCK && test_socket $SSH_AUTH_SOCK; then
+    make_link $SSH_AUTH_SOCK
+    return
+  fi
+
+  # if a socket is found, set up the symlink and update the env
+  agent=$(find_socket)
+  if [[ -n $agent ]]; then
+    make_link $agent
+    return
+  fi
+
+  # as a last resort, make a new socket, set up the symlink and update the env
+  make_socket
+}
+
+if [[ $TERM =~ ^screen ]]; then
+  # inside screen or tmux, connect to local or remote ssh-agent
+  set_env
+elif [[ -n $SSH_CONNECTION ]]; then
+  # ssh login
+  connect_agent
+else
+  # local machine login
+  connect_agent
+fi

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-SSH_AGENT_START="/tmp/$(id -un)_${HOSTNAME}_start"
-
-touch "$SSH_AGENT_START"
-chmod 0600 "$SSH_AGENT_START"
-ssh-agent -s > "$SSH_AGENT_START"
-echo ". $SSH_AGENT_START"

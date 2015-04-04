@@ -1,5 +1,0 @@
-#!/bin/bash
-
-SSH_AGENT_START="/tmp/$(id -un)_${HOSTNAME}_start"
-
-echo ". $SSH_AGENT_START"
