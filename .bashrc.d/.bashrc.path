@@ -30,4 +30,8 @@ cygwin)
 	  export LESSOPEN='||/usr/local/bin/lesspipe.sh %s'
   fi
   ;;
+macosx)
+  PATH=${PATH}:${HOME}/bin
+  export PATH
+  ;;
 esac
