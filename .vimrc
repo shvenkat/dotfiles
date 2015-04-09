@@ -24,6 +24,7 @@ set number
 "set ruler
 set noswapfile
 set hlsearch
+set updatetime=1000
 
 " generic key mapping
 let mapleader=","
@@ -166,6 +167,13 @@ let g:changes_verbose=0
 "hi DiffChange term=bold ctermbg=4 guibg=DarkBlue
 "let g:changes_vcs_check=1
 "let g:changes_vcs_system='git'
+
+" gitgutter
+let g:gitgutter_enabled = 1
+let g:gitgutter_sign_column_always = 1
+let g:gitgutter_diff_args = '-b'
+let g:gitgutter_realtime = 1
+let g:gitgutter_eager = 1
 
 " vim-airline
 let g:airline_powerline_fonts = 1
