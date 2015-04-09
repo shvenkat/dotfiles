@@ -144,16 +144,15 @@ let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
 " screen
-"let g:ScreenImpl = 'Tmux'
-"let g:ScreenShellHeight = 15
-"let g:ScreenShellWidth = -1
-"let g:ScreenShellQuitOnVimExit = 1
-"let g:ScreenShellInitialFocus = 'vim'
-"let g:ScreenShellAttachTargetCurrent = 0
-"let g:ScreenShellExpandTabs = 0
+let g:ScreenImpl = 'Tmux'
+let g:ScreenShellHeight = 10
+let g:ScreenShellWidth = 57
+let g:ScreenShellQuitOnVimExit = 1
+let g:ScreenShellInitialFocus = 'vim'
+let g:ScreenShellExpandTabs = 0
 
 " showMarks
-"let g:showmarks_enable = 0
+let g:showmarks_enable = 1
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
 
 " vim-r-plugin
@@ -163,7 +162,5 @@ let vimrplugin_assign = 0
 let vimrplugin_vsplit = 0    " For vertical tmux split
 let vimrplugin_rconsole_height = 10
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
-"vmap <Space> <Plug>RDSendSelection
-"nmap <Space> <Plug>RDSendLine
 let vimrplugin_r_args = "--interactive --quiet"
 imap <leader>. <Plug>RCompleteArgs
