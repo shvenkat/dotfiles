@@ -151,8 +151,6 @@ func! SetColorschemeSolarizedDark()
   hi Todo term=reverse cterm=reverse ctermfg=5
 endfunc
 noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
-" set background=dark
-" colorscheme solarized
 
 " vim-markdown
 " vim-markdown-folding
