@@ -11,20 +11,13 @@ runtime! plugin/sensible.vim
 
 " basic options
 set nocompatible
-filetype plugin indent on
-syntax on
-set nowrap
-set autoindent
-"set foldmethod=indent
+set noswapfile
 set hidden
 set confirm
-set wildchar=<Tab> wildmenu wildmode=full
-"set backspace=indent,eol,start
 set number
-"set ruler
-set noswapfile
-set hlsearch
+set hlsearch incsearch
 set updatetime=1000
+"set wildchar=<Tab> wildmenu wildmode=full
 
 " generic key mapping
 let mapleader=","
@@ -38,6 +31,7 @@ set shiftwidth=4                "An indent is 4 spaces
 set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
+set nowrap
 func! DeleteTrailingWS()
   exe "normal mp"
   %s/\s\+$//e
@@ -55,19 +49,16 @@ else
 endif
 
 " sign column
-autocmd BufEnter * :normal m>
+"autocmd BufEnter * :normal m>
 autocmd ColorScheme * highlight! link SignColumn LineNr
 
 " folding
 set foldenable
 set foldlevelstart=99
-" Space to toggle folds
 nnoremap <Space> za
 vnoremap <Space> za
-" Refocus folds on current line
-nnoremap <leader>z zMzvzz
-" Open current top-level fold
-nnoremap zO zCzO
+nnoremap <leader>z zMzvzz     " Refocus folds on current line
+nnoremap zO zCzO              " Open current top-level fold
 " From https://gist.github.com/sjl/3360978
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
@@ -85,33 +76,12 @@ function! MyFoldText() " {{{
     return line . '...' . repeat(" ",fillcharcount) . '' . foldedlinecount . ''
 endfunction " }}}
 set foldtext=MyFoldText()
-" Debug folding/syntax highlighting
-" map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-" \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-" \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-"map Q gq " Don't use Ex mode, use Q for formatting
-
-" insert closing characters
-" see http://vim.wikia.com/wiki/Automatically_append_closing_characters
-" inoremap {      {}<Left>
-" inoremap {<CR>  {<CR>}<Esc>O
-" inoremap {{     {
-" inoremap {}     {}
-" inoremap (      ()<Left>
-" inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
-" inoremap ((     (
-" inoremap ()     ()
-" inoremap [      []<Left>
-" inoremap <expr> ] strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
-" inoremap [[     [
-" inoremap []     []
 
 " syntax completion
+set complete=".,w,b,u,t,i"
 set omnifunc=syntaxcomplete#Complete
 inoremap <leader>, <C-x><C-o>
-" workarounds to remap syntax completion key
-"inoremap <Nul> <C-x><C-o>
+"inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
 "if has("gui_running")
 "    " C-Space seems to work under gVim on both Linux and win32
 "    inoremap <C-Space> <C-n>
@@ -153,7 +123,6 @@ endfunc
 noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
 
 " vim-markdown
-" vim-markdown-folding
 "let g:markdown_fold_style='nested'
 
 " changesPlugin
