@@ -17,7 +17,7 @@ set confirm
 set number
 set hlsearch incsearch
 set updatetime=1000
-"set wildchar=<Tab> wildmenu wildmode=full
+set wildmode=longest,list:longest
 
 " generic key mapping
 let mapleader=","
@@ -124,16 +124,6 @@ noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
 
 " vim-markdown
 "let g:markdown_fold_style='nested'
-
-" changesPlugin
-let g:changes_hl_lines=0
-let g:changes_autocmd=1
-let g:changes_verbose=0
-"hi DiffAdd    term=bold ctermbg=4 guibg=DarkBlue
-"hi DiffDelete term=bold ctermbg=4 guibg=DarkBlue
-"hi DiffChange term=bold ctermbg=4 guibg=DarkBlue
-"let g:changes_vcs_check=1
-"let g:changes_vcs_system='git'
 
 " gitgutter
 let g:gitgutter_enabled = 1
