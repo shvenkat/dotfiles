@@ -152,8 +152,9 @@ let g:ScreenShellInitialFocus = 'vim'
 let g:ScreenShellExpandTabs = 0
 
 " showMarks
-let g:showmarks_enable = 1
+let g:showmarks_enable = 0
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
+autocmd ColorScheme * highlight! link ShowMarksHL SignColumn
 
 " vim-r-plugin
 let r_indent_align_args = 1
