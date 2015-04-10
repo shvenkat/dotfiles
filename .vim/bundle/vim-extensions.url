@@ -26,6 +26,7 @@ tlib                 https://github.com/tomtom/tlib_vim.git
 vim-addon-mw-utils   https://github.com/MarcWeber/vim-addon-mw-utils.git
 vim-snipmate         https://github.com/garbas/vim-snipmate.git
 vim-snippets         https://github.com/honza/vim-snippets
+tasklist             https://github.com/vim-scripts/TaskList.vim
 
 # IDE
 screen               https://github.com/ervandew/screen.git
