@@ -49,7 +49,7 @@ else
 endif
 
 " sign column
-"autocmd BufEnter * :normal m>
+autocmd BufEnter * :normal m>
 autocmd ColorScheme * highlight! link SignColumn LineNr
 
 " folding
