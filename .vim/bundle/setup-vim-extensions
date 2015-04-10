@@ -1,0 +1,15 @@
+#!/bin/bash
+
+UrlFile=.vim/bundle/vim-extensions.url
+
+if [[ ! -f $UrlFile ]]; then
+  echo "Usage error: URL file not found; run from top level of repo"
+  exit 1
+fi
+
+cat $UrlFile | while read extension url branch; do
+  if [[ -z $branch ]]; then
+    branch=master
+  fi
+  git subtree add --squash -P .vim/bundle/$extension $url $branch
+done
