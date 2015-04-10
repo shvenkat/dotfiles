@@ -1,20 +1,35 @@
-bufexplorer https://github.com/jlanzarotta/bufexplorer.git
-ctrlp   https://github.com/kien/ctrlp.vim.git
-nerdtree    https://github.com/scrooloose/nerdtree.git
-screen  https://github.com/ervandew/screen.git
-showMarks	https://github.com/shvenkat/ShowMarks.git    install
-tabular 	https://github.com/godlygeek/tabular.git
-vim-airline 	https://github.com/bling/vim-airline.git
-vim-colors-solarized 	https://github.com/altercation/vim-colors-solarized.git
-vim-commentary 	https://github.com/tpope/vim-commentary.git
-vim-eunuch 	https://github.com/tpope/vim-eunuch.git
-vim-fugitive 	https://github.com/tpope/vim-fugitive.git
-vim-git     https://github.com/tpope/vim-git.git
-vim-gitgutter 	https://github.com/airblade/vim-gitgutter.git
-vim-markdown 	https://github.com/tpope/vim-markdown
-vim-markdown-folding 	https://github.com/nelstrom/vim-markdown-folding
-vim-repeat 	https://github.com/tpope/vim-repeat.git
-vim-sensible 	https://github.com/tpope/vim-sensible.git
-vim-sleuth 	https://github.com/tpope/vim-sleuth.git
-vim-unimpaired 	https://github.com/tpope/vim-unimpaired.git
-vim-r-plugin    https://github.com/shvenkat/Vim-R-plugin.git
+# BASIC
+vim-sensible         https://github.com/tpope/vim-sensible.git
+
+# FILE NAVIGATION
+bufexplorer          https://github.com/jlanzarotta/bufexplorer.git
+ctrlp                https://github.com/kien/ctrlp.vim.git
+nerdtree             https://github.com/scrooloose/nerdtree.git
+
+# SOURCE CODE MANAGEMENT
+vim-eunuch           https://github.com/tpope/vim-eunuch.git
+vim-fugitive         https://github.com/tpope/vim-fugitive.git
+vim-git              https://github.com/tpope/vim-git.git
+vim-gitgutter        https://github.com/airblade/vim-gitgutter.git
+
+# EYE CANDY
+vim-colors-solarized https://github.com/altercation/vim-colors-solarized.git
+vim-airline          https://github.com/bling/vim-airline.git
+
+# REPETITIVE TASKS
+vim-sleuth           https://github.com/tpope/vim-sleuth.git
+vim-repeat           https://github.com/tpope/vim-repeat.git
+vim-unimpaired       https://github.com/tpope/vim-unimpaired.git
+vim-commentary       https://github.com/tpope/vim-commentary.git
+tabular              https://github.com/godlygeek/tabular.git
+tlib                 https://github.com/tomtom/tlib_vim.git
+vim-addon-mw-utils   https://github.com/MarcWeber/vim-addon-mw-utils.git
+vim-snipmate         https://github.com/garbas/vim-snipmate.git
+
+# IDE
+screen               https://github.com/ervandew/screen.git
+showMarks            https://github.com/shvenkat/ShowMarks.git    install
+python-mode          https://github.com/klen/python-mode.git    develop
+vim-markdown         https://github.com/tpope/vim-markdown.git
+vim-markdown-folding https://github.com/nelstrom/vim-markdown-folding.git
+vim-r-plugin         https://github.com/shvenkat/Vim-R-plugin.git
