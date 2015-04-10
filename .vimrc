@@ -1,8 +1,11 @@
 " ---- PACKAGE MANAGEMENT ----------------------------------------------------
 
+filetype off
+
 " call pathogen to configure extension loading
 " extensions are loaded AFTER .vimrc is read
-execute pathogen#infect()
+call pathogen#infect()
+call pathogen#helptags()
 
 " load vim-sensible right away, so its options can be over-ridden
 runtime! plugin/sensible.vim
@@ -18,6 +21,7 @@ set number
 set hlsearch incsearch
 set updatetime=1000
 set wildmode=longest,list:longest
+set diffopt=filler,context:3,iwhite,vertical,foldcolumn:2
 
 " generic key mapping
 let mapleader=","
@@ -79,6 +83,7 @@ set foldtext=MyFoldText()
 
 " syntax completion
 set complete=".,w,b,u,t,i"
+set completeopt="menu,menuone,longest,preview"
 set omnifunc=syntaxcomplete#Complete
 inoremap <leader>, <C-x><C-o>
 "inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
@@ -128,6 +133,7 @@ noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
 " gitgutter
 let g:gitgutter_enabled = 1
 let g:gitgutter_sign_column_always = 1
+let g:gitgutter_escape_grep = 1
 let g:gitgutter_diff_args = '-b'
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
