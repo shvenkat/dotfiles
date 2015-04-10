@@ -21,7 +21,7 @@ cat $UrlFile | while read extension url branch; do
   if [[ -z $branch ]]; then
     branch=master
   fi
-  echo "INSTALL $extension using 'git subtree' and commit to repo"
+  echo "INSTALL $extension using 'git subtree' and commit to repo" | tee $LogFile
   echo git subtree add --squash -P $prefix $url $branch >> $LogFile
   git subtree add --squash -P $prefix $url $branch >> $LogFile
 done
