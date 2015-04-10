@@ -47,7 +47,7 @@ else
 endif
 
 " left column
-autocmd BufEnter * :normal m>    "showMarks complains if there are no marks
+" autocmd BufEnter * :normal m>    "showMarks complains if there are no marks
 autocmd ColorScheme * highlight! link SignColumn LineNr
 autocmd ColorScheme * highlight! link CursorLineNr SignColumn
 
