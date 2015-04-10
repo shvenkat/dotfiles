@@ -17,7 +17,7 @@ set nocompatible
 set noswapfile
 set hidden
 set confirm
-set number
+set nonumber relativenumber
 set hlsearch incsearch
 set updatetime=1000
 set wildmode=longest,list:longest
@@ -36,13 +36,7 @@ set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
 set nowrap
-func! DeleteTrailingWS()
-  exe "normal mp"
-  %s/\s\+$//e
-  exe "normal `p"
-  delmarks p
-endfunc
-noremap <leader>w :call DeleteTrailingWS()<CR>
+noremap <leader>w :%s/\s\+$//e<CR>    "Remove trailing whitespace
 
 " line width
 "set textwidth=79
@@ -52,17 +46,18 @@ else
   autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
 endif
 
-" sign column
-autocmd BufEnter * :normal m>
+" left column
+autocmd BufEnter * :normal m>    "showMarks complains if there are no marks
 autocmd ColorScheme * highlight! link SignColumn LineNr
+autocmd ColorScheme * highlight! link CursorLineNr SignColumn
 
 " folding
 set foldenable
 set foldlevelstart=99
 nnoremap <Space> za
 vnoremap <Space> za
-nnoremap <leader>z zMzvzz     " Refocus folds on current line
-nnoremap zO zCzO              " Open current top-level fold
+nnoremap <leader>z zMzvzz     "Refocus folds on current line
+nnoremap zO zCzO              "Open current top-level fold
 " From https://gist.github.com/sjl/3360978
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
@@ -104,31 +99,21 @@ autocmd BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
+" Colorscheme tweaks
+autocmd ColorScheme * highlight Folded term=NONE cterm=NONE gui=NONE
+autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
+
 " ---- PLUGIN CONFIG ---------------------------------------------------------
 
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
 " vim-colors-solarized
-func! SetColorschemeSolarizedLight()
-  " let g:solarized_termcolors = 16
-  set background=light
-  colorscheme solarized
-  hi Folded term=NONE cterm=NONE gui=NONE
-  hi Todo term=reverse cterm=reverse ctermfg=5
-endfunc
-noremap <leader>sl :call SetColorschemeSolarizedLight()<CR>
-func! SetColorschemeSolarizedDark()
-  " let g:solarized_termcolors = 16
-  set background=dark
-  colorscheme solarized
-  hi Folded term=NONE cterm=NONE gui=NONE
-  hi Todo term=reverse cterm=reverse ctermfg=5
-endfunc
-noremap <leader>sd :call SetColorschemeSolarizedDark()<CR>
+noremap <leader>sl :set background=light<CR> :colorscheme solarized<CR>
+noremap <leader>sd :set background=dark<CR> :colorscheme solarized<CR>
 
 " vim-markdown
-"let g:markdown_fold_style='nested'
+let g:markdown_fold_style='nested'    "alternative is 'nested'
 
 " gitgutter
 let g:gitgutter_enabled = 1
