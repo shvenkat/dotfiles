@@ -22,15 +22,18 @@ vim-repeat           https://github.com/tpope/vim-repeat.git
 vim-unimpaired       https://github.com/tpope/vim-unimpaired.git
 vim-commentary       https://github.com/tpope/vim-commentary.git
 tabular              https://github.com/godlygeek/tabular.git
+
+# IDE
+screen               https://github.com/ervandew/screen.git
 tlib                 https://github.com/tomtom/tlib_vim.git
 vim-addon-mw-utils   https://github.com/MarcWeber/vim-addon-mw-utils.git
 vim-snipmate         https://github.com/garbas/vim-snipmate.git
 vim-snippets         https://github.com/honza/vim-snippets
 tasklist             https://github.com/vim-scripts/TaskList.vim
-
-# IDE
-screen               https://github.com/ervandew/screen.git
 showMarks            https://github.com/shvenkat/ShowMarks.git    install
+ack                  https://github.com/mileszs/ack.vim
+
+# LANG MODES
 python-mode          https://github.com/klen/python-mode.git    develop
 vim-markdown         https://github.com/tpope/vim-markdown.git
 vim-markdown-folding https://github.com/nelstrom/vim-markdown-folding.git

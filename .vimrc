@@ -108,13 +108,6 @@ autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
-" vim-colors-solarized
-noremap <leader>sl :set background=light<CR> :colorscheme solarized<CR>
-noremap <leader>sd :set background=dark<CR> :colorscheme solarized<CR>
-
-" vim-markdown
-let g:markdown_fold_style='nested'    "alternative is 'nested'
-
 " gitgutter
 let g:gitgutter_enabled = 1
 let g:gitgutter_sign_column_always = 1
@@ -122,6 +115,10 @@ let g:gitgutter_escape_grep = 1
 let g:gitgutter_diff_args = '-b'
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
+
+" vim-colors-solarized
+noremap <leader>sl :set background=light<CR> :colorscheme solarized<CR>
+noremap <leader>sd :set background=dark<CR> :colorscheme solarized<CR>
 
 " vim-airline
 let g:airline_powerline_fonts = 1
@@ -146,6 +143,14 @@ let g:ScreenShellExpandTabs = 0
 let g:showmarks_enable = 0
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
 autocmd ColorScheme * highlight! link ShowMarksHL SignColumn
+
+" ack
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" vim-markdown
+let g:markdown_fold_style='nested'    "alternative is 'nested'
 
 " vim-r-plugin
 let r_indent_align_args = 1
