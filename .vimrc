@@ -131,6 +131,9 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
+" taglist
+let $Tlist_Ctags_Cmd='/usr/local/bin/ctags'
+
 " screen
 let g:ScreenImpl = 'Tmux'
 let g:ScreenShellHeight = 10
