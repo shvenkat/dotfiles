@@ -131,8 +131,20 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
-" taglist
-let $Tlist_Ctags_Cmd='/usr/local/bin/ctags'
+" tagbar
+let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+let g:tagbar_sort = 0
+let g:tagbar_left = 0
+let g:tagbar_width = 30
+let g:tagbar_compact = 1
+let g:tagbar_indent = 1
+let g:tagbar_show_visibility = 1
+let g:tagbar_foldlevel = 2
+let g:tagbar_iconchars = ['+', '-']
+let g:tagbar_autoshowtag = 0
+let g:tagbar_autofocus = 1
+let g:tagbar_autoclose = 1
+nnoremap <silent> <leader>g :TagbarToggle<CR>
 
 " screen
 let g:ScreenImpl = 'Tmux'
