@@ -30,6 +30,14 @@ youcompleteme        https://github.com/Valloric/YouCompleteMe.git
 youcompleteme/third_party/requests-futures  https://github.com/ross/requests-futures.git
 youcompleteme/third_party/requests          https://github.com/kennethreitz/requests.git
 youcompleteme/third_party/ycmd              https://github.com/Valloric/ycmd.git
+youcompleteme/third_party/ycmd/third_party/OmniSharpServer      https://github.com/nosami/OmniSharpServer.git
+youcompleteme/third_party/ycmd/third_party/jedi                 https://github.com/davidhalter/jedi.git
+youcompleteme/third_party/ycmd/third_party/argparse             https://github.com/bewest/argparse.git
+youcompleteme/third_party/ycmd/third_party/bottle               https://github.com/defnull/bottle.git
+youcompleteme/third_party/ycmd/third_party/frozendict           https://github.com/slezica/python-frozendict.git
+youcompleteme/third_party/ycmd/third_party/waitress             https://github.com/Pylons/waitress.git
+youcompleteme/third_party/ycmd/third_party/requests             https://github.com/kennethreitz/requests.git
+youcompleteme/third_party/ycmd/third_party/sh                   https://github.com/amoffat/sh.git
 tlib                 https://github.com/tomtom/tlib_vim.git
 vim-addon-mw-utils   https://github.com/MarcWeber/vim-addon-mw-utils.git
 vim-snipmate         https://github.com/garbas/vim-snipmate.git
