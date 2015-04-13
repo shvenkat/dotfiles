@@ -27,6 +27,9 @@ tabular              https://github.com/godlygeek/tabular.git
 screen               https://github.com/ervandew/screen.git
 tagbar               https://github.com/majutsushi/tagbar.git
 youcompleteme        https://github.com/Valloric/YouCompleteMe.git
+youcompleteme/third_party/requests-futures  https://github.com/ross/requests-futures.git
+youcompleteme/third_party/requests          https://github.com/kennethreitz/requests.git
+youcompleteme/third_party/ycmd              https://github.com/Valloric/ycmd.git
 tlib                 https://github.com/tomtom/tlib_vim.git
 vim-addon-mw-utils   https://github.com/MarcWeber/vim-addon-mw-utils.git
 vim-snipmate         https://github.com/garbas/vim-snipmate.git
