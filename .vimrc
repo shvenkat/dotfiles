@@ -77,9 +77,9 @@ endfunction " }}}
 set foldtext=MyFoldText()
 
 " syntax completion
-set complete=".,w,b,u,t,i"
-set completeopt="menu,menuone,longest,preview"
-set omnifunc=syntaxcomplete#Complete
+" set complete=".,w,b,u,t,i"
+" set completeopt="menu,menuone,longest,preview"
+" set omnifunc=syntaxcomplete#Complete
 inoremap <leader>, <C-x><C-o>
 "inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
 "if has("gui_running")
