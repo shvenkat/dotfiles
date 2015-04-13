@@ -77,8 +77,8 @@ endfunction " }}}
 set foldtext=MyFoldText()
 
 " syntax completion
-" set complete=".,w,b,u,t,i"
-" set completeopt="menu,menuone,longest,preview"
+set complete=".,w,b,u,t,i"
+set completeopt="menu,menuone,longest,preview"
 " set omnifunc=syntaxcomplete#Complete
 inoremap <leader>, <C-x><C-o>
 "inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
@@ -154,6 +154,18 @@ let g:ScreenShellQuitOnVimExit = 1
 let g:ScreenShellInitialFocus = 'vim'
 let g:ScreenShellExpandTabs = 0
 
+" youcompleteme
+let g:ycm_auto_trigger = 0
+let g:ycm_key_invoke_completion = '<leader>,'
+" let g:ycm_key_list_select_completion = ['<C-n>']
+" let g:ycm_key_list_previous_completion = ['<C-p>']
+let g:ycm_min_num_of_chars_for_completion = 2
+let g:ycm_min_num_identifier_candidate_chars = 0
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_cache_omnifunc = 1
+
 " showMarks
 let g:showmarks_enable = 0
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyz>"
@@ -163,6 +175,9 @@ autocmd ColorScheme * highlight! link ShowMarksHL SignColumn
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+" python-mode
+let g:pymode_rope_completion = 0
 
 " vim-markdown
 let g:markdown_fold_style='nested'    "alternative is 'nested'
