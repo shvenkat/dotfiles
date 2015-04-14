@@ -172,7 +172,7 @@ let g:UltiSnipsListSnippets = "<leader>sl"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 let g:UltiSnipsSnippetsDir = "~/.vim/snips/ultisnips"
-" let g:UltiSnipsSnippetDirectories = "UltiSnips"
+let g:UltiSnipsSnippetDirectories = ["UltiSnips", "snips/ultisnips"]
 
 " showMarks
 let g:showmarks_enable = 0
