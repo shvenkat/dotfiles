@@ -117,8 +117,8 @@ let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
 
 " vim-colors-solarized
-noremap <leader>sl :set background=light<CR> :colorscheme solarized<CR>
-noremap <leader>sd :set background=dark<CR> :colorscheme solarized<CR>
+noremap <leader>csl :set background=light<CR> :colorscheme solarized<CR>
+noremap <leader>csd :set background=dark<CR> :colorscheme solarized<CR>
 
 " vim-airline
 let g:airline_powerline_fonts = 1
@@ -165,6 +165,14 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_cache_omnifunc = 1
+
+" ultisnips
+let g:UltiSnipsExpandTrigger = "<leader>se"
+let g:UltiSnipsListSnippets = "<leader>sl"
+let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+let g:UltiSnipsSnippetsDir = "~/.vim/snips/ultisnips"
+" let g:UltiSnipsSnippetDirectories = "UltiSnips"
 
 " showMarks
 let g:showmarks_enable = 0
