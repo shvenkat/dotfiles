@@ -38,9 +38,7 @@ youcompleteme/third_party/ycmd/third_party/frozendict           https://github.c
 youcompleteme/third_party/ycmd/third_party/waitress             https://github.com/Pylons/waitress.git
 youcompleteme/third_party/ycmd/third_party/requests             https://github.com/kennethreitz/requests.git
 youcompleteme/third_party/ycmd/third_party/sh                   https://github.com/amoffat/sh.git
-tlib                 https://github.com/tomtom/tlib_vim.git
-vim-addon-mw-utils   https://github.com/MarcWeber/vim-addon-mw-utils.git
-vim-snipmate         https://github.com/garbas/vim-snipmate.git
+ultisnips            https://github.com/SirVer/ultisnips.git
 vim-snippets         https://github.com/honza/vim-snippets
 tasklist             https://github.com/vim-scripts/TaskList.vim
 showMarks            https://github.com/shvenkat/ShowMarks.git    install
