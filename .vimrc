@@ -80,7 +80,7 @@ set foldtext=MyFoldText()
 set complete=".,w,b,u,t,i"
 set completeopt="menu,menuone,longest,preview"
 " set omnifunc=syntaxcomplete#Complete
-inoremap <leader>, <C-x><C-o>
+" inoremap <leader>, <C-x><C-o>
 "inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
 "if has("gui_running")
 "    " C-Space seems to work under gVim on both Linux and win32
@@ -157,8 +157,8 @@ let g:ScreenShellExpandTabs = 0
 " youcompleteme
 let g:ycm_auto_trigger = 0
 let g:ycm_key_invoke_completion = '<leader>,'
-" let g:ycm_key_list_select_completion = ['<C-n>']
-" let g:ycm_key_list_previous_completion = ['<C-p>']
+let g:ycm_key_list_select_completion = ['<C-n>']
+let g:ycm_key_list_previous_completion = ['<C-p>']
 let g:ycm_min_num_of_chars_for_completion = 2
 let g:ycm_min_num_identifier_candidate_chars = 0
 let g:ycm_add_preview_to_completeopt = 1
