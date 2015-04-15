@@ -26,9 +26,10 @@ local({
 if(interactive()){
     options(setwidth.verbose = 0,
             colorout.verbose = 0,
-            vimcom.verbose = 0)
+            vimcom.verbose = 1)
     suppressMessages(require(colorout))
     suppressMessages(require(setwidth))
+    library(vimcom)
     if(Sys.getenv("VIMRPLUGIN_TMPDIR") != "") {
         suppressMessages(require(vimcom))
     }

@@ -17,7 +17,7 @@ set nocompatible
 set noswapfile
 set hidden
 set confirm
-set nonumber relativenumber
+set number relativenumber
 set hlsearch incsearch
 set updatetime=1000
 set wildmode=longest,list:longest
@@ -105,6 +105,9 @@ autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
 
 " ---- PLUGIN CONFIG ---------------------------------------------------------
 
+" ctrlp
+map <C-p> :CtrlPBuffer<CR>
+
 " nerdtree
 map <C-n> :NERDTreeToggle<CR>
 
@@ -131,6 +134,14 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
+" screen
+let g:ScreenImpl = 'Tmux'
+let g:ScreenShellHeight = 10
+let g:ScreenShellWidth = 57
+let g:ScreenShellQuitOnVimExit = 1
+let g:ScreenShellInitialFocus = 'vim'
+let g:ScreenShellExpandTabs = 0
+
 " tagbar
 let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 let g:tagbar_sort = 0
@@ -145,14 +156,6 @@ let g:tagbar_autoshowtag = 0
 let g:tagbar_autofocus = 1
 let g:tagbar_autoclose = 1
 nnoremap <silent> <leader>g :TagbarToggle<CR>
-
-" screen
-let g:ScreenImpl = 'Tmux'
-let g:ScreenShellHeight = 10
-let g:ScreenShellWidth = 57
-let g:ScreenShellQuitOnVimExit = 1
-let g:ScreenShellInitialFocus = 'vim'
-let g:ScreenShellExpandTabs = 0
 
 " youcompleteme
 let g:ycm_auto_trigger = 0
@@ -199,3 +202,4 @@ let vimrplugin_rconsole_height = 10
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 let vimrplugin_r_args = "--interactive --quiet"
 imap <leader>. <Plug>RCompleteArgs
+let vimrplugin_vimcom_wait = 10000

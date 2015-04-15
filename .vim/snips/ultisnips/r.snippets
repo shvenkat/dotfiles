@@ -1,6 +1,25 @@
-snippet com "Parse commandline arguments" b
+snippet command "Parse commandline arguments" b
+# PARSE COMMAND LINE ARGUMENTS ----------------------------------------------
 parser <- ArgumentParser(description = "${0:desc}")
 parser$add_argument('${1:arg}',
                     help = '${2:help}')
 args <- parser$parse_args()
+endsnippet
+
+snippet ggplot "Build a ggplot"
+ggplot(data = ${1:data}, mapping = aes(${2::aes})) +
+geom_${3:geom}()
+endsnippet
+
+# See http://www.cookbook-r.com/Graphs/index.html for recipes
+
+snippet scale_x_continuous "Transform x scale"
+scale_x_continuous(name = "{1:title}",
+                   trans = log10_trans(),
+                   breaks = trans_breaks("log10", function(x) 10^x),
+                   labels = trans_format("log10", math_format(10^.x)))
+endsnippet
+
+snippet theme "Apply a plot theme"
+theme(panel.grid.minor = element_blank())
 endsnippet

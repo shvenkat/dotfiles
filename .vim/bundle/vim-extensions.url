@@ -48,4 +48,5 @@ ack                  https://github.com/mileszs/ack.vim
 python-mode          https://github.com/klen/python-mode.git    develop
 vim-markdown         https://github.com/tpope/vim-markdown.git
 vim-markdown-folding https://github.com/nelstrom/vim-markdown-folding.git
-vim-r-plugin         https://github.com/shvenkat/Vim-R-plugin.git
+vim-r-plugin         https://github.com/jcfaria/Vim-R-plugin.git
+r-runtime            https://github.com/jalvesaq/R-Vim-runtime.git
