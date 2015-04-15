@@ -32,15 +32,17 @@ syn case match
 " Comment
 syn match rCommentTodo contained "\(BUG\|FIXME\|NOTE\|TODO\):"
 syn match rComment contains=@Spell,rCommentTodo "#.*"
+syn region rCRegion start="\(\_^\s*#'\@!.*\n\)\@<!\_^\s*#'\@!" skip="\n\s*#'\@!" end="$" transparent fold
 
 " Roxygen
 syn match rOKeyword contained "@\(param\|return\|name\|rdname\|examples\|include\|docType\)"
 syn match rOKeyword contained "@\(S3method\|TODO\|aliases\|alias\|assignee\|author\|callGraphDepth\|callGraph\)"
 syn match rOKeyword contained "@\(callGraphPrimitives\|concept\|exportClass\|exportMethod\|exportPattern\|export\|formals\)"
 syn match rOKeyword contained "@\(format\|importClassesFrom\|importFrom\|importMethodsFrom\|import\|keywords\|useDynLib\)"
-syn match rOKeyword contained "@\(method\|noRd\|note\|references\|seealso\|setClass\|slot\|source\|title\|usage\)"
+syn match rOKeyword contained "@\(method\|noRd\|note\|references\|section\|seealso\|setClass\|slot\|source\|title\|usage\)"
 syn match rOKeyword contained "@\(family\|template\|templateVar\|description\|details\|inheritParams\)"
 syn match rOComment contains=@Spell,rOKeyword "#'.*"
+syn region rORegion start="\(^#'.*\n\)\@<!#'" skip="\n#'" end="$" transparent fold
 
 
 if &filetype == "rhelp"
