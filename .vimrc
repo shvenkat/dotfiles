@@ -25,6 +25,7 @@ set diffopt=filler,context:3,iwhite,vertical,foldcolumn:2
 
 " generic key mapping
 let mapleader=","
+let maplocalleader=","
 set pastetoggle=<F2>
 
 " whitespace management
@@ -81,17 +82,7 @@ set complete=".,w,b,u,t,i"
 set completeopt="menu,menuone,longest,preview"
 " set omnifunc=syntaxcomplete#Complete
 " inoremap <leader>, <C-x><C-o>
-"inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
-"if has("gui_running")
-"    " C-Space seems to work under gVim on both Linux and win32
-"    inoremap <C-Space> <C-n>
-"else " no gui
-"  if has("unix")
-"    inoremap <Nul> <C-n>
-"  else
-"  " I have no idea of the name of Ctrl-Space elsewhere
-"  endif
-"endif
+" inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
 
 " When editing a file, jump to the last known cursor position
 autocmd BufReadPost *
@@ -106,10 +97,10 @@ autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
 " ---- PLUGIN CONFIG ---------------------------------------------------------
 
 " ctrlp
-map <C-p> :CtrlPBuffer<CR>
+noremap <C-p> :CtrlPBuffer<CR>
 
 " nerdtree
-map <C-n> :NERDTreeToggle<CR>
+noremap <C-n> :NERDTreeToggle<CR>
 
 " gitgutter
 let g:gitgutter_enabled = 1
@@ -193,13 +184,18 @@ let g:pymode_rope_completion = 0
 " vim-markdown
 let g:markdown_fold_style='nested'    "alternative is 'nested'
 
-" vim-r-plugin
+" r-plugin
+call pathogen#surround('~/.vim/bundle/r-runtime') "load runtime before plugin
 let r_indent_align_args = 1
 let r_syntax_folding = 1
+let vimrplugin_show_args = 1
+let vimrplugin_args_in_stline = 0
 let vimrplugin_assign = 0
+let vimrplugin_listmethods = 1
+let vimrplugin_specialplot = 1
 let vimrplugin_vsplit = 0    " For vertical tmux split
 let vimrplugin_rconsole_height = 10
 "let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 let vimrplugin_r_args = "--interactive --quiet"
+let vimrplugin_map_r = 1
 imap <leader>. <Plug>RCompleteArgs
-let vimrplugin_vimcom_wait = 10000
