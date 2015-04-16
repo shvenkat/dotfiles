@@ -19,7 +19,7 @@ linux)
 
   # export R_HOME=/usr/lib64/R
 
-  type -ft lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
+  which lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
   ;;
 cygwin)
   PATH="$PATH:$HOME/bin"

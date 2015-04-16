@@ -1,7 +1,7 @@
 # ls color
 case $OSENV in
 linux|cygwin)
-  if type -ft dircolors >/dev/null; then
+  if which dircolors >/dev/null; then
     test -r ~/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
   fi
   ;;

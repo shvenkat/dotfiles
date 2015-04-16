@@ -79,4 +79,24 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 . ~/.rc/.aliases
-export LSCOLORS="gxdxeaeacxdadahbadxcec"
+case $(uname) in
+Linux)
+  OSENV=linux
+  ;;
+Darwin)
+  OSENV=macosx
+  ;;
+Cygwin)
+  OSENV=cygwin
+  ;;
+esac
+BASHRCD=$HOME/.rc/.bashrc.d
+# . $BASHRCD/.bashrc.system
+# . $BASHRCD/.bashrc.history
+# . $BASHRCD/.bashrc.prompt
+. $BASHRCD/.bashrc.lscolor
+. $BASHRCD/.bashrc.path
+. $BASHRCD/.bashrc.ssh
+# . $BASHRCD/.bashrc.completion
+# . $BASHRCD/.bashrc.misc
+. $BASHRCD/.bashrc.terminal
