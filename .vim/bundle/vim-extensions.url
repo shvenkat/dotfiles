@@ -40,6 +40,7 @@ youcompleteme/third_party/ycmd/third_party/requests             https://github.c
 youcompleteme/third_party/ycmd/third_party/sh                   https://github.com/amoffat/sh.git
 ultisnips        https://github.com/SirVer/ultisnips.git
 snippets         https://github.com/honza/vim-snippets
+syntastic        https://github.com/scrooloose/syntastic.git
 tasklist         https://github.com/vim-scripts/TaskList.vim
 showMarks        https://github.com/shvenkat/ShowMarks.git    install
 ack              https://github.com/mileszs/ack.vim
