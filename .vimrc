@@ -189,6 +189,7 @@ endif
 
 " python-mode
 let g:pymode_rope_completion = 0
+let g:pymode_lint = 0
 
 " vim-markdown
 let g:markdown_fold_style='nested'    "alternative is 'nested'
