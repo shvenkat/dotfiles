@@ -1,32 +1,32 @@
 # BASIC
-vim-sensible         https://github.com/tpope/vim-sensible.git
+sensible         https://github.com/tpope/vim-sensible.git
 
 # FILE NAVIGATION
-bufexplorer          https://github.com/jlanzarotta/bufexplorer.git
-ctrlp                https://github.com/kien/ctrlp.vim.git
-nerdtree             https://github.com/scrooloose/nerdtree.git
+bufexplorer      https://github.com/jlanzarotta/bufexplorer.git
+ctrlp            https://github.com/kien/ctrlp.vim.git
+nerdtree         https://github.com/scrooloose/nerdtree.git
 
 # SOURCE CODE MANAGEMENT
-vim-eunuch           https://github.com/tpope/vim-eunuch.git
-vim-fugitive         https://github.com/tpope/vim-fugitive.git
-vim-git              https://github.com/tpope/vim-git.git
-vim-gitgutter        https://github.com/airblade/vim-gitgutter.git
+eunuch           https://github.com/tpope/vim-eunuch.git
+fugitive         https://github.com/tpope/vim-fugitive.git
+git              https://github.com/tpope/vim-git.git
+gitgutter        https://github.com/airblade/vim-gitgutter.git
 
 # EYE CANDY
-vim-colors-solarized https://github.com/altercation/vim-colors-solarized.git
-vim-airline          https://github.com/bling/vim-airline.git
+colors-solarized https://github.com/altercation/vim-colors-solarized.git
+airline          https://github.com/bling/vim-airline.git
 
 # REPETITIVE TASKS
-vim-sleuth           https://github.com/tpope/vim-sleuth.git
-vim-repeat           https://github.com/tpope/vim-repeat.git
-vim-unimpaired       https://github.com/tpope/vim-unimpaired.git
-vim-commentary       https://github.com/tpope/vim-commentary.git
-tabular              https://github.com/godlygeek/tabular.git
+sleuth           https://github.com/tpope/vim-sleuth.git
+repeat           https://github.com/tpope/vim-repeat.git
+unimpaired       https://github.com/tpope/vim-unimpaired.git
+commentary       https://github.com/tpope/vim-commentary.git
+tabular          https://github.com/godlygeek/tabular.git
 
 # IDE
-screen               https://github.com/ervandew/screen.git
-tagbar               https://github.com/majutsushi/tagbar.git
-youcompleteme        https://github.com/Valloric/YouCompleteMe.git
+screen           https://github.com/ervandew/screen.git
+tagbar           https://github.com/majutsushi/tagbar.git
+youcompleteme    https://github.com/Valloric/YouCompleteMe.git
 youcompleteme/third_party/requests-futures  https://github.com/ross/requests-futures.git
 youcompleteme/third_party/requests          https://github.com/kennethreitz/requests.git
 youcompleteme/third_party/ycmd              https://github.com/Valloric/ycmd.git
@@ -38,15 +38,15 @@ youcompleteme/third_party/ycmd/third_party/frozendict           https://github.c
 youcompleteme/third_party/ycmd/third_party/waitress             https://github.com/Pylons/waitress.git
 youcompleteme/third_party/ycmd/third_party/requests             https://github.com/kennethreitz/requests.git
 youcompleteme/third_party/ycmd/third_party/sh                   https://github.com/amoffat/sh.git
-ultisnips            https://github.com/SirVer/ultisnips.git
-vim-snippets         https://github.com/honza/vim-snippets
-tasklist             https://github.com/vim-scripts/TaskList.vim
-showMarks            https://github.com/shvenkat/ShowMarks.git    install
-ack                  https://github.com/mileszs/ack.vim
+ultisnips        https://github.com/SirVer/ultisnips.git
+snippets         https://github.com/honza/vim-snippets
+tasklist         https://github.com/vim-scripts/TaskList.vim
+showMarks        https://github.com/shvenkat/ShowMarks.git    install
+ack              https://github.com/mileszs/ack.vim
 
 # LANG MODES
-python-mode          https://github.com/klen/python-mode.git    develop
-vim-markdown         https://github.com/tpope/vim-markdown.git
-vim-markdown-folding https://github.com/nelstrom/vim-markdown-folding.git
-r-runtime            https://github.com/jalvesaq/R-Vim-runtime.git
-r-plugin             https://github.com/jcfaria/Vim-R-plugin.git
+python-mode      https://github.com/klen/python-mode.git    develop
+markdown         https://github.com/tpope/vim-markdown.git
+markdown-folding https://github.com/nelstrom/vim-markdown-folding.git
+r-runtime        https://github.com/jalvesaq/R-Vim-runtime.git
+r-plugin         https://github.com/jcfaria/Vim-R-plugin.git
