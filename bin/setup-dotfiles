@@ -24,7 +24,6 @@ bin/tmuxcolors
 .Rprofile
 .vim
 .xinitrc
-.zshrc
 EOF
 # bin/colordiff
 
@@ -36,4 +35,5 @@ done <<EOF
 .gitconfig
 .tmux.conf
 .vimrc
+.zshrc
 EOF
