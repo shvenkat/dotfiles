@@ -20,9 +20,11 @@ bin/tmuxcolors
 .gnupg/gpg.conf
 .gnupg/gpg-agent.conf
 .inputrc
+.oh-my-zsh
 .Rprofile
 .vim
 .xinitrc
+.zshrc
 EOF
 # bin/colordiff
 
