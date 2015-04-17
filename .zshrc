@@ -37,11 +37,11 @@ BASHRCD=$HOME/.rc/.bashrc.d
 # . $BASHRCD/.bashrc.misc
 . $BASHRCD/.bashrc.terminal
 
-GIT_PS1_SHOWDIRTYSTATE=true
-GIT_PS1_SHOWSTASHSTATE=true
-GIT_PS1_SHOWUNTRACKEDFILES=true
-GIT_PS1_SHOWUPSTREAM='auto verbose git'
-. ~/.rc/.git-completion.sh
+# GIT_PS1_SHOWDIRTYSTATE=true
+# GIT_PS1_SHOWSTASHSTATE=true
+# GIT_PS1_SHOWUNTRACKEDFILES=true
+# GIT_PS1_SHOWUPSTREAM='auto verbose git'
+# . ~/.rc/.git-completion.sh
 # PS1=$PS1$BR_MAGENTA'$(__git_ps1 "(%s)")'$NONE"\n> "
 # PROMPT='%(?,%{$fg[green]%},%{$fg[red]%}) >> '
 # RPS1='%{$fg[white]%}%2~ %{$fg_bold[magenta]%}$(__git_ps1 "(%s)")%{$reset_color%}'
