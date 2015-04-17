@@ -97,10 +97,10 @@ autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
 " ---- PLUGIN CONFIG ---------------------------------------------------------
 
 " ctrlp
-noremap <C-p> :CtrlPBuffer<CR>
+autocmd BufEnter * noremap <C-p> :CtrlPBuffer<CR>
 
 " nerdtree
-noremap <C-n> :NERDTreeToggle<CR>
+autocmd BufEnter * noremap <C-n> :NERDTreeToggle<CR>
 
 " gitgutter
 let g:gitgutter_enabled = 1
