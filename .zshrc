@@ -27,6 +27,7 @@ Cygwin)
   ;;
 esac
 BASHRCD=$HOME/.rc/.bashrc.d
+ZSHRCD=$HOME/.rc/.zshrc.d
 # . $BASHRCD/.bashrc.system
 # . $BASHRCD/.bashrc.history
 # . $BASHRCD/.bashrc.prompt
@@ -36,3 +37,4 @@ BASHRCD=$HOME/.rc/.bashrc.d
 # . $BASHRCD/.bashrc.completion
 # . $BASHRCD/.bashrc.misc
 . $BASHRCD/.bashrc.terminal
+. $ZSHRCD/keys
