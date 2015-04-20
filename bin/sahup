@@ -2,6 +2,13 @@
 
 CANONICAL_AGENT=/tmp/$(id -un)_${HOSTNAME}/keymaster
 CANONICAL_ENV=$(dirname $CANONICAL_AGENT)/gatekeeper
+debug=FALSE
+
+debug_msg() {
+  if [[ $debug == "TRUE" ]]; then
+    echo "[$(basename $0)] $1" 3>&1 1>&2 2>&3
+  fi
+}
 
 test_socket() {
   SSH_AUTH_SOCK=$1 ssh-add -l &>/dev/null
@@ -14,19 +21,19 @@ test_socket() {
 }
 
 set_env () {
-  # echo "[$(basename $0)] setting SSH_AUTH_SOCK" 3>&2 2>&1 1>&3
+  debug_msg "setting SSH_AUTH_SOCK"
   echo "export SSH_AUTH_SOCK=$CANONICAL_AGENT"
 }
 
 make_link () {
-  # echo "[$(basename $0)] creating symlink to agent socket" 3>&2 2>&1 1>&3
+  debug_msg "creating symlink to agent socket"
   mkdir -p $(dirname $CANONICAL_AGENT)
   ln -sf $1 $CANONICAL_AGENT
   set_env
 }
 
 find_socket () {
-  # echo "[$(basename $0)] searching for agent socket" 3>&2 2>&1 1>&3
+  debug_msg "searching for agent socket"
   for s in $(find /tmp -type s -user $USER -wholename '/tmp/ssh-*/agent*' \
                -print | xargs ls -1t); do
     if test_socket $s; then
@@ -37,7 +44,7 @@ find_socket () {
 }
 
 make_socket () {
-  # echo "[$(basename $0)] starting new agent" 3>&2 2>&1 1>&3
+  debug_msg "starting new agent"
   touch $CANONICAL_ENV
   chmod 0600 $CANONICAL_ENV
   ssh-agent -s > $CANONICAL_ENV

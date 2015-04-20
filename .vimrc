@@ -134,7 +134,7 @@ let g:ScreenShellInitialFocus = 'vim'
 let g:ScreenShellExpandTabs = 0
 
 " tagbar
-let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
+" let g:tagbar_ctags_bin = '/usr/local/bin/ctags'
 let g:tagbar_sort = 0
 let g:tagbar_left = 0
 let g:tagbar_width = 30
