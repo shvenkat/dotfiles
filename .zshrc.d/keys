@@ -1,39 +1,37 @@
 # Key bindings
 bindkey -v
 
-bindkey "^W"      beginning-of-line
-bindkey "^E"      end-of-line
-bindkey "^B"      backward-word
-bindkey "^N"      forward-word
-bindkey "ESC-B"   backward-char
-bindkey "ESC-N"   forward-char
-bindkey "^Y"      character-search-backward
-bindkey "ESC-Y"   character-search
+bindkey "^w"    beginning-of-line
+bindkey "^e"    end-of-line
+bindkey "^b"    backward-word
+bindkey "^n"    forward-word
+bindkey "\eb"   backward-char
+bindkey "\en"   forward-char
 
-bindkey "^H"      backward-delete-char
-bindkey "ESC-H"   delete-char
-bindkey "^F"      backward-kill-word
-bindkey "^G"      kill-word
-bindkey "^K"      backward-kill-line
-bindkey "ESC-K"   kill-line
+bindkey "^h"    backward-delete-char
+bindkey "\eh"   delete-char
+bindkey "^f"    backward-kill-word
+bindkey "^g"    kill-word
+bindkey "^k"    backward-kill-line
+bindkey "\ek"   kill-line
 
-bindkey "^P"      yank
-bindkey "ESC-P"   yank-last-arg
-bindkey "ESC-^P"  yank-nth-arg
-bindkey "ESC- "   set-mark
-bindkey "ESC-D"   kill-region
-bindkey "ESC-C"   copy-region-as-kill
+bindkey "^p"    yank
+bindkey "\ep"   yank-last-arg
+bindkey "\e^p"  yank-nth-arg
+bindkey "\e "   set-mark
+bindkey "\ed"   kill-region
+bindkey "\ec"   copy-region-as-kill
 
-bindkey "^R"      reverse-search-history
-bindkey "^T"      forward-search-history
-bindkey "^S"      history-search-backward
-bindkey "^O"      previous-history
-bindkey "^L"      next-history
-bindkey "ESC-,"   beginning-of-history
-bindkey "ESC-."   end-of-history
+bindkey "^r"    history-incremental-search-backward
+bindkey "^t"    history-beginning-search-backward
+bindkey "^s"    history-incremental-search-forward
+bindkey "^o"    up-history
+bindkey "^l"    down-history
+bindkey "\e,"   beginning-of-history
+bindkey "\e."   end-of-history
 
-bindkey "^U"      undo
-bindkey "^Q"      abort
-bindkey "^V"      quoted-insert
-bindkey "ESC-I"   menu-complete
-bindkey "ESC-L"   redraw-current-line
+bindkey "^u"    undo
+bindkey "^q"    send-break
+bindkey "^v"    quoted-insert
+bindkey "\ei"   menu-complete
+# bindkey "\el"   redraw-current-line
