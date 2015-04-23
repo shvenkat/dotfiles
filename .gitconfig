@@ -23,16 +23,16 @@
 	decorate = full
 [alias]
 	; simple
-	logs = log --format=format:'%h %<(15,trunc)%aN %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
+	logs = log --format=format:'%h %<(10,trunc)%an %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
 	; repo overview
 	logo = log --graph --all --simplify-by-decoration --date-order \
-	         --format=format:'%h  %C(bold magenta)%<(16,trunc)%ar%C(reset) %<(15,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
+	         --format=format:'%h  %C(bold magenta)%<(6,trunc)%ar%C(reset) %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
 	; graph history
 	logg = log --graph --date-order \
-	         --format=format:'%h  %C(bold magenta)%<(16,trunc)%ar%C(reset) %<(15,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
+	         --format=format:'%h  %C(bold magenta)%<(6,trunc)%ar%C(reset) %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
 	; verify signatures
 	logv = log --graph --date-order \
-	         --format=format:'%h %C(bold red)%G?%C(reset)%GK  %<(14,trunc)%ar %<(15,trunc)%aN  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
+	         --format=format:'%h %C(bold red)%G?%C(reset)%GK  %<(6,trunc)%ar %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
 	; First common ancestor (as opposed to last common ancestor returned by merge-base)
 	fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
 [merge]
