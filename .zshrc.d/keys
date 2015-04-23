@@ -25,6 +25,7 @@ bindkey "\ec"   copy-region-as-kill
 bindkey "^r"    history-incremental-search-backward
 bindkey "^t"    history-beginning-search-backward
 bindkey "^s"    history-incremental-search-forward
+bindkey "^j"    accept-search
 bindkey "^o"    up-history
 bindkey "^l"    down-history
 bindkey "\e,"   beginning-of-history
@@ -34,4 +35,4 @@ bindkey "^u"    undo
 bindkey "^q"    send-break
 bindkey "^v"    quoted-insert
 bindkey "\ei"   menu-complete
-# bindkey "\el"   redraw-current-line
+bindkey "\el"   reset-prompt
