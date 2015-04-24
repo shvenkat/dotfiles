@@ -1,5 +1,2 @@
 [include]
 	path = ~/.rc/.gitconfig
-[user]
-	name = Blah
-	email = blah@blah.meh

@@ -1,10 +1,15 @@
+[user]
+	name = Shiv
+	email = shvenkat@users.noreply.github.com
+[github]
+	user = shvenkat
+[url "https://github.com"]
+	insteadOf = git://github.com
+[http]
+	; sslCAinfo = /home/shvenkat/.certs/cacert.pem
 [core]
 	editor = vim
 	autocrlf = input
-[http]
-	; sslCAinfo = /home/shvenkat/.certs/cacert.pem
-[github]
-	user = shvenkat
 [color]
 	diff = auto
 	status = auto
@@ -40,5 +45,3 @@
 	conflictstyle = diff3
 [mergetool]
 	prompt = false
-[url "https://github.com"]
-	insteadOf = git://github.com
