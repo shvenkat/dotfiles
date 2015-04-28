@@ -8,8 +8,9 @@
 [http]
 	; sslCAinfo = /home/shvenkat/.certs/cacert.pem
 [core]
-	editor = vim
 	autocrlf = input
+	editor = vim
+	excludesfile = ~/.rc/.gitignore.global
 [merge]
 	tool = vimdiff
 	conflictstyle = diff3
