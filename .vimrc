@@ -149,7 +149,7 @@ let g:tagbar_autoclose = 1
 nnoremap <silent> <leader>g :TagbarToggle<CR>
 
 " youcompleteme
-let g:ycm_auto_trigger = 0
+let g:ycm_auto_trigger = 1
 let g:ycm_key_invoke_completion = '<leader>,'
 let g:ycm_key_list_select_completion = ['<C-n>']
 let g:ycm_key_list_previous_completion = ['<C-p>']

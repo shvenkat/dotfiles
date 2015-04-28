@@ -10,6 +10,13 @@
 [core]
 	editor = vim
 	autocrlf = input
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
+[push]
+	default = simple
 [color]
 	diff = auto
 	status = auto
@@ -24,8 +31,8 @@
 	func = cyan bold
 	meta = yellow
 	commit = red
-[log]
-	decorate = full
+; [log]
+; 	decorate = full
 [alias]
 	; simple
 	logs = log --format=format:'%h %<(10,trunc)%an %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
@@ -40,8 +47,3 @@
 	         --format=format:'%h %C(bold red)%G?%C(reset)%GK  %<(6,trunc)%ar %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
 	; First common ancestor (as opposed to last common ancestor returned by merge-base)
 	fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
-[merge]
-	tool = vimdiff
-	conflictstyle = diff3
-[mergetool]
-	prompt = false
