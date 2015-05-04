@@ -22,6 +22,7 @@ repeat           https://github.com/tpope/vim-repeat.git
 unimpaired       https://github.com/tpope/vim-unimpaired.git
 commentary       https://github.com/tpope/vim-commentary.git
 tabular          https://github.com/godlygeek/tabular.git
+yankstack        https://github.com/maxbrunsfeld/vim-yankstack.git
 
 # IDE
 screen           https://github.com/ervandew/screen.git
