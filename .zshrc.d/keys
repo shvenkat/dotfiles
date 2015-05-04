@@ -16,9 +16,7 @@ bindkey "^k"    backward-kill-line
 bindkey "\ek"   kill-line
 
 bindkey "^p"    yank
-bindkey "\ep"   yank-last-arg
-bindkey "\e^p"  yank-nth-arg
-bindkey "\e "   set-mark
+bindkey "\e "   set-mark-command
 bindkey "\ed"   kill-region
 bindkey "\ec"   copy-region-as-kill
 

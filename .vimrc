@@ -125,6 +125,10 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#default#section_truncate_width = {
     \ 'b': 60, 'x': 60, 'y': 70, 'z': 45 }
 
+" vim-yankstack
+nmap <leader>p <Plug>yankstack_substitute_older_paste
+nmap <leader>P <Plug>yankstack_substitute_newer_paste
+
 " screen
 let g:ScreenImpl = 'Tmux'
 let g:ScreenShellHeight = 10
