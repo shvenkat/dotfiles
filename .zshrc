@@ -1,3 +1,4 @@
+# OH-MY-ZSH CONFIG ----------------------------------------------------------
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="term-fou"
 # CASE_SENSITIVE="true"
@@ -13,6 +14,7 @@ ZSH_CUSTOM=~/.rc/.oh-my-zsh.custom
 plugins=(git git-dashboard zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
+# ADDITIONAL CONFIG MODULES -------------------------------------------------
 # export LANG=en_US.UTF-8
 . ~/.rc/.aliases
 case $(uname) in
