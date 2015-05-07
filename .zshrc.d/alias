@@ -1,0 +1,2 @@
+[[ -f ~/.rc/.alias ]] && . ~/.rc/.alias
+[[ -f ~/.alias.local ]] && . ~/.alias.local

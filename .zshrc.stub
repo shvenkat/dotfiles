@@ -1,6 +1,3 @@
 . ~/.rc/.zshrc
 
-# LOCAL SETTINGS
-export EDITOR=vim
-export LESS='-iSR'
-# export PATH="${PATH}:${HOME}/bin"
+# LOCAL SETTINGS ------------------------------------------------------------

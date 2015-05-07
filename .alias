@@ -1,19 +1,17 @@
-case $(uname) in
-Linux)
+case $OSENV in
+linux)
     alias ls='ls --color=auto'
     alias du1='du -h --max-depth=1'
     alias startsa='eval "$(start-ssh-agent)"'
     alias stopsa='eval "$(stop-ssh-agent)"'
     alias connectsa='eval "$(connect-ssh-agent)"'
     ;;
-Darwin)
+macosx)
     alias ls='ls -G'
     alias du1='du -h -d1'
     ;;
-Cygwin)
+cygwin)
     alias open=cygstart
-    ;;
-*)
     ;;
 esac
 
@@ -30,7 +28,7 @@ alias diffy='colordiff -y'
 alias cdiff='colordiff -u'
 alias cdiffy='colordiff -y'
 alias tab='column -t -s"	"'
-alias whence='type -a'
+# alias whence='type -a'
 alias grep='grep --color --binary-file=without-match'
 alias rdiff='rsync -nacOzivHS --delete'
 alias new='ll -t | head'

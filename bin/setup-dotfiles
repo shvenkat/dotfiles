@@ -30,7 +30,6 @@ EOF
 while read file; do
   cp ~/.rc/${file}.stub ~/$file
 done <<EOF
-.aliases
 .bashrc
 .gitconfig
 .tmux.conf

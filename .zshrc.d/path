@@ -8,6 +8,7 @@ linux)
   PATH=${PATH}:${HOME}/bin
   export PATH
 
+  # Only set LD_LIBRARY_PATH if necessary and then only when needed
   # LD_LIBRARY_PATH=/usr/local/lib64:/usr/local/lib
   # LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/lib64/R/lib
   # export LD_LIBRARY_PATH
@@ -18,17 +19,11 @@ linux)
   # export MANPATH
 
   # export R_HOME=/usr/lib64/R
-
-  which lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
   ;;
 cygwin)
   PATH="$PATH:$HOME/bin"
   PATH="$PATH:/cygdrive/c/Program Files (x86)/Java/jre7/bin"
   export PATH
-
-  if [[ -z $LESSOPEN ]]; then
-	  export LESSOPEN='||/usr/local/bin/lesspipe.sh %s'
-  fi
   ;;
 macosx)
   PATH=${PATH}:${HOME}/bin

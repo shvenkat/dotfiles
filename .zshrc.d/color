@@ -2,7 +2,11 @@
 case $OSENV in
 linux|cygwin)
   if which dircolors >/dev/null; then
-    test -r ~/.dircolors && eval "$(dircolors -b $HOME/.dircolors)" || eval "$(dircolors -b)"
+    if [[ -r ~/.rc/.dircolors ]]; then
+      eval "$(dircolors -b ~/.rc/.dircolors)"
+    else
+      eval "$(dircolors -b)"
+    fi
   fi
   ;;
 macosx)

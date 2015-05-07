@@ -1,0 +1,17 @@
+umask 0022
+setopt ignore_eof
+export EDITOR=vim
+export LESS='-iSR'
+
+case $OSENV in
+linux)
+  which lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
+  ;;
+macosx)
+  ;;
+cygwin)
+  if [[ -z $LESSOPEN ]]; then
+    export LESSOPEN='||/usr/local/bin/lesspipe.sh %s'
+  fi
+  ;;
+esac

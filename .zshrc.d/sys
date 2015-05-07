@@ -1,9 +1,5 @@
 case $OSENV in
 linux)
-  # Source global definitions
-  # if [ -f /etc/bashrc ]; then
-  # 	. /etc/bashrc
-  # fi
   ;;
 cygwin)
   # TMP and TEMP are defined in the Windows environment.  Leaving

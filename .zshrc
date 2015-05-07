@@ -1,4 +1,10 @@
+# BASE CONFIG ---------------------------------------------------------------
+
+# export LANG=en_US.UTF-8
+
+
 # OH-MY-ZSH CONFIG ----------------------------------------------------------
+
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="term-fou"
 # CASE_SENSITIVE="true"
@@ -6,7 +12,7 @@ DISABLE_AUTO_UPDATE="true"
 # export UPDATE_ZSH_DAYS=13
 # DISABLE_LS_COLORS="true"
 DISABLE_AUTO_TITLE="true"
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 # COMPLETION_WAITING_DOTS="true"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
@@ -14,29 +20,21 @@ ZSH_CUSTOM=~/.rc/.oh-my-zsh.custom
 plugins=(git git-dashboard zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
+
 # ADDITIONAL CONFIG MODULES -------------------------------------------------
-# export LANG=en_US.UTF-8
-. ~/.rc/.aliases
+
 case $(uname) in
-Linux)
-  OSENV=linux
-  ;;
-Darwin)
-  OSENV=macosx
-  ;;
-Cygwin)
-  OSENV=cygwin
-  ;;
+Linux)  OSENV=linux ;;
+Darwin) OSENV=macosx ;;
+Cygwin) OSENV=cygwin ;;
+*)      OSENV=unknown ;;
 esac
-BASHRCD=$HOME/.rc/.bashrc.d
-ZSHRCD=$HOME/.rc/.zshrc.d
-# . $BASHRCD/.bashrc.system
-# . $BASHRCD/.bashrc.history
-# . $BASHRCD/.bashrc.prompt
-. $BASHRCD/.bashrc.lscolor
-. $BASHRCD/.bashrc.path
-. $BASHRCD/.bashrc.ssh
-# . $BASHRCD/.bashrc.completion
-# . $BASHRCD/.bashrc.misc
-. $BASHRCD/.bashrc.terminal
-. $ZSHRCD/keys
+. ~/.rc/.zshrc.d/path
+. ~/.rc/.zshrc.d/alias
+. ~/.rc/.zshrc.d/sys
+. ~/.rc/.zshrc.d/color
+. ~/.rc/.zshrc.d/ssh
+. ~/.rc/.zshrc.d/term
+. ~/.rc/.zshrc.d/keys
+. ~/.rc/.zshrc.d/misc
+unset OSENV

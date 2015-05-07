@@ -12,17 +12,16 @@ Cygwin)
   ;;
 esac
 
-BASHRCD=$HOME/.bashrc.d
-. $BASHRCD/.bashrc.system
-. $BASHRCD/.bashrc.history
-. $BASHRCD/.bashrc.alias
-. $BASHRCD/.bashrc.prompt
-. $BASHRCD/.bashrc.lscolor
-. $BASHRCD/.bashrc.path
-. $BASHRCD/.bashrc.ssh
-. $BASHRCD/.bashrc.completion
-. $BASHRCD/.bashrc.misc
-. $BASHRCD/.bashrc.terminal
+. ~/.rc/.bashrc.d/.bashrc.system
+. ~/.rc/.bashrc.d/.bashrc.history
+. ~/.rc/.bashrc.d/.bashrc.alias
+. ~/.rc/.bashrc.d/.bashrc.prompt
+. ~/.rc/.zshrc.d/color
+. ~/.rc/.bashrc.d/.bashrc.path
+. ~/.rc/.bashrc.d/.bashrc.ssh
+. ~/.rc/.bashrc.d/.bashrc.completion
+. ~/.rc/.bashrc.d/.bashrc.misc
+. ~/.rc/.bashrc.d/.bashrc.terminal
 
 # for more config options, see http://www.linuxselfhelp.com/HOWTO/Config-HOWTO/config.html
 

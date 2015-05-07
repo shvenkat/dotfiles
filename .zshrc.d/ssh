@@ -1,4 +1,2 @@
-# ssh
-
 # Connect to ssh-agent, starting it if needed
-eval $(~/bin/sahup)
+eval "$(~/bin/sahup)"
