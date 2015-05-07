@@ -9,23 +9,19 @@ while read file; do
   fi
   ln -s -t ~/$(dirname $file) ~/.rc/$file
 done <<EOF
-bin/connect-ssh-agent
-bin/start-ssh-agent
-bin/stop-ssh-agent
+bin/sahup
 bin/tmuxcolors
-.bashrc.d
+.bashrc_profile
 .certs
 .colordiffrc
-.dir_colors
 .gnupg/gpg.conf
 .gnupg/gpg-agent.conf
 .inputrc
-.oh-my-zsh
+.lessfilter
 .Rprofile
 .vim
 .xinitrc
 EOF
-# bin/colordiff
 
 while read file; do
   cp ~/.rc/${file}.stub ~/$file

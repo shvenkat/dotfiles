@@ -1,17 +1,24 @@
 umask 0022
-setopt ignore_eof
+ulimit -c 0
 export EDITOR=vim
-export LESS='-iSR'
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 case $OSENV in
 linux)
-  which lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
   ;;
 macosx)
   ;;
 cygwin)
-  if [[ -z $LESSOPEN ]]; then
-    export LESSOPEN='||/usr/local/bin/lesspipe.sh %s'
-  fi
+  unset TMP
+  unset TEMP
+  # export TMPDIR=/tmp
+
+  # # start cron
+  # if ! ps -es | grep -iqF '/usr/sbin/cron' ; then
+  #     echo "starting cron ..."
+  #     /usr/sbin/cron
+  # else
+  #     echo "cron is already running ..."
+  # fi
   ;;
 esac

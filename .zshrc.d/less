@@ -1,0 +1,3 @@
+export LESS='-iSR'
+which lesspipe >/dev/null && eval "$(SHELL=/bin/sh lesspipe)"
+# LESSEDIT="%E ?lt+%lt. %f"

@@ -5,7 +5,7 @@
 
 # OH-MY-ZSH CONFIG ----------------------------------------------------------
 
-export ZSH=~/.oh-my-zsh
+export ZSH=~/.rc/.oh-my-zsh
 ZSH_THEME="term-fou"
 # CASE_SENSITIVE="true"
 DISABLE_AUTO_UPDATE="true"
@@ -29,10 +29,11 @@ Darwin) OSENV=macosx ;;
 Cygwin) OSENV=cygwin ;;
 *)      OSENV=unknown ;;
 esac
+. ~/.rc/.zshrc.d/zsh
 . ~/.rc/.zshrc.d/path
 . ~/.rc/.zshrc.d/alias
-. ~/.rc/.zshrc.d/sys
-. ~/.rc/.zshrc.d/color
+. ~/.rc/.zshrc.d/less
+. ~/.rc/.zshrc.d/ls
 . ~/.rc/.zshrc.d/ssh
 . ~/.rc/.zshrc.d/term
 . ~/.rc/.zshrc.d/keys

@@ -1,0 +1,1 @@
+setopt ignore_eof
