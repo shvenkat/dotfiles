@@ -28,9 +28,9 @@
 	plain = green bold
 	old = magenta
 	new = cyan
-	frag = cyan bold
-	func = cyan bold
-	meta = yellow
+	frag = white
+	func = white bold
+	meta = magenta bold
 	commit = red
 ; [log]
 ; 	decorate = full

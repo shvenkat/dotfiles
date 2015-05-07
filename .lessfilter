@@ -1,0 +1,11 @@
+#!/bin/bash
+
+fileext=${1##*.}
+if source-highlight --lang-list | cut -d' ' -f1 | grep -q "^${fileext}$"; then
+  source-highlight  -i "$1" -oSTDOUT --failsafe -fesc \
+    --style-file ~/.rc/source-highlight/default.style
+else
+  exit 1
+fi
+
+exit 0

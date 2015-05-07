@@ -1,0 +1,72 @@
+bgcolor "white"; // the background color for documents
+context gray; // the color for context lines (when specified with line ranges)
+
+keyword green ; // for language keywords
+type yellow ; // for basic types
+usertype yellow ; // for user defined types
+string blue f ; // for strings and chars
+regexp blue f ; // for strings and chars
+specialchar cyan f ; // for special chars, e.g., \n, \t, \\
+comment pink b, noref; // for comments
+number blue ;	// for literal numbers
+preproc green b ; // for preproc directives (e.g. #include, import)
+symbol green ; // for simbols (e.g. <, >, +)
+function orange b; // for function calls and declarations
+cbracket red; // for block brackets (e.g. {, })
+todo bg:pink b;	// for TODO and FIXME
+code cyan b; // for code snippets
+
+//Predefined variables and functions (for instance glsl)
+predef_var yellow ;
+predef_func orange b ;
+
+// for OOP
+classname orange ; // for class names, e.g., in Java and C++
+
+// line numbers
+linenum black f;
+
+// Internet related
+url blue u, f;
+
+// other elements for ChangeLog and Log files
+date cyan b ;
+time, file blue b ;
+ip, name blue ;
+
+// for Prolog, Perl...
+// variable normal ;
+
+// explicit for Latex
+italics darkgreen i;
+bold darkgreen b;
+underline darkgreen u;
+fixed green f;
+argument darkgreen;
+optionalargument purple;
+math orange;
+bibtex blue;
+
+// for diffs
+oldfile pink;
+newfile cyan;
+difflines purple;
+
+// for css
+selector purple;
+property blue;
+value darkgreen i;
+
+// for oz
+atom orange;
+meta i;
+
+// for file system
+path blue;
+
+// for C (or other language) labels
+label orange b;
+
+// for errors
+error red;
+warning pink;
