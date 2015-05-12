@@ -1228,11 +1228,13 @@
 	dmVy0RcYVHJvb3SAAQgRGiMtMjc7QUhOW2KMjpCVoKmxtL3P0tcAAAAAAAABAQAAAAAA
 	AAAZAAAAAAAAAAAAAAAAAAAA2Q==
 	</data>
+	<key>DisableANSIColor</key>
+	<false/>
 	<key>Font</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGGBlYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3AS
 	AAGGoKQHCBESVSRudWxs1AkKCwwNDg8QVk5TU2l6ZVhOU2ZGbGFnc1ZOU05hbWVWJGNs
-	YXNzI0AwAAAAAAAAEBCAAoADXxAZRHJvaWRTYW5zTW9ub0ZvclBvd2VybGluZdITFBUW
+	YXNzI0AqAAAAAAAAEBCAAoADXxAZRHJvaWRTYW5zTW9ub0ZvclBvd2VybGluZdITFBUW
 	WiRjbGFzc25hbWVYJGNsYXNzZXNWTlNGb250ohUXWE5TT2JqZWN0XxAPTlNLZXllZEFy
 	Y2hpdmVy0RobVHJvb3SAAQgRGiMtMjc8QktSW2JpcnR2eJSZpK20t8DS1doAAAAAAAAB
 	AQAAAAAAAAAcAAAAAAAAAAAAAAAAAAAA3A==
@@ -1539,7 +1541,7 @@
 	ZmZmg1MTpj6DeHnQPoPQg+A+AYY=
 	</data>
 	<key>columnCount</key>
-	<integer>143</integer>
+	<integer>178</integer>
 	<key>cyanColour</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARm
@@ -1563,7 +1565,7 @@
 	ZmZmg6i7UT+DUATePYMl2hA+AYY=
 	</data>
 	<key>rowCount</key>
-	<integer>38</integer>
+	<integer>47</integer>
 	<key>shellExitAction</key>
 	<integer>1</integer>
 	<key>type</key>
