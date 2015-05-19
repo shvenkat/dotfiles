@@ -22,6 +22,7 @@ set hlsearch incsearch
 set updatetime=1000
 set wildmode=longest,list:longest
 set diffopt=filler,context:3,iwhite,vertical,foldcolumn:2
+set lazyredraw
 
 " generic key mapping
 let mapleader=","
@@ -36,6 +37,7 @@ set shiftwidth=4                "An indent is 4 spaces
 set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
+set autoindent smartindent
 set nowrap
 noremap <leader>w :%s/\s\+$//e<CR>    "Remove trailing whitespace
 
