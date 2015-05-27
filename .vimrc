@@ -37,7 +37,7 @@ set shiftwidth=4                "An indent is 4 spaces
 set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
-set autoindent smartindent
+set autoindent
 set nowrap
 noremap <leader>w :%s/\s\+$//e<CR>    "Remove trailing whitespace
 
