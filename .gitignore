@@ -27,3 +27,4 @@
 .vim/bundle/showMarks
 .vim/bundle/changesPlugin
 .vim/bundle/vim-sleuth
+.DS_STORE
