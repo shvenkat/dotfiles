@@ -9,7 +9,7 @@ RC := $(HOME)/.rc
 LN_FILES := bin/sahup bin/tmuxcolors
 LN_FILES += .bash_profile .certs .colordiffrc
 LN_FILES += .gnupg/gpg.conf .gnupg/gpg-agent.conf
-LN_FILES += .inputrc .lessfilter .Rprofile .vim .xinitrc
+LN_FILES += .inputrc .lessfilter .Rprofile .vim .vimrc.less .xinitrc
 CP_FILES := .bashrc .gitconfig .tmux.conf .vimrc .zshrc
 
 .PHONY: all
