@@ -26,7 +26,11 @@ cygwin)
   export PATH
   ;;
 macosx)
+  PATH=/usr/local/sbin:/sbin:/usr/sbin
+  PATH=${PATH}:/usr/local/bin:/bin:/usr/bin
+  PATH=${PATH}:/opt/X11/bin
   PATH=${PATH}:${HOME}/bin
+  PATH=${PATH}:${HOME}/Library/Python/2.7/bin
   export PATH
   ;;
 esac
