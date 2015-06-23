@@ -99,15 +99,24 @@ fun! AnsiEsc#AnsiEsc(rebuild)
 
   syn clear
 
-  " suppress escaped sequences that don't involve colors (which may or may not be ansi-compliant)
+  " Suppress ANSI escape sequences other than SGR (color sequences)
+  " See https://en.wikipedia.org/wiki/ANSI_escape_code for details.
   if has("conceal")
-   syn match ansiSuppress	conceal	'\e\[[0-9;]*[^m]'
-   syn match ansiSuppress	conceal	'\e\[?\d*[^m]'
-   syn match ansiSuppress	conceal	'\b'
+   " CSI codes except SGR
+   syn match ansiSuppress	conceal	'\e\[[0-9;]*[@-ln-~]'
+   syn match ansiSuppress	conceal	'\e\[?\d*[@-ln-~]'
+   " Non-CSI codes
+   " Do not suppress these since we lack a suitable regex to catch them all
+   " syn match ansiSuppress	conceal	'\e[@-_]'
+   " syn match ansiSuppress	conceal	'\b'
   else
-   syn match ansiSuppress		'\e\[[0-9;]*[^m]'
-   syn match ansiSuppress		'\e\[?\d*[^m]'
-   syn match ansiSuppress		'\b'
+   " CSI codes except SGR
+   syn match ansiSuppress		'\e\[[0-9;]*[@-ln-~]'
+   syn match ansiSuppress		'\e\[?\d*[@-ln-~]'
+   " Non-CSI codes
+   " Do not suppress these since we lack a suitable regex to catch them all
+   " syn match ansiSuppress		'\e[@-_]'
+   " syn match ansiSuppress		'\b'
   endif
 
   " ------------------------------
@@ -391,12 +400,12 @@ fun! AnsiEsc#AnsiEsc(rebuild)
   endif
 
   if has("conceal")
-   syn match ansiStop		conceal "\e\[;\=0\{1,2}m"
+   syn match ansiStop		conceal "\e\[0\(;0\)\=m"
    syn match ansiStop		conceal "\e\[K"
    syn match ansiStop		conceal "\e\[H"
    syn match ansiStop		conceal "\e\[2J"
   else
-   syn match ansiStop		"\e\[;\=0\{0,2}m"
+   syn match ansiStop		"\e\[0\(;0\)\=m"
    syn match ansiStop		"\e\[K"
    syn match ansiStop		"\e\[H"
    syn match ansiStop		"\e\[2J"
