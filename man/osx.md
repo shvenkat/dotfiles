@@ -8,7 +8,9 @@ Plugins: AdblockPlus
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     brew update
     brew doctor
+    brew tap caskroom/cask homebrew/dupes ...
     brew install brew-cask
+    brew [cask] install ...
 3. Tap useful repos: caskroom/cask, homebrew/dupes, homebrew/fuse,
    homebrew/science, neovim/neovim
 
