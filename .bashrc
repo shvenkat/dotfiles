@@ -26,5 +26,7 @@ unset OSENV
 
 # for more config options, see http://www.linuxselfhelp.com/HOWTO/Config-HOWTO/config.html
 
-# local settings
+
+# LOCAL CONFIG --------------------------------------------------------------
+
 export EDITOR=vim
