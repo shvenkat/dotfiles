@@ -1,25 +1,47 @@
 snippet command "Parse commandline arguments" b
 # PARSE COMMAND LINE ARGUMENTS ----------------------------------------------
+suppressPackageStartupMessages(library(argparse))
 parser <- ArgumentParser(description = "${0:desc}")
-parser$add_argument('${1:arg}',
-                    help = '${2:help}')
+parser$add_argument("--${1:arg}", help = "${2:help}", default = "${3:default}")
+parser$add_argument("${4:arg}", help = "${5:help}")
 args <- parser$parse_args()
 endsnippet
 
+snippet read "Read input data"
+# GET DATA ------------------------------------------------------------------
+dat <- read.table(${1:file}, header = FALSE, sep = "\t", quote = "",
+                  col.names = ${2:labels},
+                  colClasses = ${3:types},
+                  comment.char = "", stringsAsFactors = FALSE)
+endsnippet
+
 snippet ggplot "Build a ggplot"
-ggplot(data = ${1:data}, mapping = aes(${2::aes})) +
-geom_${3:geom}()
+plt <- ggplot(data = dat,
+              mapping = aes(x = xvar,
+                            y = yvar,
+                            color = cvar)) +
+       facet_grid(. ~ fvar, scales = "free_x", space = "free_x") +
+       geom_point(position = position_dodge(w = 0.5, h = 0),
+                  size = 5, alpha = 0.7) +
+       geom_text(mapping = aes(label = lvar,
+                               y = 1.6 * coverage + 5e-4),
+                 size = 3, color = "black") +
+       scale_y_continuous(trans = log10_trans(),
+                          breaks = trans_breaks("log10", function(x) 10^x),
+                          labels = comma) + # or trans_format("log10", math_format(10^.x)))
+       labs(title = sprintf("%s\n", title),
+            x     = "Foo",
+            y     = "Bar",
+            color = "Baz") +
+       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5,
+                                        size = 5),
+             panel.grid.major.x = element_line(color = "gray90", size = 14),
+             panel.grid.minor.y = element_blank())
+print(plt)
 endsnippet
 
-# See http://www.cookbook-r.com/Graphs/index.html for recipes
-
-snippet scale_x_continuous "Transform x scale"
-scale_x_continuous(name = "{1:title}",
-                   trans = log10_trans(),
-                   breaks = trans_breaks("log10", function(x) 10^x),
-                   labels = trans_format("log10", math_format(10^.x)))
-endsnippet
-
-snippet theme "Apply a plot theme"
-theme(panel.grid.minor = element_blank())
+snippet png "Output to a PNG file"
+# GENERATE PLOT -------------------------------------------------------------
+png(${1:file}, width = 9*1, height = 5.1*1, units = "in", res = 300)
+dev.off()
 endsnippet
