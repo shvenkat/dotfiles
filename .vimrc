@@ -4,7 +4,7 @@ filetype off
 
 " call pathogen to configure extension loading
 " extensions are loaded AFTER .vimrc is read
-call pathogen#infect()
+call pathogen#infect("bundle.snappy/{}")
 call pathogen#helptags()
 
 " load vim-sensible right away, so its options can be over-ridden
