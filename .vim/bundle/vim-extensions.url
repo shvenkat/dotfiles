@@ -49,6 +49,7 @@ ack              https://github.com/mileszs/ack.vim.git
 
 # LANG MODES
 python-mode      https://github.com/klen/python-mode.git    develop
+simpylfold       https://github.com/tmhedberg/SimpylFold.git
 markdown         https://github.com/tpope/vim-markdown.git
 markdown-folding https://github.com/nelstrom/vim-markdown-folding.git
 r-runtime        https://github.com/jalvesaq/R-Vim-runtime.git
