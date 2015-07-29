@@ -197,6 +197,12 @@ endif
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_lint = 0
+" simpylfold
+let g:SimpylFold_docstring_preview = 1
+let g:SimpylFold_fold_docstring = 1
+autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
+
 
 " vim-markdown
 let g:markdown_fold_style='nested'    "alternative is 'nested'
