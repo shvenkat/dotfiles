@@ -49,6 +49,7 @@ ack              https://github.com/mileszs/ack.vim.git
 
 # LANG MODES
 color_coded      https://github.com/jeaye/color_coded.git
+color_coded/lib/jest    https://github.com/jeaye/jest.git
 python-mode      https://github.com/klen/python-mode.git    develop
 simpylfold       https://github.com/tmhedberg/SimpylFold.git
 markdown         https://github.com/tpope/vim-markdown.git
