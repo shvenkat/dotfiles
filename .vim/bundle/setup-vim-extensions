@@ -14,9 +14,12 @@ cat $UrlFile | while read extension url branch; do
     continue
   fi
   prefix=.vim/bundle/$extension
-  if [[ -d $prefix ]]; then
-    echo "SKIP $extension: $prefix already exists" >> $LogFile
+  if [[ $(find $prefix -mindepth 1 | wc -l) -gt 0 ]]; then
+    echo "SKIP $extension: $prefix not empty" >> $LogFile
     continue
+  fi
+  if [[ -d $prefix ]]; then
+    rmdir $prefix
   fi
   if [[ -z $branch ]]; then
     branch=master
