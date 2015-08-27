@@ -93,7 +93,8 @@ autocmd BufReadPost *
   \ endif
 
 " Colorscheme tweaks
-autocmd ColorScheme * highlight Folded term=NONE cterm=NONE gui=NONE
+" autocmd ColorScheme * highlight Folded term=NONE cterm=NONE gui=NONE
+autocmd ColorScheme * highlight! link Folded Normal
 autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
 
 " ---- PLUGIN CONFIG ---------------------------------------------------------
@@ -192,6 +193,10 @@ autocmd ColorScheme * highlight! link ShowMarksHL SignColumn
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+" color_coded
+let g:color_coded_enabled = 1
+let g:color_coded_filetypes = ['c', 'cpp', 'objc']
 
 " python-mode
 let g:pymode_rope = 0
