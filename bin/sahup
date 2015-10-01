@@ -10,6 +10,10 @@ debug_msg() {
   fi
 }
 
+info_msg() {
+    echo "[$(basename $0)] $1" 3>&1 1>&2 2>&3
+}
+
 test_socket() {
   SSH_AUTH_SOCK=$1 ssh-add -l &>/dev/null
   ret=$?
@@ -78,11 +82,14 @@ connect_agent () {
 
 if [[ $TERM =~ ^screen ]]; then
   # inside screen or tmux, connect to local or remote ssh-agent
+  # info_msg "connecting from within a screen/tmux session, skipping ssh-agent setup"
   set_env
 elif [[ -n $SSH_CONNECTION ]]; then
   # ssh login
+  info_msg "setting up ssh-agent for an ssh session"
   connect_agent
 else
   # local machine login
+  info_msg "setting up ssh-agent for a local session"
   connect_agent
 fi
