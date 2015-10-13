@@ -1,5 +1,7 @@
-PS1='%(?,%{$fg[green]%},%{$fg[red]%})%h %% '
-RPS1='%{$reset_color%}%7>…>%m%>>:%6>…>%1~%>>$(git_prompt_info)%{$reset_color%}'
+PS1='%(?,%{$fg[green]%},%{$fg[red]%})%#%# '
+host="%{$fg_bold[blue]%}%7>…>%m%>>"
+cwd="%6>…>%1~%>>"
+RPS1='${host}%{$reset_color%} ${cwd}$(git_prompt_info)%{$reset_color%}'
 
 ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[magenta]%}("
 ZSH_THEME_GIT_PROMPT_SUFFIX=")%{$reset_color%}"
