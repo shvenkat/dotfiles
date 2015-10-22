@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CANONICAL_AGENT=/tmp/$(id -un)_${HOSTNAME}/keymaster
+CANONICAL_AGENT=/tmp/ssh-$(id -un)/keymaster
 CANONICAL_ENV=$(dirname $CANONICAL_AGENT)/gatekeeper
 debug=FALSE
 
