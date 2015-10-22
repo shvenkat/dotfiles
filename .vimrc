@@ -17,7 +17,7 @@ set nocompatible
 set noswapfile
 set hidden
 set confirm
-set nonumber relativenumber
+set number relativenumber
 set hlsearch incsearch
 set updatetime=1000
 set wildmode=longest,list:longest
