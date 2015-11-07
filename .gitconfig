@@ -30,7 +30,7 @@
 	new = cyan
 	frag = white
 	func = white bold
-	meta = magenta bold
+	meta = yellow
 	commit = red
 ; [log]
 ; 	decorate = full
