@@ -1,0 +1,2 @@
+" Stripped-down runtime
+set runtimepath=$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after
