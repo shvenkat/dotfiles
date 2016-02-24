@@ -27,10 +27,23 @@ cygwin)
   ;;
 macosx)
   PATH=/usr/local/sbin:/sbin:/usr/sbin
+  PATH=${PATH}:/usr/local/opt/coreutils/libexec/gnubin
   PATH=${PATH}:/usr/local/bin:/bin:/usr/bin
   PATH=${PATH}:/opt/X11/bin
   PATH=${PATH}:${HOME}/bin
+  PATH=${PATH}:${HOME}/Library/Python/3.5/bin
   PATH=${PATH}:${HOME}/Library/Python/2.7/bin
   export PATH
+
+  MANPATH=/usr/local/opt/coreutils/libexec/gnuman
+  MANPATH=${MANPATH}:/usr/local/share/man
+  MANPATH=${MANPATH}:/usr/share/man
+  MANPATH=${MANPATH}:/usr/share/man/en
+  MANPATH=${MANPATH}:/opt/X11/share/man
+  MANPATH=${MANPATH}:${HOME}/Library/Python/3.5/share/man:
+  MANPATH=${MANPATH}:${HOME}/Library/Python/2.7/share/man:
+  MANPATH=${MANPATH}:/Applications/Xcode.app/Contents/Developer/usr/share/man
+  MANPATH=${MANPATH}:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man
+  export MANPATH
   ;;
 esac

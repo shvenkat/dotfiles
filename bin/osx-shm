@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+usage () {
+  program_name=$(basename $0)
+  echo "Usage: $program_name start <mountpoint> <size in MiB>"
+  echo "       $program_name stop <mountpoint>"
+  exit 1
+}
+
+setup () {
+  # $1: mountpoint (need not exist)
+  # $2: size of ramdisk in MiB
+  ram_dev=$(hdiutil attach -nomount ram://$((2 * 1024 * $2)))
+  newfs_hfs $ram_dev
+  mkdir -p $1
+  mount -t hfs $ram_dev $1
+}
+
+teardown () {
+  # $1: mountpoint
+  hdiutil detach $1
+}
+
+main () {
+  case $1 in
+    start)
+      setup $2 $3
+      ;;
+    stop)
+      teardown $2
+      ;;
+    *)
+      usage
+      ;;
+  esac
+}
+
+main $@
