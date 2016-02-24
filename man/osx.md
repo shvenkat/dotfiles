@@ -53,18 +53,19 @@ Update keychain item as needed.
 * DejaVu Sans Mono for Powerline
 
 # Misc
-* Build: cmake, ecj, gcc, gdbm
-* Dev: [cscope], ack, ctags, neovim, the_silver_searcher, tmux, vim
+* Build: cmake, ecj, gcc, gdbm, haskell-stack
+* Dev: [cscope], ack, ctags, neovim, the_silver_searcher, tmux, valgrind, vim
     brew rm vim macvim python python3
     brew install vim --with-client-server
 * FUSE: osxfuse, sshfs, macfusion
-* OS: git, gnupg2, java, mercurial, openssh, openssh, tunnelblick, xquartz
+* OS: clamav, coreutils, git, gnupg2, java, libcaca, luajit, mercurial, node,
+  openssh, openssh, tunnelblick, xquartz
 * Other: flux, screenbrightness
-* Utilities: bash-completion, colordiff, grep, less, lesspipe, rsync,
-  source-highlight, wget
-* VM: awscli, vagrant
+* Utilities: bash-completion, colordiff, grep, htop-osx, jq, less, lesspipe,
+    pigz, postgresql, rsync, source-highlight, watch, wget
+* VM: awscli, docker, docker-machine, vagrant
     brew install vagrant awscli
     vagrant install vagrant-aws
     vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
 * Work: evernote, google-drive, igv, mendeley-desktop, r, samtools, sqlite
-
+* Science: blast
