@@ -38,3 +38,28 @@ alias R='R --quiet'
 alias vim='vim -X'
 alias vimm='vim -u ~/.vimrc.minimal'
 alias vims='\vim --servername VIM'
+
+TRANSFER_CMD=(
+  "rsync"
+  "--delete" "--update"
+  "--recursive" "--checksum" "--compress" "--itemize-changes"
+  "--exclude" '.git/'
+  "--exclude" 'build/'
+  "--exclude" '*~'
+  "--exclude" 'env/'
+  "--exclude" '__pycache__/'
+  "--exclude" '.ipython/'
+  "--exclude" '*.pyc'
+)
+dget () {
+  ${TRANSFER_CMD[@]} --dry-run "${1}/" "${PWD}/"
+}
+get () {
+  ${TRANSFER_CMD[@]} "${1}/" "${PWD}/"
+}
+dput () {
+  ${TRANSFER_CMD[@]} --dry-run "${PWD}/" "${1}/"
+}
+put () {
+  ${TRANSFER_CMD[@]} "${PWD}/" "${1}/"
+}
