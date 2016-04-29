@@ -1,0 +1,46 @@
+Profiles:
+-
+  # A base profile without a color palette.
+  Name: Base
+  Guid: B73E09EE-8F03-4895-B59B-6DA2FE7AB8EC
+
+  # Typography settings.
+  Normal Font:            DroidSansMono 16
+  Non Ascii Font:         DejaVuSansMono 16   # Use a fallback font.
+  Use Non-ASCII Font:     true
+  ASCII Anti Aliased:     true
+  Non-ASCII Anti Aliased: true
+  Horizontal Spacing:     1
+  Vertical Spacing:       0.9437770613704818
+  Thin Strokes:           0                   # Always preserve stroke width.
+  Cursor Type:            2                   # Use a block cursor.
+  Blink Allowed:          false
+  Blinking Cursor:        false
+
+  # Window settings.
+  Transparency: 0  # Use opaque rendering.
+  Window Type:  1  # Use a fullscreen window.
+
+  # Terminal settings.
+  Terminal Type:                  xterm-16color
+  Character Encoding:             4              # UTF-8
+  Silence Bell:                   true
+  Visual Bell:                    true
+  Flashing Bell:                  true
+  Unlimited Scrollback:           false
+  Scrollback Lines:               1000
+  Scrollback With Status Bar:     false          # No scrollback for vim/tmux.
+  Scrollback in Alternate Screen: true           # Use scrollback for pagers.
+  Mouse Reporting:                false
+  Disable Window Resizing:        false          # Apps can set terminal size.
+  Sync Title:                     false          # Apps can set terminal title.
+
+  # Session settings.
+  Close Sessions On End:   true   # Close the window when the shell exits.
+  Automatically Log:       false
+  Prompt Before Closing 2: 2      # Prompt except for listed jobs.
+  Jobs to Ignore:
+  - tmux
+
+  # Key bindings.
+  Option Key Sends: 2  # Left option sends an Esc prefix.
