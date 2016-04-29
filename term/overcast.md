@@ -40,11 +40,11 @@ backgrnd   15/7  brwhite    97  00  10   44  10  99
 violet     13/5  brmagenta  50  15 -45  237  45  77
 blue        4/4  blue       54 -03 -44  205  82  80
 cyan        6/6  cyan       57 -33 -04  175  74  60
-green       2/2  green      60 -38  62   80 100  63
+green       2/2  green      59 -37  61   80 100  61
 yellow      3/3  yellow     59 -01  64   50 100  66
 orange      9/3  brred      54  38  57   25  89  80
 red         1/1  red        55  76  54  359  85 100
-magenta     5/5  magenta    52  58 -29  310  60  76
+magenta     5/5  magenta    53  53 -27  310  55  75
 
 
 # THE DARK PALETTE
@@ -69,8 +69,6 @@ orange      9/3  brred      54  38  57   25  89  80
 red         1/1  red        55  76  54  359  85 100
 magenta     5/5  magenta    50  54 -26  312  58  73
 
-TODO: balance the brightness of the colors for the dark palette.
-
 
 # COLOR MAPPING
 
@@ -83,7 +81,7 @@ emphasis foreground   highlight
 selection background  highlight
 selection foreground  note
 
-## Diff
+## diff
 
 same        text
 old         magenta
@@ -91,7 +89,16 @@ new         cyan
 hunk/function  green
 header      yellow
 
-## Code viewing/editing
+## git
+
+same        text
+old         magenta
+new         cyan
+hunk/function  green
+header      yellow
+commit      orange
+
+## Syntax highlighting
 
 Constant    cyan
 Keyword     green
