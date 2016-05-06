@@ -44,7 +44,7 @@ noremap <leader>w :%s/\s\+$//e<CR>    "Remove trailing whitespace
 " line width
 "set textwidth=79
 if exists('+colorcolumn')
-  set colorcolumn=80
+  set colorcolumn=80,81,82,83,84,85  " A right gutter to balance the left one.
 else
   autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
 endif
@@ -118,7 +118,15 @@ noremap <leader>csl :set background=light<CR> :colorscheme solarized<CR>
 noremap <leader>csd :set background=dark<CR> :colorscheme solarized<CR>
 
 " vim-airline
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+let g:airline_symbols.linenr = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.whitespace = '!'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#whitespace#enabled = 1
 let g:airline#extensions#whitespace#show_message = 1

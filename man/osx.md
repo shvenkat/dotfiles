@@ -69,3 +69,15 @@ Update keychain item as needed.
     vagrant box add dummy https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box
 * Work: evernote, google-drive, igv, mendeley-desktop, r, samtools, sqlite
 * Science: blast
+
+# Homebrew Setup
+
+* Create a separate (non-root) user account for homebrew installs.
+
+    I don't trust brew install scripts to run with root privileges; but I also
+    don't want brew installed files to be modifiable by processes running under
+    my regular user account. Hence a separate account for homebrew-ing.
+
+* Run the homebrew install script.
+
+        ./brew_install_all.sh
