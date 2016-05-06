@@ -3,7 +3,7 @@
 # export LANG=en_US.UTF-8
 
 
-# ADDITIONAL CONFIG MODULES -------------------------------------------------
+# CONFIG MODULES ------------------------------------------------------------
 
 case $(uname) in
 Linux)  OSENV=linux ;;
@@ -27,6 +27,6 @@ unset OSENV
 # for more config options, see http://www.linuxselfhelp.com/HOWTO/Config-HOWTO/config.html
 
 
-# LOCAL CONFIG --------------------------------------------------------------
+# MISC CONFIG ---------------------------------------------------------------
 
 export EDITOR=vim
