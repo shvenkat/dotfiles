@@ -1,13 +1,17 @@
-PS1='%(?,%{$fg[green]%},%{$fg[red]%})%#%# '
-host="%{$fg_bold[blue]%}%7>…>%m%>>"
-cwd="%6>…>%1~%>>"
-RPS1='${host}%{$reset_color%} ${cwd}$(git_prompt_info)%{$reset_color%}'
+# LEFT PROMPT
+# The prompt is '%% ' if the shell is running without privileges, else '%% '.
+# The prompt is green if the last command exited successfully, red otherwise.
+PS1='%(?,%{$fg[green]%},%{$fg[red]%})%#%# %{$reset_color%}'
 
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[magenta]%}("
-ZSH_THEME_GIT_PROMPT_SUFFIX=")%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-ZSH_THEME_GIT_PROMPT_UNSTAGED="*"
-ZSH_THEME_GIT_PROMPT_STAGED="+"
-ZSH_THEME_GIT_PROMPT_UNTRACKED="%%"
-ZSH_THEME_GIT_PROMPT_STASHED="$"
-ZSH_THEME_GIT_PROMPT_UPSTREAM="git verbose"
+# RIGHT PROMPT
+__host="%7>…>%m%>>"
+__cwd="%6>…>%1~%>>"
+
+GIT_PS1_SHOWDIRTYSTATE=yes
+GIT_PS1_SHOWSTASHSTATE=yes
+GIT_PS1_SHOWUNTRACKEDFILES=yes
+GIT_PS1_SHOWUPSTREAM="verbose"
+GIT_PS1_DESCRIBE_STYLE="branch"
+git_status="%{$fg_bold[magenta]%}"'$(__git_ps1 "(%s)")'
+
+RPS1='${__host} ${__cwd} ${(e)${git_status}}%{$reset_color%}'

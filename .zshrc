@@ -17,8 +17,12 @@ DISABLE_AUTO_TITLE="true"
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
 ZSH_CUSTOM=~/.rc/.oh-my-zsh.custom
-plugins=(git git-dashboard zsh-syntax-highlighting)
+plugins=(gitfast)
+# plugins=(git-dashboard zsh-syntax-highlighting autoenv common-aliases
+# dircycle fasd fastfile git-extras gitfast jump ssh-agent vi-mode
+# virtualenv zsh-autosuggestions predict-on)
 source $ZSH/oh-my-zsh.sh
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,bold'
 
 
 # ADDITIONAL CONFIG MODULES -------------------------------------------------
