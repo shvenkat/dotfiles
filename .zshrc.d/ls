@@ -10,6 +10,13 @@ linux|cygwin)
   fi
   ;;
 macosx)
-  export LSCOLORS="gxdxeaeacxdadahbadxcec"
+  export LSCOLORS="excxacacdxacacadadaeae"
+  if which dircolors >/dev/null; then
+    if [[ -r ~/.rc/.dircolors ]]; then
+      eval "$(dircolors -b ~/.rc/.dircolors)"
+    else
+      eval "$(dircolors -b)"
+    fi
+  fi
   ;;
 esac

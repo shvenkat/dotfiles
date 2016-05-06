@@ -57,8 +57,8 @@ emphasis   14/4  brcyan     76 -06 -02  180   9  75
 text       12/6  brblue     65 -05 -02  180   9  63
 note       11/7  bryellow   60 -06 -03  186  13  59
 comment    10/7  brgreen    50 -07 -07  195  23  51
-tint        0/4  black      20 -12 -12  192  90  26
-backgrnd    8/4  brblack    15 -12 -12  193 100  21
+tint        0/4  black      20 -06 -06  192  45  22
+backgrnd    8/4  brblack    15 -06 -06  193  50  18
 
 violet     13/5  brmagenta  58  21 -46  238  42  86
 blue        4/4  blue       67  00 -52  208  74 100

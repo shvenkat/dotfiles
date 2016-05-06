@@ -1,0 +1,127 @@
+#!/bin/bash
+
+# See https://github.com/erikw/tmux-powerline for tips
+
+CPU_WARNING_THRESHOLD=20
+CPU_CRITICAL_THRESHOLD=90
+MEMORY_WARNING_THRESHOLD=90
+MEMORY_CRITICAL_THRESHOLD=98
+SWAP_WARNING_THRESHOLD=0
+SWAP_CRITICAL_THRESHOLD=100
+DISK_WARNING_THRESHOLD=80
+DISK_CRITICAL_THRESHOLD=95
+BATTERY_WARNING_THRESHOLD=20
+BATTERY_CRITICAL_THRESHOLD=10
+
+if [[ "$1" == "--color" ]]; then
+    warning_color='\033[7m'      # reverse colors
+    critical_color='\033[7;31m'  # red background
+    normal_color='\033[0m'       # default colors
+else
+    warning_color=''
+    critical_color=''
+    normal_color=''
+fi
+
+
+# Returns an ANSI color code (or the empty string).
+colorize () {
+    value=$1
+    warning_threshold=$2
+    critical_threshold=$3
+
+    if [[ $warning_threshold -gt $critical_threshold ]]; then
+        if [[ "$value" -le ${critical_threshold} ]]; then
+                echo "$critical_color"
+        elif [[ "$value" -le ${warning_threshold} ]]; then
+                echo "$warning_color"
+        else
+                echo "$normal_color"
+        fi
+    else
+        if [[ "$value" -ge ${critical_threshold} ]]; then
+                echo "$critical_color"
+        elif [[ "$value" -ge ${warning_threshold} ]]; then
+                echo "$warning_color"
+        else
+                echo "$normal_color"
+        fi
+    fi
+}
+
+
+# MAIN
+
+# Use OS-specific methods to get values of interest.
+case $(uname) in
+
+Darwin)
+    cpu_percent=$(top -l2 -s3 \
+                  | grep 'CPU usage' \
+                  | tail -n1 \
+                  | sed 's/.*, \([0-9.]*\)% idle/\1/' \
+                  | awk '{ printf "%i\n",100 - $1}')
+    memory_percent=$(( 100 \
+                       - ( $(sysctl -n vm.page_free_count) \
+                           + $(sysctl -n vm.page_purgeable_count)) \
+                       * $(sysctl -n vm.pagesize) \
+                       * 100 \
+                       / $(sysctl -n hw.memsize) ))
+    swap_percent=$(( 100 \
+                     * $(sysctl -n vm.swapusage \
+                         | sed -e 's/  /~/g' \
+                         | tr '~' '\n' \
+                         | grep 'used' \
+                         | sed -e 's/^.*= \([0-9]*\).*/\1/') \
+                     * 2**20 \
+                     / $(sysctl -n hw.memsize) ))
+    disk_percent=$(df -h / \
+                      | tail -n1 \
+                      | grep -o '[0-9]\+%' \
+                      | tr -d '%')
+    battery_percent=$(pmset -g batt \
+                      | grep -o '[0-9]\+%' \
+                      | tr -d '%')
+    ;;
+
+Linux)
+    battery_percent='--'
+    cpu_percent="$(top -bn2)"
+    ;;
+
+Cygwin)
+    battery_percent='--'
+    cpu_percent='--'
+    ;;
+
+*)
+    battery_percent='--'
+    cpu_percent='--'
+    ;;
+
+esac
+
+
+# Format each value.
+cpu_color=$(colorize ${cpu_percent} \
+            $CPU_WARNING_THRESHOLD $CPU_CRITICAL_THRESHOLD)
+cpu_status="${cpu_color}${cpu_percent}%C${normal_color}"
+
+memory_color=$(colorize ${memory_percent} \
+               $MEMORY_WARNING_THRESHOLD $MEMORY_CRITICAL_THRESHOLD)
+memory_status="${memory_color}${memory_percent}%M${normal_color}"
+
+swap_color=$(colorize ${swap_percent} \
+             $SWAP_WARNING_THRESHOLD $SWAP_CRITICAL_THRESHOLD)
+swap_status="${swap_color}${swap_percent}%S${normal_color}"
+
+disk_color=$(colorize ${disk_percent} \
+             $DISK_WARNING_THRESHOLD $DISK_CRITICAL_THRESHOLD)
+disk_status="${disk_color}${disk_percent}%D${normal_color}"
+
+battery_color=$(colorize ${battery_percent} \
+                $BATTERY_WARNING_THRESHOLD $BATTERY_CRITICAL_THRESHOLD)
+battery_status="${battery_color}${battery_percent}%B${normal_color}"
+
+# Display all values.
+echo -e "${cpu_status} ${memory_status} ${swap_status} ${disk_status} ${battery_status}"
