@@ -6,7 +6,7 @@ CPU_WARNING_THRESHOLD=20
 CPU_CRITICAL_THRESHOLD=90
 MEMORY_WARNING_THRESHOLD=90
 MEMORY_CRITICAL_THRESHOLD=98
-SWAP_WARNING_THRESHOLD=0
+SWAP_WARNING_THRESHOLD=1
 SWAP_CRITICAL_THRESHOLD=100
 DISK_WARNING_THRESHOLD=80
 DISK_CRITICAL_THRESHOLD=95
@@ -17,6 +17,10 @@ if [[ "$1" == "--color" ]]; then
     warning_color='\033[7m'      # reverse colors
     critical_color='\033[7;31m'  # red background
     normal_color='\033[0m'       # default colors
+elif [[ "$1" == "--tmux" ]]; then
+    warning_color='#[reverse]'          # reverse colors
+    critical_color='#[fg=red,reverse]'  # red background
+    normal_color='#[default]'           # default colors
 else
     warning_color=''
     critical_color=''
@@ -50,6 +54,22 @@ colorize () {
 }
 
 
+# Format status.
+format_status () {
+    value=$1
+    suffix=$2
+    warning_threshold=$3
+    critical_threshold=$4
+
+    if [[ "$value" == '--' ]]; then
+        echo -n ""
+    else
+        color=$(colorize ${value} ${warning_threshold} ${critical_threshold})
+        echo -n "${color}${value}${suffix}${normal_color}"
+    fi
+}
+
+
 # MAIN
 
 # Use OS-specific methods to get values of interest.
@@ -57,7 +77,7 @@ case $(uname) in
 
 Darwin)
     cpu_percent=$(top -l2 -s3 \
-                  | grep 'CPU usage' \
+                  | grep -F 'CPU usage' \
                   | tail -n1 \
                   | sed 's/.*, \([0-9.]*\)% idle/\1/' \
                   | awk '{ printf "%i\n",100 - $1}')
@@ -76,9 +96,9 @@ Darwin)
                      * 2**20 \
                      / $(sysctl -n hw.memsize) ))
     disk_percent=$(df -h / \
-                      | tail -n1 \
-                      | grep -o '[0-9]\+%' \
-                      | tr -d '%')
+                   | grep '/$' \
+                   | grep -o '[0-9]\+%' \
+                   | tr -d '%')
     battery_percent=$(pmset -g batt \
                       | grep -o '[0-9]\+%' \
                       | tr -d '%')
@@ -86,7 +106,21 @@ Darwin)
 
 Linux)
     battery_percent='--'
-    cpu_percent="$(top -bn2)"
+    cpu_percent=$(top -b -n2 -d3 \
+                  | grep -F '%Cpu(s)' \
+                  | tail -n1 \
+                  | sed 's/^.*, \([0-9.]*\) id,.*$/\1/' \
+                  | awk '{ printf "%i\n",100 - $1}')
+    memory_percent=$(( 100
+                       * $(free | grep -F 'buffers/cache' | awk '{ print $3 }')
+                       / $(free | grep -F 'Mem:' | awk '{ print $2 }')))
+    swap_percent=$(( 100 \
+                     * $(free | grep -F 'Swap' | awk '{ print $2 }') \
+                     / $(free | grep -F 'Mem:' | awk '{ print $2 }') ))
+    disk_percent=$(df -h / \
+                   | grep '/$' \
+                   | grep -o '[0-9]\+%' \
+                   | tr -d '%')
     ;;
 
 Cygwin)
@@ -103,25 +137,20 @@ esac
 
 
 # Format each value.
-cpu_color=$(colorize ${cpu_percent} \
-            $CPU_WARNING_THRESHOLD $CPU_CRITICAL_THRESHOLD)
-cpu_status="${cpu_color}${cpu_percent}%C${normal_color}"
+cpu_status=$(format_status $cpu_percent '%C' \
+             $CPU_WARNING_THRESHOLD $CPU_CRITICAL_THRESHOLD)
 
-memory_color=$(colorize ${memory_percent} \
-               $MEMORY_WARNING_THRESHOLD $MEMORY_CRITICAL_THRESHOLD)
-memory_status="${memory_color}${memory_percent}%M${normal_color}"
+memory_status=$(format_status $memory_percent '%M' \
+                $MEMORY_WARNING_THRESHOLD $MEMORY_CRITICAL_THRESHOLD)
 
-swap_color=$(colorize ${swap_percent} \
-             $SWAP_WARNING_THRESHOLD $SWAP_CRITICAL_THRESHOLD)
-swap_status="${swap_color}${swap_percent}%S${normal_color}"
+swap_status=$(format_status $swap_percent '%S' \
+              $SWAP_WARNING_THRESHOLD $SWAP_CRITICAL_THRESHOLD)
 
-disk_color=$(colorize ${disk_percent} \
-             $DISK_WARNING_THRESHOLD $DISK_CRITICAL_THRESHOLD)
-disk_status="${disk_color}${disk_percent}%D${normal_color}"
+disk_status=$(format_status $disk_percent '%D' \
+              $DISK_WARNING_THRESHOLD $DISK_CRITICAL_THRESHOLD)
 
-battery_color=$(colorize ${battery_percent} \
-                $BATTERY_WARNING_THRESHOLD $BATTERY_CRITICAL_THRESHOLD)
-battery_status="${battery_color}${battery_percent}%B${normal_color}"
+battery_status=$(format_status $battery_percent '%B' \
+                 $BATTERY_WARNING_THRESHOLD $BATTERY_CRITICAL_THRESHOLD)
 
 # Display all values.
 echo -e "${cpu_status} ${memory_status} ${swap_status} ${disk_status} ${battery_status}"
