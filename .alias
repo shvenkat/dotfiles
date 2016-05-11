@@ -12,8 +12,8 @@ cygwin)
 esac
 
 alias ls='ls --color=auto'
-alias la='ls -aF'
-alias lt='ls -At'
+alias la='ls -AF'
+alias lt='ls -AFt'
 alias ll='ls -alFh'
 alias rm='rm -i'
 alias mv='mv -i'
