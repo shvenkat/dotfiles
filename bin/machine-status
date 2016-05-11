@@ -14,13 +14,13 @@ BATTERY_WARNING_THRESHOLD=20
 BATTERY_CRITICAL_THRESHOLD=10
 
 if [[ "$1" == "--color" ]]; then
-    warning_color='\033[7m'      # reverse colors
-    critical_color='\033[7;31m'  # red background
+    warning_color='\033[1m'      # bold text
+    critical_color='\033[31m'    # red text
     normal_color='\033[0m'       # default colors
 elif [[ "$1" == "--tmux" ]]; then
-    warning_color='#[reverse]'          # reverse colors
-    critical_color='#[fg=red,reverse]'  # red background
-    normal_color='#[default]'           # default colors
+    warning_color='#[bold]'      # bold text
+    critical_color='#[fg=red]'   # red text
+    normal_color='#[default]'    # default colors
 else
     warning_color=''
     critical_color=''
