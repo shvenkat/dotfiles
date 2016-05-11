@@ -1,20 +1,17 @@
 case $OSENV in
 linux)
-    alias ls='ls --color=auto'
-    alias du1='du -h --max-depth=1'
     alias startsa='eval "$(start-ssh-agent)"'
     alias stopsa='eval "$(stop-ssh-agent)"'
     alias connectsa='eval "$(connect-ssh-agent)"'
     ;;
 macosx)
-    alias ls='ls --color=auto'
-    alias du1='du -h -d1'
     ;;
 cygwin)
     alias open=cygstart
     ;;
 esac
 
+alias ls='ls --color=auto'
 alias la='ls -aF'
 alias lt='ls -At'
 alias ll='ls -alFh'
@@ -23,6 +20,7 @@ alias mv='mv -i'
 alias cp='cp -i'
 alias df='df -h'
 alias du='du -h'
+alias du1='du -h -d1'
 alias diff='colordiff -u'
 alias diffy='colordiff -y'
 alias cdiff='colordiff -u'
