@@ -16,6 +16,7 @@ gitgutter        https://github.com/airblade/vim-gitgutter.git
 colors-solarized https://github.com/altercation/vim-colors-solarized.git
 airline          https://github.com/bling/vim-airline.git
 ansiesc          https://github.com/powerman/vim-plugin-AnsiEsc.git
+lite-dfm         https://github.com/bilalq/lite-dfm.git
 
 # REPETITIVE TASKS
 sleuth           https://github.com/tpope/vim-sleuth.git
