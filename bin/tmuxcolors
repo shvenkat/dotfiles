@@ -15,10 +15,10 @@ fi
 
 case $1 in
   solarized-light|soll)
-    tmux source-file ~/.rc/.tmux.conf.colors.solarized-light
+    tmux source-file ~/.rc/.tmux.conf.colors.solarized-light >/dev/null
     ;;
   solarized-dark|sold)
-    tmux source-file ~/.rc/.tmux.conf.colors.solarized-dark
+    tmux source-file ~/.rc/.tmux.conf.colors.solarized-dark >/dev/null
     ;;
   *)
     echo "Usage error: $1 is not a supported colorscheme" 1>&2
