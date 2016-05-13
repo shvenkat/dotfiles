@@ -2,6 +2,7 @@
 let s:laststatus_default = &laststatus
 let s:ruler_default = &ruler
 let s:number_default = &number
+let s:relativenumber_default = &relativenumber
 let s:foldcolumn_default = &foldcolumn
 let s:numberwidth_default = &numberwidth
 let s:gitgutter_default = get(g:, 'gitgutter_enabled', 0)
@@ -36,7 +37,7 @@ let s:ignoredWindows = ['gundo', 'nerdtree', 'tagbar']
 
 " Retrieves the color for a provided scope and swatch in the current context
 function! s:LoadColor(scope, swatch)
-  let l:scopeColor = synIDattr(hlID(a:scope), a:swatch, s:context)
+  let l:scopeColor = synIDattr(synIDtrans(hlID(a:scope)), a:swatch, s:context)
   return l:scopeColor < 0 ? 'none' : l:scopeColor
 endfunction
 
@@ -84,6 +85,16 @@ function! s:LoadDFMColors()
 
   " Allow users to manually specify the color used to hide UI elements
   let s:NormalBG = get(g:, 'lite_dfm_normal_bg_' . s:context, s:LoadColor('Normal', 'bg'))
+
+  " Save gitgutter colors, so they can be restored.
+  if s:gitgutter_default
+    let s:gitgutter_colors_default = {
+      \ 'add_bg'          : s:LoadColor('GitGutterAdd', 'bg'),
+      \ 'delete_bg'       : s:LoadColor('GitGutterDelete', 'bg'),
+      \ 'change_bg'       : s:LoadColor('GitGutterChange', 'bg'),
+      \ 'changedelete_bg' : s:LoadColor('GitGutterChangeDelete', 'bg'),
+      \ }
+  endif
 endfunction
 
 
@@ -95,13 +106,29 @@ function! LiteDFM()
   call s:LoadOffsets()
   let s:lite_dfm_on = 1
 
-  if get(g:, 'gitgutter_enabled', 0)
-    GitGutterDisable
+  if s:gitgutter_default
+    if get(g:, 'lite_dfm_keep_gitgutter', 0)
+      execute "highlight GitGutterAdd          ctermbg=" . s:NormalBG
+      execute "highlight GitGutterDelete       ctermbg=" . s:NormalBG
+      execute "highlight GitGutterChange       ctermbg=" . s:NormalBG
+      execute "highlight GitGutterChangeDelete ctermbg=" . s:NormalBG
+    else
+      GitGutterDisable
+    endif
   endif
 
   let &ruler = get(g:, 'lite_dfm_keep_ruler', 0)
-  set number
-  set laststatus=0
+  " If number/relativenumber is set, then line numbers are displayed for
+  " folded blocks even though they are supposed to be rendered invisible
+  " by appropriate highlighting (see the call to s:Hide('LineNr') below.
+  " This defeats the purpose of this mode, so disable display of line
+  " numbers. Unfortunately, this means the number column cannot be used
+  " to offset the text from the left margin, reducing the range of
+  " g:lite_dfm_left_offset to [1, 10] instead of [1, 22]. Oh well!
+  set nonumber norelativenumber
+  if get(g:, 'lite_dfm_keep_statusline', 0) == 0
+    set laststatus=0
+  endif
   call s:ForEachWindow('set numberwidth=' . s:numberwidth_offset . ' foldcolumn=' . s:foldcolumn_offset)
 
   execute s:Hide('LineNr')
@@ -124,11 +151,19 @@ function! LiteDFMClose()
   let s:lite_dfm_on = 0
 
   if s:gitgutter_default
-    GitGutterEnable
+    if get(g:, 'lite_dfm_keep_gitgutter', 0)
+      execute "highlight GitGutterAdd          ctermbg=" . s:gitgutter_colors_default.add_bg
+      execute "highlight GitGutterDelete       ctermbg=" . s:gitgutter_colors_default.delete_bg
+      execute "highlight GitGutterChange       ctermbg=" . s:gitgutter_colors_default.change_bg
+      execute "highlight GitGutterChangeDelete ctermbg=" . s:gitgutter_colors_default.changedelete_bg
+    else
+      GitGutterEnable
+    endif
   endif
 
   let &ruler = s:ruler_default
   let &number = s:number_default
+  let &relativenumber = s:relativenumber_default
   let &laststatus = s:laststatus_default
   call s:ForEachWindow('set numberwidth=' . s:numberwidth_default . ' foldcolumn=' . s:foldcolumn_default)
 

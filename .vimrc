@@ -2,17 +2,17 @@
 
 filetype off
 
-" call pathogen to configure extension loading
-" extensions are loaded AFTER .vimrc is read
+" Call pathogen to configure extension loading. Extensions are loaded AFTER
+" .vimrc is read.
 call pathogen#infect("bundle.snappy/{}")
 call pathogen#helptags()
 
-" load vim-sensible right away, so its options can be over-ridden
+" Load vim-sensible right away, so its options can be over-ridden.
 runtime! plugin/sensible.vim
 
 " ---- VIM CORE CONFIG -------------------------------------------------------
 
-" basic options
+" Basic options
 set nocompatible
 set noswapfile
 set hidden
@@ -24,78 +24,86 @@ set wildmode=longest,list:longest
 set diffopt=filler,context:3,iwhite,vertical,foldcolumn:2
 set lazyredraw
 
-" generic key mapping
+" Generic key mapping
 let mapleader=","
 let maplocalleader=","
 set pastetoggle=<F2>
 
-" whitespace management
-set tabstop=8                   "A tab is 8 spaces
-set expandtab                   "Always uses spaces instead of tabs
-set softtabstop=4               "Insert 4 spaces when tab is pressed
-set shiftwidth=4                "An indent is 4 spaces
-set smarttab                    "Indent instead of tab at start of line
-set shiftround                  "Round spaces to nearest shiftwidth multiple
-set nojoinspaces                "Don't convert spaces to tabs
+" Whitespace management
+set tabstop=8                   " A tab is 8 spaces
+set expandtab                   " Always uses spaces instead of tabs
+set softtabstop=4               " Insert 4 spaces when tab is pressed
+set shiftwidth=4                " An indent is 4 spaces
+set smarttab                    " Indent instead of tab at start of line
+set shiftround                  " Round spaces to nearest shiftwidth multiple
+set nojoinspaces                " Don't convert spaces to tabs
 set autoindent
 set nowrap
-noremap <leader>w :%s/\s\+$//e<CR>    "Remove trailing whitespace
+" Remove trailing whitespace.
+noremap <leader>w :%s/\s\+$//e<CR>
 
-" line width
-"set textwidth=79
-if exists('+colorcolumn')
-  set colorcolumn=80,81,82,83,84,85  " A right gutter to balance the left one.
-else
-  autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
-endif
+" Line width
+match Visual '\%81v.'
+" set textwidth=79
+" if exists('+colorcolumn')
+"   set colorcolumn=80  " A right gutter to balance the left one.
+" else
+"   autocmd BufWinEnter * let w:m1=matchadd('ColorColumn', '\%>79v.\+', -1)
+" endif
 
-" left column
+" Left margin
 " autocmd BufEnter * :normal m>    "showMarks complains if there are no marks
 autocmd ColorScheme * highlight! link SignColumn LineNr
 autocmd ColorScheme * highlight! link CursorLineNr SignColumn
 
-" folding
+" Folding
+" Returns the text of the first line of a folded block, with ellipses.
+" Modified from the original at https://gist.github.com/sjl/3360978.
+function! MyFoldText()
+  let ellipses = ' ...'
+  " Calculate foldtext width, accounting for fold, sign and number columns.
+  let marginwidth = &fdc + 2 + &number * &numberwidth
+  let foldtextwidth = winwidth(0) - marginwidth - len(ellipses)
+  " Format foldtext by expanding tabs, adding ellipses and truncating/padding.
+  let line = getline(v:foldstart)
+  let line = substitute(line, '\t', repeat(' ', &softtabstop), 'g')
+  let line = strpart(line, 0, foldtextwidth)
+  let line = line . ellipses . repeat(' ', foldtextwidth - len(line))
+  return line
+endfunction
+set foldtext=MyFoldText()
 set foldenable
 set foldlevelstart=99
-nnoremap <Space> za
-vnoremap <Space> za
-nnoremap <leader>z zMzvzz     "Refocus folds on current line
-nnoremap zO zCzO              "Open current top-level fold
-" From https://gist.github.com/sjl/3360978
-function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
+nnoremap <leader>z za
+" vnoremap <Space> za
+" Refocus folds on current line
+" nnoremap <leader>z zMzvzz
+" Open current top-level fold
+" nnoremap zO zCzO
 
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
-
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
-
-    let line = strpart(line, 0, windowwidth - 4 -len(foldedlinecount))
-    let fillcharcount = windowwidth - 2 - len(line) - len(foldedlinecount)
-    return line . '...' . repeat(" ",fillcharcount) . '' . foldedlinecount . ''
-endfunction " }}}
-set foldtext=MyFoldText()
-
-" syntax completion
+" Syntax completion
 set complete=".,w,b,u,t,i"
 set completeopt="menu,menuone,longest,preview"
 " set omnifunc=syntaxcomplete#Complete
 " inoremap <leader>, <C-x><C-o>
 " inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
 
-" When editing a file, jump to the last known cursor position
+" Opening position
+" When editing a file, jump to the last known cursor position.
 autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
   \   exe "normal g`\"" |
   \ endif
 
-" Colorscheme tweaks
-" autocmd ColorScheme * highlight Folded term=NONE cterm=NONE gui=NONE
+" Colorscheme
+set background=dark
 autocmd ColorScheme * highlight! link Folded Normal
 autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
+" Retrieves the color for a provided scope and swatch in the current context
+function! LoadColor(scope, swatch)
+  let l:scopeColor = synIDattr(synIDtrans(hlID(a:scope)), a:swatch)
+  return l:scopeColor < 0 ? 'none' : l:scopeColor
+endfunction
 
 " ---- PLUGIN CONFIG ---------------------------------------------------------
 
@@ -109,13 +117,27 @@ autocmd BufEnter * noremap <C-n> :NERDTreeToggle<CR>
 let g:gitgutter_enabled = 1
 let g:gitgutter_sign_column_always = 1
 let g:gitgutter_escape_grep = 1
-let g:gitgutter_diff_args = '-b'
+" let g:gitgutter_diff_args = '-b'
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
+" let g:gitgutter_override_sign_column_highlight = 0
+function! CustomizeGitGutterColors()
+  let l:sign_bg = LoadColor('SignColumn', 'bg')
+  execute "highlight GitGutterAdd          ctermfg=6 ctermbg=" . l:sign_bg
+  execute "highlight GitGutterDelete       ctermfg=5 ctermbg=" . l:sign_bg
+  execute "highlight GitGutterChange       ctermfg=3 ctermbg=" . l:sign_bg
+  execute "highlight GitGutterChangeDelete ctermfg=3 ctermbg=" . l:sign_bg
+endfunction
 
 " vim-colors-solarized
-noremap <leader>csl :set background=light<CR> :colorscheme solarized<CR>
-noremap <leader>csd :set background=dark<CR> :colorscheme solarized<CR>
+function! Solarize()
+  colorscheme solarized
+  call CustomizeGitGutterColors()
+  LiteDFMToggle
+  LiteDFMToggle
+endfunction
+noremap <leader>cl :set background=light<CR> :call Solarize()<CR>
+noremap <leader>cd :set background=dark<CR> :call Solarize()<CR>
 
 " vim-airline
 let g:airline_theme = 'lunarized'
@@ -171,6 +193,11 @@ let g:airline#extensions#tabline#show_tab_type = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#ctrlp#show_adjacent_modes = 0
+
+" lite-dfm
+noremap <leader>d :LiteDFMToggle<CR>i<Esc>`^
+let g:lite_dfm_keep_statusline = 1
+let g:lite_dfm_keep_gitgutter = 1
 
 " vim-yankstack
 nmap <leader>p <Plug>yankstack_substitute_older_paste
@@ -256,10 +283,10 @@ let g:SimpylFold_fold_docstring = 1
 
 
 " vim-markdown
-let g:markdown_fold_style='nested'    "alternative is 'nested'
+let g:markdown_fold_style='nested'
 
 " r-plugin
-call pathogen#surround('~/.vim/bundle/r-runtime') "load runtime before plugin
+call pathogen#surround('~/.vim/bundle/r-runtime') " load runtime before plugin
 let r_indent_align_args = 1
 let r_syntax_folding = 1
 let vimrplugin_show_args = 1
@@ -269,7 +296,7 @@ let vimrplugin_listmethods = 1
 let vimrplugin_specialplot = 1
 let vimrplugin_vsplit = 0    " For vertical tmux split
 let vimrplugin_rconsole_height = 10
-"let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
+" let g:vimrplugin_screenplugin = 1  " Integrate r-plugin with screen.vim
 let vimrplugin_r_args = "--interactive --quiet"
 let vimrplugin_map_r = 1
 imap <leader>. <Plug>RCompleteArgs
