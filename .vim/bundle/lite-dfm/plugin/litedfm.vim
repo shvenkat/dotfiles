@@ -129,6 +129,7 @@ function! LiteDFM()
   if get(g:, 'lite_dfm_keep_statusline', 0) == 0
     set laststatus=0
   endif
+  call s:ForEachWindow('set nonumber norelativenumber')
   call s:ForEachWindow('set numberwidth=' . s:numberwidth_offset . ' foldcolumn=' . s:foldcolumn_offset)
 
   execute s:Hide('LineNr')
@@ -162,9 +163,8 @@ function! LiteDFMClose()
   endif
 
   let &ruler = s:ruler_default
-  let &number = s:number_default
-  let &relativenumber = s:relativenumber_default
   let &laststatus = s:laststatus_default
+  call s:ForEachWindow('let &number = ' . s:number_default . ' | let &relativenumber = ' . s:relativenumber_default)
   call s:ForEachWindow('set numberwidth=' . s:numberwidth_default . ' foldcolumn=' . s:foldcolumn_default)
 
   try

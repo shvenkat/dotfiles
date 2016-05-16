@@ -135,6 +135,7 @@ function! Solarize()
   call CustomizeGitGutterColors()
   LiteDFMToggle
   LiteDFMToggle
+  match Visual '\%81v.'
 endfunction
 noremap <leader>cl :set background=light<CR> :call Solarize()<CR>
 noremap <leader>cd :set background=dark<CR> :call Solarize()<CR>
