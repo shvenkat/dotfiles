@@ -109,7 +109,7 @@ Linux)
     cpu_percent=$(top -b -n2 -d3 \
                   | grep -F '%Cpu(s)' \
                   | tail -n1 \
-                  | sed 's/^.*, \([0-9.]*\) id,.*$/\1/' \
+                  | sed 's/^.*, *\([0-9.]*\) id,.*$/\1/' \
                   | awk '{ printf "%i\n",100 - $1}')
     memory_percent=$(( 100
                        * $(free | grep -F 'buffers/cache' | awk '{ print $3 }')
