@@ -16,9 +16,9 @@ Profiles:
   # ANSI colors.
   Ansi 0 Color:      &black
     Color Space:     Calibrated
-    Red Component:   0.03865531086921692
-    Green Component: 0.161290317773819
-    Blue Component:  0.1993247121572495
+    Red Component:   0.070677362382411957
+    Green Component: 0.15180402994155884
+    Blue Component:  0.17446213960647583
     Alpha Component: 1
   Ansi 1 Color:      &red
     Color Space:     Calibrated
@@ -64,9 +64,9 @@ Profiles:
     Alpha Component: 1
   Ansi 8 Color:      &blacker
     Color Space:     Calibrated
-    Red Component:   0.008844750933349133
-    Green Component: 0.1233125478029251
-    Blue Component:  0.1582864075899124
+    Red Component:   0.052816815674304962
+    Green Component: 0.1210654079914093
+    Blue Component:  0.14259535074234009
     Alpha Component: 1
   Ansi 9 Color:      &orange
     Color Space:     Calibrated
