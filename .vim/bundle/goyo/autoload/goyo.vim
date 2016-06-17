@@ -39,7 +39,7 @@ endfunction
 
 function! s:blank(repel)
   if bufwinnr(t:goyo_pads.r) <= bufwinnr(t:goyo_pads.l) + 1
-    \ || bufwinnr(t:goyo_pads.b) <= bufwinnr(t:goyo_pads.t) + 3
+    " \ || bufwinnr(t:goyo_pads.b) <= bufwinnr(t:goyo_pads.t) + 3
     call s:goyo_off()
   endif
   execute 'wincmd' a:repel
@@ -94,8 +94,8 @@ function! s:resize_pads()
   let yoff = s:const(t:goyo_dim.yoff, - vmargin, vmargin)
   let top = vmargin + yoff
   let bot = vmargin - yoff - 1
-  call s:setup_pad(t:goyo_pads.t, 0, top, 'j')
-  call s:setup_pad(t:goyo_pads.b, 0, bot, 'k')
+  " call s:setup_pad(t:goyo_pads.t, 0, top, 'j')
+  " call s:setup_pad(t:goyo_pads.b, 0, bot, 'k')
 
   let nwidth  = max([len(string(line('$'))) + 1, &numberwidth])
   let width   = t:goyo_dim.width + (&number ? nwidth : 0)
@@ -252,8 +252,8 @@ function! s:goyo_on(dim)
 
   let t:goyo_pads.l = s:init_pad('vertical topleft new')
   let t:goyo_pads.r = s:init_pad('vertical botright new')
-  let t:goyo_pads.t = s:init_pad('topleft new')
-  let t:goyo_pads.b = s:init_pad('botright new')
+  " let t:goyo_pads.t = s:init_pad('topleft new')
+  " let t:goyo_pads.b = s:init_pad('botright new')
 
   call s:resize_pads()
   call s:tranquilize()

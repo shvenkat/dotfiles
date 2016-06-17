@@ -133,8 +133,8 @@ endfunction
 function! Solarize()
   colorscheme solarized
   call CustomizeGitGutterColors()
-  LiteDFMToggle
-  LiteDFMToggle
+  " LiteDFMToggle
+  " LiteDFMToggle
   match Visual '\%81v.'
 endfunction
 noremap <leader>cl :set background=light<CR> :call Solarize()<CR>
@@ -196,9 +196,15 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#ctrlp#show_adjacent_modes = 0
 
 " lite-dfm
-noremap <leader>d :LiteDFMToggle<CR>i<Esc>`^
-let g:lite_dfm_keep_statusline = 1
-let g:lite_dfm_keep_gitgutter = 1
+" noremap <leader>d :LiteDFMToggle<CR>i<Esc>`^
+" let g:lite_dfm_keep_statusline = 1
+" let g:lite_dfm_keep_gitgutter = 1
+
+" goyo
+let g:goyo_width = 90
+let g:goyo_height = '100%'
+" let g:goyo_linenr = 0
+noremap <leader>d :Goyo<CR>i<Esc>`^
 
 " vim-yankstack
 nmap <leader>p <Plug>yankstack_substitute_older_paste
