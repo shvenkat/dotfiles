@@ -1,8 +1,8 @@
 awscli
 bash-completion
 homebrew/science/blast
+brightness
 clamav
-cloog
 colordiff
 coreutils
 cscope
@@ -33,7 +33,6 @@ python3
 homebrew/science/r
 homebrew/dupes/rsync
 homebrew/science/samtools
-screenbrightness
 source-highlight
 homebrew/fuse/sshfs
 the_silver_searcher
