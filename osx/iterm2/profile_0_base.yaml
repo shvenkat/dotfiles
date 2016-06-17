@@ -31,7 +31,7 @@ Profiles:
   Scrollback Lines:               1000
   Scrollback With Status Bar:     false          # No scrollback for vim/tmux.
   Scrollback in Alternate Screen: true           # Use scrollback for pagers.
-  Mouse Reporting:                false
+  Mouse Reporting:                true           # Send mouse events to tmux.
   Disable Window Resizing:        false          # Apps can set terminal size.
   Sync Title:                     false          # Apps can set terminal title.
 
