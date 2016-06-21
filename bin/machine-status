@@ -111,8 +111,8 @@ Linux)
                   | tail -n1 \
                   | sed 's/^.*, *\([0-9.]*\) id,.*$/\1/' \
                   | awk '{ printf "%i\n",100 - $1}')
-    memory_percent=$(( 100
-                       * $(free | grep -F 'buffers/cache' | awk '{ print $3 }')
+    memory_percent=$(( 100 - 100 \
+                       * $(free | grep -F 'Mem:' | awk '{ print $7 }') \
                        / $(free | grep -F 'Mem:' | awk '{ print $2 }')))
     swap_percent=$(( 100 \
                      * $(free | grep -F 'Swap' | awk '{ print $2 }') \
