@@ -1,10 +1,11 @@
-## Colorscheme ------------------------------------------------------------
+## COLORSCHEME RELATED OPTIONS ----------------------------------------------
 
-set-option -g pane-border-fg brightgreen
-set-option -g pane-active-border-fg brightwhite
-set-option -g status-fg brightgreen
-set-option -g status-bg black
-set-option -gw window-status-current-fg white
-set-option -gw window-status-current-attr bold
+set-option -g status-style "fg=brightgreen,bg=black"
+set-option -g message-style "fg=yellow"
 
-# vim: ft=tmux
+set-option -gw window-status-current-style "fg=brightwhite,bg=brightgreen"
+set-option -gw window-status-activity-style "fg=brightblack,bg=yellow"
+set-option -gw window-status-bell-style "fg=brightblack,bg=yellow"
+
+set-option -gw pane-active-border-style "fg=brightwhite"
+set-option -gw pane-border-style "fg=brightgreen"
