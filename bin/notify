@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+  message="$(cat /dev/stdin)"
+else
+  message="$1"
+fi
+
+curl -s -S -X POST \
+  -F 'username=foo' \
+  -F 'token=bar' \
+  -F 'channel=baz' \
+  -F "text=\`\`\`${message}\`\`\`" \
+  https://quux.slack.com/api/chat.postMessage \
+  < /dev/null > /dev/null

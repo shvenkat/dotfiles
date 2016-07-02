@@ -6,7 +6,7 @@ SHELL := /bin/bash -eu -o pipefail -c
 # .SUFFIXES:
 
 RC := $(HOME)/.rc
-LN_FILES := bin/sahup bin/machine-status
+LN_FILES := bin/sahup bin/machine-dashboard bin/machine-status
 LN_FILES += .bash_profile .certs .colordiffrc
 LN_FILES += .gnupg/gpg.conf .gnupg/gpg-agent.conf
 LN_FILES += .inputrc .lessfilter .Rprofile .vim .vimrc.less .xinitrc
