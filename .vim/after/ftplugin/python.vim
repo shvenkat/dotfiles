@@ -1,2 +1,1 @@
-set foldmethod=indent
-set foldnestmax=1
+../../../nvim/after/ftplugin/python.vim

@@ -1,2 +1,1 @@
-set foldexpr=getline(v:lnum)!=\"\"
-set foldmethod=expr
+../../../nvim/after/ftplugin/make.vim

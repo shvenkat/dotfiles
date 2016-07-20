@@ -1,2 +1,1 @@
-set foldmethod=syntax
-set foldnestmax=1
+../../../nvim/after/ftplugin/c.vim

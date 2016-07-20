@@ -14,6 +14,7 @@ CP_FILES := .bashrc .gitconfig .tmux.conf .vimrc .zshrc
 
 .PHONY: all
 all: $(addprefix $(HOME)/,$(LN_FILES)) $(addprefix $(HOME)/,$(CP_FILES))
+all: $(HOME)/.config/nvim/init.vim
 
 $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 	if [[ $$(basename $*) != $* ]]; then \
@@ -24,3 +25,10 @@ $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 
 $(addprefix $(HOME)/,$(CP_FILES)) : $(HOME)/% : | $(RC)/%.stub
 	cp $| $@
+
+$(HOME)/.config/nvim/init.vim : $(RC)/nvim/init.vim
+	mkdir -p ~/.config/nvim/{autoload,after}
+	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+	    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	ln -s $< $@
+	ln -s $(RC)/nvim/after/ftplugin $(HOME)/.config/nvim/after/
