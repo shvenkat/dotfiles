@@ -1,1 +1,3 @@
 .ropeproject/
+env/
+.autoenv.zsh

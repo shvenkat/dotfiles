@@ -3,26 +3,36 @@
 # export LANG=en_US.UTF-8
 
 
-# OH-MY-ZSH CONFIG ----------------------------------------------------------
+# PLUGINS -------------------------------------------------------------------
 
-export ZSH=~/.rc/.oh-my-zsh
-ZSH_THEME="term-fou"
-# CASE_SENSITIVE="true"
-DISABLE_AUTO_UPDATE="true"
-# export UPDATE_ZSH_DAYS=13
-# DISABLE_LS_COLORS="true"
-DISABLE_AUTO_TITLE="true"
-# ENABLE_CORRECTION="true"
-# COMPLETION_WAITING_DOTS="true"
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-HIST_STAMPS="yyyy-mm-dd"
-ZSH_CUSTOM=~/.rc/.oh-my-zsh.custom
-plugins=(gitfast)
-# plugins=(git-dashboard zsh-syntax-highlighting autoenv common-aliases
-# dircycle fasd fastfile git-extras gitfast jump ssh-agent vi-mode
-# virtualenv zsh-autosuggestions predict-on)
-source $ZSH/oh-my-zsh.sh
-# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,bold'
+# See https://github.com/zplug/zplug
+export ZPLUG_HOME=~/.zplug
+export ZPLUG_PROTOCOL=HTTPS
+export ZPLUG_CLONE_DEPTH=1
+export ZPLUG_USE_CACHE=true
+source ~/.zplug/init.zsh
+zplug "zplug/zplug"
+zplug "~/.rc/.oh-my-zsh.custom/plugins/rtab", from:local
+zplug "plugins/gitfast", from:oh-my-zsh
+zplug "plugins/virtualenv", from:oh-my-zsh
+zplug "~/.rc/.oh-my-zsh.custom/themes/term-fou.zsh-theme", from:local
+zplug "Tarrasch/zsh-autoenv"
+# Install plugins if needed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+zplug load
+# HIST_STAMPS="yyyy-mm-dd"
+# ZSH_CUSTOM=~/.rc/.oh-my-zsh.custom
+# plugins=(gitfast rtab)
+# # plugins=(git-dashboard zsh-syntax-highlighting autoenv common-aliases
+# # dircycle fasd fastfile git-extras gitfast jump ssh-agent vi-mode
+# # virtualenv zsh-autosuggestions predict-on)
+# source $ZSH/oh-my-zsh.sh
+# # ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,bold'
 
 
 # ADDITIONAL CONFIG MODULES -------------------------------------------------
@@ -42,4 +52,5 @@ esac
 . ~/.rc/.zshrc.d/term
 . ~/.rc/.zshrc.d/keys
 . ~/.rc/.zshrc.d/misc
+. ~/.rc/.zshrc.d/hist
 unset OSENV

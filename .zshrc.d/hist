@@ -1,3 +1,12 @@
 # Configure shell history
 
-setopt append_history
+if [[ -n $ZSH_VERSION ]]; then
+    export HISTFILE=~/.zsh_history
+    export HISTSIZE=1000000
+    export SAVEHIST=1000000
+    setopt append_history
+    setopt hist_find_no_dups
+    setopt hist_verify
+else
+    setopt append_history
+fi
