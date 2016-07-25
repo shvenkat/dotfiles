@@ -128,7 +128,7 @@ function! LoadColor(scope, swatch)
 endfunction
 
 " Python provider
-let g:python3_host_prog='/usr/bin/python3'
+let g:python_host_prog='python3'
 
 
 " ---- PLUGIN CONFIG ----

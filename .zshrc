@@ -24,6 +24,7 @@ if ! zplug check --verbose; then
         echo; zplug install
     fi
 fi
+compinit -i
 zplug load
 # HIST_STAMPS="yyyy-mm-dd"
 # ZSH_CUSTOM=~/.rc/.oh-my-zsh.custom
