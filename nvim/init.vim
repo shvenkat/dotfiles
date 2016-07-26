@@ -134,7 +134,8 @@ let g:python_host_prog='python3'
 " ---- PLUGIN CONFIG ----
 
 " ctrlp
-autocmd BufEnter * noremap <C-p> :CtrlPBuffer<CR>
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlPBuffer'
 
 " gitgutter
 let g:gitgutter_enabled = 1
@@ -227,7 +228,7 @@ nmap <leader>p <Plug>yankstack_substitute_older_paste
 nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
 " neomake
-let g:neomake_python_enabled_makers = ['mypy', 'flake8', 'python', 'pylint']
+let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 let g:neomake_python_flake8_maker = {
     \ 'args': ['--max-line-length=100', '--ignore=E251'],
     \ }
