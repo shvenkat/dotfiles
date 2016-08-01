@@ -1,6 +1,6 @@
 # ls color
-case $OSENV in
-linux|cygwin)
+case $OSTYPE in
+linux*|cygwin*)
   if which dircolors >/dev/null; then
     if [[ -r ~/.rc/.dircolors ]]; then
       eval "$(dircolors -b ~/.rc/.dircolors)"
@@ -9,8 +9,10 @@ linux|cygwin)
     fi
   fi
   ;;
-macosx)
+darwin*)
+  # OSX's BSD ls uses LSCOLORS.
   export LSCOLORS="excxacacdxacacadadaeae"
+  # Homebrew's GNU ls uses LS_COLORS, set by dircolors.
   if which dircolors >/dev/null; then
     if [[ -r ~/.rc/.dircolors ]]; then
       eval "$(dircolors -b ~/.rc/.dircolors)"
