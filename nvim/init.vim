@@ -76,13 +76,6 @@ set nowrap
 " Remove trailing whitespace.
 noremap <leader>w :%s/\s\+$//e<CR>
 
-" Line width
-match Visual '\%81v.'
-
-" Left margin
-autocmd ColorScheme * highlight! link SignColumn LineNr
-autocmd ColorScheme * highlight! link CursorLineNr SignColumn
-
 " Folding
 set foldenable
 set foldlevelstart=99
@@ -107,8 +100,6 @@ set foldtext=MyFoldText()
 " Syntax completion
 set complete=".,w,b,u,t,i"
 set completeopt="menu,menuone,longest,preview"
-" set omnifunc=syntaxcomplete#Complete
-" inoremap <leader>, <C-x><C-o>
 " inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
 
 " Opening position
@@ -120,6 +111,9 @@ autocmd BufReadPost *
 
 " Colorscheme
 set background=dark
+autocmd ColorScheme * match Visual '\%81v.'
+autocmd ColorScheme * highlight! link CursorLineNr LineNr
+autocmd ColorScheme * highlight! link SignColumn LineNr
 autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
 " Retrieves the color for a provided scope and swatch in the current context
 function! LoadColor(scope, swatch)
@@ -144,23 +138,15 @@ let g:gitgutter_escape_grep = 1
 " let g:gitgutter_diff_args = '-b'
 let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
-" let g:gitgutter_override_sign_column_highlight = 0
-function! CustomizeGitGutterColors()
-  let l:sign_bg = LoadColor('SignColumn', 'bg')
-  execute "highlight GitGutterAdd          ctermfg=6 ctermbg=" . l:sign_bg
-  execute "highlight GitGutterDelete       ctermfg=5 ctermbg=" . l:sign_bg
-  execute "highlight GitGutterChange       ctermfg=3 ctermbg=" . l:sign_bg
-  execute "highlight GitGutterChangeDelete ctermfg=3 ctermbg=" . l:sign_bg
-endfunction
-
-" vim-colors-solarized
-function! Solarize()
-  colorscheme solarized
-  call CustomizeGitGutterColors()
-  match Visual '\%81v.'
-endfunction
-noremap <leader>cl :set background=light<CR> :call Solarize()<CR>
-noremap <leader>cd :set background=dark<CR> :call Solarize()<CR>
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '*'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_modified_removed = '*'
+highlight! link GitGutterAdd SignColumn
+highlight! link GitGutterDelete SignColumn
+highlight! link GitGutterChange SignColumn
+highlight! link GitGutterChangeDelete SignColumn
 
 " vim-airline
 let g:airline_theme = 'lunarized'
@@ -232,7 +218,15 @@ let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 let g:neomake_python_flake8_maker = {
     \ 'args': ['--max-line-length=100', '--ignore=E251'],
     \ }
-autocmd! BufWritePost,BufEnter * Neomake
+autocmd BufWritePost,BufEnter * Neomake
+function! SolarizeNeomakeColors()
+  let l:sign_bg = LoadColor('SignColumn', 'bg')
+  execute "highlight! NeomakeMessageSign ctermfg=4 ctermbg=" . l:sign_bg
+  execute "highlight! NeomakeInfoSign    ctermfg=2 ctermbg=" . l:sign_bg
+  execute "highlight! NeomakeWarningSign ctermfg=3 ctermbg=" . l:sign_bg
+  execute "highlight! NeomakeErrorSign   ctermfg=1 ctermbg=" . l:sign_bg
+endfunction
+autocmd ColorScheme * call SolarizeNeomakeColors()
 
 " tagbar
 " let g:tagbar_ctags_bin = '/usr/local/bin/ctags'

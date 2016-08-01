@@ -7,4 +7,4 @@ let g:solarized_italic = 0
 let g:solarized_contrast = "normal"
 let g:solarized_visibility = "normal"
 
-call Solarize()
+colorscheme solarized
