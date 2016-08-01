@@ -31,7 +31,7 @@ Profiles:
   Scrollback Lines:               1000
   Scrollback With Status Bar:     false          # No scrollback for vim/tmux.
   Scrollback in Alternate Screen: true           # Use scrollback for pagers.
-  Mouse Reporting:                true           # Send mouse events to tmux.
+  Mouse Reporting:                false          # Don't send mouse events.
   Disable Window Resizing:        false          # Apps can set terminal size.
   Sync Title:                     false          # Apps can set terminal title.
 
@@ -43,4 +43,5 @@ Profiles:
   - tmux
 
   # Key bindings.
-  Option Key Sends: 2  # Left option sends an Esc prefix.
+  Option Key Sends:       2  # Left option sends an Esc prefix.
+  Right Option Key Sends: 0  # Right option remains an Alt/Option key.
