@@ -3,7 +3,7 @@
 # export LANG=en_US.UTF-8
 
 
-# PLUGINS -------------------------------------------------------------------
+# PLUGIN MANAGEMENT AND CONFIG ----------------------------------------------
 
 # Manage plugins using zplug (https://github.com/zplug/zplug)
 export ZPLUG_HOME=~/.zplug
@@ -27,6 +27,12 @@ zplug "shvenkat/oh-my-zsh", at:"plugin/shrink-path", use:"plugins/shrink-path/*.
 zplug "plugins/gitfast", from:oh-my-zsh, nice:10
 zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", nice:19
+DEXTER_EXIT_SUCCESS_COLOR=$fg[default]
+DEXTER_EXIT_FAILURE_COLOR=$fg[red]
+DEXTER_VENV_COLOR=$fg_bold[green]
+DEXTER_GIT_COLOR=$fg_bold[green]
+DEXTER_WORKDIR_COLOR=$fg_bold[green]
+DEXTER_HOSTNAME_COLOR=$fg_bold[green]
 
 # Install plugins, if needed.
 if ! zplug check --verbose; then

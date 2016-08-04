@@ -51,7 +51,7 @@ runtime! plugin/sensible.vim
 set noswapfile
 set hidden
 set confirm
-set number relativenumber
+set nonumber relativenumber numberwidth=2
 set hlsearch incsearch
 set updatetime=1000
 set wildmode=longest,list:longest
@@ -140,9 +140,9 @@ let g:gitgutter_realtime = 1
 let g:gitgutter_eager = 1
 let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_sign_added = '+'
-let g:gitgutter_sign_modified = '*'
-let g:gitgutter_sign_removed = '-'
-let g:gitgutter_sign_modified_removed = '*'
+let g:gitgutter_sign_removed = '_'
+let g:gitgutter_sign_modified = '±'
+let g:gitgutter_sign_modified_removed = '±'
 highlight! link GitGutterAdd SignColumn
 highlight! link GitGutterDelete SignColumn
 highlight! link GitGutterChange SignColumn
@@ -215,9 +215,11 @@ nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
 " neomake
 let g:neomake_python_enabled_makers = ['mypy', 'flake8']
-let g:neomake_python_flake8_maker = {
-    \ 'args': ['--max-line-length=100', '--ignore=E251'],
-    \ }
+let g:neomake_ft_maker_remove_invalid_entries = 0
+let g:neomake_error_sign = {'text': 'E', 'texthl': 'NeomakeErrorSign'}
+let g:neomake_warning_sign = {'text': 'W', 'texthl': 'NeomakeWarningSign'}
+let g:neomake_message_sign = {'text': 'M', 'texthl': 'NeomakeMessageSign'}
+let g:neomake_info_sign = {'text': 'I', 'texthl': 'NeomakeInfoSign'}
 autocmd BufWritePost,BufEnter * Neomake
 function! SolarizeNeomakeColors()
   let l:sign_bg = LoadColor('SignColumn', 'bg')

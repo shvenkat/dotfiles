@@ -1,80 +1,89 @@
 [user]
-	name = Shiv
-	email = shvenkat@users.noreply.github.com
+    name = Shiv
+    email = shvenkat@users.noreply.github.com
 [github]
-	user = shvenkat
+    user = shvenkat
 [url "https://github.com"]
-	insteadOf = git://github.com
+    insteadOf = git://github.com
 [http]
-	; sslCAinfo = /home/shvenkat/.certs/cacert.pem
+    ; sslCAinfo = /home/shvenkat/.certs/cacert.pem
 [core]
-	autocrlf = input
-	editor = vim
-	excludesfile = ~/.rc/.gitignore.global
+    autocrlf = input
+    editor = vim
+    excludesfile = ~/.rc/.gitignore.global
 [merge]
-	tool = vimdiff
-	conflictstyle = diff3
+    tool = vimdiff
+    conflictstyle = diff3
 [mergetool]
-	prompt = false
+    prompt = false
 [push]
-	default = simple
+    default = simple
 [color]
-	branch = auto
-	diff = auto
-	grep = auto
-	interactive = auto
-	pager = true
-	showbranch = auto
-	status = auto
-	ui = auto
+    branch = always
+    diff = always
+    grep = always
+    interactive = always
+    pager = true
+    showbranch = always
+    status = always
+    ui = always
 [color "branch"]
-	current = bold magenta
-	local = yellow
-	upstream = green
-	remote = normal
-	plain = bold cyan
+    current = reverse
+    local = normal
+    upstream = white
+    remote = bold green
+    plain = bold green
 [color "diff"]
-	plain = normal
-	old = magenta
-	new = cyan
-	frag = green
-	func = green
-	meta = yellow
-	commit = bold red
+    plain = normal
+    old = magenta
+    new = cyan
+    frag = green
+    func = blue
+    meta = bold white
+    commit = reverse
 [color "grep"]
-	context = bold cyan
-	selected = normal
-	match = blue
-	filename = yellow
-	function = green
-	linenumber = white
-	separator = magenta
+    context = normal
+    selected = normal
+    match = bold white
+    filename = yellow
+    function = blue
+    linenumber = black
+    separator = normal
 [color "interactive"]
-	prompt = bold magenta
-	header = normal
-	help = bold cyan
-	error = red
+    prompt = bold magenta
+    header = bold white
+    help = bold green
+    error = red
 [color "status"]
-	header = normal
-	added = bold magenta
-	changed = yellow
-	untracked = normal
-	branch = bold magenta
-	nobranch = bold red
-	unmerged = magenta
+    header = normal
+    added = green
+    changed = blue
+    untracked = bold white
+    branch = reverse
+    nobranch = bold red
+    unmerged = bold magenta
 ; [log]
-; 	decorate = full
+;     decorate = full
 [alias]
-	; simple
-	logs = log --format=format:'%h %<(10,trunc)%an %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
-	; repo overview
-	logo = log --graph --all --simplify-by-decoration --date-order \
-	         --format=format:'%h  %C(bold magenta)%<(6,trunc)%ar%C(reset) %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
-	; graph history
-	logg = log --graph --date-order \
-	         --format=format:'%h  %C(bold magenta)%<(6,trunc)%ar%C(reset) %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
-	; verify signatures
-	logv = log --graph --date-order \
-	         --format=format:'%h %C(bold red)%G?%C(reset)%GK  %<(6,trunc)%ar %<(10,trunc)%an  %C(bold cyan)%s%C(reset) %C(green)%d%C(reset)'
-	; First common ancestor (as opposed to last common ancestor returned by merge-base)
-	fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
+    stat = status -s
+    ; The following git log aliases decorate the output with age, committer and branch/tag.
+    ; Use these with: git logs, git logo or git logg.
+
+    ; Simple - one line per commit in the current branch.
+    logs = log \
+        --format=format:'%C(bold green)%h%C(reset)  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+
+    ; Overview - one line for the tip of each branch/tag in the repo.
+    logo = log --graph --all --simplify-by-decoration --date-order \
+        --format=format:'%C(bold green)%h%C(reset)  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+
+    ; Graph - one commit per commit in the current branch with ancestry graph.
+    logg = log --graph --date-order \
+        --format=format:'%C(bold green)%h%C(reset)  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+
+    ; Verify - Graph + verification of signed commit/tag
+    logv = log --graph --date-order \
+        --format=format:'%C(bold green)%h%C(reset)  %C(bold white)%G?%C(reset) %GK  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+
+    ; First common ancestor (as opposed to last common ancestor returned by merge-base)
+    fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
