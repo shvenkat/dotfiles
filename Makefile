@@ -3,7 +3,7 @@ SHELL := /bin/bash -eu -o pipefail -c
 
 RC := $(HOME)/.rc
 LN_FILES := bin/sahup bin/machine-dashboard bin/machine-status
-LN_FILES += .bash_profile .certs .colordiffrc
+LN_FILES += .bash_profile .certs .colordiffrc .editorconfig
 LN_FILES += .gnupg/gpg.conf .gnupg/gpg-agent.conf
 LN_FILES += .inputrc .lessfilter .Rprofile .vim .vimrc.less .xinitrc
 CP_FILES := .bashrc .gitconfig .tmux.conf .vimrc

@@ -4,14 +4,29 @@ call plug#begin('~/.config/nvim/bundle')
 
 " Basic settings
 Plug 'tpope/vim-sensible'
+Plug 'editorconfig/editorconfig-vim'
 
 " File/buffer navigation
 Plug 'kien/ctrlp.vim'
 
 " Look and feel
-Plug 'altercation/vim-colors-solarized', { 'do': 'mkdir -p ~/.config/nvim/after/plugin && ln -s ~/.rc/nvim/after/plugin/solarized.vim ~/.config/nvim/after/plugin/' }
-Plug 'vim-airline/vim-airline', { 'do': 'mkdir -p ~/.config/nvim/after/plugin && ln -s ~/.rc/nvim/after/plugin/airline.vim ~/.config/nvim/after/plugin/' }
-Plug 'vim-airline/vim-airline-themes', { 'do': 'mkdir -p ~/.config/nvim/autoload/airline/themes && ln -s ~/.rc/nvim/autoload/airline/themes/lunarized.vim ~/.config/nvim/autoload/airline/themes/' }
+Plug 'altercation/vim-colors-solarized',
+  \ { 'do':
+  \     'mkdir -p ~/.config/nvim/after/plugin ' .
+  \     '&& ln -sf ~/.rc/nvim/after/plugin/solarized.vim ' .
+  \       '~/.config/nvim/after/plugin/'
+  \ }
+Plug 'vim-airline/vim-airline',
+  \ { 'do':
+  \     'mkdir -p ~/.config/nvim/after/plugin ' .
+  \     '&& ln -sf ~/.rc/nvim/after/plugin/airline.vim ' .
+  \       '~/.config/nvim/after/plugin/'
+  \ }
+Plug 'vim-airline/vim-airline-themes',
+  \ { 'do':
+  \     'mkdir -p ~/.config/nvim/autoload/airline/themes ' .
+  \     '&& ln -sf ~/.rc/nvim/autoload/airline/themes/lunarized.vim ' .
+  \       '~/.config/nvim/autoload/airline/themes/' }
 Plug 'junegunn/goyo.vim'
 
 " Shortcuts
@@ -64,17 +79,17 @@ let maplocalleader=","
 set pastetoggle=<F2>
 
 " Whitespace
-set tabstop=8                   " A tab is 8 spaces
+" set tabstop=8                   " A tab is 8 spaces
 set expandtab                   " Always uses spaces instead of tabs
-set softtabstop=4               " Insert 4 spaces when tab is pressed
-set shiftwidth=4                " An indent is 4 spaces
-set smarttab                    " Indent instead of tab at start of line
+" set softtabstop=4               " Insert 4 spaces when tab is pressed
+" set shiftwidth=4                " An indent is 4 spaces
+" set smarttab                    " Indent instead of tab at start of line
 set shiftround                  " Round spaces to nearest shiftwidth multiple
-set nojoinspaces                " Don't convert spaces to tabs
+set nojoinspaces                " Use one space between sentences.
 set autoindent
 set nowrap
 " Remove trailing whitespace.
-noremap <leader>w :%s/\s\+$//e<CR>
+" noremap <leader>w :%s/\s\+$//e<CR>
 
 " Folding
 set foldenable
@@ -126,6 +141,12 @@ let g:python_host_prog='python3'
 
 
 " ---- PLUGIN CONFIG ----
+
+" editorconfig
+let g:EditorConfig_max_line_indicator = "line"
+" let g:EditorConfig_preserve_formatoptions = 1
+" let g:EditorConfig_verbose = 1
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
 " ctrlp
 let g:ctrlp_map = '<c-p>'
