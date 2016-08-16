@@ -13,7 +13,7 @@ export ZPLUG_USE_CACHE=true
 source ~/.zplug/init.zsh
 
 # Plugin management.
-# zplug "zplug/zplug"
+zplug "zplug/zplug"
 
 # Command completion.
 # zplug "zsh-users/zsh-autosuggestions"
@@ -23,7 +23,7 @@ source ~/.zplug/init.zsh
 zplug "Tarrasch/zsh-autoenv"
 
 # Theme (command prompt).
-zplug "shvenkat/oh-my-zsh", at:"plugin/shrink-path", use:"plugins/shrink-path/*.zsh"
+zplug "plugins/shrink-path", from:oh-my-zsh
 zplug "plugins/gitfast", from:oh-my-zsh, nice:10
 zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", nice:19

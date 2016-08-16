@@ -21,6 +21,7 @@ cygwin*)
 darwin*)
   PATH=/usr/local/sbin:/sbin:/usr/sbin
   PATH=${PATH}:/usr/local/opt/coreutils/libexec/gnubin
+  PATH=${PATH}:/usr/local/opt/findutils/libexec/gnubin
   PATH=${PATH}:/usr/local/bin:/bin:/usr/bin
   PATH=${PATH}:/opt/X11/bin
   PATH=${PATH}:${HOME}/bin
@@ -29,6 +30,7 @@ darwin*)
   export PATH
 
   MANPATH=/usr/local/opt/coreutils/libexec/gnuman
+  MANPATH=${MANPATH}:/usr/local/opt/findutils/libexec/gnuman
   MANPATH=${MANPATH}:/usr/local/share/man
   MANPATH=${MANPATH}:/usr/share/man
   MANPATH=${MANPATH}:/usr/share/man/en
