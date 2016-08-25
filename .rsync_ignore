@@ -1,0 +1,20 @@
+# Misc
+*~
+.DS_Store
+
+# Ephemera
+*.log
+
+# SCM
+/.git/
+
+# Python
+__pycache__/
+*.pyc
+*.egg*
+/env/
+.ipython/
+
+# Build
+/build/
+/dist/

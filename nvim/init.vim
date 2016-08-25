@@ -79,17 +79,14 @@ let maplocalleader=","
 set pastetoggle=<F2>
 
 " Whitespace
-" set tabstop=8                   " A tab is 8 spaces
 set expandtab                   " Always uses spaces instead of tabs
-" set softtabstop=4               " Insert 4 spaces when tab is pressed
-" set shiftwidth=4                " An indent is 4 spaces
-" set smarttab                    " Indent instead of tab at start of line
 set shiftround                  " Round spaces to nearest shiftwidth multiple
 set nojoinspaces                " Use one space between sentences.
 set autoindent
+
+" Linewidth
 set nowrap
-" Remove trailing whitespace.
-" noremap <leader>w :%s/\s\+$//e<CR>
+autocmd BufWinEnter * execute "match Visual '\\%" . (&textwidth + 1) . "v.'"
 
 " Folding
 set foldenable
@@ -112,7 +109,7 @@ function! MyFoldText()
 endfunction
 set foldtext=MyFoldText()
 
-" Syntax completion
+" Completion
 set complete=".,w,b,u,t,i"
 set completeopt="menu,menuone,longest,preview"
 " inoremap <Nul> <C-x><C-o>    " C-Space invokes completion
@@ -126,7 +123,6 @@ autocmd BufReadPost *
 
 " Colorscheme
 set background=dark
-autocmd ColorScheme * match Visual '\%81v.'
 autocmd ColorScheme * highlight! link CursorLineNr LineNr
 autocmd ColorScheme * highlight! link SignColumn LineNr
 autocmd ColorScheme * highlight Todo term=reverse cterm=reverse ctermfg=5
@@ -143,7 +139,7 @@ let g:python_host_prog='python3'
 " ---- PLUGIN CONFIG ----
 
 " editorconfig
-let g:EditorConfig_max_line_indicator = "line"
+let g:EditorConfig_max_line_indicator = "none"
 " let g:EditorConfig_preserve_formatoptions = 1
 " let g:EditorConfig_verbose = 1
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
