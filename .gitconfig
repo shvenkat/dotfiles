@@ -11,6 +11,19 @@
     autocrlf = input
     editor = vim
     excludesfile = ~/.rc/.gitignore.global
+[pager]
+    diff = diff-highlight | less --tabs=4 -RFX --pattern '^diff'
+    ; diff = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+[interactive]
+    diffFilter = diff-highlight | less --tabs=4 -RFX
+    ; diff-so-fancy breaks the custom diff header expected by interactive git
+    ; commands such as add, stash, etc. (see issue #35 on github).
+    ; diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
+[diff-so-fancy]
+    markEmptyLines = true
+    changeHunkIndicators = false
+    stripLeadingSymbols = true
+    useUnicodeRuler = false
 [merge]
     tool = vimdiff
     conflictstyle = diff3
@@ -41,6 +54,7 @@
     func = blue
     meta = bold white
     commit = reverse
+    whitespace = red reverse
 [color "grep"]
     context = normal
     selected = normal
@@ -65,7 +79,12 @@
 ; [log]
 ;     decorate = full
 [alias]
+    ; Terse status.
     stat = status -s
+
+    ; Remove color escapes from diff output to be used as a patch.
+    patch = --no-pager diff --no-color
+
     ; The following git log aliases decorate the output with age, committer and branch/tag.
     ; Use these with: git logs, git logo or git logg.
 

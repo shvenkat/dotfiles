@@ -12,6 +12,7 @@ CP_FILES := .bashrc .gitconfig .tmux.conf .vimrc
 all: $(HOME)/.zshrc
 all: $(HOME)/.config/nvim/init.vim
 all: $(addprefix $(HOME)/,$(LN_FILES)) $(addprefix $(HOME)/,$(CP_FILES))
+all: $(HOME)/bin/diff-highlight
 
 $(HOME)/.zshrc : $(RC)/.zshrc.stub
 	# Install zsh plugins.
@@ -34,3 +35,15 @@ $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 
 $(addprefix $(HOME)/,$(CP_FILES)) : $(HOME)/% : | $(RC)/%.stub
 	cp $| $@
+
+ifneq ($(findstring linux,$(OSTYPE)),)
+$(HOME)/bin/diff-highlight: $(DIFF_HIGHLIGHT)
+	ln -s $(DIFF_HIGHLIGHT) $(HOME)/bin
+else
+output != test -x $(HOME)/bin/diff-highlight
+ifneq ($(.SHELLSTATUS),0)
+$(HOME)/bin/diff-highlight:
+	echo "Please install $(HOME)/bin/diff-highlight"
+endif
+endif
+DIFF_HIGHLIGHT:=$(if $(findstring linux,$(OSTYPE)),/usr/share/doc/git/contrib/diff-highlight/diff-highlight,)
