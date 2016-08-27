@@ -1,5 +1,6 @@
 MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash -eu -o pipefail -c
+OSTYPE := $(shell echo $$OSTYPE)
 
 RC := $(HOME)/.rc
 LN_FILES := bin/sahup bin/machine-dashboard bin/machine-status
@@ -36,9 +37,11 @@ $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 $(addprefix $(HOME)/,$(CP_FILES)) : $(HOME)/% : | $(RC)/%.stub
 	cp $| $@
 
-ifneq ($(findstring linux,$(OSTYPE)),)
+DIFF_HIGHLIGHT:=$(if $(findstring linux,$(OSTYPE)),/usr/share/doc/git/contrib/diff-highlight/diff-highlight,)
+ifneq (,$(findstring linux,$(OSTYPE)))
 $(HOME)/bin/diff-highlight: $(DIFF_HIGHLIGHT)
-	ln -s $(DIFF_HIGHLIGHT) $(HOME)/bin
+	cp $(DIFF_HIGHLIGHT) $@
+	chmod +x $@
 else
 output != test -x $(HOME)/bin/diff-highlight
 ifneq ($(.SHELLSTATUS),0)
@@ -46,4 +49,3 @@ $(HOME)/bin/diff-highlight:
 	echo "Please install $(HOME)/bin/diff-highlight"
 endif
 endif
-DIFF_HIGHLIGHT:=$(if $(findstring linux,$(OSTYPE)),/usr/share/doc/git/contrib/diff-highlight/diff-highlight,)
