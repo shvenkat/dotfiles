@@ -22,5 +22,5 @@ color_patches=no
 plain=normal
 oldtext=darkmagenta
 newtext=darkcyan
-diffstuff=darkgreen
-cvsstuff=darkyellow
+diffstuff=darkblue
+cvsstuff=cyan
