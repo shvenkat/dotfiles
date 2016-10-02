@@ -1,9 +1,8 @@
+docker
 epub-to-pdf
 evernote
 flux
 font-droid-sans-mono
-font-droid-sans-mono-slashed
-ghc
 google-drive
 iterm2-beta
 java
@@ -11,6 +10,7 @@ macfusion
 mendeley-desktop
 omnigraffle
 osxfuse
+skype
 sshfs
 tunnelblick
 vagrant

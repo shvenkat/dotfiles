@@ -7,14 +7,17 @@ colordiff
 coreutils
 cscope
 ctags
-docker
-docker-machine
 ecj
+elementary
+evas-generic-loaders
+findutils
 fontforge
 gcc
 git
 gnupg2
+go
 homebrew/dupes/grep
+gtk+
 haskell-stack
 htop-osx
 homebrew/science/igv
@@ -28,7 +31,6 @@ node
 homebrew/dupes/openssh
 pigz
 postgresql
-python
 python3
 homebrew/science/r
 homebrew/dupes/rsync
@@ -42,4 +44,7 @@ unrar
 valgrind
 vim
 watch
+wdiff
 wget
+zsh
+zsh-completions
