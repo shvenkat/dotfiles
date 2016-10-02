@@ -13,6 +13,7 @@ all: $(HOME)/.zshrc
 all: $(HOME)/.config/nvim/init.vim
 all: $(addprefix $(HOME)/,$(LN_FILES)) $(addprefix $(HOME)/,$(CP_FILES))
 all: $(HOME)/bin/diff-highlight
+all: $(HOME)/.htoprc
 
 $(HOME)/.zshrc : $(RC)/.zshrc.stub
 	# Install zsh plugins.
@@ -24,7 +25,8 @@ $(HOME)/.config/nvim/init.vim : $(RC)/nvim/init.vim
 	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
 	    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	ln -s $< $@
-	ln -s $(RC)/nvim/after/ftplugin $(HOME)/.config/nvim/after/
+	ln -s -t $(HOME)/.config/nvim/after/ $(RC)/nvim/after/*
+	ln -s -t $(HOME)/.config/nvim/autoload/ $(RC)/nvim/autoload/*
 
 $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 	if [[ $$(basename $*) != $* ]]; then \
@@ -35,6 +37,9 @@ $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 
 $(addprefix $(HOME)/,$(CP_FILES)) : $(HOME)/% : | $(RC)/%.stub
 	cp $| $@
+
+$(HOME)/.htoprc: $(RC)/.htoprc
+	cp $< $@
 
 ifneq ($(findstring linux,$(OSTYPE)),)
 $(HOME)/bin/diff-highlight: $(DIFF_HIGHLIGHT)

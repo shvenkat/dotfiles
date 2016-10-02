@@ -17,13 +17,13 @@
     default = simple
 
 [pager]
-    diff = diff-highlight | less --tabs=4 -RFX --pattern '^diff'
-    ; diff = diff-so-fancy | less --tabs=4 -RFX --pattern '^(Date|added|deleted|modified): '
+    diff = diff-highlight | less --tabs=4 -iGRS --pattern '^diff'
+    ; diff = diff-so-fancy | less --tabs=4 -iGRS --pattern '^(Date|added|deleted|modified): '
 [interactive]
-    diffFilter = diff-highlight | less --tabs=4 -RFX
+    diffFilter = diff-highlight | less --tabs=4 -iGRS
     ; diff-so-fancy breaks the custom diff header expected by interactive git
     ; commands such as add, stash, etc. (see issue #35 on github).
-    ; diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -RFX
+    ; diffFilter = diff-so-fancy --patch-mode | less --tabs=4 -iGRS
 [merge]
     tool = vimdiff
     conflictstyle = diff3

@@ -51,7 +51,8 @@ Plug 'tpope/vim-markdown'
 Plug 'nelstrom/vim-markdown-folding'
 " Plug 'vim-pandoc/vim-pandoc'
 " Plug 'vim-pandoc/vim-pandoc-syntax'
-"let g:pandoc#syntax#codeblocks#embeds#langs=['java', 'python']
+" let g:pandoc#syntax#codeblocks#embeds#langs=['java', 'python']
+Plug 'vim-scripts/python_ifold'
 " Plug 'jalvesaq/Nvim-R'
 
 call plug#end()
@@ -86,7 +87,7 @@ set autoindent
 
 " Linewidth
 set nowrap
-autocmd BufWinEnter * execute "match Visual '\\%" . (&textwidth + 1) . "v.'"
+autocmd BufWinEnter * execute "match Visual '\\%" . &textwidth . "v.'"
 
 " Folding
 set foldenable
@@ -221,7 +222,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#ctrlp#show_adjacent_modes = 0
 
 " goyo
-let g:goyo_width = 90
+let g:goyo_width = 102
 let g:goyo_height = '100%'
 " let g:goyo_linenr = 0
 noremap <leader>d :Goyo<CR>i<Esc>`^
@@ -285,3 +286,8 @@ let g:UltiSnipsSnippetDirectories = ["UltiSnips", "snips/ultisnips"]
 
 " vim-markdown
 let g:markdown_fold_style='nested'
+
+" python_ifold
+let g:ifold_mode = 2
+" autocmd BufWinEnter *.py setlocal foldexpr=SimpylFold(v:lnum) foldmethod=expr
+" autocmd BufWinLeave *.py setlocal foldexpr< foldmethod<
