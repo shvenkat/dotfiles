@@ -28,6 +28,7 @@ $(HOME)/.config/nvim/init.vim : $(RC)/nvim/init.vim
 	ln -s $< $@
 	ln -s -t $(HOME)/.config/nvim/after/ $(RC)/nvim/after/*
 	ln -s -t $(HOME)/.config/nvim/autoload/ $(RC)/nvim/autoload/*
+	ln -s -t $(HOME)/.config/nvim/ultisnips $(RC)/nvim/ultisnips
 
 $(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
 	if [[ $$(basename $*) != $* ]]; then \

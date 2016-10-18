@@ -281,8 +281,7 @@ let g:UltiSnipsExpandTrigger = "<leader>se"
 let g:UltiSnipsListSnippets = "<leader>sl"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-let g:UltiSnipsSnippetsDir = "~/.vim/snips/ultisnips"
-let g:UltiSnipsSnippetDirectories = ["UltiSnips", "snips/ultisnips"]
+let g:UltiSnipsSnippetDirectories = ["UltiSnips", "ultisnips"]
 
 " vim-markdown
 let g:markdown_fold_style='nested'
