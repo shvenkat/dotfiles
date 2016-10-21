@@ -26,7 +26,7 @@ $(HOME)/.config/nvim/init.vim : $(RC)/nvim/init.vim
 	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
 	    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	ln -s $< $@
-	ln -s -t $(HOME)/.config/nvim/after/ $(RC)/nvim/after/*
+	ln -s -t $(HOME)/.config/nvim/ $(RC)/nvim/after
 	ln -s -t $(HOME)/.config/nvim/autoload/ $(RC)/nvim/autoload/*
 	ln -s -t $(HOME)/.config/nvim/ultisnips $(RC)/nvim/ultisnips
 
