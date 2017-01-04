@@ -1,12 +1,9 @@
-case $OSENV in
-linux)
-    alias startsa='eval "$(start-ssh-agent)"'
-    alias stopsa='eval "$(stop-ssh-agent)"'
-    alias connectsa='eval "$(connect-ssh-agent)"'
+case $OSTYPE in
+linux*)
     ;;
-macosx)
+darwin*)
     ;;
-cygwin)
+cygwin*)
     alias open=cygstart
     ;;
 esac
@@ -40,9 +37,6 @@ alias vim='nvim'
 alias sum="awk 'BEGIN { s = 0 } { s += \$1 } END { print s }'"
 alias mean="awk 'BEGIN { n = 0; s = 0 } { n += 1; s += \$1 } END { print s/n }'"
 
-diffsort () {
-  diff <(sort $1) <(sort $2)
-}
 TRANSFER_CMD=(
   "rsync"
   "--delete" "--update"

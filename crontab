@@ -1,0 +1,2 @@
+# m h  dom mon dow   command
+11  */2  *  *  *  ${HOME}/.rc/bin/machine-status | ${HOME}/.rc/bin/notify

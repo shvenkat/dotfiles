@@ -1,2 +1,2 @@
 # Connect to ssh-agent, starting it if needed
-eval "$(~/.rc/bin/sahup)"
+eval "$(~/.rc/bin/ssh-agent-connect)"

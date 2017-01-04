@@ -73,6 +73,7 @@ set updatetime=1000
 set wildmode=longest,list:longest
 set diffopt=filler,context:3,iwhite,vertical,foldcolumn:2
 set lazyredraw
+set scrolloff=3
 
 " Key mapping
 let mapleader=","
@@ -226,6 +227,39 @@ let g:goyo_width = 102
 let g:goyo_height = '100%'
 " let g:goyo_linenr = 0
 noremap <leader>d :Goyo<CR>i<Esc>`^
+" noremap <leader>d :call Goyo()<CR>
+" function! Goyo()
+"   execute "Goyo"
+"   let l:normal_bg = LoadColor('Normal', 'bg')
+"   execute "highlight! NeomakeMessageSign ctermfg=4 ctermbg=" . l:normal_bg
+"   execute "highlight! NeomakeInfoSign    ctermfg=2 ctermbg=" . l:normal_bg
+"   execute "highlight! NeomakeWarningSign ctermfg=3 ctermbg=" . l:normal_bg
+"   execute "highlight! NeomakeErrorSign   ctermfg=1 ctermbg=" . l:normal_bg
+" endfunction
+function! s:goyo_enter()
+  " silent !tmux set status off
+  " silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  set noshowmode
+  set noshowcmd
+  " set scrolloff=999
+  let l:normal_bg = LoadColor('Normal', 'bg')
+  execute "highlight! NeomakeMessageSign ctermfg=4 ctermbg=" . l:normal_bg
+  execute "highlight! NeomakeInfoSign    ctermfg=2 ctermbg=" . l:normal_bg
+  execute "highlight! NeomakeWarningSign ctermfg=3 ctermbg=" . l:normal_bg
+  execute "highlight! NeomakeErrorSign   ctermfg=1 ctermbg=" . l:normal_bg
+endfunction
+
+function! s:goyo_leave()
+  " silent !tmux set status on
+  " silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  set showmode
+  set showcmd
+  " set scrolloff=5
+  call SolarizeNeomakeColors()
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 " vim-yankstack
 nmap <leader>p <Plug>yankstack_substitute_older_paste

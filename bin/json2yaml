@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+
+"""Convert JSON on stdin to YAML on stdout"""
+
+import json
+import sys
+import yaml
+
+yaml.dump(json.load(sys.stdin), sys.stdout, default_flow_style = False)

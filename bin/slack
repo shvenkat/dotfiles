@@ -1,0 +1,20 @@
+#!/bin/bash
+
+SLACK_SUBDOMAIN='subdomain'
+SLACK_USER='user'
+SLACK_TOKEN='token'
+SLACK_CHANNEL='channel'
+
+if [[ $# -eq 0 ]]; then
+  message="$(cat /dev/stdin)"
+else
+  message="$1"
+fi
+
+curl -s -S -X POST \
+  -F "username=$SLACK_USER" \
+  -F "token=$SLACK_TOKEN" \
+  -F "channel=$SLACK_CHANNEL" \
+  -F "text=\`\`\`${message}\`\`\`" \
+  "https://${SLACK_SUBDOMAIN}.slack.com/api/chat.postMessage" \
+  < /dev/null > /dev/null
