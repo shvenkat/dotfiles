@@ -10,23 +10,9 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'kien/ctrlp.vim'
 
 " Look and feel
-Plug 'altercation/vim-colors-solarized',
-  \ { 'do':
-  \     'mkdir -p ~/.config/nvim/after/plugin ' .
-  \     '&& ln -sf ~/.rc/nvim/after/plugin/solarized.vim ' .
-  \       '~/.config/nvim/after/plugin/'
-  \ }
-Plug 'vim-airline/vim-airline',
-  \ { 'do':
-  \     'mkdir -p ~/.config/nvim/after/plugin ' .
-  \     '&& ln -sf ~/.rc/nvim/after/plugin/airline.vim ' .
-  \       '~/.config/nvim/after/plugin/'
-  \ }
-Plug 'vim-airline/vim-airline-themes',
-  \ { 'do':
-  \     'mkdir -p ~/.config/nvim/autoload/airline/themes ' .
-  \     '&& ln -sf ~/.rc/nvim/autoload/airline/themes/lunarized.vim ' .
-  \       '~/.config/nvim/autoload/airline/themes/' }
+Plug 'altercation/vim-colors-solarized'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/goyo.vim'
 
 " Shortcuts

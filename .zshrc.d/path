@@ -25,7 +25,7 @@ darwin*)
   PATH=${PATH}:/usr/local/bin:/bin:/usr/bin
   PATH=${PATH}:/opt/X11/bin
   PATH=${PATH}:${HOME}/bin
-  PATH=${PATH}:${HOME}/Library/Python/3.5/bin
+  PATH=${PATH}:${HOME}/Library/Python/3.6/bin
   PATH=${PATH}:${HOME}/Library/Python/2.7/bin
   export PATH
 
