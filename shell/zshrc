@@ -32,15 +32,6 @@ DEXTER_GIT_COLOR=$fg_bold[green]
 DEXTER_WORKDIR_COLOR=$fg_bold[green]
 DEXTER_HOSTNAME_COLOR=$fg_bold[green]
 
-# Install plugins, if needed.
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo
-        zplug install
-    fi
-fi
-
 # Load plugins.
 zplug load
 
