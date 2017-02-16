@@ -8,12 +8,10 @@
 # Manage plugins using zplug (https://github.com/zplug/zplug)
 export ZPLUG_HOME=~/.zplug
 export ZPLUG_PROTOCOL=HTTPS
-export ZPLUG_CLONE_DEPTH=1
-export ZPLUG_USE_CACHE=true
-source ~/.zplug/init.zsh
+source $ZPLUG_HOME/init.zsh
 
 # Plugin management.
-zplug "zplug/zplug"
+# zplug "zplug/zplug"
 
 # Command completion.
 # zplug "zsh-users/zsh-autosuggestions"
@@ -24,9 +22,9 @@ zplug "Tarrasch/zsh-autoenv"
 
 # Theme (command prompt).
 zplug "plugins/shrink-path", from:oh-my-zsh
-zplug "plugins/gitfast", from:oh-my-zsh, nice:10
+zplug "plugins/gitfast", from:oh-my-zsh, defer:1
 zplug "plugins/virtualenv", from:oh-my-zsh
-zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", nice:19
+zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", defer:3
 DEXTER_EXIT_SUCCESS_COLOR=$fg[default]
 DEXTER_EXIT_FAILURE_COLOR=$fg[red]
 DEXTER_VENV_COLOR=$fg_bold[green]
