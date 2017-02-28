@@ -38,7 +38,7 @@ Plug 'nelstrom/vim-markdown-folding'
 " Plug 'vim-pandoc/vim-pandoc'
 " Plug 'vim-pandoc/vim-pandoc-syntax'
 " let g:pandoc#syntax#codeblocks#embeds#langs=['java', 'python']
-Plug 'vim-scripts/python_ifold'
+Plug 'shvenkat/python_ifold'
 " Plug 'jalvesaq/Nvim-R'
 
 call plug#end()

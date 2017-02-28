@@ -1,0 +1,168 @@
+#! /bin/sh
+
+# An input preprocessor for `less` that handles syntax highlighting, decompression and un-archiving.
+#
+# Author: Shiv <shiv@alum.mit.edu>
+# Based on:
+# * src-hilite-lesspipe.sh distributed with GNU source-highlight, and
+# * lesspipe/lessfile by Behan Webster <behanw@pobox.com>.
+# License: GPLv2
+#
+# USAGE: Run this program with no arguments to get usage info.
+
+
+NAME=$(basename "$0")
+ABSOLUTE_PATH=$(cd "$(dirname "$0")"; pwd)/$NAME
+
+
+# Print usage. Do not exit.
+# Args: None.
+# Output: Usage.
+usage () {
+    echo 'To use lesspipe:'
+    echo '1. Place lesspipe in a directory in your PATH.'
+    echo '2. Add the following line to your shell initialization script (e.g. .bashrc, .zshrc),' \
+        'replacing SHELL with the name of your shell: sh, bash, zsh, csh, or tcsh.'
+    echo '    eval $(lesspipe --init SHELL)'
+}
+
+
+# Set the environment variable LESSOPEN to allow `less` to call this program.
+# Args: None.
+# Output: Shell code to set LESSOPEN.
+emit_shell_init_code () {
+    if [[ -n ]]
+    case "$SHELL" in
+        *csh)
+    esac
+}
+
+
+# Call source-highlight with an inline style definition.
+# Args:
+#   $1: Source path.
+#   (Optional) Additional arguments to source-highlight.
+# Output: Source text with ANSI color escape codes.
+highlight () {
+    input=$1
+    shift
+    source-highlight --input "$input" "$@" --failsafe \
+        --out-format esc --style-file /dev/stdin <<-'EOF'
+
+        // source-highlight style for ANSI escaped output.
+
+        // ----------  Most Programming Languages  ---------------------------
+
+        keyword green;     // language keywords
+        type yellow;       // basic types
+        usertype yellow;   // user-defined types
+        classname yellow;  // class names
+        function blue;     // function declarations and calls
+        number pink;       // literal numbers
+        specialchar cyan;  // special chars (e.g. \n, \t, \\)
+        preproc pink b;    // preproc directives (e.g. #include, import)
+        normal blue b;     // regular text
+        variable blue b;   // variable names
+        symbol blue b;     // symbols (e.g. <, >, +)
+        string green b;    // strings and regular chars
+        comment green b;   // comments
+        cbracket green b;  // block brackets (e.g. {, })
+        todo red b;        // TODO and FIXME
+        label cyan;        // goto labels
+        regex, regexp cyan;  // regular expressions
+
+        // ----------  Latex  ------------------------------------------------
+
+        italics white;
+        bold white b;
+        underline white b;
+        math pink b;
+        fixed blue b;
+        argument blue;
+        optionalargument blue;
+        bibtex green b;
+
+        // ----------  Misc  -------------------------------------------------
+
+        oldfile pink;    // diff/patch
+        newfile cyan;    // diff/patch
+        difflines blue;  // diff/patch
+
+        url blue b;      // URLs
+
+        selector purple; // CSS
+        property blue;   // CSS
+        value green b;   // CSS
+
+        error red;       // Compiler errors
+        warning red b;   // Compiler errors
+
+		EOF
+}
+
+
+preprocess () {
+    # If the input file cannot be read, terminate.
+    if [[ "$1" != "-" && ! -r "$1" ]]; then
+        echo "File $1 not found or not readable."
+        exit 0
+    fi
+    # Print shell code to set LESSOPEN.
+    # Syntax highlight source code. Delegate to `lesspipe` for compressed and archive files.
+    case "$1" in
+        -)
+            # Input passed via stdin. Assume it is source code, and highlight based on the language
+            # inferred from the file header.
+            highlight --infer-lang
+            ;;
+        *ChangeLog|*changelog)
+            highlight "$source" --lang-def=changelog.lang
+            ;;
+        *Makefile|*makefile)
+            highlight "$source" --lang-def=makefile.lang
+            ;;
+        *.tar|*.tgz|*.gz|*.bz2|*.xz)
+            # Delegate to `lesspipe` if available.
+            if which lesspipe >/dev/null; then
+                lesspipe "$source"
+            else
+                echo "Install `lesspipe` to view files of this type."
+            fi
+            ;;
+        *)
+            # Assume the input file is source code.
+            highlight "$source" --infer-lang
+            ;;
+    esac
+elif [[ $# -eq 2 ]]; then
+    # Do nothing.
+    :
+else
+    usage
+    exit 1
+fi
+}
+
+
+# ----------  main  ----------------------------------------------------------
+
+# lesspipe path
+# lesspipe -
+
+if [ $# -eq 0 ]; then
+    usage
+    exit 1
+elif [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    # NOTE: Assumes '-h' and '--help' are not filenames.
+    usage
+    exit 0
+elif [[ "$1" == "--init" && -n "$2" ]]; then
+    emit_shell_init_code "$2"
+    exit 0
+elif [[ $# -gt 1 ]]; then
+    usage
+    exit 1
+else
+    preprocess "$1"
+    exit 0
+fi

@@ -43,7 +43,7 @@ fresh shvenkat/.rc util/colordiffrc --file
 fresh shvenkat/.rc util/htoprc --file
 
 # less. You'll thank me later.
-fresh shvenkat/.rc bin/lesspipe-hilite --bin
+fresh shvenkat/.rc bin/lesspipe --bin
 
 # nano. For the terminal dilettante, and the caffeine-deprived.
 fresh shvenkat/.rc util/nanorc --file

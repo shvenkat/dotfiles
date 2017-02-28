@@ -1,14 +1,20 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-FRESH_REPO=~/.fresh/source/freshshell/fresh
-FRESHRC=~/.freshrc
+set -e -u -o pipefail
 
-if [[ -e $FRESHRC ]] && [[ ! -h $FRESHRC ]]; then
-    echo "Warning: $FRESHRC exists, aborting."
+REPO_SRC="https://github.com/freshshell/fresh"
+REPO_DST="${HOME}/.fresh/source/freshshell/fresh"
+RC_SRC="$(cd "$(dirname -- "$0")"; pwd)/freshrc"
+RC_DST="${HOME}/.freshrc"
+
+# If a non-symlink exists at the target location, abort with a warning.
+if [ -e "$RC_DST" ] && [ ! -h "$RC_DST" ]; then
+    echo "Warning: $RC_DST exists, aborting."
     exit 1
 fi
 
-ln -sf $(dirname $0)/freshrc $FRESHRC \
-&& rm -rf $FRESH_REPO \
-&& git clone https://github.com/freshshell/fresh $FRESH_REPO \
-&& $FRESH_REPO/bin/fresh
+# Clone fresh, symlink freshrc and run fresh.
+ln -sf "$RC_SRC" "$RC_DST" \
+&& rm -rf "$REPO_DST" \
+&& git clone "$REPO_SRC" "$REPO_DST" \
+&& "$REPO_DST/bin/fresh"

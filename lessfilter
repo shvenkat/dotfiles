@@ -2,10 +2,58 @@
 
 fileext=${1##*.}
 if source-highlight --lang-list | cut -d' ' -f1 | grep -q "^${fileext}$"; then
-  source-highlight  -i "$1" -oSTDOUT --failsafe -fesc \
-    --style-file ~/.rc/source-highlight/default.style
-else
-  exit 1
-fi
+    source-highlight -i "$1" -oSTDOUT --out-format esc --style-file /dev/stdin <<-'EOF'
 
-exit 0
+        // ==========  source-highlight STYLE  ===============================
+
+        // ----------  Most Programming Languages  ---------------------------
+
+        keyword green;     // language keywords
+        type yellow;       // basic types
+        usertype yellow;   // user-defined types
+        classname yellow;  // class names
+        function blue;     // function declarations and calls
+        number pink;       // literal numbers
+        specialchar cyan;  // special chars (e.g. \n, \t, \\)
+        preproc pink b;    // preproc directives (e.g. #include, import)
+        normal blue b;     // regular text
+        variable blue b;   // variable names
+        symbol blue b;     // symbols (e.g. <, >, +)
+        string green b;    // strings and regular chars
+        comment green b;   // comments
+        cbracket green b;  // block brackets (e.g. {, })
+        todo red b;        // TODO and FIXME
+        label cyan;        // goto labels
+        regex, regexp cyan;  // regular expressions
+
+        // ----------  Latex  ------------------------------------------------
+
+        italics white;
+        bold white b;
+        underline white b;
+        math pink b;
+        fixed blue b;
+        argument blue;
+        optionalargument blue;
+        bibtex green b;
+
+        // ----------  Misc  -------------------------------------------------
+
+        oldfile pink;    // diff/patch
+        newfile cyan;    // diff/patch
+        difflines blue;  // diff/patch
+
+        url blue b;      // URLs
+
+        selector purple; // CSS
+        property blue;   // CSS
+        value green b;   // CSS
+
+        error red;       // Compiler errors
+        warning red b;   // Compiler errors
+
+		EOF
+    exit 0
+else
+    exit 1
+fi
