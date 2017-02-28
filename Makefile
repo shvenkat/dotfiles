@@ -1,57 +1,17 @@
 MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash -eu -o pipefail -c
-OSTYPE := $(shell echo $$OSTYPE)
 
-RC := $(HOME)/.rc
-LN_FILES := bin/sahup bin/machine-dashboard bin/machine-status
-LN_FILES += .bash_profile .certs .colordiffrc .editorconfig
-LN_FILES += .gnupg/gpg.conf .gnupg/gpg-agent.conf
-LN_FILES += .inputrc .lessfilter .Rprofile .vim .vimrc.less .xinitrc
-CP_FILES := .bashrc .gitconfig .tmux.conf .vimrc
+it: install
 
-.PHONY: all
-all: $(HOME)/.zshrc
-all: $(HOME)/.config/nvim/init.vim
-all: $(addprefix $(HOME)/,$(LN_FILES)) $(addprefix $(HOME)/,$(CP_FILES))
-all: $(HOME)/bin/diff-highlight
-all: $(HOME)/.htoprc
+so: config
 
-$(HOME)/.zshrc : $(RC)/.zshrc.stub
-	# Install zsh plugins.
-	git clone https://github.com/zplug/zplug ~/.zplug
-	cp $< $@
+install: config brew
+	brew install --HEAD bork
+	bork/bootstrap.sh
 
-$(HOME)/.config/nvim/init.vim : $(RC)/nvim/init.vim
-	mkdir -p ~/.config/nvim/autoload
-	curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
-	    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	ln -s $< $@
-	ln -s -t $(HOME)/.config/nvim/ $(RC)/nvim/after
-	ln -s -t $(HOME)/.config/nvim/autoload/ $(RC)/nvim/autoload/*
-	ln -s -t $(HOME)/.config/nvim/ $(RC)/nvim/ultisnips
+config: git
+	fresh/bootstrap.sh
 
-$(addprefix $(HOME)/,$(LN_FILES)) : $(HOME)/% : | $(RC)/%
-	if [[ $$(basename $*) != $* ]]; then \
-	    mkdir -p $$(dirname $@); \
-	    chmod 0700 $$(dirname $@); \
-	fi
-	ln -s $| $@
+brew:
 
-$(addprefix $(HOME)/,$(CP_FILES)) : $(HOME)/% : | $(RC)/%.stub
-	cp $| $@
-
-$(HOME)/.htoprc: $(RC)/.htoprc
-	cp $< $@
-
-DIFF_HIGHLIGHT:=$(if $(findstring linux,$(OSTYPE)),/usr/share/doc/git/contrib/diff-highlight/diff-highlight,)
-ifneq (,$(findstring linux,$(OSTYPE)))
-$(HOME)/bin/diff-highlight: $(DIFF_HIGHLIGHT)
-	cp $(DIFF_HIGHLIGHT) $@
-	chmod +x $@
-else
-output != test -x $(HOME)/bin/diff-highlight
-ifneq ($(.SHELLSTATUS),0)
-$(HOME)/bin/diff-highlight:
-	echo "Please install $(HOME)/bin/diff-highlight"
-endif
-endif
+.PHONY: it so install config brew

@@ -1,0 +1,65 @@
+# ----------  BASE CONFIG  --------------------------------------------------
+
+# export LANG=en_US.UTF-8
+
+
+# ----------  PLUGINS  ------------------------------------------------------
+
+# Manage plugins using zplug (https://github.com/zplug/zplug)
+export ZPLUG_HOME=~/.zplug
+export ZPLUG_PROTOCOL=HTTPS
+source $ZPLUG_HOME/init.zsh
+
+# Plugin management.
+# zplug "zplug/zplug"
+
+# Command completion.
+# zplug "zsh-users/zsh-autosuggestions"
+# ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=cyan,bold'
+
+# Automation.
+zplug "Tarrasch/zsh-autoenv"
+
+# Theme (command prompt).
+zplug "plugins/shrink-path", from:oh-my-zsh
+zplug "plugins/gitfast", from:oh-my-zsh, defer:1
+zplug "plugins/virtualenv", from:oh-my-zsh
+zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", defer:3
+DEXTER_EXIT_SUCCESS_COLOR=$fg[default]
+DEXTER_EXIT_FAILURE_COLOR=$fg[red]
+DEXTER_VENV_COLOR=$fg_bold[green]
+DEXTER_GIT_COLOR=$fg_bold[green]
+DEXTER_WORKDIR_COLOR=$fg_bold[green]
+DEXTER_HOSTNAME_COLOR=$fg_bold[green]
+
+# Load plugins.
+zplug load
+
+# Other plugins of interest:
+# willghatch/zsh-saneopt
+# common-aliases
+# dircycle
+# fasd
+# fastfile
+# git-extras
+# jump
+# predict-on
+# ssh-agent
+# vi-mode
+# zsh-syntax-highlighting
+
+
+# ----------  ZSH-SPECIFIC CONFIG  -------------------------------------------
+
+setopt ignore_eof
+
+# History.
+export HISTFILE=~/.zsh_history
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+setopt append_history
+setopt hist_find_no_dups
+setopt hist_verify
+
+
+# ----------  SHELL CONFIG  --------------------------------------------------

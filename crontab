@@ -1,2 +1,5 @@
-# m h  dom mon dow   command
-11  */2  *  *  *  ${HOME}/.rc/bin/machine-status | ${HOME}/.rc/bin/notify
+SHELL=/bin/bash
+PATH=${PATH}:${HOME}/bin
+
+# m  h   dom mon dow   command
+30  */2  *   *   *     machine-status | slack

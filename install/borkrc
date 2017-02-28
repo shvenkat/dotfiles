@@ -1,0 +1,16 @@
+# ==========  INSTALL REQUIREMENTS, IN bork  =================================
+
+
+# ----------  CONFIG  --------------------------------------------------------
+
+ok github ~/.dotfiles shvenkat/.rc
+
+
+# ----------  CORE UTILITIES  ------------------------------------------------
+
+ok brew
+ok brew git
+
+ok file ~/.ssh/config
+
+ok brew lesspipe

@@ -1,6 +1,0 @@
-source ~/.rc/.nvimrc
-" let g:ycm_extra_conf_globlist = ['~/kariusdx/*/*','!~/*']
-" let g:ycm_server_keep_logfiles = 1
-" let g:ycm_server_log_level = 'debug'
-" let g:color_coded_enabled = 0
-" let g:UltiSnipsUsePythonVersion = 2

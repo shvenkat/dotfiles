@@ -17,4 +17,4 @@ curl -s -S -X POST \
   -F "channel=$SLACK_CHANNEL" \
   -F "text=\`\`\`${message}\`\`\`" \
   "https://${SLACK_SUBDOMAIN}.slack.com/api/chat.postMessage" \
-  < /dev/null > /dev/null
+  </dev/null >/dev/null

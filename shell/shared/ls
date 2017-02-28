@@ -1,0 +1,68 @@
+# ls color
+
+colorize_gnu_ls () {
+    if which dircolors >/dev/null; then
+        eval "$(dircolors - <<-'EOF'
+
+            # ==========  GNU dircolors config  =============================
+
+            # ----------  COLOR-CAPABLE TERMINALS  --------------------------
+            # List color-capable terminals below.
+            TERM xterm                  # Ubiquitous.
+            TERM xterm-color            # Ubiquitous.
+            TERM xterm-16color          # Ubiquitous.
+            TERM xterm-256color         # Ubiquitous.
+            TERM screen                 # For screen/tmux.
+            TERM screen-bce             # For screen/tmux.
+            TERM screen-16color-bce-s   # For screen/tmux.
+            TERM screen-256color-bce-s  # For screen/tmux.
+            TERM screen-w               # For screen/tmux.
+            TERM console                # Linux console (without X or other display server).
+            TERM cygwin                 # Windows.
+            TERM putty                  # Windows.
+            TERM rxvt
+            TERM vt100                  # The Source. Where the path of the One ends.
+
+            # ----------  COLORS BASED ON FILE TYPE  -------------------------
+            # List file type keywords and ANSI color codes below.
+            NORMAL 00     # default
+            FILE 00       # regular file
+            DIR 00;34     # directory
+            EXEC 00;33    # executable file
+            LINK 00;32    # symlink (Set to 'target' to color by target type.)
+            ORPHAN 00;31  # broken/dangling symlink
+            FIFO 30;42    # pipe
+            SOCK 30;42    # socket
+            DOOR 30;42    # door
+            BLK 30;42     # block device
+            CHR 30;42     # character device
+            SETUID 30;43  # setuid (u+s) file
+            SETGID 30;43  # setgid (g+s) file
+            STICKY_OTHER_WRITABLE 30;44  # dir that is sticky and other-writable (+t, o+w), e.g. /tmp
+            OTHER_WRITABLE 30;44         # dir that is other-writable (o+w) and not sticky
+            # STICKY 37;44                 # dir that is sticky (+t) and not other-writable
+
+            # ----------  COLORS BASED ON FILE EXTENSION  --------------------
+            # List file extensions and ANSI color codes below.
+            # .xyz 00;36
+
+			EOF
+        )"
+    fi
+}
+
+colorize_bsd_ls () {
+    export LSCOLORS="excxacacdxacacadadaeae"
+}
+
+case $OSTYPE in
+    linux*|cygwin*)
+        colorize_gnu_ls
+        ;;
+    darwin*)
+        # OSX's ls is a BSD ls.
+        colorize_bsd_ls
+        # Homebrew's ls is a GNU ls.
+        colorize_gnu_ls
+        ;;
+esac

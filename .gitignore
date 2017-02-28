@@ -1,10 +1,10 @@
-.gnupg/private-keys*
-.gnupg/pubring.gpg
-.gnupg/random_seed
-.gnupg/secring.gpg
-.gnupg/trustdb.gpg
-.ssh/authorized_keys
-.ssh/known_hosts
+gnupg/private-keys*
+gnupg/pubring.gpg
+gnupg/random_seed
+gnupg/secring.gpg
+gnupg/trustdb.gpg
+ssh/authorized_keys
+ssh/known_hosts
 .vim/bundle/vim-git
 .vim/bundle/vim-fugitive
 .vim/bundle/vim-r-plugin

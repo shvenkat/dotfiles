@@ -1,2 +1,0 @@
-# m h  dom mon dow   command
-30  */2  *  *  *  env PATH=$PATH:$HOME/bin ~/bin/machine-status | ~/bin/notify

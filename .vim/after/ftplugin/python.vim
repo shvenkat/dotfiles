@@ -1,1 +1,0 @@
-../../../nvim/after/ftplugin/python.vim
