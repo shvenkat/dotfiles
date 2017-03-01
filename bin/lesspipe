@@ -1,5 +1,7 @@
 #! /bin/sh
 
+set -e -u -o pipefail
+
 # An input preprocessor for `less` that handles syntax highlighting, decompression and un-archiving.
 #
 # Author: Shiv <shiv@alum.mit.edu>
@@ -11,29 +13,47 @@
 # USAGE: Run this program with no arguments to get usage info.
 
 
-NAME=$(basename "$0")
-ABSOLUTE_PATH=$(cd "$(dirname "$0")"; pwd)/$NAME
+NAME="$(basename "$0")"
+ABS_PATH="$(cd "$(dirname -- "$0")"; pwd)"/$NAME
 
 
-# Print usage. Do not exit.
-# Args: None.
-# Output: Usage.
-usage () {
-    echo 'To use lesspipe:'
-    echo '1. Place lesspipe in a directory in your PATH.'
-    echo '2. Add the following line to your shell initialization script (e.g. .bashrc, .zshrc),' \
-        'replacing SHELL with the name of your shell: sh, bash, zsh, csh, or tcsh.'
-    echo '    eval $(lesspipe --init SHELL)'
+# Write to stderr.
+stderr () {
+    echo "$1" 1>&2
 }
 
 
-# Set the environment variable LESSOPEN to allow `less` to call this program.
-# Args: None.
+# Print usage. Do not exit.
+usage () {
+    stderr 'To use lesspipe:'
+    stderr '1. Place lesspipe in a directory in your PATH.'
+    stderr '2. Add the following line to your shell initialization script (e.g. .bashrc, .zshrc),' \
+        'replacing SHELL with the name of your shell: sh, bash, zsh, csh, or tcsh.'
+    stderr '    eval $(lesspipe --init SHELL)'
+}
+
+
+# Write formatted error messages to stderr.
+error () {
+    stderr "[${NAME}] Error: $1."
+}
+
+
+# Emit shell code to set the environment variable LESSOPEN to allow `less` to call this program.
+# Args:
+#   $1: Name of the shell being initialized, e.g. zsh, bash, ksh, tcsh, csh.
 # Output: Shell code to set LESSOPEN.
 emit_shell_init_code () {
-    if [[ -n ]]
-    case "$SHELL" in
-        *csh)
+    case "$1" in
+        csh|tcsh)
+            echo "setenv LESSOPEN \"||- $ABS_PATH %s\";"
+            ;;
+        sh|bash|zsh|dash|ksh)
+            echo "export LESSOPEN=\"||- $ABS_PATH %s\";"
+            ;;
+        *)
+            error "Unknown shell \'$1\'."
+            ;;
     esac
 }
 
@@ -101,12 +121,12 @@ highlight () {
 }
 
 
+# Preprocess the input, applying the appropriate transformation based on file type. Handles syntax
+# highlighting, decompression and archive content listing.
+# Args:
+#   $1: Input file. '-' if input appears on standard input. Otherwise an _existing_ file path.
+# Output: Preprocessed input, which may be empty.
 preprocess () {
-    # If the input file cannot be read, terminate.
-    if [[ "$1" != "-" && ! -r "$1" ]]; then
-        echo "File $1 not found or not readable."
-        exit 0
-    fi
     # Print shell code to set LESSOPEN.
     # Syntax highlight source code. Delegate to `lesspipe` for compressed and archive files.
     case "$1" in
@@ -116,53 +136,48 @@ preprocess () {
             highlight --infer-lang
             ;;
         *ChangeLog|*changelog)
-            highlight "$source" --lang-def=changelog.lang
+            highlight "$1" --lang-def=changelog.lang
             ;;
         *Makefile|*makefile)
-            highlight "$source" --lang-def=makefile.lang
+            highlight "$1" --lang-def=makefile.lang
             ;;
         *.tar|*.tgz|*.gz|*.bz2|*.xz)
             # Delegate to `lesspipe` if available.
             if which lesspipe >/dev/null; then
-                lesspipe "$source"
+                lesspipe "$1"
             else
-                echo "Install `lesspipe` to view files of this type."
+                echo "Install lesspipe to view files of this type."
             fi
             ;;
         *)
             # Assume the input file is source code.
-            highlight "$source" --infer-lang
+            highlight "$1" --infer-lang
             ;;
     esac
-elif [[ $# -eq 2 ]]; then
-    # Do nothing.
-    :
-else
-    usage
-    exit 1
-fi
 }
 
 
 # ----------  main  ----------------------------------------------------------
 
-# lesspipe path
-# lesspipe -
-
 if [ $# -eq 0 ]; then
     usage
     exit 1
-elif [[ "$1" == "-h" || "$1" == "--help" ]]; then
+elif [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     # NOTE: Assumes '-h' and '--help' are not filenames.
     usage
     exit 0
-elif [[ "$1" == "--init" && -n "$2" ]]; then
+elif [ "$1" = "--init" ] && [ -n "$2" ]; then
     emit_shell_init_code "$2"
     exit 0
-elif [[ $# -gt 1 ]]; then
+elif [ $# -gt 1 ]; then
     usage
     exit 1
 else
+    # If the input file cannot be read, terminate.
+    if [ "$1" != "-" ] && [ ! -r "$1" ]; then
+        echo "File $1 not found or not readable."
+        exit 1
+    fi
     preprocess "$1"
     exit 0
 fi
