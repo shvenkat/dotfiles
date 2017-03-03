@@ -1,0 +1,27 @@
+# nvim --headless +PlugUpgrade +PlugUpdate +qall 2>/dev/null
+# install nvim config
+# install nvim and plugins
+#   install neovim
+#   install python3 neovim module
+#   if [[ -d "${INSTALL_CACHE}/.config/nvim/bundle" ]]; then
+#     cp -a "${INSTALL_CACHE}/.config/nvim/bundle" ~/.config/nvim/
+#   fi
+#   nvim +PlugUpgrade +PlugUpdate +PlugClean +qall
+# install zsh config
+# install zsh and plugins
+#   install zsh
+#   if [[ -d "${INSTALL_CACHE}/.zplug/repos" ]]; then
+#     cp -a "${INSTALL_CACHE}/.zplug/repos" ~/.zplug/
+#   fi
+#   echo "zplug "
+# Install plugins, if needed.
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo
+        zplug install
+    fi
+fi
+zplug update
+zplug clean
+zplug clear
