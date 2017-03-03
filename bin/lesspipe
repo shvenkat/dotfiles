@@ -19,7 +19,7 @@ ABS_PATH="$(cd "$(dirname -- "$0")"; pwd)"/$NAME
 
 # Write to stderr.
 stderr () {
-    echo "$1" 1>&2
+    echo "$@" 1>&2
 }
 
 
@@ -35,7 +35,7 @@ usage () {
 
 # Write formatted error messages to stderr.
 error () {
-    stderr "[${NAME}] Error: $1."
+    stderr "[${NAME}] Error: $*."
 }
 
 
@@ -53,6 +53,7 @@ emit_shell_init_code () {
             ;;
         *)
             error "Unknown shell \'$1\'."
+            exit 1
             ;;
     esac
 }
@@ -133,7 +134,7 @@ preprocess () {
         -)
             # Input passed via stdin. Assume it is source code, and highlight based on the language
             # inferred from the file header.
-            highlight --infer-lang
+            highlight "$1" --infer-lang
             ;;
         *ChangeLog|*changelog)
             highlight "$1" --lang-def=changelog.lang
