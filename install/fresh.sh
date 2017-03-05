@@ -2,23 +2,28 @@
 
 set -e -u -o pipefail
 
-DOTFILES_SRC="https://github.com/shvenkat/dotfiles"
+
+DOTFILES_URL="https://github.com/shvenkat/dotfiles"
 DOTFILES_CLONE="${HOME}/.fresh/source/shvenkat/dotfiles"
-FRESH_SRC="https://github.com/freshshell/fresh"
+FRESH_URL="https://github.com/freshshell/fresh"
 FRESH_CLONE="${HOME}/.fresh/source/freshshell/fresh"
-FRESHRC_SRC="${DOTFILES_CLONE}/install/freshrc"
-FRESHRC_DST="${HOME}/.freshrc"
+FRESHRC_TARGET="${DOTFILES_CLONE}/install/freshrc"
+FRESHRC_SYMLINK="${HOME}/.freshrc"
 NAME="$(basename "$0")"
 
+
+# ----------  functions  -----------------------------------------------------
 
 # Initialize logging by setting global variables.
 init_logger () {
     if [ -t 1 ]; then
         NORMAL="\e[0m"
+        BOLD="\e[1m"
         RED="\e[31m"
         YELLOW="\e[33m"
     else
         NORMAL=""
+        BOLD=""
         RED=""
         YELLOW=""
     fi
@@ -27,20 +32,20 @@ init_logger () {
 
 # Output formatted error message and exit.
 error () {
-    env echo -e "${RED}ERROR${NORMAL}  [$NAME]  $*."
+    env echo -e "${RED}ERROR${NORMAL}${BOLD}  [$NAME]  $*${NORMAL}"
     exit 1
 }
 
 
 # Output formatted warning messages.
 warn () {
-    env echo -e "${YELLOW}WARN${NORMAL}   [$NAME]  $*."
+    env echo -e "${YELLOW}WARN${NORMAL}${BOLD}   [$NAME]  $*${NORMAL}"
 }
 
 
 # Output formatted informational messages.
 info () {
-    env echo -e "INFO   [$NAME]  $*."
+    env echo -e "${BOLD}INFO   [$NAME]  $*${NORMAL}"
 }
 
 
@@ -48,7 +53,7 @@ info () {
 # Args:
 #   $@: Command and arguments to be run.
 run () {
-    info "Running command $* (in $(pwd))."
+    info "Running: $* (in $(pwd))."
     ("$@" 2>&1 | while IFS='' read -r line; do echo "        $line"; done) \
         || error "$1 command failed."
 }
@@ -63,21 +68,28 @@ clone_safely () {
     if [ ! -e "$2" ]; then
         run git clone "$1" "$2"
     else
-        # Attempt to replicate the effect of 'git clone' in a non-destructive way. To do this,
-        # verify or satisfy the following assertions and fail otherwise.
+        # Verify that the local path is a directory.
+        test -d "$2" \
+            || error "Cannot clone $1 to $2; the latter exists and is not a directory."
+        # Check whether the directory is empty. If so, just clone.
+        if [ "$(stat --format='%h' "$2")" -eq 2 ]; then
+            run git clone "$1" "$2"
+            return
+        fi
+
+        # Attempt to simulate 'git clone' in a non-destructive way. To do this, verify or satisfy
+        # the following assertions, and fail otherwise.
         # * The local path is a git repo, in a clean state with no untracked files.
         # * The git repo has a remote named 'origin' matching the given URL.
         # * The git repo has a branch that tracks the origin branch referred to by origin/HEAD.
         # Checkout and update (fetch and merge) the appropriate local branch.
 
-        # Verify that the local path is a directory.
-        test -d "$2" \
-            || error "Cannot clone $1; incompatible file type (non-directory) exists at $2."
+        info "Attempting to simulate 'git clone $1' into existing git repo at $2."
         current_dir="$(pwd)"
         cd "$2"
         # Verify that the local path is a git repository.
         git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
-            || error "Cannot clone $1 to $2; existing directory is not a git repository."
+            || error "Cannot clone $1 to $2; existing directory is not a git repo."
         # Verify that the working tree is clean regarding tracked files.
         git diff-index --quiet HEAD >/dev/null 2>&1 \
             || error "Cannot clone $1 to $2; existing git repo is not clean."
@@ -93,36 +105,43 @@ clone_safely () {
             # Add an 'origin' remote.
             run git remote add origin "$1"
         fi
+        # Fetch heads and tags from origin.
+        run git fetch origin
+        run git remote set-head origin --auto
         # Determine the default remote branch i.e. resolve origin/HEAD. Typically 'master'.
-        origin_head="$(git ls-remote --symref origin HEAD \
-                        | grep -o 'refs/heads/[^[:space:]]\+')" 2>/dev/null \
+        origin_head="$(git symbolic-ref --quiet refs/remotes/origin/HEAD 2>/dev/null)" \
             || error "Cannot clone $1 to $2; unable to resolve origin/HEAD for existing git repo."
-        origin_head="${origin_head#refs/heads/}"
-        # Ensure that a local tracking branch exists for the default remote branch. Identify such a
-        # local branch or create one.
-        tracking_heads="$(git for-each-ref --format='%(refname) %(upstream)' refs/heads \
+        origin_head="${origin_head#refs/remotes/origin/}"
+        # Identify local branches that track origin/HEAD.
+        tracking_heads="$(git for-each-ref --format='%(refname) %(upstream)' refs/heads 2>/dev/null \
                             | (grep " refs/remotes/origin/$origin_head" || true) \
                             | cut -d' ' -f1 \
-                            | sed -e 's#refs/heads/##')" 2>/dev/null
+                            | sed -e 's#refs/heads/##')"
+        # Checkout a local branch that tracks origin/HEAD. If needed, create the former.
         if [ -z "$tracking_heads" ]; then
-            # Verify the absence of a local branch with the same name as origin/HEAD.
-            git show-ref --verify --quiet "refs/heads/$origin_head" 2>/dev/null \
-                && error "Cannot clone $1 to $2; existing git repo has a $origin_head branch " \
+            # No local branch tracks origin/HEAD. Verify that no local branch has the same name as
+            # origin/HEAD, and then create such a branch to track the latter.
+            git show-ref --verify --quiet "refs/heads/$origin_head" 1>/dev/null 2>&1 \
+                && error "Cannot clone $1 to $2; existing git repo has a $origin_head branch" \
                     "that does not track origin/$origin_head (the current origin/HEAD)."
-            # Create a local branch that tracks origin/HEAD.
-            run git checkout -b "$origin_head" --track "origin/$origin_head"
+            tracking_head="$origin_head"
+            run git checkout -b "$tracking_head" --track "origin/$origin_head"
         else
-            # If there is a single matching local branch, use it. If there are multiple, use the one
-            # with the same name as the remote branch. Otherwise, select one arbitrarily.
+            # One or more local branches track origin/HEAD. If one of these branches has the same
+            # name as origin/HEAD, use it. Otherwise, select one arbitrarily.
             if echo "$tracking_heads" | grep -q "^${origin_head}$"; then
-                local_head="${origin_head}"
+                tracking_head="${origin_head}"
             else
-                local_head="$(echo "$tracking_heads" | head -n1)" 2>/dev/null
+                tracking_head="$(echo "$tracking_heads" | head -n1)"
             fi
-            run git checkout "$local_head"
+            current_head="$(git symbolic-ref -q --short HEAD 2>/dev/null)"
+            test "$current_head" = "$tracking_head" \
+                || run git checkout "$tracking_head"
         fi
-        # Fetch and merge.
-        run git pull origin "$origin_head"
+        # Update to origin/HEAD, only if the update is a fast-forward i.e. no merge is required.
+        run git merge --ff-only "origin/$origin_head" \
+            || error "Cannot clone $1 to $2; $tracking_head branch of existing git repo tracks" \
+                "origin/$origin_head but has diverged from it."
         cd "$current_dir"
     fi
 }
@@ -130,24 +149,24 @@ clone_safely () {
 
 # Create a symlink. Fail if the target exists and is not a symlink.
 # Args:
-#   $1: Source path.
-#   $2: Destination path.
+#   $1: Path to which the link points.
+#   $2: Link itself.
 symlink_safely () {
     # If a non-symlink exists, abort with a warning.
-    if [ -e "$FRESHRC_DST" ] && [ ! -h "$FRESHRC_DST" ]; then
-        echo "Warning: $FRESHRC_DST exists, aborting."
-        exit 1
-    fi
+    test -e "$2" && test ! -h "$2" \
+        && error "Cannot create symlink $2 -> $1; the former exists and is not a symlink."
     run ln -sf "$1" "$2"
 }
 
 
 # ----------  main  ----------------------------------------------------------
 
-# Install fresh config.
-clone_safely "$DOTFILES_SRC" "$DOTFILES_CLONE"
-symlink_safely "$FRESHRC_SRC" "$FRESHRC_DST"
+init_logger
+
+# Install freshrc.
+clone_safely "$DOTFILES_URL" "$DOTFILES_CLONE"
+symlink_safely "$FRESHRC_TARGET" "$FRESHRC_SYMLINK"
 
 # Run fresh.
-clone_safely "$FRESH_SRC" "$FRESH_CLONE"
-"$FRESH_CLONE/bin/fresh"
+clone_safely "$FRESH_URL" "$FRESH_CLONE"
+run "$FRESH_CLONE/bin/fresh"

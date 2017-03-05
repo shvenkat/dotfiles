@@ -8,79 +8,79 @@ fresh freshshell/fresh bin/fresh --bin
 # ----------  TERMINAL  ------------------------------------------------------
 
 # tmux. Delusions of multi-tasking.
-fresh shvenkat/.rc tmux/tmux.conf --file=~/.tmux.conf
-fresh shvenkat/.rc tmux/colorscheme_lunarized.conf --file=~/.tmux.conf --marker
+fresh shvenkat/dotfiles tmux/tmux.conf --file=~/.tmux.conf
+fresh shvenkat/dotfiles tmux/colorscheme_lunarized.conf --file=~/.tmux.conf --marker
 
 # X/xterm. The GUI that drove me to the text terminal.
-# fresh shvenkat/.rc x/xinitrc --file
+# fresh shvenkat/dotfiles x/xinitrc --file
 
 
 # ----------  COMMAND SHELL  -------------------------------------------------
 
 # zsh. F*** yeah!
 fresh zplug/zplug . --file=~/.zplug/
-fresh shvenkat/.rc shell/zsh/zshrc --file=~/.zshrc
-fresh shvenkat/.rc shell/shared/path --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/alias --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/less --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/local --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/ls --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/ssh --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/term --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/keys --file=~/.zshrc --marker
-fresh shvenkat/.rc shell/shared/misc --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/zsh/zshrc --file=~/.zshrc
+fresh shvenkat/dotfiles shell/shared/path --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/alias --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/less --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/local --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/ls --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/ssh --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/term --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/keys --file=~/.zshrc --marker
+fresh shvenkat/dotfiles shell/shared/misc --file=~/.zshrc --marker
 
 
 # ----------  UTILITIES  -----------------------------------------------------
 
 # Readline. Fools rush in where... Consider yourself warned.
-fresh shvenkat/.rc util/inputrc --file
+fresh shvenkat/dotfiles util/inputrc --file
 
 # colordiff. How do *you* read your diffs? In _monochrome_??
-fresh shvenkat/.rc util/colordiffrc --file
+fresh shvenkat/dotfiles util/colordiffrc --file
 
 # htop. Yeah, I'm that anal.
-fresh shvenkat/.rc util/htoprc --file
+fresh shvenkat/dotfiles util/htoprc --file
 
 # less. You'll thank me later.
-fresh shvenkat/.rc bin/lesspipe --bin
+fresh shvenkat/dotfiles bin/lesspipe --bin
 
 # nano. For the terminal dilettante, and the caffeine-deprived.
-fresh shvenkat/.rc util/nanorc --file
+fresh shvenkat/dotfiles util/nanorc --file
 
 # Miscellany.
-fresh shvenkat/.rc bin/machine-dashboard --bin
-fresh shvenkat/.rc bin/machine-status --bin
-fresh shvenkat/.rc bin/ssh-agent-connect --bin
+fresh shvenkat/dotfiles bin/machine-dashboard --bin
+fresh shvenkat/dotfiles bin/machine-status --bin
+fresh shvenkat/dotfiles bin/ssh-agent-connect --bin
 
 
 # ----------  PROGRAMMING  ---------------------------------------------------
 
 # vim. UI done right. Scripting is FUBAR.
-fresh shvenkat/.rc neovim --file=~/.config/nvim/
+fresh shvenkat/dotfiles neovim --file=~/.config/nvim/
 fresh junegunn/vim-plug plug.vim --file=config-nvim/autoload/plug.vim
 
 # emacs. Scripting done right. Sadistic UI.
 
 # editorconfig. When you just can't avoid collaborating.
-fresh shvenkat/.rc util/editorconfig --file
+fresh shvenkat/dotfiles util/editorconfig --file
 
 # git. What else.
-fresh shvenkat/.rc git/gitconfig --file
+fresh shvenkat/dotfiles git/gitconfig --file
 fresh git/git contrib/diff-highlight/diff-highlight --bin
 
 
 # ----------  LANGUAGES  -----------------------------------------------------
 
 # R. Matey.
-fresh shvenkat/.rc R/Rprofile --file
+fresh shvenkat/dotfiles R/Rprofile --file
 
 
 # ----------  CRYPTO  --------------------------------------------------------
 
 # PKI. The illusion of trust.
-fresh shvenkat/.rc certs --file=~/.certs/
+fresh shvenkat/dotfiles certs --file=~/.certs/
 
 # GPG. Comes with a tin foil hat.
-fresh shvenkat/.rc gnupg/gpg.conf --file=~/.gnupg/gpg.conf
-fresh shvenkat/.rc gnupg/gpg-agent.conf --file=~/.gnupg/gpg-agent.conf
+fresh shvenkat/dotfiles gnupg/gpg.conf --file=~/.gnupg/gpg.conf
+fresh shvenkat/dotfiles gnupg/gpg-agent.conf --file=~/.gnupg/gpg-agent.conf
