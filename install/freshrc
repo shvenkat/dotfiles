@@ -59,6 +59,17 @@ fresh shvenkat/dotfiles bin/ssh-agent-connect --bin
 # vim. UI done right. Scripting is FUBAR.
 fresh shvenkat/dotfiles neovim --file=~/.config/nvim/
 fresh junegunn/vim-plug plug.vim --file=config-nvim/autoload/plug.vim
+fresh-options --file=config-nvim/init.vim
+    fresh shvenkat/dotfiles neovim/init/register_plugins.vim
+    fresh shvenkat/dotfiles neovim/init/core_key_bindings.vim
+    fresh shvenkat/dotfiles neovim/init/core_whitespace.vim
+    fresh shvenkat/dotfiles neovim/init/core_textwidth.vim
+    fresh shvenkat/dotfiles neovim/init/core_folding.vim
+    fresh shvenkat/dotfiles neovim/init/core_completion.vim
+    fresh shvenkat/dotfiles neovim/init/core_colors.vim
+    fresh shvenkat/dotfiles neovim/init/core_misc.vim
+    fresh shvenkat/dotfiles 'neovim/init/plugin_*.vim'
+fresh-options
 
 # emacs. Scripting done right. Sadistic UI.
 
