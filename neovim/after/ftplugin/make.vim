@@ -1,2 +1,2 @@
-set foldexpr=getline(v:lnum)!=\"\"
-set foldmethod=expr
+setlocal foldexpr=getline(v:lnum)!=\"\"
+setlocal foldmethod=expr

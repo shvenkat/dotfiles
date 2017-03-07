@@ -1,2 +1,2 @@
-set foldmethod=syntax
-set foldnestmax=1
+setlocal foldmethod=syntax
+setlocal foldnestmax=1
