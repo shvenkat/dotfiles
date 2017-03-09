@@ -1,26 +1,39 @@
+
+
+# ----------  MISC  ----------------------------------------------------------
+
+# Default file permissions.
 umask 0022
+
+# Resource limits.
 ulimit -c 0
+
+# Preferred editor.
 export EDITOR=nvim
-# VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# Time zone.
+export TZ='America/Los_Angeles'
+
+# Compiler messages.
 # export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+# OS-specific miscellany.
 case $OSTYPE in
-linux*)
-  export TZ='America/Los_Angeles'
-  ;;
-darwin*)
-  ;;
-cygwin*)
-  unset TMP
-  unset TEMP
-  # export TMPDIR=/tmp
+    linux*)
+        ;;
+    darwin*)
+        ;;
+    cygwin*)
+        unset TMP
+        unset TEMP
+        # export TMPDIR=/tmp
 
-  # # start cron
-  # if ! ps -es | grep -iqF '/usr/sbin/cron' ; then
-  #     echo "starting cron ..."
-  #     /usr/sbin/cron
-  # else
-  #     echo "cron is already running ..."
-  # fi
-  ;;
+        # # start cron
+        # if ! ps -es | grep -iqF '/usr/sbin/cron' ; then
+        #     echo "starting cron ..."
+        #     /usr/sbin/cron
+        # else
+        #     echo "cron is already running ..."
+        # fi
+        ;;
 esac

@@ -19,16 +19,17 @@ fresh shvenkat/dotfiles tmux/colorscheme_lunarized.conf --file=~/.tmux.conf --ma
 
 # zsh. F*** yeah!
 fresh zplug/zplug . --file=~/.zplug/
-fresh shvenkat/dotfiles shell/zsh/zshrc --file=~/.zshrc
-fresh shvenkat/dotfiles shell/shared/path --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/alias --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/less --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/local --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/ls --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/ssh --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/term --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/keys --file=~/.zshrc --marker
-fresh shvenkat/dotfiles shell/shared/misc --file=~/.zshrc --marker
+fresh-options --file=~/.zshrc
+    fresh shvenkat/dotfiles shell/zsh/zshrc
+    fresh shvenkat/dotfiles shell/shared/misc
+    fresh shvenkat/dotfiles shell/shared/path
+    fresh shvenkat/dotfiles shell/shared/less
+    fresh shvenkat/dotfiles shell/shared/ls
+    fresh shvenkat/dotfiles shell/shared/ssh
+    fresh shvenkat/dotfiles shell/shared/term
+    fresh shvenkat/dotfiles shell/shared/alias
+    fresh shvenkat/dotfiles shell/shared/local
+fresh-options
 
 
 # ----------  UTILITIES  -----------------------------------------------------
@@ -44,6 +45,7 @@ fresh shvenkat/dotfiles util/htoprc --file
 
 # less. You'll thank me later.
 fresh shvenkat/dotfiles bin/lesspipe --bin
+fresh shvenkat/dotfiles util/source-highlight.style --file=~/.config/source-highlight/esc.style
 
 # nano. For the terminal dilettante, and the caffeine-deprived.
 fresh shvenkat/dotfiles util/nanorc --file

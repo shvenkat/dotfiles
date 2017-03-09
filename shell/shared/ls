@@ -1,4 +1,6 @@
-# ls color
+
+
+# ----------  COLORIZE LS  ---------------------------------------------------
 
 colorize_gnu_ls () {
     if which dircolors >/dev/null; then
@@ -60,9 +62,7 @@ case $OSTYPE in
         colorize_gnu_ls
         ;;
     darwin*)
-        # OSX's ls is a BSD ls.
-        colorize_bsd_ls
-        # Homebrew's ls is a GNU ls.
-        colorize_gnu_ls
+        colorize_bsd_ls  # OSX ls is a BSD ls.
+        colorize_gnu_ls  # Homebrew ls is a GNU ls.
         ;;
 esac

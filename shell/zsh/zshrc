@@ -1,5 +1,3 @@
-# ----------  BASE CONFIG  --------------------------------------------------
-
 # export LANG=en_US.UTF-8
 
 
@@ -49,7 +47,7 @@ zplug load
 # zsh-syntax-highlighting
 
 
-# ----------  ZSH-SPECIFIC CONFIG  -------------------------------------------
+# ----------  ZSH  -----------------------------------------------------------
 
 setopt ignore_eof
 
@@ -61,5 +59,15 @@ setopt append_history
 setopt hist_find_no_dups
 setopt hist_verify
 
+# Key bindings.
+bindkey -e      # emacs bindings.
+bindkey '^o'    backward-word
+bindkey '^l'    forward-word
+bindkey '^]'    beginning-of-line
+bindkey '^t'    history-beginning-search-backward
+bindkey '^q'    history-beginning-search-forward
+bindkey '^@'    kill-word
+bindkey 'TAB'   complete-word
 
-# ----------  SHELL CONFIG  --------------------------------------------------
+# Completion.
+setopt no_list_beep

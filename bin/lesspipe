@@ -67,58 +67,12 @@ emit_shell_init_code () {
 highlight () {
     input=$1
     shift
-    source-highlight --input "$input" "$@" --failsafe \
-        --out-format esc --style-file /dev/stdin <<-'EOF'
-
-        // source-highlight style for ANSI escaped output.
-
-        // ----------  Most Programming Languages  ---------------------------
-
-        keyword green;     // language keywords
-        type yellow;       // basic types
-        usertype yellow;   // user-defined types
-        classname yellow;  // class names
-        function blue;     // function declarations and calls
-        number pink;       // literal numbers
-        specialchar cyan;  // special chars (e.g. \n, \t, \\)
-        preproc pink b;    // preproc directives (e.g. #include, import)
-        normal blue b;     // regular text
-        variable blue b;   // variable names
-        symbol blue b;     // symbols (e.g. <, >, +)
-        string green b;    // strings and regular chars
-        comment green b;   // comments
-        cbracket green b;  // block brackets (e.g. {, })
-        todo red b;        // TODO and FIXME
-        label cyan;        // goto labels
-        regex, regexp cyan;  // regular expressions
-
-        // ----------  Latex  ------------------------------------------------
-
-        italics white;
-        bold white b;
-        underline white b;
-        math pink b;
-        fixed blue b;
-        argument blue;
-        optionalargument blue;
-        bibtex green b;
-
-        // ----------  Misc  -------------------------------------------------
-
-        oldfile pink;    // diff/patch
-        newfile cyan;    // diff/patch
-        difflines blue;  // diff/patch
-
-        url blue b;      // URLs
-
-        selector purple; // CSS
-        property blue;   // CSS
-        value green b;   // CSS
-
-        error red;       // Compiler errors
-        warning red b;   // Compiler errors
-
-		EOF
+    style_file="$HOME/.config/source-highlight/esc.style"
+    if [ -r "$style_file" ]; then
+        source-highlight "$@" --failsafe --out-format esc --style-file "$style_file" --input "$input"
+    else
+        source-highlight "$@" --failsafe --out-format esc --input "$input"
+    fi
 }
 
 
@@ -132,9 +86,8 @@ preprocess () {
     # Syntax highlight source code. Delegate to `lesspipe` for compressed and archive files.
     case "$1" in
         -)
-            # Input passed via stdin. Assume it is source code, and highlight based on the language
-            # inferred from the file header.
-            highlight "$1" --infer-lang
+            # Input passed via stdin. Filetype cannot be inferred from filename or extension.
+            cat
             ;;
         *ChangeLog|*changelog)
             highlight "$1" --lang-def=changelog.lang

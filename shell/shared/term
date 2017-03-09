@@ -1,10 +1,17 @@
+
+
+# ----------  TERMINAL  ------------------------------------------------------
+
 if [[ -n $PS1 ]]; then
-  stty quit undef \
-    kill undef \
-    start undef \
-    stop undef \
-    rprnt undef \
-    werase undef \
-    flush undef
-  # stty iutf8
+    stty \
+        quit undef \
+        status undef \
+        kill undef \
+        start undef \
+        stop undef \
+        discard undef \
+        rprnt undef \
+        werase undef \
+        flush undef
+    # stty iutf8
 fi

@@ -1,2 +1,6 @@
-# Connect to ssh-agent, starting it if needed
-eval "$(~/.rc/bin/ssh-agent-connect)"
+
+
+# ----------  SSH  -----------------------------------------------------------
+
+# Connect to ssh-agent, starting it if needed.
+[[ -x "$HOME/bin/ssh-agent-connect" ]] && eval "$($HOME/bin/ssh-agent-connect)"

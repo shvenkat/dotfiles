@@ -1,71 +1,78 @@
-## KEY BINDINGS --------------------------------------------------------------
+# ----------  KEY BINDINGS  --------------------------------------------------
 
-# set editing-mode emacs
+set editing-mode emacs
+# "\C-[": vi-editing-mode
 
-"\C-w": beginning-of-line
-"\C-e": end-of-line
-"\C-b": backward-word
-"\C-n": forward-word
-"\eb":  backward-char
-"\en":  forward-char
-"\C-y": character-search-backward
-"\ey":  character-search
+# Least disruptive Ctrl- substitutes for Meta- bindings in the default (emacs) keymap.
+"\C-l": forward-word
+"\C-o": backward-word
+"\C-@": kill-word
+"\C-t": history-search-backward
+"\C-q": history-search-forward
+"\C-]": beginning-of-line
 
-"\C-h": backward-delete-char
-"\eh":  delete-char
-"\C-f": backward-kill-word
-"\C-g": kill-word
-"\C-k": backward-kill-line
-"\ek":  kill-line
+# "\C-w": beginning-of-line
+# "\C-e": end-of-line
+# "\C-b": backward-word
+# "\eb":  backward-char
+# "\en":  forward-char
+# "\C-y": character-search-backward
+# "\ey":  character-search
 
-"\C-p": yank
-"\ep":  yank-last-arg
-"\e\C-p": yank-nth-arg
-"\e ":  set-mark
-"\ed":  kill-region
-"\ec":  copy-region-as-kill
+# "\C-h": backward-delete-char
+# "\eh":  delete-char
+# "\C-f": backward-kill-word
+# "\C-g": kill-word
+# "\C-k": backward-kill-line
+# "\ek":  kill-line
 
-"\C-r": reverse-search-history
-"\C-t": forward-search-history
-"\C-s": history-search-backward
-"\C-o": previous-history
-"\C-l": next-history
-"\e,":  beginning-of-history
-"\e.":  end-of-history
+# "\C-p": yank
+# "\ep":  yank-last-arg
+# "\e\C-p": yank-nth-arg
+# "\e ":  set-mark
+# "\ed":  kill-region
+# "\ec":  copy-region-as-kill
 
-"\C-u": undo
-"\C-q": abort
-"\C-v": quoted-insert
-"\ei":  menu-complete
-"\el":  redraw-current-line
+# "\C-r": reverse-search-history
+# "\C-s": history-search-backward
+# "\C-o": previous-history
+# "\C-l": next-history
+# "\e,":  beginning-of-history
+# "\e.":  end-of-history
 
-## VARIABLES -----------------------------------------------------------------
+# "\C-u": undo
+# "\C-q": abort
+# "\C-v": quoted-insert
+# "\ei":  menu-complete
+# "\el":  redraw-current-line
 
-# Disable 8-bit input/output for compatibility
+# ----------  VARIABLES  -----------------------------------------------------
+
+# Disable 8-bit input/output.
 set convert-meta On
 set enable-meta-key On
 set input-meta Off
 set output-meta Off
-# set prefix-meta "ESC"
 
-# set bind-tty-special-chars Off
-set colored-stats Off
+# Filename completion.
+set match-hidden-files On
 set completion-ignore-case On
 set completion-map-case On
-# set enable-keypad On
-set expand-tilde Off
-# set isearch-terminators "C-[ C-j"
+set menu-complete-display-prefix On
+# set completion-prefix-display-length 10
+set show-all-if-ambiguous On
+set show-all-if-unmodified On
+set colored-stats On
+set visible-stats On
 set mark-directories On
 set mark-symlinked-directories On
-set match-hidden-files On
-set show-all-if-ambiguous Off
-set show-all-if-unmodified On
-set completion-prefix-display-length 10
 set skip-completed-text On
-set visible-stats On
+set expand-tilde Off
 
-$if Bash
-  set bell-style none
-$else
-  set bell-style audible
-$endif
+# Search.
+set isearch-terminators "C-j"
+
+# Misc.
+set enable-keypad On
+# set keyseq-timeout 500
+set bell-style none

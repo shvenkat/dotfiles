@@ -19,7 +19,6 @@ set wildmode=longest,list:longest
 set diffopt=filler,context:3,iwhite,vertical,foldcolumn:2
 
 " Unsaved changes.
-set noswapfile    " Avoid saving sensitive information in the clear.
 set hidden
 set confirm
 
