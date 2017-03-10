@@ -40,6 +40,11 @@ alias R='R --quiet'
 alias vim='vim -X'
 alias svim='nvim -n -i NONE'
 
+# Diff.
+diff-sort () { diff <(sort "$1") <(sort "$2"); }
+diff-json () { diff <(jq -S . "$1") <(jq -S . "$2"); }
+diff-yaml () { diff <(yaml2json "$1" | jq -S .) <(yaml2json "$2" | jq -S .); }
+
 # Stats.
 alias sum="awk 'BEGIN { s = 0 } { s += \$1 } END { print s }'"
 alias mean="awk 'BEGIN { n = 0; s = 0 } { n += 1; s += \$1 } END { print s/n }'"

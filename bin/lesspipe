@@ -97,8 +97,8 @@ preprocess () {
             ;;
         *.tar|*.tgz|*.gz|*.bz2|*.xz)
             # Delegate to `lesspipe` if available.
-            if which lesspipe >/dev/null; then
-                lesspipe "$1"
+            if which lesspipe.sh >/dev/null; then
+                lesspipe.sh "$1"
             else
                 echo "Install lesspipe to view files of this type."
             fi

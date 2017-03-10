@@ -1,3 +1,0 @@
-#!/bin/bash
-
-diff <(yaml2json $1 | jq -S .) <(yaml2json $2 | jq -S .)

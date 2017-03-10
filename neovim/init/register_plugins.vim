@@ -16,12 +16,16 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/goyo.vim'
+" Plug 'vim-scripts/ShowMarks'
 
 " Shortcuts
 Plug 'tpope/vim-commentary'
 Plug 'godlygeek/tabular'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-eunuch'
+" Plug 'tpope/vim-repeat'
 
 " SCM
 Plug 'tpope/vim-fugitive'

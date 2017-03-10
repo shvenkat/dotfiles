@@ -1,0 +1,46 @@
+|     |       | Std.   | Std.         | Std.             | Std.           | Std.  | Cst.       | Cst. | Cst.            | Cst. | Cst.  |
+| Key | ASCII | tmux   | term         | shell            | vim            | emacs | tmux       | term | shell           | vim  | emacs |
+|-----+-------+--------+--------------+------------------+----------------+-------+------------+------+-----------------+------+-------|
+| C-@ | \0    |        |              | set mark         |                |       |            |      | kill word       |      |       |
+| C-a |       |        |              | beg line         |                |       | prefix     |      |                 |      |       |
+| C-b |       | prefix |              | bck char         | screen up      |       |            |      |                 |      |       |
+| C-c |       |        | SIGINT       |                  |                |       |            |      |                 |      |       |
+| C-d |       |        | EOF          | kill char        | half screen dn |       |            |      |                 |      |       |
+| C-e |       |        |              | end line         | line dn        |       |            |      |                 |      |       |
+| C-f |       |        |              | fwd char         | screen dn      |       |            |      |                 |      |       |
+| C-g | \a    |        |              | abort            | status         |       |            |      |                 |      |       |
+| C-h | \b    |        |              | del char         | del char       |       |            |      |                 |      |       |
+| C-i | \t    |        |              | complete         | jump fwd       |       |            |      |                 |      |       |
+| C-j | \n    |        |              | accept line      | line dn        |       |            |      |                 |      |       |
+| C-k |       |        |              | kill line        | digraph        |       |            |      |                 |      |       |
+| C-l |       |        |              | clear screen     | redraw screen  |       |            |      | fwd word        |      |       |
+| C-m | \r    |        |              | accept line      | line dn        |       |            |      |                 |      |       |
+| C-n |       |        |              | next hist        | line dn        |       |            |      |                 |      |       |
+| C-o |       |        | tg. output   |                  | jump bck       |       |            |      | bwd word        |      |       |
+| C-p |       |        |              | prev hist        | file nav.      |       |            |      |                 |      |       |
+| C-q |       |        | start output | quoted           | quoted         |       |            |      | fwd hist search |      |       |
+| C-r |       |        | redraw line  | rev hist isearch | redo           |       |            |      |                 |      |       |
+| C-s |       |        | stop output  | fwd hist isearch |                |       |            |      |                 |      |       |
+| C-t |       |        | SIGINFO      | transpose chars  | prev tag       |       |            |      | rev hist search |      |       |
+| C-u |       |        | del line     | del line         | half screen up |       |            |      |                 |      |       |
+| C-v |       |        | quoted       | quoted           | block mode     |       |            |      |                 |      |       |
+| C-w |       |        | del word     | del word         | window         |       |            |      |                 |      |       |
+| C-x |       |        |              |                  | subtract       |       | tg. zoom   |      |                 |      |       |
+| C-y |       |        | delayed TSTP | yank             | line up        |       |            |      |                 |      |       |
+| C-z |       |        | SIGTSTP      |                  | suspend        |       |            |      |                 |      |       |
+| C-[ | \e    |        |              |                  | normal mode    |       |            |      |                 |      |       |
+| C-\ |       |        | SIGQUIT      |                  | eval           |       | tg. status |      |                 |      |       |
+| C-] |       |        |              | fwd char search  | jump tag       |       |            |      | beg line        |      |       |
+| C-^ |       |        |              |                  | alt. buf       |       | alt. pane  |      |                 |      |       |
+| C-_ |       |        |              | undo             | switch keymap  |       |            |      |                 |      |       |
+| C-? | DEL   |        | del char     | del char         | bck char       |       |            |      |                 |      |       |
+
+del = delete backward
+kill = delete forward
+
+Ref:
+* https://en.wikipedia.org/wiki/ASCII
+* man tmux
+* man stty; stty sane; stty -a
+* man 3 readline
+* http://hea-www.harvard.edu/~fine/Tech/vi.html

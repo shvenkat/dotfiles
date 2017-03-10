@@ -1,6 +1,6 @@
-# .rc
+# dotfiles
 
-dotfiles. At home anywhere.
+At home anywhere.
 
 # Install.
 

@@ -4,8 +4,8 @@
 # ----------  PLUGINS  ------------------------------------------------------
 
 # Manage plugins using zplug (https://github.com/zplug/zplug)
-export ZPLUG_HOME=~/.zplug
-export ZPLUG_PROTOCOL=HTTPS
+ZPLUG_HOME=~/.zplug
+ZPLUG_PROTOCOL=HTTPS
 source $ZPLUG_HOME/init.zsh
 
 # Plugin management.
@@ -52,12 +52,15 @@ zplug load
 setopt ignore_eof
 
 # History.
-export HISTFILE=~/.zsh_history
-export HISTSIZE=1000000
-export SAVEHIST=1000000
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=1000000
 setopt append_history
 setopt hist_find_no_dups
 setopt hist_verify
+
+# Completion.
+setopt no_list_beep
 
 # Key bindings.
 bindkey -e      # emacs bindings.
@@ -69,5 +72,5 @@ bindkey '^q'    history-beginning-search-forward
 bindkey '^@'    kill-word
 bindkey 'TAB'   complete-word
 
-# Completion.
-setopt no_list_beep
+# Movement.
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
