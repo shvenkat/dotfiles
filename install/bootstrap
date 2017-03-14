@@ -1,0 +1,147 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+
+HOMEBREW_INSTALL_URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
+LINUXBREW_INSTALL_URL="https://raw.githubusercontent.com/Linuxbrew/install/master/install"
+NAME="$(basename -- "$0")"
+PREFIX="$(dirname -- "$0")"
+
+
+# ----------  utility functions  ---------------------------------------------
+
+# Initialize logging by setting global variables.
+init_logger () {
+    if [ -t 1 ]; then
+        NORMAL="\e[0m"
+        BOLD="\e[1m"
+        RED="\e[31m"
+        YELLOW="\e[33m"
+    else
+        NORMAL=""
+        BOLD=""
+        RED=""
+        YELLOW=""
+    fi
+}
+
+
+# Output formatted error message and exit.
+error () {
+    env echo -e "${RED}ERROR${NORMAL}${BOLD}  [$NAME]  $*${NORMAL}"
+    exit 1
+}
+
+
+# Output formatted warning messages.
+warn () {
+    env echo -e "${YELLOW}WARN${NORMAL}${BOLD}   [$NAME]  $*${NORMAL}"
+}
+
+
+# Output formatted informational messages.
+info () {
+    env echo -e "${BOLD}INFO   [$NAME]  $*${NORMAL}"
+}
+
+
+# Run a command, logging its output. If an error is encountered, output an error message and exit.
+# Args:
+#   $@: Command and arguments to be run.
+run () {
+    info "Running: $* (in $(pwd))."
+    ("$@" 2>&1 | while IFS='' read -r line; do echo "        $line"; done) \
+        || error "$1 command failed."
+}
+
+
+# Show usage; do not exit.
+usage () {
+	echo "Usage: $0 [config] [apps]"
+}
+
+
+# ----------  installer components  ------------------------------------------
+
+# Install prerequisites, such as a build toolchain.
+install_prereq () {
+    # OS-specific prereqs.
+    case "$OSTYPE" in
+        linux*)
+            run sudo apt-get install build-essential curl file git python-setuptools ruby
+            ;;
+        darwin*)
+            test -x /usr/bin/clang || run xcode-select --install
+            ;;
+        *)
+            error "Unsupported OS: $OSTYPE"
+            ;;
+    esac
+    # Generic prereqs.
+	which ruby >/dev/null 2>&1 || error "Missing dependency - ruby not found."
+}
+
+
+install_core () {
+    # Homebrew/Linuxbrew.
+	if ! which brew >/dev/null 2>&1; then
+        case "$OSTYPE" in
+            linux*)
+                /usr/bin/env ruby -e "$(curl -fsSL "$LINUXBREW_INSTALL_URL")"
+                ;;
+            darwin*)
+                /usr/bin/env ruby -e "$(curl -fsSL "$HOMEBREW_INSTALL_URL")"
+                ;;
+            *)
+                error "Error: unknown OS - $OSTYPE."
+                ;;
+        esac
+    fi
+    # Bork.
+	which bork >/dev/null 2>&1 || brew install --HEAD bork
+    # Git
+	bork ok brew git
+}
+
+
+install_apps () {
+    "$PREFIX"/install/bork.sh
+}
+
+
+install_config () {
+    "$PREFIX"/install/fresh.sh
+}
+
+
+# ----------  main  ----------------------------------------------------------
+
+init_logger
+
+# Parse arguments.
+if [ $# -eq 0 ]; then
+    usage
+    exit 1
+fi
+while [ $# -gt 0 ]; do
+    case "$1" in
+        config)
+            INSTALL_CONFIG=yes
+            ;;
+        apps)
+            INSTALL_APPS=yes
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# Install requested components.
+install_prereq
+install_core
+[ -n "$INSTALL_APPS" ] && install_apps
+[ -n "$INSTALL_CONFIG" ] && install_config

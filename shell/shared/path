@@ -5,12 +5,13 @@
 case $OSTYPE in
     linux*)
         PATH="/usr/local/sbin:/sbin:/usr/sbin"
-        PATH="${PATH}:/usr/local/bin:/bin:/usr/bin"
+        PATH="${PATH}:${HOME}/.linuxbrew/bin:/usr/local/bin:/bin:/usr/bin"
         PATH="${PATH}:${HOME}/bin"
         export PATH
 
+        MANPATH="${HOME}/.linuxbrew/share/man${MANPATH:+:${MANPATH}}"
         # MANPATH=/usr/local/share/man:/usr/share/man:/usr/share/man/en
-        # export MANPATH
+        export MANPATH
 
         # export R_HOME=/usr/lib64/R
         ;;

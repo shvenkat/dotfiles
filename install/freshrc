@@ -51,6 +51,7 @@ fresh shvenkat/dotfiles util/source-highlight.style --file=~/.config/source-high
 fresh shvenkat/dotfiles util/nanorc --file
 
 # Miscellany.
+fresh shvenkat/dotfiles bin/kill-tree --bin
 fresh shvenkat/dotfiles bin/machine-dashboard --bin
 fresh shvenkat/dotfiles bin/machine-status --bin
 fresh shvenkat/dotfiles bin/ssh-agent-connect --bin

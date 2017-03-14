@@ -1,8 +1,8 @@
 snippet preamble "Set useful variables and special targets" b
-.DEFAULT_GOAL := all
-MAKEFLAGS += --warn-undefined-variables
-SHELL := /bin/bash -e -o pipefail -c
-# .SHELLFLAGS := -eu -o pipefail -c
+.DEFAULT_GOAL:=all
+MAKEFLAGS+=--warn-undefined-variables
+SHELL:=/bin/bash -e -u -o pipefail -c
+# .SHELLFLAGS:=-e -u -o pipefail -c
 .DELETE_ON_ERROR:
 # .SUFFIXES:
 endsnippet

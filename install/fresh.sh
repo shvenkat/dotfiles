@@ -9,7 +9,7 @@ FRESH_URL="https://github.com/freshshell/fresh"
 FRESH_CLONE="${HOME}/.fresh/source/freshshell/fresh"
 FRESHRC_TARGET="${DOTFILES_CLONE}/install/freshrc"
 FRESHRC_SYMLINK="${HOME}/.freshrc"
-NAME="$(basename "$0")"
+NAME="$(basename -- "$0")"
 
 
 # ----------  functions  -----------------------------------------------------

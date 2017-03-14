@@ -30,3 +30,7 @@ autocmd BufReadPost *
 
 " Python for plugins.
 let g:python_host_prog='python3'
+
+" Shell file syntax highlighting and code folding.
+let g:is_posix = 1
+let g:sh_fold_enabled = 3
