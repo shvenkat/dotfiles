@@ -75,6 +75,8 @@ fresh-options --file=config-nvim/init.vim
 fresh-options
 
 # emacs. Scripting done right. Sadistic UI.
+fresh shvenkat/dotfiles emacs/spacemacs --file
+fresh syl20bnr/spacemacs . --file=~/.emacs.d/
 
 # editorconfig. When you just can't avoid collaborating.
 fresh shvenkat/dotfiles util/editorconfig --file

@@ -88,10 +88,10 @@ install_core () {
 	if ! which brew >/dev/null 2>&1; then
         case "$OSTYPE" in
             linux*)
-                /usr/bin/env ruby -e "$(curl -fsSL "$LINUXBREW_INSTALL_URL")"
+                run /usr/bin/env ruby -e "$(curl -fsSL "$LINUXBREW_INSTALL_URL")"
                 ;;
             darwin*)
-                /usr/bin/env ruby -e "$(curl -fsSL "$HOMEBREW_INSTALL_URL")"
+                run /usr/bin/env ruby -e "$(curl -fsSL "$HOMEBREW_INSTALL_URL")"
                 ;;
             *)
                 error "Error: unknown OS - $OSTYPE."
@@ -99,19 +99,19 @@ install_core () {
         esac
     fi
     # Bork.
-	which bork >/dev/null 2>&1 || brew install --HEAD bork
+	which bork >/dev/null 2>&1 || run brew install --HEAD bork
     # Git
-	bork ok brew git
+	run bork check ok brew git
 }
 
 
 install_apps () {
-    "$PREFIX"/install/bork.sh
+    run "$PREFIX"/install/bork.sh
 }
 
 
 install_config () {
-    "$PREFIX"/install/fresh.sh
+    run "$PREFIX"/install/fresh.sh
 }
 
 
