@@ -1,0 +1,13 @@
+# Show the main window when launching Activity Monitor
+defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
+defaults write com.apple.ActivityMonitor SelectedTab -int 0;
+defaults write com.apple.ActivityMonitor ShowCategory -int 0
+
+# Visualize CPU history in the Activity Monitor Dock icon
+defaults write com.apple.ActivityMonitor IconType -int 6
+
+# Show all processes in Activity Monitor
+
+# Sort Activity Monitor results by CPU usage
+defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+defaults write com.apple.ActivityMonitor SortDirection -int 0

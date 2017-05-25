@@ -1,0 +1,242 @@
+snippet parseargs "Parse command line arguments using argparse" b
+def parse_args():
+    """Parse command line arguments, returning an argparse.Namespace object"""
+    prog = os.path.basename(sys.argv[0])
+    parser = argparse.ArgumentParser(prog=prog,
+                                     description="Generate probes to tile a target")
+    parser.add_argument('-f', '--foo', type=int, required=True,
+                        help="Number of foo to be computed")
+    parser.add_argument('-b', '--bar',
+                        help="(Optional) whether to use bar")
+    parser.add_argument('inputFile', nargs='?', default=sys.stdin,
+                        type=argparse.FileType('r'),
+                        help="Input file")
+    parser.add_argument('outputFile', nargs='?', default=sys.stdout,
+                        type=argparse.FileType('w'),
+                        help="Output file")
+    args = parser.parse_args()
+    return args
+
+# args.inputFile.close()
+# args.outputFile.close()
+endsnippet
+
+
+snippet app "Python application with CLI" b
+#!/usr/bin/env python3
+
+"""
+Docstring.
+
+Usage:
+program foo < input
+program bar --file (-|input) > output
+"""
+
+
+import os
+from pathlib import Path
+import sys
+from typing import Any, Callable, Optional
+
+import click
+
+
+PROGRAM = sys.argv[0]
+NAME = os.path.basename(PROGRAM)
+
+
+@click.group("program")
+def program() -> None:
+    pass
+
+
+@click.command("foo")
+def foo() -> None:
+    handle_exceptions(foo)
+
+
+@click.command("bar")
+@click.option("--file", type = Path, required = True,
+              help = "File. Use '-' for stdin.")
+def bar(file: Path) -> None:
+    handle_exceptions(bar, file)
+
+
+kismet.add_command(make_baseline)
+kismet.add_command(plot_results)
+kismet.add_command(plot_seqruns)
+
+
+def foo(): ...
+def bar(): ...
+
+
+def handle_exceptions(function: Callable, *args: Any, **kwargs: Any) -> Any:
+    try:
+        function(*args, **kwargs)
+    except BaseException as e:
+        error(1, exception = e)
+
+
+def error(status: int, message: Optional[str] = None, exception: Optional[BaseException] = None
+          ) -> None:
+    """Print a formatted message and/or exception to stderr and exit."""
+    if exception is not None:
+        message = str(exception) if message is None else message + "\n" + str(exception)
+    if message is not None:
+        sys.stderr.write("[{}] ERROR: {}\n".format(NAME, message.replace("\n", "\n    ")))
+    sys.exit(status)
+
+
+def info(message: str) -> None:
+    """Print a formatted message to stderr."""
+    sys.stderr.write("[{}] INFO: {}\n".format(NAME, message))
+endsnippet
+
+
+snippet utility_script "Utility script template" b
+#!/usr/bin/env python3
+
+"""Docstring."""
+
+
+import os, sys
+try:
+    import tpm
+except ImportError:
+    sys.stderr.write("Python3 'tpm' module is missing. Try `pip3 install [--user] tpm`.\n")
+    sys.exit(1)
+
+
+PROGRAM = sys.argv[0]
+NAME = os.path.basename(PROGRAM)
+
+
+def main() -> None:
+    """Parse arguments and dispatch appropriately."""
+    # Parse arguments.
+    parser = CustomArgumentParser()
+    subparsers = parser.add_subparsers(dest = "subcommand")
+    subparsers.add_parser("help").add_argument("topic", nargs = "?")
+    subparsers.add_parser("foo")
+    parser_bar = subparsers.add_parser("bar")
+    parser_bar.add_argument("--file", type = Path, help = "Info.")
+    args = parser.parse_args()
+
+    # Dispatch appropriately.
+    if args.subcommand is None:
+        sys.stderr.write(USAGE)
+    elif args.subcommand == "help":
+        if args.topic is None:
+            sys.stderr.write(USAGE)
+        elif args.topic == "foo":
+            sys.stderr.write(HELP_FOO)
+        elif args.topic == "bar":
+            sys.stderr.write(HELP_BAR)
+        else:
+            error(2, "unrecognized help topic: " + args.topic)
+    elif args.subcommand == "foo":
+        foo()
+    elif args.subcommand == "bar":
+        bar(args.file)
+    else:
+        error(2, "unrecognized sub-command: " + args.subcommand)
+
+
+def foo() -> None: ...
+
+
+def bar(file: Optional[Path] = None) -> None: ...
+
+
+Foo = Sequence[str]
+Bar = Mapping[str, Foo]
+
+
+def frob_foo(foo: Foo) -> bool: ...
+
+
+def barf_bar(bar: Bar, key: str) -> Foo: ...
+
+
+def get_sudo() -> None:
+    """When this function returns, `sudo` may be invoked without a password prompt."""
+    if subprocess.run(["sudo", "-n", "-v"], stderr = subprocess.DEVNULL).returncode == 0:
+        return
+    info("Using sudo to access privileged (system) preferences. Enter your password.")
+    if subprocess.run(["sudo", "-v"]).returncode != 0:
+        error(1, "failed to acquire sudo access.")
+
+
+def error(status: int, message: Optional[str] = None, exception: Optional[BaseException] = None
+          ) -> None:
+    """Print a formatted message and/or exception to stderr and exit."""
+    if exception is not None:
+        message = str(exception) if message is None else message + "\n" + str(exception)
+    if message is not None:
+        sys.stderr.write("[{}] ERROR: {}\n".format(NAME, message.replace("\n", "\n    ")))
+    sys.exit(status)
+
+
+def info(message: str) -> None:
+    """Print a formatted message to stderr."""
+    sys.stderr.write("[{}] INFO: {}\n".format(NAME, message))
+
+
+class CustomArgumentParser(ArgumentParser):
+    """Uses a custom fixed message for usage and help."""
+
+    def format_usage(self):
+        return USAGE
+
+    def format_help(self):
+        return USAGE
+
+    def error(self, message):
+        error(2, message)
+
+
+USAGE = string.Template("""
+Frob a foo and barf.
+
+Usage:
+    $program -h|--help
+    $program help (load|dump)
+    $program foo < input
+    $program bar [--file (-|input)] < input > output
+
+Sub-commands:
+    help    Detailed help on foo or bar.
+    foo     Blah blah. Use `$program help foo` for details.
+    bar     Blah blah. Use `$program help bar` for details.
+
+\033[1mNOTE\033[0m: Root access may be required to ...
+""").safe_substitute(program = NAME)
+
+
+HELP_FOO = """
+...
+
+\033[1mSECTION\033[0m
+
+...
+"""
+
+
+HELP_BAR = """
+...
+"""
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except SystemExit:
+        raise
+    except KeyboardInterrupt:
+        sys.stderr.write("\n")
+        sys.exit(1)
+    except BaseException as e:
+        error(1, exception = e)
+endsnippet

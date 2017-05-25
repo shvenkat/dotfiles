@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
 
-"""Convert JSON on stdin to YAML on stdout"""
+import json, os, sys, yaml
 
-import json
-import sys
-import yaml
+PROGRAM = os.path.basename(sys.argv[0])
 
-yaml.dump(json.load(sys.stdin), sys.stdout, default_flow_style = False)
+if len(sys.argv) > 1:
+    sys.exit("Usage: {} < input.json > output.yaml".format(PROGRAM))
+
+try:
+    yaml.dump(json.load(sys.stdin), sys.stdout, default_flow_style = False)
+except json.JSONDecodeError as e:
+    sys.exit("[{}] Invalid JSON:\n    {}".format(PROGRAM, str(e).replace("\n", "\n    ")))
+except BaseException as e:
+    sys.exit("[{}] Error:\n    {}".format(PROGRAM, str(e).replace("\n", "\n    ")))

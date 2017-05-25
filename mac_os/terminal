@@ -1,0 +1,9 @@
+# Use UTF-8.
+defaults write com.apple.terminal StringEncodings -array 4
+
+# Mouse cursor location does not changes keyboard focus.
+defaults write com.apple.terminal FocusFollowsMouse -bool false
+
+# Enable 'Secure Keyboard Entry'.
+# See: https://security.stackexchange.com/a/47786/8918
+defaults write com.apple.terminal SecureKeyboardEntry -bool true

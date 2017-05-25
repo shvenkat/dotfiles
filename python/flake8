@@ -1,0 +1,4 @@
+[flake8]
+ignore = E251,E241
+max-line-length = 100
+putty-auto-ignore = True

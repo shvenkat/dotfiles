@@ -1,0 +1,24 @@
+# Apps.
+firefox
+google-chrome
+
+# Utilities.
+flux
+macfusion
+osxfuse
+xquartz
+
+# Terminal.
+font-dejavu-sans
+font-droid-sans-mono
+iterm2-beta
+
+# Programming.
+java
+
+# Collaboration.
+skype
+
+# Cloud.
+docker
+google-drive

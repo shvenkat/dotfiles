@@ -1,0 +1,130 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+
+NAME="$(basename -- "$0")"
+PREFIX="$(dirname -- "$0")"
+OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
+
+MAC_CONFIG="$PREFIX/config/mac"
+LINUX_CONFIG="$PREFIX/config/linux"
+
+
+# Show usage.
+# Args: None.
+usage () {
+    echo "Usage: $NAME [-h|--help]"
+    echo '    Sets system and application config/preferences, using bork.'
+}
+
+
+# ----------  Logging  -------------------------------------------------------
+
+# Initialize logging by setting global variables.
+# Args: None.
+init_logger () {
+    if [ -t 1 ]; then
+        NORMAL="\e[0m"
+        BOLD="\e[1m"
+        RED="\e[31m"
+        YELLOW="\e[33m"
+    else
+        NORMAL=""
+        BOLD=""
+        RED=""
+        YELLOW=""
+    fi
+}
+
+# Output formatted error message _and exit_.
+# Args:
+#   $@: Messages.
+error () {
+    env echo -e "${RED}ERROR${NORMAL}${BOLD}   [$NAME]  $*${NORMAL}"
+    exit 1
+}
+
+# Output formatted warning messages.
+# Args:
+#   $@: Messages.
+warn () {
+    env echo -e "${YELLOW}WARNING${NORMAL}${BOLD} [$NAME]  $*${NORMAL}"
+}
+
+# Output formatted informational messages.
+# Args:
+#   $@: Messages.
+info () {
+    env echo -e "${BOLD}INFO    [$NAME]  $*${NORMAL}"
+}
+
+# Output formatted debug messages.
+# Args:
+#   $@: Messages.
+debug () {
+    env echo -e "${NORMAL}DEBUG   [$NAME]  $*"
+}
+
+# Run a command, logging its output. If an error is encountered, output an error message and exit.
+# Args:
+#   $@: Command and arguments to be run.
+run () {
+    debug "Running: $* (in $(pwd))."
+    ("$@" 2>&1 | while IFS='' read -r line; do echo "        $line"; done) \
+        || error "$1 command failed."
+}
+
+
+# ----------  main  ----------------------------------------------------------
+
+init_logger
+
+# Check usage.
+if [ $# -eq 1 ] && ([ "$1" = "-h" ] || [ "$1" = "--help" ]); then
+    usage
+    exit 0
+fi
+if [ $# -gt 0 ]; then
+    usage
+    exit 1
+fi
+
+case "$OSTYPE" in
+    linux*)
+        ;;
+
+    darwin*)
+
+        # Close any open System Preferences panes to avoid concurrent updates.
+        ! which osascript 1>/dev/null 2>&1 \
+            || osascript -e 'tell application "System Preferences" to quit'
+
+        # Acquire sudo access.
+        info "Acquiring admin access, which is required to change certain settings." \
+            "Password entry may be requested."
+        sudo -v
+        # Retain sudo access until this script is done.
+        while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+        for config in "$MAC_CONFIG"/*; do
+            if [ -x "$config" ]; then
+                info "Installing $config settings."
+                run "$config"
+            fi
+        done
+
+        # Warn if a lock screen message has not been set. Setting a message may help in recovering
+        # a lost machine.
+        (nvram -p | grep -q good-samaritan-message) || \
+            warn "Lock screen message has not been set. You can set one in" \
+                "System Preferences > Security & Privacy > General > Set Lock Message."
+
+        warn "Done. You may need to quit applications and/or logout" \
+            "for certain settings to take effect."
+        ;;
+
+    *)
+        error "Error: unknown OS - $OSTYPE."
+        ;;
+esac

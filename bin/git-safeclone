@@ -1,0 +1,189 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+
+NAME="$(basename -- "$0")"
+
+
+# ----------  utilities  -----------------------------------------------------
+
+
+# Show usage.
+usage () {
+    echo "Usage: $NAME [-h|--help] <repository> <directory>"
+    echo
+    echo 'Clones a repository, or safely updates an existing clone.'
+    echo
+    echo '* If <directory> is non-existent or empty, `git clone` is called.'
+    echo
+    echo '* If <directory> is a git repository, the effect of `git clone` is '
+    echo '  achieved in a non-destructive way. Un-commited changes, a different'
+    echo '  origin URL, incompatible branches and divergence from the upstream'
+    echo '  branch -- all result in an error.'
+    echo
+}
+
+
+# Output formatted error message and exit.
+error () {
+    echo "ERROR  [$NAME]  $*"
+    exit 1
+}
+
+
+# Output formatted warning messages.
+warn () {
+    echo "WARN   [$NAME]  $*"
+}
+
+
+# Output formatted informational messages.
+info () {
+    echo "INFO   [$NAME]  $*"
+}
+
+
+# Run a command, logging its output. If an error is encountered, output an error message and exit.
+# Args:
+#   $@: Command and arguments to be run.
+run () {
+    info "Running: $* (in $(pwd))."
+    ("$@" 2>&1 | while IFS='' read -r line; do echo "        $line"; done) \
+        || error "$1 command failed."
+}
+
+
+# ----------  functions  -----------------------------------------------------
+
+
+# `git clone` a repository to a directory, if the latter is non-existent or empty.
+# Args:
+#   $1: Repository URL.
+#   $2: Local directory path.
+# Returns: 0 on successful `git clone`, 1 if cloning is not possible.
+try_clone () {
+    repo="$1"
+    dir="$2"
+    # Check if the local path exists. If not, just clone.
+    if [ ! -e "$dir" ]; then
+        run git clone "$repo" "$dir"
+        return 0
+    else
+        # Verify that the local path is a directory.
+        test -d "$dir" \
+            || error "$dir exists and is not a directory."
+        # Check whether the directory is empty. If so, just clone.
+        if [ "$(stat --format='%h' "$dir")" -eq 2 ]; then
+            run git clone "$repo" "$dir"
+            return 0
+        else
+            return 1
+        fi
+    fi
+}
+
+
+# Update an existing git repo to match the result of a clone operation. Fail if such an update would
+# be destructive.
+# Args:
+#   $1: Repository URL.
+#   $2: Local path, must exist and be a directory, and is assumed to be non-empty.
+try_fakeclone () {
+    repo="$1"
+    dir="$2"
+    current_dir="$(pwd)"
+    cd "$dir"
+
+    # Attempt to simulate 'git clone' in a non-destructive way. To do this:
+    # 1.  Verify or satisfy the following assertions, and fail otherwise.
+    #     * The directory is a git repo, in a clean state with no untracked files.
+    #     * The git repo has a remote named 'origin' matching the given URL.
+    #     * The git repo has a branch that tracks the origin branch to which origin/HEAD points.
+    #     * The tracking branch has not diverged from its upstream origin branch.
+    # 2.  Checkout the appropriate local branch, and update it by a fast-forward.
+
+    # Verify that the local path is a git repository.
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+        || error "Existing directory $dir is not a git repo."
+    # Verify that the working tree is clean regarding tracked files.
+    git diff-index --quiet HEAD >/dev/null 2>&1 \
+        || error "Existing git repo in $dir is not clean."
+    # Verify that there are no untracked files. These could conflict with a pull.
+    test -z "$(git ls-files --others --exclude-standard 2>/dev/null)" \
+        || error "Existing git repo in $dir has untracked files."
+    # Verify that a remote named 'origin' exists and has the given URL.
+    if (git remote | grep -q '^origin$') >/dev/null 2>&1; then
+        # Verify that the URL of the remote 'origin' matches the given one.
+        test "$repo" = "$(git ls-remote --get-url origin 2>/dev/null)" \
+            || error "Existing git repo in $dir has a different 'origin' remote."
+    else
+        # Add an 'origin' remote.
+        run git remote add origin "$repo"
+    fi
+    # Fetch heads and tags from origin.
+    run git fetch origin
+    # Determine the default remote branch i.e. resolve origin/HEAD. Typically 'master'.
+    run git remote set-head origin --auto
+    origin_head="$(git symbolic-ref --quiet refs/remotes/origin/HEAD 2>/dev/null)" \
+        || error "Unable to resolve HEAD for repository $repo."
+    origin_head="${origin_head#refs/remotes/origin/}"
+    # Identify local branches that track origin/HEAD.
+    tracking_heads="$(git for-each-ref --format='%(refname) %(upstream)' refs/heads 2>/dev/null \
+                        | (grep " refs/remotes/origin/$origin_head" || true) \
+                        | cut -d' ' -f1 \
+                        | sed -e 's#refs/heads/##')"
+    # Checkout a local branch that tracks origin/HEAD. If needed, create the former.
+    if [ -z "$tracking_heads" ]; then
+        # No local branch tracks origin/HEAD. Verify that no local branch has the same name as
+        # the resolved origin/HEAD, and then create such a branch to track the latter.
+        git show-ref --verify --quiet "refs/heads/$origin_head" 1>/dev/null 2>&1 \
+            && error "Existing git repo in $dir has a $origin_head branch" \
+                "that does not track origin/$origin_head (current origin/HEAD)."
+        tracking_head="$origin_head"
+        run git checkout -b "$tracking_head" --track "origin/$origin_head"
+    else
+        # One or more local branches track origin/HEAD. If one of these branches has the same
+        # name as origin/HEAD, use it. Otherwise, select one arbitrarily.
+        if echo "$tracking_heads" | grep -q "^${origin_head}$"; then
+            tracking_head="${origin_head}"
+        else
+            tracking_head="$(echo "$tracking_heads" | head -n1)"
+        fi
+        current_head="$(git symbolic-ref -q --short HEAD 2>/dev/null)"
+        test "$current_head" = "$tracking_head" \
+            || run git checkout "$tracking_head"
+    fi
+    # Update to origin/HEAD, only if the update is a fast-forward i.e. no merge is required.
+    if [ "$(git rev-parse --verify --quiet HEAD 2>/dev/null)" \
+            != "$(git rev-parse --verify --quiet "origin/$origin_head" 2>/dev/null)" ]; then
+        run git merge --ff-only "origin/$origin_head" \
+            || error "$tracking_head branch of existing git repo in $dir" \
+                "tracks origin/$origin_head but has diverged from it."
+    else
+        info "Already up-to-date."
+    fi
+    cd "$current_dir"
+}
+
+
+# ----------  main  ----------------------------------------------------------
+
+# Check usage.
+if [ $# -eq 1 ] && ([ "$1" = "-h" ] || [ "$1" = "--help" ]); then
+    usage
+    exit 0
+fi
+if [ $# -ne 2 ]; then
+    usage
+    exit 1
+fi
+repo="$1"
+dir="$2"
+
+# Clone if possible.
+try_clone "$repo" "$dir" && exit 0
+
+# Otherwise try to simulate the effect of a clone operation.
+info "Attempting to simulate 'git clone $repo' into existing directory $dir."
+try_fakeclone "$repo" "$dir"

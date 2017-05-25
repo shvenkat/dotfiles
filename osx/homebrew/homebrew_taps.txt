@@ -1,9 +1,0 @@
-caskroom/cask
-caskroom/fonts
-caskroom/versions
-homebrew/core
-homebrew/dupes
-homebrew/fuse
-homebrew/science
-homebrew/services
-neovim/neovim

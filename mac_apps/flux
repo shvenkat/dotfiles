@@ -1,0 +1,23 @@
+user:
+    org.herf.Flux:
+
+        # Daily schedule.
+        wakeTime: 240                # Wake time in minutes past midnight, local time.
+        expandedDay: 1               # Delay transition to late color setting.
+        steptime: 16.0               # Transition rate.
+        lateLock: 0
+
+        # Display color adjustments.
+        dayColorTemp: 6500.0
+        lateColorTemp: 3400.0
+        nightColorTemp: 3400.0
+        darkTheme: 0                 # Disable OSX dark theme for menu bar and dock.
+
+        # Exceptions.
+        disable-com.googlecode.iterm2: true
+        disable-com.apple.Terminal: true
+
+        # Miscellany.
+        disableCount: 1
+        wakeNotifyDisable: 1
+        SUAutomaticallyUpdate: true

@@ -1,0 +1,104 @@
+# ==========  CONFIG RECIPE, IN fresh  =======================================
+
+
+# fresh itself. Very meta.
+fresh freshshell/fresh bin/fresh --bin
+
+
+# ----------  TERMINAL  ------------------------------------------------------
+
+# tmux. Delusions of multi-tasking.
+fresh shvenkat/dotfiles tmux/tmux.conf --file=~/.tmux.conf
+fresh shvenkat/dotfiles tmux/colorscheme_lunarized.conf --file=~/.tmux.conf --marker
+
+# X/xterm. The GUI that drove me to the text terminal.
+# fresh shvenkat/dotfiles x/xinitrc --file
+
+
+# ----------  COMMAND SHELL  -------------------------------------------------
+
+# zsh. F*** yeah!
+fresh zplug/zplug . --file=~/.zplug/
+fresh-options --file=~/.zshrc
+    fresh shvenkat/dotfiles shell/zsh/zshrc
+    fresh shvenkat/dotfiles shell/shared/misc
+    fresh shvenkat/dotfiles shell/shared/path
+    fresh shvenkat/dotfiles shell/shared/less
+    fresh shvenkat/dotfiles shell/shared/ls
+    fresh shvenkat/dotfiles shell/shared/ssh
+    fresh shvenkat/dotfiles shell/shared/term
+    fresh shvenkat/dotfiles shell/shared/alias
+    fresh shvenkat/dotfiles shell/shared/local
+fresh-options
+
+
+# ----------  UTILITIES  -----------------------------------------------------
+
+# Readline. Fools rush in where... Consider yourself warned.
+fresh shvenkat/dotfiles util/inputrc --file
+
+# colordiff. How do *you* read your diffs? In _monochrome_??
+fresh shvenkat/dotfiles util/colordiffrc --file
+
+# htop. Yeah, I'm that anal.
+fresh shvenkat/dotfiles util/htoprc --file
+
+# less. You'll thank me later.
+fresh shvenkat/dotfiles bin/lesspipe --bin
+fresh shvenkat/dotfiles util/source-highlight.style --file=~/.config/source-highlight/esc.style
+fresh shvenkat/dotfiles source-highlight --file=~/.local/share/source-highlight/
+
+# nano. For the terminal dilettante, and the caffeine-deprived.
+fresh shvenkat/dotfiles util/nanorc --file
+
+# Miscellany.
+fresh shvenkat/dotfiles bin/kill-tree --bin
+fresh shvenkat/dotfiles bin/machine-dashboard --bin
+fresh shvenkat/dotfiles bin/machine-status --bin
+fresh shvenkat/dotfiles bin/ssh-agent-connect --bin
+fresh shvenkat/dotfiles bin/git-safeclone --bin
+
+
+# ----------  PROGRAMMING  ---------------------------------------------------
+
+# vim. UI done right. Scripting is FUBAR.
+fresh shvenkat/dotfiles neovim --file=~/.config/nvim/
+fresh junegunn/vim-plug plug.vim --file=config-nvim/autoload/plug.vim
+fresh-options --file=config-nvim/init.vim
+    fresh shvenkat/dotfiles neovim/init/register_plugins.vim
+    fresh shvenkat/dotfiles neovim/init/core_key_bindings.vim
+    fresh shvenkat/dotfiles neovim/init/core_whitespace.vim
+    fresh shvenkat/dotfiles neovim/init/core_textwidth.vim
+    fresh shvenkat/dotfiles neovim/init/core_folding.vim
+    fresh shvenkat/dotfiles neovim/init/core_completion.vim
+    fresh shvenkat/dotfiles neovim/init/core_colors.vim
+    fresh shvenkat/dotfiles neovim/init/core_misc.vim
+    fresh shvenkat/dotfiles 'neovim/init/plugin_*.vim'
+fresh-options
+
+# emacs. Scripting done right. Sadistic UI.
+fresh shvenkat/dotfiles emacs/spacemacs --file
+fresh syl20bnr/spacemacs . --file=~/.emacs.d/
+
+# editorconfig. When you just can't avoid collaborating.
+fresh shvenkat/dotfiles util/editorconfig --file
+
+# git. What else.
+fresh shvenkat/dotfiles git/gitconfig --file
+fresh git/git contrib/diff-highlight/diff-highlight --bin
+
+
+# ----------  LANGUAGES  -----------------------------------------------------
+
+# R. Matey.
+fresh shvenkat/dotfiles R/Rprofile --file
+
+
+# ----------  CRYPTO  --------------------------------------------------------
+
+# PKI. The illusion of trust.
+fresh shvenkat/dotfiles certs --file=~/.certs/
+
+# GPG. Comes with a tin foil hat.
+fresh shvenkat/dotfiles gnupg/gpg.conf --file=~/.gnupg/gpg.conf
+fresh shvenkat/dotfiles gnupg/gpg-agent.conf --file=~/.gnupg/gpg-agent.conf

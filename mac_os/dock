@@ -1,0 +1,25 @@
+# Set the icon size of Dock items to 36 pixels
+defaults write com.apple.dock tilesize -int 64
+
+# Change minimize/maximize window effect
+defaults write com.apple.dock mineffect -string "scale"
+
+# Minimize windows into their application’s icon
+defaults write com.apple.dock minimize-to-application -bool true
+
+# Enable spring loading for all Dock items
+defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
+
+# Show indicator lights for open applications in the Dock
+defaults write com.apple.dock show-process-indicators -bool true
+
+# Show only open applications in the Dock
+defaults write com.apple.dock static-only -bool true
+
+# Don’t animate opening applications from the Dock
+defaults write com.apple.dock launchanim -bool false
+
+# Automatically hide and show the Dock
+defaults write com.apple.dock autohide -bool true
+
+defaults write com.apple.dock orientation -string left

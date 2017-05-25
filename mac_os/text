@@ -1,0 +1,2 @@
+# Display ASCII control characters using caret notation in standard text views
+defaults write NSGlobalDomain NSTextShowsControlCharacters -bool true

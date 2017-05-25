@@ -1,0 +1,12 @@
+# Use a plain text format, encoded in UTF-8.
+defaults write com.apple.TextEdit RichText -int 0
+defaults write com.apple.TextEdit PlainTextEncoding -int 4
+defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
+
+# Disable auto-correction.
+defaults write com.apple.TextEdit SmartCopyPaste -bool false
+defaults write com.apple.TextEdit TextReplacement -bool false
+
+# UI.
+defaults write com.apple.TextEdit ShowRuler -bool false
+defaults write com.apple.TextEdit WidthInChars -int 80

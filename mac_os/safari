@@ -1,0 +1,209 @@
+# ----------  Search  --------------------------------------------------------
+
+# Default search engine.
+defaults write NSGlobalDomain NSPreferredWebServices -dict \
+    NSWebServicesProviderWebSearch \
+    "<dict> \
+        <key>NSDefaultDisplayName</key> \
+        <string>DuckDuckGo</string> \
+        <key>NSProviderIdentifier</key> \
+        <string>com.duckduckgo</string> \
+    </dict>"
+
+# Show search engine suggestions.
+defaults write com.apple.Safari SuppressSearchSuggestions -bool false
+defaults write com.apple.Safari ShowFavoritesUnderSmartSearchField -bool true
+
+# Disable spell-checking and auto-correct.
+defaults write com.apple.Safari WebContinuousSpellCheckingEnabled -bool false
+defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled -bool false
+
+# Don’t send search queries to Apple.
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+
+# Disable Quick Website Search, which records searches on websites.
+defaults write com.apple.Safari WebsiteSpecificSearchEnabled -bool false
+
+
+# ----------  Browsing  ------------------------------------------------------
+
+# Warn about fraudulent websites.
+defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+
+# Send “Do Not Track” requests.
+defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
+
+# Block pop-up windows.
+defaults write com.apple.Safari WebKitJavaScriptCanOpenWindowsAutomatically -bool false
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically \
+    -bool false
+
+# Do not automatically play videos.
+defaults write com.apple.Safari WebKitMediaPlaybackAllowsInline -bool false
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2AllowsInlineMediaPlayback -bool false
+
+# Enable WebGL.
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2WebGLEnabled -bool true
+
+# ----------  Plugins and Extensions  ----------------------------------------
+
+# Disable Java.
+defaults write com.apple.Safari WebKitJavaEnabled -bool false
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool false
+
+# Enable selected plugins.
+defaults write com.apple.Safari WebKitPluginsEnabled -bool true
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled -bool true
+
+defaults write com.apple.Safari ManagedPlugInPolicies -dict-add \
+    'com.apple.QuickTime Plugin.plugin' \
+    "<dict> \
+        <key>PlugInDisallowPromptBeforeUseDialog</key> \
+        <true/> \
+        <key>PlugInFirstVisitPolicy</key> \
+        <string>PlugInPolicyAllowWithSecurityRestrictions</string> \
+    </dict>" \
+    'com.google.googletalkbrowserplugin' \
+    "<dict> \
+        <key>PlugInFirstVisitPolicy</key> \
+        <string>PlugInPolicyAsk</string> \
+    </dict>" \
+    'com.google.o1dbrowserplugin' \
+    "<dict> \
+        <key>PlugInFirstVisitPolicy</key> \
+        <string>PlugInPolicyAsk</string> \
+    </dict>" \
+    'com.macromedia.Flash Player.plugin' \
+    "<dict> \
+        <key>PlugInDisallowPromptBeforeUseDialog</key> \
+        <true/> \
+        <key>PlugInFirstVisitPolicy</key> \
+        <string>PlugInPolicyBlock</string> \
+    </dict>" \
+    'com.oracle.java.JavaAppletPlugin' \
+    "<dict> \
+        <key>PlugInFirstVisitPolicy</key> \
+        <string>PlugInPolicyBlock</string> \
+    </dict>"
+
+defaults write com.apple.Safari PlugInInfo -dict-add \
+    'com.google.googletalkbrowserplugin' \
+    "<dict> \
+        <key>plugInCurrentState</key> \
+        <true/> \
+    </dict>" \
+    'com.google.o1dbrowserplugin' \
+    "<dict> \
+        <key>plugInCurrentState</key> \
+        <true/> \
+    </dict>" \
+    'com.macromedia.Flash Player.plugin' \
+    "<dict> \
+        <key>plugInCurrentState</key> \
+        <false/> \
+    </dict>" \
+    'com.oracle.java.JavaAppletPlugin' \
+    "<dict> \
+        <key>plugInCurrentState</key> \
+        <false/> \
+    </dict>"
+
+# Enable extensions.
+defaults write com.apple.Safari ExtensionsEnabled -bool true
+
+# Lazy-load extensions.
+defaults write com.apple.Safari SkipLoadingExtensionsAtLaunch -bool true
+
+# Update extensions automatically.
+defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
+
+
+# ----------  Downloads  -----------------------------------------------------
+
+# Do not open 'safe' files automatically after downloading.
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+defaults write com.apple.Safari DownloadsPath -string '~/Downloads'
+defaults write com.apple.Safari DownloadsPathWasConverted -bool true
+
+
+# ----------  Autofill and Passwords  ----------------------------------------
+
+# Disable AutoFill.
+defaults write com.apple.Safari AutoFillFromAddressBook -bool false
+defaults write com.apple.Safari AutoFillPasswords -bool false
+defaults write com.apple.Safari AutoFillCreditCardData -bool false
+defaults write com.apple.Safari AutoFillMiscellaneousForms -bool false
+
+
+# ----------  Local Storage  -------------------------------------------------
+
+defaults write com.apple.Safari LocalFileRestrictionsEnabled -bool true
+defaults write com.apple.Safari BlockStoragePolicy -int 2
+defaults write com.apple.Safari WebKitStorageBlockingPolicy -int 1
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy -int 1
+
+
+# ----------  History  -------------------------------------------------------
+
+defaults write com.apple.Safari HistoryAgeInDaysLimit -int 1
+
+
+# ----------  UI  ------------------------------------------------------------
+
+# Home page.
+defaults write com.apple.Safari HomePage -string 'about:blank'
+
+# New tabs and new windows are empty.
+defaults write com.apple.Safari NewTabBehavior -int 1
+defaults write com.apple.Safari NewWindowBehavior -int 1
+
+# Address bar.
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+
+# Bookmarks bar.
+defaults write com.apple.Safari ShowFavoritesBar -bool false
+defaults write com.apple.Safari 'ShowFavoritesBar-v2' -bool false
+defaults write com.apple.Safari ProxiesInBookmarksBar -string '()'
+
+# Tab bar.
+defaults write com.apple.Safari AlwaysShowTabBar -bool true
+
+# Sidebar.
+defaults write com.apple.Safari ShowSidebarInTopSites -bool false
+
+# Status bar.
+defaults write com.apple.Safari ShowStatusBar -bool false
+
+# Text search.
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
+# Fullscreen.
+defaults write com.apple.Safari AutoShowToolbarInFullScreen -bool true
+defaults write com.apple.Safari AlwaysShowFavoritesBarInFullScreen -bool false
+defaults write com.apple.Safari AlwaysShowTabBarInFullScreen -bool false
+defaults write com.apple.Safari ShowStatusBarInFullScreen -bool false
+
+# Press Tab to cycle between text fields, not links.
+defaults write com.apple.Safari WebKitTabToLinksPreferenceKey -bool false
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks -bool false
+
+
+# ----------  Developer Tools  -----------------------------------------------
+
+# Enable the Develop menu.
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+
+# Enable the Web Inspector.
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari \
+    com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+
+# Add the Web Inspector context menu.
+defaults write -globalDomain WebKitDeveloperExtras -bool true

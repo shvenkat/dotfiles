@@ -9,6 +9,7 @@ ssh/known_hosts
 
 # Auto-generated files.
 .DS_STORE
+.mypy_cache/
 
 # Build files.
 env

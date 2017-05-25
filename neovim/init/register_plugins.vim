@@ -36,6 +36,7 @@ Plug 'neomake/neomake'
 Plug 'majutsushi/tagbar'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'vim-scripts/TaskList.vim'
 
 " Lang

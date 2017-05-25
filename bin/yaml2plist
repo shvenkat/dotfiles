@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+import os, plistlib, sys, yaml
+
+PROGRAM = os.path.basename(sys.argv[0])
+
+if len(sys.argv) > 1:
+    sys.exit("Usage: {} < input.yaml > output.plist".format(PROGRAM))
+
+try:
+    plistlib.dump(yaml.safe_load(sys.stdin), sys.stdout.buffer, fmt = plistlib.FMT_XML)
+except yaml.YAMLError as e:
+    sys.exit("[{}] Invalid YAML:\n    {}".format(PROGRAM, str(e).replace("\n", "\n    ")))
+except TypeError as e:
+    sys.exit("[{}] Unsupported plist type:\n    {}".format(PROGRAM, str(e).replace("\n", "\n    ")))
+except OverflowError as e:
+    sys.exit("[{}] plist integer overflow:\n    {}".format(PROGRAM, str(e).replace("\n", "\n    ")))
+except BaseException as e:
+    sys.exit("[{}] Error:\n    {}".format(PROGRAM, str(e).replace("\n", "\n    ")))

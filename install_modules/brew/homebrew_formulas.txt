@@ -1,0 +1,54 @@
+# General use.
+bork
+clamav
+colordiff
+coreutils
+findutils
+git
+gnupg2
+homebrew/dupes/grep
+htop
+jq
+homebrew/dupes/less
+lesspipe
+homebrew/dupes/openssh
+pigz
+homebrew/dupes/rsync
+source-highlight
+homebrew/fuse/sshfs
+tmux
+tree
+watch
+wdiff
+zsh
+zstd
+
+# Programming.
+cscope
+ctags
+d12frosted/emacs-plus/emacs-plus
+gcc
+go
+haskell-stack
+llvm
+mypy
+neovim/neovim/neovim
+node
+python3
+rust
+shellcheck
+sqlite3
+valgrind
+
+# Math and Science.
+homebrew/science/blast
+homebrew/science/igv
+homebrew/science/r
+homebrew/science/samtools
+
+# Cloud.
+awscli
+
+# The terminal dream.
+homebrew/boneyard/elementary
+homebrew/boneyard/evas-generic-loaders
