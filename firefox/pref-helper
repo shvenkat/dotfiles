@@ -1,0 +1,102 @@
+#!/usr/bin/env python
+
+"""Diff/merge firefox prefs.js files."""
+
+
+import os
+import string
+import sys
+
+
+PROGRAM = os.path.basename(sys.argv[0])
+USAGE = string.Template("""
+Usage:
+    $program diff current_prefs.js desired_prefs.js > diff
+    $program merge current_prefs.js desired_prefs.js > merged_prefs.js
+    $program help|-h|--help
+""").safe_substitute(program = PROGRAM)
+
+
+def usage():
+    sys.stderr.write(USAGE)
+
+
+def main():
+    sys.stdout.write(strip_comments(sys.stdin.read()))
+    return
+    if len(sys.argv) == 2 and sys.argv[1] in ["help", "-h", "--help", "-help"]:
+        usage()
+        sys.exit(0)
+    if len(sys.argv) != 4:
+        usage()
+        sys.exit(2)
+    subcommand, base_path, desired_path = sys.argv[1:4]
+    if subcommand not in ["diff", "merge"]:
+        usage()
+        sys.exit(2)
+    base_prefs = parse_prefs(base_path)
+    desired_prefs = parse_prefs(desired_path)
+    if subcommand == "diff":
+        sys.stdout.write(diff_prefs(base_prefs, desired_prefs))
+    else:
+        sys.stdout.write(dump_prefs(merge_prefs(base_prefs, desired_prefs)))
+
+
+def parse_prefs(path):
+    with open(path, "rt") as file:
+        return {k: v for k, v in prefs(strip_comments(file.read() + "\n"))}
+
+
+def strip_comments(content):
+    comment_tokens = [("//", "\n"), ("/*", "*/"), ("#", "\n")]
+    while True:
+        start, close_token = sorted([(content.find(comment_open), comment_close)
+                                    for comment_open, comment_close in comment_tokens])[0]
+        if start == -1:
+            return content
+        end = content.find(close_token, start)
+        if end == -1:
+            raise ValueError("comment close marker not found")
+        content = content[:start] + content[end + 1:]
+
+
+def prefs(content):
+    return
+
+
+def dump_prefs(prefs):
+    return
+
+
+def diff_prefs(base_prefs, desired_prefs):
+    return
+
+
+def merge_prefs(base_prefs, desired_prefs):
+    return
+
+
+def error(status, message = None, exception = None):
+    """Print a formatted message and/or exception to stderr and exit."""
+    if exception is not None:
+        message = str(exception) if message is None else message + "\n" + str(exception)
+    if message is not None:
+        sys.stderr.write("[{}] ERROR: {}\n".format(PROGRAM, message.replace("\n", "\n    ")))
+    sys.exit(status)
+
+
+def info(message):
+    """Print a formatted message to stderr."""
+    sys.stderr.write("[{}] INFO: {}\n".format(PROGRAM, message))
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except SystemExit:
+        raise
+    except KeyboardInterrupt:
+        sys.stderr.write("\n")
+        sys.exit(1)
+    except BaseException as e:
+        error(1, exception = e)

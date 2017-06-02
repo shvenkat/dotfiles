@@ -1,0 +1,13 @@
+devtools    cran
+ggplot2 cran
+plyr    cran
+
+# Jupyter
+crayon  cran
+digest  cran
+evaluate    cran
+IRdisplay   cran
+pbdZMQ  cran
+repr    cran
+uuid    cran
+IRkernel/IRkernel   github
