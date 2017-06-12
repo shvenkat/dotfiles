@@ -34,7 +34,7 @@ Plug 'airblade/vim-gitgutter'
 " IDE
 Plug 'neomake/neomake'
 Plug 'majutsushi/tagbar'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'vim-scripts/TaskList.vim'
@@ -47,6 +47,7 @@ Plug 'nelstrom/vim-markdown-folding'
 " let g:pandoc#syntax#codeblocks#embeds#langs=['java', 'python']
 Plug 'shvenkat/python_ifold'
 " Plug 'jalvesaq/Nvim-R'
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
