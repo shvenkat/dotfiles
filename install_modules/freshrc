@@ -62,9 +62,7 @@ fresh shvenkat/dotfiles bin/git-safeclone --bin
 # ----------  PROGRAMMING  ---------------------------------------------------
 
 # vim. UI done right. Scripting is FUBAR.
-fresh shvenkat/dotfiles neovim --file=~/.config/nvim/
-fresh junegunn/vim-plug plug.vim --file=config-nvim/autoload/plug.vim
-fresh-options --file=config-nvim/init.vim
+fresh-options --file=~/.config/nvim/init.vim
     fresh shvenkat/dotfiles neovim/init/register_plugins.vim
     fresh shvenkat/dotfiles neovim/init/core_key_bindings.vim
     fresh shvenkat/dotfiles neovim/init/core_whitespace.vim
@@ -76,6 +74,10 @@ fresh-options --file=config-nvim/init.vim
     fresh shvenkat/dotfiles neovim/init/core_misc.vim
     fresh shvenkat/dotfiles 'neovim/init/plugin_*.vim'
 fresh-options
+fresh shvenkat/dotfiles neovim/after --file=~/.config/nvim/after/
+fresh shvenkat/dotfiles neovim/autoload --file=~/.config/nvim/autoload/
+fresh junegunn/vim-plug plug.vim --file=config-nvim-autoload/plug.vim
+fresh shvenkat/dotfiles neovim/UltiSnips --file=~/.config/nvim/UltiSnips/
 
 # emacs. Scripting done right. Sadistic UI.
 fresh shvenkat/dotfiles emacs/spacemacs --file

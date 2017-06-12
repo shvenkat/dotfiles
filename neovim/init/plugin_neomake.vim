@@ -3,8 +3,8 @@
 " ----------  neomake  -------------------------------------------------------
 
 let g:neomake_ft_maker_remove_invalid_entries = 0
-let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_sh_enabled_makers = ['sh']
+let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+let g:neomake_sh_enabled_makers = ['sh', 'shellcheck']
 
 autocmd BufWritePost,BufEnter * Neomake
 
