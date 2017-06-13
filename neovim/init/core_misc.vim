@@ -21,6 +21,9 @@ autocmd BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 
+" Cursor.
+set guicursor=
+
 " Screen updates.
 set lazyredraw
 set scrolloff=3
