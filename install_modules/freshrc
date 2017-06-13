@@ -25,6 +25,7 @@ fresh-options --file=~/.zshrc
     fresh shvenkat/dotfiles shell/shared/path
     fresh shvenkat/dotfiles shell/shared/less
     fresh shvenkat/dotfiles shell/shared/ls
+    fresh shvenkat/dotfiles shell/shared/source-highlight
     fresh shvenkat/dotfiles shell/shared/ssh
     fresh shvenkat/dotfiles shell/shared/term
     fresh shvenkat/dotfiles shell/shared/alias

@@ -25,4 +25,4 @@ At home anywhere.
         && cd dotfiles
         ```
 
-2. Run the installer: `install/install bootstrap`.
+2. Run the installer: `./install bootstrap`.
