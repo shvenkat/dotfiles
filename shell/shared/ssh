@@ -3,4 +3,5 @@
 # ----------  SSH  -----------------------------------------------------------
 
 # Connect to ssh-agent, starting it if needed.
-[[ -x "$HOME/bin/ssh-agent-connect" ]] && eval "$($HOME/bin/ssh-agent-connect)"
+[[ -x "$HOME/bin/ssh-agent-connect" ]] \
+    && eval "$("$HOME/bin/ssh-agent-connect")"

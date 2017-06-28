@@ -1,95 +1,166 @@
 #!/bin/bash
 
-CANONICAL_AGENT=/tmp/ssh-$(id -un)/keymaster
-CANONICAL_ENV=$(dirname $CANONICAL_AGENT)/gatekeeper
-debug=FALSE
+# Copyright (c) 2017 Shiv Venkatasubrahmanyam.
+# License: Apache License, Version 2
+#     (https://www.apache.org/licenses/LICENSE-2.0.html).
 
-debug_msg() {
-  if [[ $debug == "TRUE" ]]; then
-    echo "[$(basename $0)] $1" 3>&1 1>&2 2>&3
-  fi
-}
+# # TL;DR
+#
+# If you use passphrase-protected SSH keys and multiple concurrent shells (tmux,
+# screen, virtual terminals), then ssh-agent-connect is for you. It ensures
+# ssh-agent is running and that all your running shells use the correct SSH
+# agent socket. Just call it from your shell init script (bashrc, zshrc).
+#
+# # USAGE
+#
+# 1.  Install this utility in "$HOME/bin", and
+# 2.  Add these lines to your shell init script (e.g. ~/.bashrc, ~/.zshrc):
+#
+#         # Connect to ssh-agent, starting it if needed.
+#         [[ -x "$HOME/bin/ssh-agent-connect" ]] \
+#             && eval "$("$HOME/bin/ssh-agent-connect")"
+#
+# # PURPOSE
+#
+# 1.  Ensure that ssh-agent is running, so SSH keys can be used without having
+#     to enter the passphrase for each use.
+#
+# 2.  Maintain a fixed path to the ssh-agent socket, so that existing login
+#     shells and tmux/screen sessions can use the agent without updating their
+#     environment.
+#
+# # USE CASES
+#
+# 1.  You log into a remote machine but do not use SSH agent forwarding. You
+#     start or join a new tmux session and have multiple shells running. Now
+#     every SSH operation (e.g. `git pull`, `rsync`) requires your SSH
+#     passphrase. So you run ssh-agent in one of your shells and load your key.
+#     But now the agent is only available in that shell. To access the agent in
+#     other shells, you have to set the SSH_AUTH_SOCK environment correctly in
+#     _each_ shell. ssh-agent-connect to the rescue!
+#
+# 2.  You have a tmux session, local or remote, with a number of running shells.
+#     You logout of your desktop or close your SSH session, leaving the tmux
+#     session running. When you log back in and "attach" your tmux session,
+#     every SSH operation now requires your SSH passphrase. This is because a
+#     new ssh-agent is now running, and each shell must have its environment
+#     updated with the new value for SSH_AUTH_SOCK. Not if you use
+#     ssh-agent-connect!
+#
+# # DETAILS
+#
+# This utility creates a symlink with a fixed path (the canonical socket)
+# pointing to the active ssh-agent socket, the path to which is not predictable
+# as ssh-agent places it in a temporary directory with an randomly generated
+# name (e.g. /tmp/ssh-4GU9rFx3/agent.59202). If the symlink already exists, and
+# is valid, nothing is done. If not and if an agent is running, a new symlink is
+# created. If no agent can be located after a search, a new agent is started and
+# a new symlink created. In all cases, no shells need to be updated manually
+# as they now use the canonical path, which is fixed.
+#
+# NOTE: This utility attempts to The Right Thing on a best-effort basis.
+# Failures may not be reported.
 
+set -u -o pipefail
+
+CANONICAL_SOCKET="/tmp/ssh-$(id -un)/keymaster"
+CANONICAL_ENV="$(dirname "$CANONICAL_SOCKET")/gatekeeper"
+VERBOSE=${VERBOSE:-FALSE}
+
+
+# Log the given debug message ($1) to stderr.
 info_msg() {
-    echo "[$(basename $0)] $1" 3>&1 1>&2 2>&3
-}
-
-test_socket() {
-  SSH_AUTH_SOCK=$1 ssh-add -l &>/dev/null
-  ret=$?
-  if [[ $ret -eq 2 ]]; then
-    return 1
-  else
-    return 0
-  fi
-}
-
-set_env () {
-  debug_msg "setting SSH_AUTH_SOCK"
-  echo "export SSH_AUTH_SOCK=$CANONICAL_AGENT"
-}
-
-make_link () {
-  debug_msg "creating symlink to agent socket"
-  mkdir -p $(dirname $CANONICAL_AGENT)
-  ln -sf $1 $CANONICAL_AGENT
-  set_env
-}
-
-find_socket () {
-  debug_msg "searching for agent socket"
-  for s in $(find /tmp -type s -user $USER -wholename '/tmp/ssh-*/agent*' \
-               -print | xargs ls -1t); do
-    if test_socket $s; then
-      echo $s
-      break
+    if [[ "$VERBOSE" != "FALSE" ]]; then
+        echo "[$(basename "$0")] INFO: $1" 3>&1 1>&2 2>&3
     fi
-  done
 }
 
-make_socket () {
-  debug_msg "starting new agent"
-  touch $CANONICAL_ENV
-  chmod 0600 $CANONICAL_ENV
-  ssh-agent -s > $CANONICAL_ENV
-  . $CANONICAL_ENV >/dev/null
-  make_link $SSH_AUTH_SOCK
+
+# Check whether the given socket ($1) is live.
+test_socket() {
+    SSH_AUTH_SOCK="$1" ssh-add -l &>/dev/null
+    ret=$?
+    if [[ $ret -eq 2 ]]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
-connect_agent () {
-  # if symlink is valid, just update the environment
-  if test -h $CANONICAL_AGENT && test_socket $CANONICAL_AGENT; then
+
+# Write bash/zsh code to stdout to set appropriate environment variables.
+set_env () {
+    info_msg "Setting SSH_AUTH_SOCK=${CANONICAL_SOCKET}."
+    echo "export SSH_AUTH_SOCK=$CANONICAL_SOCKET"
+}
+
+
+# Create the canonical symlink to the given socket ($1), update the environment.
+make_link () {
+    info_msg "Creating symlink ${CANONICAL_SOCKET} -> $1."
+    mkdir -p "$(dirname "$CANONICAL_SOCKET")"
+    ln -sf "$1" "$CANONICAL_SOCKET"
     set_env
-    return
-  fi
-
-  # if socket is known, set up the symlink and update the env
-  if test -n $SSH_AUTH_SOCK && test_socket $SSH_AUTH_SOCK; then
-    make_link $SSH_AUTH_SOCK
-    return
-  fi
-
-  # if a socket is found, set up the symlink and update the env
-  agent=$(find_socket)
-  if [[ -n $agent ]]; then
-    make_link $agent
-    return
-  fi
-
-  # as a last resort, make a new socket, set up the symlink and update the env
-  make_socket
 }
 
-if [[ $TERM =~ ^screen ]]; then
-  # inside screen or tmux, connect to local or remote ssh-agent
-  # info_msg "connecting from within a screen/tmux session, skipping ssh-agent setup"
-  set_env
-elif [[ -n $SSH_CONNECTION ]]; then
-  # ssh login
-  info_msg "setting up ssh-agent for an ssh session"
-  connect_agent
+
+# Returns the path to the most recent live non-canonical agent socket.
+find_socket () {
+    info_msg "Searching for the latest live agent socket."
+    find /tmp -mindepth 2 -maxdepth 2 \
+        -type s -user "$USER" -wholename '/tmp/ssh-*/agent*' -print0 \
+    | xargs -0 ls -1t \
+    | while read -r socket; do
+        if test_socket "$socket"; then
+            echo "$socket"
+            break
+        fi
+    done
+}
+
+
+# Start a new ssh-agent, create the canonical symlink, update the environment.
+start_agent () {
+    info_msg "Starting a new agent."
+    mkdir -p "$(dirname "$CANONICAL_ENV")"
+    touch "$CANONICAL_ENV"
+    chmod 0600 "$CANONICAL_ENV"
+    ssh-agent -s > "$CANONICAL_ENV"
+    . "$CANONICAL_ENV" >/dev/null
+    make_link "$SSH_AUTH_SOCK"
+}
+
+
+# Connect to an ssh agent, starting one if needed.
+connect_agent () {
+    if test -h "$CANONICAL_SOCKET" && test_socket "$CANONICAL_SOCKET"; then
+        # If the symlink is valid, just update the environment.
+        set_env
+    elif test -n "$SSH_AUTH_SOCK" && test_socket "$SSH_AUTH_SOCK"; then
+        # If the socket is known, create the symlink and update the environment.
+        make_link "$SSH_AUTH_SOCK"
+    else
+        # Search for a live socket.
+        socket="$(find_socket)"
+        if [[ -n "$socket" ]]; then
+            # If a socket is found, create the symlink and update the
+            # environment.
+            make_link "$socket"
+        else
+            # If no live socket is available, start a new agent, create the
+            # symlink and update the environment.
+            start_agent
+        fi
+    fi
+}
+
+
+# main.
+if [[ -n "${SSH_CONNECTION:-}" ]]; then
+    # SSH session.
+    info_msg "Setting up ssh-agent for an ssh session."
 else
-  # local machine login
-  info_msg "setting up ssh-agent for a local session"
-  connect_agent
+    # local machine login
+    info_msg "Setting up ssh-agent for a local session."
 fi
+connect_agent
