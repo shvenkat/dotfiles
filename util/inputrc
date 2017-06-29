@@ -1,7 +1,7 @@
 # ----------  KEY BINDINGS  --------------------------------------------------
 
-set editing-mode vi
-"\C-@": vi-editing-mode
+set editing-mode emacs
+"\C-[": vi-editing-mode
 
 # Least disruptive Ctrl- substitutes for Meta- bindings in the default (emacs) keymap.
 "\C-l": forward-word
@@ -35,7 +35,7 @@ set skip-completed-text On
 set expand-tilde Off
 
 # Search.
-set isearch-terminators "C-m"
+set isearch-terminators "C-j"
 
 # Misc.
 set enable-keypad On

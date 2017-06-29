@@ -65,13 +65,14 @@ setopt no_list_beep
 
 # Key bindings.
 bindkey -e      # emacs bindings.
+bindkey '^['    vi-cmd-mode
 bindkey '^o'    backward-word
 bindkey '^l'    forward-word
-bindkey '^]'    beginning-of-line
 bindkey '^t'    history-beginning-search-backward
-bindkey '^q'    history-beginning-search-forward
-bindkey '^@'    kill-word
+bindkey '^^'    history-beginning-search-forward
+bindkey '^q'    kill-word
 bindkey 'TAB'   complete-word
+bindkey '^j'    accept-search
 
 # Movement.
 WORDCHARS='*?_-.~=&;!#$%^{}<>'
