@@ -1,50 +1,15 @@
 # ----------  KEY BINDINGS  --------------------------------------------------
 
-set editing-mode emacs
-# "\C-[": vi-editing-mode
+set editing-mode vi
+"\C-@": vi-editing-mode
 
 # Least disruptive Ctrl- substitutes for Meta- bindings in the default (emacs) keymap.
 "\C-l": forward-word
 "\C-o": backward-word
-"\C-@": kill-word
+"\C-q": kill-word
 "\C-t": history-search-backward
-"\C-q": history-search-forward
-"\C-]": beginning-of-line
+"\C-^": history-search-forward
 
-# "\C-w": beginning-of-line
-# "\C-e": end-of-line
-# "\C-b": backward-word
-# "\eb":  backward-char
-# "\en":  forward-char
-# "\C-y": character-search-backward
-# "\ey":  character-search
-
-# "\C-h": backward-delete-char
-# "\eh":  delete-char
-# "\C-f": backward-kill-word
-# "\C-g": kill-word
-# "\C-k": backward-kill-line
-# "\ek":  kill-line
-
-# "\C-p": yank
-# "\ep":  yank-last-arg
-# "\e\C-p": yank-nth-arg
-# "\e ":  set-mark
-# "\ed":  kill-region
-# "\ec":  copy-region-as-kill
-
-# "\C-r": reverse-search-history
-# "\C-s": history-search-backward
-# "\C-o": previous-history
-# "\C-l": next-history
-# "\e,":  beginning-of-history
-# "\e.":  end-of-history
-
-# "\C-u": undo
-# "\C-q": abort
-# "\C-v": quoted-insert
-# "\ei":  menu-complete
-# "\el":  redraw-current-line
 
 # ----------  VARIABLES  -----------------------------------------------------
 
@@ -70,7 +35,7 @@ set skip-completed-text On
 set expand-tilde Off
 
 # Search.
-set isearch-terminators "C-j"
+set isearch-terminators "C-m"
 
 # Misc.
 set enable-keypad On
