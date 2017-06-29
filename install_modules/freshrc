@@ -89,7 +89,9 @@ fresh shvenkat/dotfiles util/editorconfig --file
 
 # git. What else.
 fresh shvenkat/dotfiles git/gitconfig --file
-fresh git/git contrib/diff-highlight/diff-highlight --bin
+fresh git/git contrib/diff-highlight/DiffHighlight.pm --file=~/perl5/lib/perl5/DiffHighlight.pm
+fresh git/git contrib/diff-highlight/diff-highlight.perl --bin=~/bin/diff-highlight \
+    --filter="cat <(echo -e \"#!/usr/bin/perl\n\nuse lib '${HOME}/perl5/lib/perl5';\nuse DiffHighlight;\n\") -"
 
 
 # ----------  LANGUAGES  -----------------------------------------------------

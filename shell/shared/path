@@ -14,6 +14,8 @@ case $OSTYPE in
         export MANPATH
 
         # export R_HOME=/usr/lib64/R
+
+        PERL5LIB="${PERL5LIB:+${PERL5LIB}:}${HOME}/perl5/lib/perl5"
         ;;
     cygwin*)
         PATH="$PATH:$HOME/bin"

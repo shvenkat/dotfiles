@@ -1,3 +1,3 @@
-if [[ -d ~/.local/share/source-highlight ]]; then
-    export SOURCE_HIGHLIGHT_DATADIR="~/.local/share/source-highlight"
+if [[ -e ~/.local/share/source-highlight ]]; then
+    export SOURCE_HIGHLIGHT_DATADIR="${HOME}/.local/share/source-highlight"
 fi
