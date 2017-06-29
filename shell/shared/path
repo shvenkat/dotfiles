@@ -9,8 +9,8 @@ case $OSTYPE in
         PATH="${PATH}:${HOME}/bin"
         export PATH
 
-        MANPATH="${HOME}/.linuxbrew/share/man${MANPATH:+:${MANPATH}}"
-        # MANPATH=/usr/local/share/man:/usr/share/man:/usr/share/man/en
+        MANPATH=/usr/local/share/man:/usr/share/man:/usr/share/man/en
+        # MANPATH="${HOME}/.linuxbrew/share/man${MANPATH:+:${MANPATH}}"
         export MANPATH
 
         # export R_HOME=/usr/lib64/R
