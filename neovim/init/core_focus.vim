@@ -1,15 +1,13 @@
-let g:focus_toggle_key = "<leader>f"
 
 
 " ----------  Simple Focus Mode  ---------------------------------------------
 
-" Tracks Focus Mode state transitions.
-let s:focus_state = "null"
-
+let g:focus_toggle_key = "<leader>f"  " Key binding.
+let s:focus_state = "null"            " Tracks state transitions.
 
 " Apply Focus Mode settings once. Adjusts the left margin and colorscheme.
 function! s:focus_do()
-    " ----  ADJUST THE LEFT MARGIN TO CENTER (OR OFFSET) THE TEXT AREA.  ----
+    " ----  Adjust the left margin to center (or offset) the text area.  ----
 
     " Save previous settings if needed, so they can be restored when appropriate.
     if ! exists('s:focus_state') || s:focus_state != "on"
@@ -34,7 +32,7 @@ function! s:focus_do()
     execute "setlocal foldcolumn=" . max([0, min([12, l:left_margin - 4 - 2])])
     execute "setlocal numberwidth=" . max([4, min([10, l:left_margin - 2 - &foldcolumn])])
 
-    " ----  MODIFY THE COLORSCHEME TO FOCUS ATTENTION ON THE TEXT AREA.  ----
+    " ----  Modify the colorscheme to focus attention on the text area.  ----
 
     " execute "colorscheme " . g:colors_name
 
@@ -59,7 +57,6 @@ function! s:focus_do()
     highlight Todo term=reverse cterm=reverse ctermfg=5
 endfunction
 
-
 " Reverts Focus Mode. Restores the left margin and colorscheme.
 function! s:focus_undo()
     " Restore the left margin settings.
@@ -80,7 +77,6 @@ function! s:focus_undo()
     execute "highlight! NeomakeErrorSign   ctermfg=1 ctermbg=" . l:margin_bg
 endfunction
 
-
 " Turns on Focus Mode. Settings will apply to all buffers and colorschemes.
 function! s:focus_on()
     " Register the focus_do() callback.
@@ -92,7 +88,6 @@ function! s:focus_on()
     execute "colorscheme " . g:colors_name
 endfunction
 
-
 " Turns off Focus Mode. Previous settings will apply to all buffers and colorschemes.
 function! s:focus_off()
     " Un-register the focus_do() callback.
@@ -100,7 +95,6 @@ function! s:focus_off()
     " Disable focus mode.
     call <SID>focus_undo()
 endfunction
-
 
 " Toggles Focus Mode.
 function! s:focus_toggle()
@@ -110,7 +104,6 @@ function! s:focus_toggle()
         call <SID>focus_off()
     endif
 endfunction
-
 
 " Key binding to toggle Focus Mode.
 if exists('g:focus_toggle_key')

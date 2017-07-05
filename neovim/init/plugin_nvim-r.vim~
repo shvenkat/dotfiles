@@ -1,0 +1,11 @@
+
+
+" ----------  nvim-R  -------------------------------------------------------
+
+let R_args_in_stline = 1
+let R_assign = 0
+let R_listmethods = 1
+let R_specialplot = 1
+let R_rconsole_height = 10
+let R_args = ['quiet', '--no-save', '--interactive']
+imap <leader>. <Plug>RCompleteArgs

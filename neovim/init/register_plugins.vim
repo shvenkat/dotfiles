@@ -1,6 +1,6 @@
 
 
-" ----------  SELECT PLUGINS  ------------------------------------------------
+" ----------  Plugin Selection  ----------------------------------------------
 
 call plug#begin('~/.config/nvim/bundle')
 
@@ -25,7 +25,7 @@ Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-eunuch'
-" Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 
 " SCM
 Plug 'tpope/vim-fugitive'
