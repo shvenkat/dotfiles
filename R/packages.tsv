@@ -1,13 +1,20 @@
-devtools    cran
-ggplot2 cran
-plyr    cran
+devtools             *    cran
 
-# Jupyter
-crayon  cran
-digest  cran
-evaluate    cran
-IRdisplay   cran
-pbdZMQ  cran
-repr    cran
-uuid    cran
-IRkernel/IRkernel   github
+# Data processing.
+plyr                 *    cran
+
+# Visualization.
+ggplot2              *    cran
+
+# Jupyter R notebook.
+crayon               *    cran
+digest               *    cran
+evaluate             *    cran
+IRkernel/IRkernel    *    github
+IRdisplay            *    cran
+pbdZMQ               *    cran
+repr                 *    cran
+uuid                 *    cran
+
+# R interactive session.
+jalvesaq/colorout    *    github

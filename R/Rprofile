@@ -1,31 +1,52 @@
+# R session initialization.
+# Use `help(Startup)` in R for more details.
+
+# Set a default CRAN mirror.
 local({
     repo <- getOption("repos")
     repo["CRAN"] <- "http://cran.cnr.berkeley.edu/"
     options("repos" = repo)
 })
-options(prompt = "R> ", digits = 4, show.signif.stars = FALSE, max.print = 99,
-        digits.secs = 3, menu.graphics = FALSE)
-options(width=76)
-options(browserNLdisabled = TRUE, deparse.max.lines = 4)
 
+
+# ---- INTERACTIVE SESSION ----
+
+# Configure interactive session UI.
+options(prompt = "R> ",
+        digits = 4,
+        digits.secs = 3,
+        show.signif.stars = FALSE,
+        max.print = 99,
+        menu.graphics = FALSE)
+
+# Configure interactive debug UI.
+options(browserNLdisabled = TRUE,
+        deparse.max.lines = 4)
+
+# Configure text width.
+# options(width=76)
+
+# Customize loading of certain default packages.
 if(interactive()){
-    options(setwidth.verbose = 0,
-            colorout.verbose = 0,
-            vimcom.verbose = 0)
+    options(colorout.verbose = 0)
     suppressMessages(require(colorout))
-    suppressMessages(require(setwidth))
-    if(Sys.getenv("VIMRPLUGIN_TMPDIR") != "") {
-        suppressMessages(require(vimcom))
-    }
+    # if(Sys.getenv("VIMRPLUGIN_TMPDIR") != "") {
+    #     suppressMessages(require(vimcom))
+    # }
     invisible(NULL)
 }
+# NOTE: The standard mechanism to specify default packages is
+# `options(defaultPackages = ...)`.
 
+# Customize locale under Cygwin.
 if(grepl("^CYGWIN_", Sys.info()["sysname"])) {
     Sys.setenv("LANG" = "en_US.CP1252")
     Sys.setlocale("LC_MESSAGES", "en_US.CP1252")
     Sys.setlocale("LC_ALL",      "en_US.CP1252")
     # Sys.setlocale("LC_CTYPE",    "en_US.CP1252")
 }
+
+# ---- UNUSED STARTUP HOOKS ----
 
 # .First <- function() {
 #     # final session config

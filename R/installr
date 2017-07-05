@@ -1,0 +1,104 @@
+#!/usr/bin/env Rscript
+
+
+# Constants.
+CRAN_URL = "http://cran.cnr.berkeley.edu/"
+
+
+# ---- Utility functions ----
+
+# Filename of this script, used in messages.
+program_name <- function() {
+    name <- basename(sub("^--file=", "",
+                         grep("^--file=", commandArgs(FALSE), value = TRUE)[1]))
+    if (is.na(name)) "installr" else name
+}
+
+# Show usage on stdout.
+usage <- function(message) {
+    cat(sprintf("Usage: %s packages.tsv\n", program_name()))
+}
+
+# Show an error message on stderr.
+error <- function(message) {
+    cat(sprintf("[%s] ERROR: %s\n", program_name(), message),
+        file = stderr())
+}
+
+# Exit with the given status.
+exit <- function(status = 1) {
+    quit(save = "no", status = 1, runLast = FALSE)
+}
+
+
+# ---- Package install helper functions ----
+
+# devtools is used to install other packages.
+if (!suppressWarnings(suppressMessages(require(devtools)))) {
+    tryCatch(install.packages("devtools"),
+             error = function(e) {
+                 error("Failed to install required package devtools.")
+                 exit(1)
+             })
+}
+
+# Check whether a package is installed, suppressing warnings.
+is_installed <- function(package) {
+    suppressWarnings(suppressMessages(require(package, character.only = TRUE)))
+}
+
+# Install from CRAN, if needed.
+install_cran <- function(package, version) {
+    if (!is_installed(package)) {
+        if (version == "*") {
+            install.packages(package, repos = CRAN_URL)
+        } else {
+            install_version(package, version = version, repos = CRAN_URL)
+        }
+        if (!is_installed(package)) {
+            error(sprintf("Failed to install CRAN package %s", package))
+        }
+    }
+}
+
+# Install from Github, if needed.
+install_github <- function(repo, ref) {
+    if (!is_installed(basename(repo))) {
+        devtools::install_github(repo, ref = if (ref == "*") "master" else ref)
+    }
+}
+
+# Install a package, if needed.
+install <- function(package, version, source) {
+    error_handler <- function(e)
+        error(sprintf("Failed to install package %s from %s.", repo, source))
+    tryCatch(switch(source,
+                    cran = install_cran(package, version),
+                    github = install_github(package, version),
+                    error(sprintf("Invalid source %s for package %s.",
+                                  source, package))),
+             error = error_handler)
+    NULL
+}
+
+
+# ---- main ----
+
+# Parse arguments.
+args <- commandArgs(TRUE)
+if (length(args) != 1) {
+    error("Missing argument: path to packages TSV file.")
+    usage()
+    exit(2)
+}
+packages_path <- args[1]
+
+# Read package spec.
+packages <- read.table(packages_path, header = FALSE, sep = "",
+                       col.names = c("package", "version", "source"),
+                       colClasses = c("character", "character", "character"))
+
+# Process packages.
+invisible(apply(packages, 1, function(row) install(package = row['package'],
+                                                   version = row['version'],
+                                                   source = row['source'])))

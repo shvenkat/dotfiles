@@ -42,7 +42,7 @@ fresh shvenkat/dotfiles util/inputrc --file
 fresh shvenkat/dotfiles util/colordiffrc --file
 
 # htop. Yeah, I'm that anal.
-fresh shvenkat/dotfiles util/htoprc --file
+fresh shvenkat/dotfiles util/htoprc --file=~/.config/htop/htoprc
 
 # less. You'll thank me later.
 fresh shvenkat/dotfiles bin/lesspipe --bin
