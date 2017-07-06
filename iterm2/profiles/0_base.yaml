@@ -41,11 +41,11 @@ Profiles:
   Mouse Reporting:            false              # Don't send mouse events.
 
   # Session settings.
-  Custom Command:             No                 # Run the login shell.
+  Custom Command:             "No"               # Run the login shell.
   Command:                    ""                 # No custom login command.
   Initial Text:               ""                 # No input to custom command.
   Set Local Environment Vars: true               # Set LC_LANG, LC_CTYPE, etc.
-  Custom Directory:           No
+  Custom Directory:           "No"
   Automatically Log:          false
   Send Code When Idle:        false
   Close Sessions On End:      true               # Close window on shell exit.
