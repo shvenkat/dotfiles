@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+MUNSELL2SRGB="$(dirname "$0")/munsell2srgb"
+
+
+pass () {
+    echo "PASS  $1"
+}
+
+fail () {
+    echo -e "\033[31mFAIL\033[0m  $1"
+}
+
+test_conversion () {
+    name="convert 10PB 6.25/8 -> 154,149,207"
+    output="$(echo -e "10PB 6.25/8" | "$MUNSELL2SRGB")"
+    expected="$(echo -e "10PB 6.25/8\t154\t149\t207")"
+    if [[ "$output" == "$expected" ]]; then
+        pass "$name"
+    else
+        fail "$name, got $output."
+    fi
+}
+
+test_outofbounds () {
+    name="detect out-of-bounds value 10BG 7.75/1.5 -> NA,NA,NA"
+    output="$(echo -e "10BG 7.75/1.5" | "$MUNSELL2SRGB" 2>/dev/null)"
+    expected="$(echo -e "10BG 7.75/1.5\tNA\tNA\tNA")"
+    if [[ "$output" == "$expected" ]]; then
+        pass "$name"
+    else
+        fail "$name, got $output."
+    fi
+}
+
+
+test_conversion
+test_outofbounds

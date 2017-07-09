@@ -104,7 +104,7 @@ Profiles:
     Green Component: 0.5777903199195862
     Blue Component:  0.5808526277542114
     Alpha Component: 1
-  Ansi 8 Color:     &background
+  Ansi 8 Color:      &background
     Color Space:     Calibrated
     Red Component:   0.9894248843193054
     Green Component: 0.9577928781509399

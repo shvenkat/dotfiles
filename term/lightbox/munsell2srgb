@@ -1,0 +1,251 @@
+#!/usr/bin/env python3
+
+"""Convert Munsell color values to sRGB, using interpolated renotation data.
+
+Usage:
+    munsell2srgb <munsell.txt >srgb.txt
+    echo -e "5G 6/4\n10PB 8/6" | munsell2srgb
+    # 5G 6/4<tab>108<tab>160<tab>134
+    # 10PB 8/6<tab>200<tab>197<tab>244
+"""
+
+
+from collections import defaultdict
+import functools
+from pathlib import Path
+import re
+import string
+import sys
+from typing import (
+    Callable, Dict, Iterable, NamedTuple, NewType, Optional, TextIO, Tuple)
+
+
+PROGRAM = Path(sys.argv[0])
+RENOTATION_PATH = PROGRAM.parent / "Munsell_sRGB_renotation_data.txt"
+
+
+def main() -> None:
+    """Parse arguments and dispatch appropriately."""
+    if len(sys.argv) > 1:
+        if sys.argv[1] in ["help", "--help", "-h"]:
+            sys.stderr.write(USAGE)
+        else:
+            error(2, "Invalid usage.\n" + USAGE)
+    else:
+        if not RENOTATION_PATH.exists():
+            raise FileNotFoundError("Renotation data not found: {path}"
+                                    .format(path = RENOTATION_PATH.as_posix()))
+        renotation_lut = parse_renotation(RENOTATION_PATH)
+        munsell2rgb = functools.partial(interpolate, lut = renotation_lut)
+        convert(munsell2rgb, sys.stdin, sys.stdout)  # type: ignore
+
+
+Hue = NewType("Hue", float)
+Value = NewType("Value", float)
+Chroma = NewType("Chroma", float)
+class Munsell(NamedTuple):  # flake8: disable=E302
+    h: Hue     # flake8: disable=E701
+    v: Value   # flake8: disable=E701
+    c: Chroma  # flake8: disable=E701
+class RGB(NamedTuple):  # flake8: disable=E302
+    r: int     # flake8: disable=E701
+    g: int     # flake8: disable=E701
+    b: int     # flake8: disable=E701
+LUT = Dict[Hue, Dict[Value, Dict[Chroma, RGB]]]
+class DataFormatError(Exception): ...  # flake8: disable=E302,E701
+
+
+def parse_renotation(path: Path) -> LUT:
+    """Parses renotation data to construct a Munsell -> RGB lookup table."""
+    renotation_lut = defaultdict(lambda: defaultdict(dict))  # type: LUT
+    with open(path, "rt") as renotation_file:
+        for line_num, line in enumerate(renotation_file):
+            if line_num < 1:
+                continue  # Skip header.
+            fields = line.rstrip("\n\r").split("\t")
+            if len(fields) < 6:
+                raise DataFormatError(
+                    "Invalid format of renotation data in {path}, line {line}."
+                    .format(path = path,
+                            line = line_num + 1))
+            try:
+                h = parse_hue(fields[0])
+                v = Value(float(fields[1]))
+                c = Chroma(float(fields[2]))
+                r = int(fields[3])
+                g = int(fields[4])
+                b = int(fields[5])
+            except ValueError as e:
+                raise DataFormatError(
+                    "Invalid line {line} in renotation data {path}: {msg}."
+                    .format(line = line_num + 1,
+                            path = path,
+                            msg = str(e)))
+            rgb = RGB(r = r, g = g, b = b)
+            renotation_lut[h][v][c] = rgb
+            if h == Hue(100.0):
+                renotation_lut[Hue(0.0)][v][c] = rgb
+    if len(renotation_lut) == 0:
+        raise DataFormatError("No renotation data found in {path}."
+                              .format(path = path))
+    return renotation_lut
+
+
+def interpolate(munsell: Munsell,
+                lut: LUT,
+                ) -> RGB:
+    """Map Munsell to sRGB using interpolation on renotation data."""
+    h, v, c = munsell.h, munsell.v, munsell.c
+    try:
+        if h in lut:
+            if v in lut[h]:
+                if c in lut[h][v]:
+                    return lut[h][v][c]
+                else:
+                    lc, hc = nearest(c, lut[h][v].keys())
+                    lm = Munsell(h = h, v = v, c = Chroma(lc))
+                    hm = Munsell(h = h, v = v, c = Chroma(hc))
+                    t = (c - lc) / (hc - lc)
+            else:
+                lv, hv = nearest(v, lut[h].keys())
+                lm = Munsell(h = h, v = Value(lv), c = c)
+                hm = Munsell(h = h, v = Value(hv), c = c)
+                t = (v - lv) / (hv - lv)
+        else:
+            lh, hh = nearest(h, lut.keys())
+            lm = Munsell(h = Hue(lh), v = v, c = c)
+            hm = Munsell(h = Hue(hh), v = v, c = c)
+            t = (h - lh) / (hh - lh)
+    except ValueError:
+        raise ValueError("Munsell color is out-of-bounds for interpolation.")
+    lrgb, hrgb = interpolate(lm, lut), interpolate(hm, lut)
+    return RGB(r = round(lrgb.r + t * (hrgb.r - lrgb.r)),
+               g = round(lrgb.g + t * (hrgb.g - lrgb.g)),
+               b = round(lrgb.b + t * (hrgb.b - lrgb.b)))
+
+
+def convert(converter: Callable[[Munsell], RGB],
+            munsell_file: TextIO,
+            rgb_file: TextIO,
+            ) -> None:
+    """Converts each Munsell color in the input to RGB on the output. Logs
+    failures to stderr."""
+    for line_num, line in enumerate(munsell_file):
+        munsell_str = line.rstrip("\n\r").split("\t")[0]
+        try:
+            munsell = parse_munsell(munsell_str)
+        except ValueError as e:
+            rgb_file.write("{munsell_str}\tNA\tNA\tNA\n"
+                           .format(munsell_str = munsell_str))
+            warning("Invalid Munsell color {color} on line {line}."
+                    .format(color = munsell_str,
+                            line = line_num + 1))
+            continue
+        try:
+            rgb = converter(munsell)
+        except ValueError:
+            rgb_file.write("{munsell_str}\tNA\tNA\tNA\n"
+                           .format(munsell_str = munsell_str))
+            warning("Munsell color {color} is out-of-bounds for interpolation."
+                    .format(color = munsell_str))
+            continue
+        rgb_file.write("{munsell_str}\t{r}\t{g}\t{b}\n"
+                       .format(munsell_str = munsell_str,
+                               r = rgb.r,
+                               g = rgb.g,
+                               b = rgb.b))
+
+
+MUNSELL_PATTERN = re.compile(
+    r"(?P<hue>[^ ]+) (?P<value>[\d.]+)/(?P<chroma>[\d.]+)")
+HUE_PATTERN = re.compile(r"(?P<number>\d+(\.\d+)?)(?P<letter>[A-Z]+)")
+HUE_NUMBER = dict(R = 0.0, YR = 10.0, Y = 20.0, GY = 30.0, G = 40.0,
+                  BG = 50.0, B = 60.0, PB = 70.0, P = 80.0, RP = 90.0)
+
+
+def parse_munsell(munsell_str: str) -> Munsell:
+    """Parses a Munsell color string."""
+    match = re.fullmatch(MUNSELL_PATTERN, munsell_str)
+    if match is None:
+        raise ValueError("Invalid Munsell format: {value}"
+                         .format(value = munsell_str))
+    try:
+        munsell = Munsell(h = parse_hue(match.group("hue")),
+                          v = Value(float(match.group("value"))),
+                          c = Chroma(float(match.group("chroma"))))
+    except ValueError:
+        raise ValueError("Invalid Munsell color: {value}"
+                         .format(value = munsell_str))
+    return munsell
+
+
+def parse_hue(hue_str: str) -> Hue:
+    """Map a Munsell hue specification to an internal numeric hue."""
+    exception = ValueError("Invalid Munsell hue {hue}.".format(hue = hue_str))
+    match = re.fullmatch(HUE_PATTERN, hue_str)
+    if match is None:
+        raise exception
+    try:
+        number = float(match.group("number"))
+    except ValueError:
+        raise exception
+    if not 0 < number <= 10.0:
+        raise exception
+    letter = match.group("letter")
+    if letter not in HUE_NUMBER.keys():
+        raise exception
+    return Hue(HUE_NUMBER[letter] + number)
+
+
+def nearest(value: float,
+            values: Iterable[float],
+            ) -> Tuple[float, float]:
+    """Returns the two nearest values not greater than and not less than the
+    given one among a set of values."""
+    return (max(v for v in values if v <= value),
+            min(v for v in values if v >= value))
+
+
+def warning(message: str) -> None:
+    sys.stderr.write("[{name}] WARNING: {message}\n"
+                     .format(name = PROGRAM.name,
+                             message = message))
+
+
+def error(status: int,
+          message: Optional[str] = None,
+          exception: Optional[BaseException] = None,
+          ) -> None:
+    """Print a formatted message and/or exception to stderr and exit."""
+    if exception is not None:
+        message = str(exception) if message is None else message + "\n" + str(exception)
+    if message is not None:
+        sys.stderr.write("[{name}] ERROR: {message}\n"
+                         .format(name = PROGRAM.name,
+                                 message = message.replace("\n", "\n    ")))
+    sys.exit(status)
+
+
+USAGE = string.Template("""
+Usage:
+    $program < munsell.txt > srgb.txt
+    echo -e "5G 6/4\\n10PB 8/6" | $program
+    # 5G 6/4      108    160    134
+    # 10PB 8/6    200    197    244
+
+Standard input is Munsell color values in standard H V/C notation, one per line.
+Standard output is four tab-separated columns: Munsell value, sRGB R, G and B.
+
+""").safe_substitute(program = PROGRAM.name)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except SystemExit:
+        raise
+    except KeyboardInterrupt:
+        sys.stderr.write("\n")
+        sys.exit(1)
+    except BaseException as e:
+        error(1, exception = e)

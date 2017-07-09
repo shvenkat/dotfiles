@@ -5,18 +5,18 @@ type yellow;       // basic types
 usertype yellow;   // user-defined types
 classname yellow;  // class names
 function blue;     // function declarations and calls
-number pink;       // literal numbers
-specialchar cyan;  // special chars (e.g. \n, \t, \\)
-preproc pink b;    // preproc directives (e.g. #include, import)
 normal blue b;     // regular text
 variable blue b;   // variable names
 symbol blue b;     // symbols (e.g. <, >, +)
+cbracket blue b;   // block brackets (e.g. {, })
+number blue b;     // literal numbers
 string green b;    // strings and regular chars
 comment green b;   // comments
-cbracket green b;  // block brackets (e.g. {, })
-todo red b;        // TODO and FIXME
+preproc pink b;    // preproc directives (e.g. #include, import)
+specialchar cyan;  // special chars (e.g. \n, \t, \\)
 label cyan;        // goto labels
 regex, regexp cyan;  // regular expressions
+todo red b;        // TODO and FIXME
 
 // ----------  Latex  ------------------------------------------------
 
