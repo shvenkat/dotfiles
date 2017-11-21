@@ -12,12 +12,12 @@ conditions, respectively. Each palette combines eight grayscale and eight accent
 color elements, which have been carefully selected to appear _clearly distinct
 but not distracting_ in typical use.
 
-These palettes are derived from Ethan Schoonover's [solarized], which blazed the
-trail of precisely constructed palettes for better reading. I created Lightbox
-to address certain shortcomings in solarized that I noticed over prolonged use,
-particularly on uncalibrated displays and in less than ideal lighting. Lightbox
-is suitable for reading and authoring text and source code, and for all users
-except those with exacting color requirements and hardware to match.
+These palettes are derived from Ethan Schoonover's [solarized], which introduced
+the concept of precisely constructed palettes for better reading. I created
+Lightbox to address certain shortcomings in solarized that I noticed over
+prolonged use, on uncalibrated displays and in less-than-ideal lighting.
+Lightbox is suitable for reading and writing text and source code, and for all
+users except those with exacting color requirements and hardware to match.
 
 
 # USE

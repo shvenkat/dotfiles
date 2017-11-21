@@ -6,33 +6,29 @@ set -e -u -o pipefail
 NAME="$(basename -- "$0")"
 PREFIX="$(dirname -- "$0")"
 OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
-PREFS_JS="$PREFIX/prefs.js"
 
 
 # Show usage.
 usage () {
     echo "Usage: $NAME [-h|--help]"
-    echo '    Merges $PREFS_JS with firefox config.'
+    echo "    Blah blah blah."
 }
 
 
 # ----------  Logging  -------------------------------------------------------
 
 # Initialize logging by setting global variables.
-# Args: None.
-init_logger () {
-    if [ -t 1 ]; then
-        NORMAL="\e[0m"
-        BOLD="\e[1m"
-        RED="\e[31m"
-        YELLOW="\e[33m"
-    else
-        NORMAL=""
-        BOLD=""
-        RED=""
-        YELLOW=""
-    fi
-}
+if [ -t 1 ]; then
+    NORMAL="\e[0m"
+    BOLD="\e[1m"
+    RED="\e[31m"
+    YELLOW="\e[33m"
+else
+    NORMAL=""
+    BOLD=""
+    RED=""
+    YELLOW=""
+fi
 
 # Output formatted error message _and exit_.
 # Args:
@@ -68,7 +64,7 @@ run () {
 
 # ----------  main  ----------------------------------------------------------
 
-# Check usage.
+# Parse arguments.
 if [ $# -eq 1 ] && ([ "$1" = "-h" ] || [ "$1" = "--help" ]); then
     usage
     exit 0
@@ -78,30 +74,18 @@ if [ $# -gt 0 ]; then
     exit 1
 fi
 
-# OS-specific prereqs.
+# OS-specific logic.
 case "$OSTYPE" in
     linux*)
-        # Exit if firefox is running.
-        # Calculate path to prefs.js.
-        # Merge prefs.
-        info "Merging."
-        run sudo apt-get install build-essential curl file git python-setuptools ruby
+        # Linux-specific logic.
         ;;
     darwin*)
-        info "Satisfying MacOS-specific prerequisites."
-        test -x /usr/bin/clang || run xcode-select --install
+        # MacOS-specific logic.
         ;;
     *)
+        # Default logic.
         error "Unsupported OS: $OSTYPE"
         ;;
 esac
 
-# Generic prereqs.
-info "Satisfying non-OS-specific prerequisites."
-which ruby >/dev/null 2>&1 || error "Missing dependency - ruby not found."
-
-cat firefox/prefs.js | grep '^[^#/]' | cat - <(cat ~/Library/Application\
-    Support/Firefox/Profiles/l096ebgw.default/prefs.js | grep '^[^#/ ]') | sort -t, -k1,1 -s -u >
-merged.js
-
-# sed -i -e "s#DOWNLOAD_DIR#${HOME}/Downloads#" merged.js
+# Common logic.

@@ -1,9 +1,0 @@
-" set nocompatible
-filetype off
-call pathogen#infect('bundle.minimal/{}')
-set nowrap
-set foldlevel=9999
-" set nomodeline
-" set buftype=nofile modifiable noreadonly
-nmap <ESC>u :nohlsearch<CR>
-set laststatus=0 ignorecase smartcase ts=4

@@ -1,0 +1,8 @@
+local:
+    com.apple.Bluetooth:
+        OBEXBrowseConnectionHandling: 1
+        OBEXFTPRootFolderLocation: /Users/shiv/Public
+        OBEXFileHandling: 1
+        OBEXOtherDataDisposition: 2
+        PrefKeyServicesEnabled: 1
+        RemoteWakeEnabled: 0

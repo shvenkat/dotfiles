@@ -5,6 +5,10 @@ plyr                 *    cran
 
 # Visualization.
 ggplot2              *    cran
+gplots               *    cran
+
+# Documentation.
+roxygen2             *    cran
 
 # Jupyter R notebook.
 crayon               *    cran

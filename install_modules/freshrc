@@ -9,7 +9,7 @@ fresh freshshell/fresh bin/fresh --bin
 
 # tmux. Delusions of multi-tasking.
 fresh shvenkat/dotfiles tmux/tmux.conf --file=~/.tmux.conf
-fresh shvenkat/dotfiles tmux/colorscheme_lunarized.conf --file=~/.tmux.conf --marker
+fresh shvenkat/dotfiles tmux/colorscheme_solarized_dark.conf --file=~/.tmux.conf
 
 # X/xterm. The GUI that drove me to the text terminal.
 # fresh shvenkat/dotfiles x/xinitrc --file
@@ -92,6 +92,9 @@ fresh shvenkat/dotfiles git/gitconfig --file
 fresh git/git contrib/diff-highlight/DiffHighlight.pm --file=~/perl5/lib/perl5/DiffHighlight.pm
 fresh git/git contrib/diff-highlight/diff-highlight.perl --bin=~/bin/diff-highlight \
     --filter="cat <(echo -e \"#!/usr/bin/perl\n\nuse lib '${HOME}/perl5/lib/perl5';\nuse DiffHighlight;\n\") -"
+
+# python. At least it's not perl.
+fresh shvenkat/dotfiles python/flake8 --file
 
 
 # ----------  LANGUAGES  -----------------------------------------------------

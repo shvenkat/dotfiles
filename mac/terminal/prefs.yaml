@@ -1,0 +1,5 @@
+user:
+    com.apple.terminal:
+        # Enable 'Secure Keyboard Entry'.
+        # See: https://security.stackexchange.com/a/47786/8918
+        SecureKeyboardEntry: true
