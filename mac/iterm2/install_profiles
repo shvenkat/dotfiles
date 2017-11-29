@@ -10,7 +10,7 @@ YAML2JSON="${REPO}/bin/yaml2json"
 
 
 # Converts YAML profile to JSON and installs.
-# $1: profile YAML in the $SOURCE_DIR.
+# $1: profile YAML.
 install_profile () {
     profile_yaml="$1"
     profile_json="${INSTALL_DIR}/$(basename "$profile_yaml" .yaml).json"

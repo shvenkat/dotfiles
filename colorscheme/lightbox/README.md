@@ -29,14 +29,16 @@ between palettes.
 
 ## Terminal emulator
 
-*   Option 1: Add both palettes to your terminal emulator settings. To switch
+  * Option 1 (recommended): Add both palettes to your terminal emulator's ANSI
+    color settings. Set the value of the TERM environment variable to indicate a
+    16-color terminal (e.g. xterm-16color, screen-16color-bce-s). To switch
     between light and dark palettes, use the appropriate feature of your
     emulator (e.g. profile switching). This method has the advantage that you do
     *not* need to switch the color scheme of every terminal application such as
     tmux and vim. The latter should be configured to use the solarized dark
     colorscheme _for both palettes_.
 
-*   Option 2: Enable "true color" (24-bit) support in your terminal emulator.
+  * Option 2: Enable "true color" (24-bit) support in your terminal emulator.
     Add both palettes as separate color schemes to each terminal application and
     select the desired scheme in each application.
 
@@ -47,19 +49,23 @@ The goal of this design is to maximize reading clarity and comfort, enabling the
 user to better focus on content and quickly locate salient details. In
 particular:
 
-*   Body text should be comfortable to read against the background, avoiding
+  * Body text should be comfortable to read against the background, avoiding
     excess contrast.
-*   Emphasized as well as ancillary text should be evident, but not pronounced,
+
+  * Emphasized as well as ancillary text should be evident, but not pronounced,
     in appearance.
-*   Highlights and accented keywords/phrases should be distinct without
+
+  * Highlights and accented keywords/phrases should be distinct without
     diverting attention.
 
 Ergonomic display settings are targeted for best results. Specifically:
 
-*   Display brightness approximating ambient light level (lowest at night,
+  * Display brightness approximating ambient light level (lowest at night,
     highest outdoors at midday).
-*   Moderate contrast.
-*   Neutral color temperature (6500 K) approximating that of daylight.
+
+  * Moderate contrast.
+
+  * Neutral color temperature (6500 K) approximating that of daylight.
 
 Use of color temperature adjustment is *not* supported. To make reading more
 comfortable at night, use the dark profile instead.
@@ -96,26 +102,34 @@ comparison to solarized is noted where relevant.
 
 2.  The value of commonly used grayscale elements should match their intented
     use.
-    *   Tint - used as a fill color for status bars and margins - should be
+
+      * Tint - used as a fill color for status bars and margins - should be
         close to Backgrnd and far from Comment.
-    *   Comment should be just far enough from Tint to be read comfortably.
-    *   Comment, Text and Emphasis - used for the majority of text - should be
+
+      * Comment should be just far enough from Tint to be read comfortably.
+
+      * Comment, Text and Emphasis - used for the majority of text - should be
         equally spaced, with the distinction between them being more apparent
         than in solarized, but still not conspicuous.
-    *   Highlight - used sparingly to draw attention to keywords - is farthest
+
+      * Highlight - used sparingly to draw attention to keywords - is farthest
         from Backgrnd.
 
 3.  Accent colors:
-    *   Have the same perceived lightness as Text, unlike solarized.
-    *   Have sufficiently low saturation (chroma) to not appear distracting.
+
+      * Have the same perceived lightness as Text, unlike solarized.
+
+      * Have sufficiently low saturation (chroma) to not appear distracting.
         The accent colors are as muted as possible, unlike solarized, while
         still being recognizable even for individual words, to enable use in
         syntax highlighting of source code.
-    *   Are well separated in perceived hue. Given the limited color accuracy
+
+      * Are well separated in perceived hue. Given the limited color accuracy
         and gamut of commodity displays, this requires additional spacing
         between Blue and Cyan, and reduced spacing between Magenta, Violet and
         Blue.
-    *   Approximate the canonical hue of their namesakes. This departure from
+
+      * Approximate the canonical hue of their namesakes. This departure from
         solarized is meant to make the colors more widely recognizable and
         reduce confusion. In particular, Green, Yellow and Orange appear closer
         to "standard" green, yellow and orange in hue, as opposed to
@@ -123,7 +137,7 @@ comparison to solarized is noted where relevant.
 
 Note that, while solarized uses the same color values in both light and dark
 palettes, doing so is explicitly *not* a requirement for Lightbox. Relaxing this
-constraint is required to better achieve the above requirements.
+constraint is required to meet the above requirements.
 
 
 # COLOR VALUES
@@ -170,10 +184,11 @@ violet       13/5    brmagenta    10PB  6.25/8      154 149 207    10PB  5.25/8 
 
 Certain aesthetic choices were made in selecting the above values.
 
-*   The grayscale is close to - but not quite - neutral, with yellow and
+  * The grayscale is close to - but not quite - neutral, with yellow and
     blue-green hues (of minimal chroma) at the extremes. It is noticeably more
     neutral than the solarized grayscale.
-*   Red has higher chroma - and is more prominent - than the other accent
+
+  * Red has higher chroma - and is more prominent - than the other accent
     colors. This assumes the sparing use of Red to indicate errors.
 
 
@@ -181,22 +196,23 @@ Certain aesthetic choices were made in selecting the above values.
 
 ## SOLARIZED
 
-*   Solarized uses the same 16 color values for both light and dark palettes.
+  * Solarized uses the same 16 color values for both light and dark palettes.
     This imposes certain symmetry constraints of the selection of color values.
     For terminal emulators, switching between light and dark profiles is
     typically managed separately in each terminal application. Lightbox does not
     use the same color values for both light and dark palettes, though some
     grayscale values are shared.
 
-*   In solarized, the distinction between the comment, text and emphasis
+  * In solarized, the distinction between the comment, text and emphasis
     elements is more subtle than in Lightbox.
 
-*   The accent colors in solarized are more saturated (higher chroma). In
+  * The accent colors in solarized are more saturated (higher chroma). In
     addition, the colors vary in perceived lightness (value) and overall do not
-    match the lightness of bulk text. Finally, green, yellow and orange have
+    match the lightness of text. Finally, green, yellow and orange have
     non-standard hues, while orange and red are hard to distinguish, both of
     which confuse users. Taken together, the solarized accents can divert
-    attention away from the content of the text, and are addressed in Lightbox.
+    attention away from the content of the text. These issues are addressed in
+    Lightbox.
 
 ## BASE16
 

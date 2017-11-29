@@ -14,7 +14,7 @@ The light palette has been selected to improve clarity when display brightness
 is close to ambient light level and display color temperature approximates
 daylight (6500 K). The grayscale is identical to that of solarized light. Most
 colors have been adjusted to increase the perceived difference between the hues
-while moderating the brightness contrast with foreground text.
+while reducing the brightness contrast with foreground text.
 
 Similarly, the dark palette has been optimized for the lowest display
 brightness, suited to working in a dark room, and a lower color temperature

@@ -1,0 +1,13 @@
+user:
+    com.apple.mail:
+        DisableSendAnimations: true     # Disable send animation.
+        DisableReplyAnimations: true    # Disable reply animation.
+        AddressesIncludeNameOnPasteboard: false
+        NSUserKeyEquivalents:
+            Send: "@\U21a9"             # ⌘-Enter sends the email.
+        DraftsViewerAttributes:
+            DisplayInThreadedMode: yes  # Group email threads.
+            SortOrder: received-date    # Sorted by date.
+            SortedDescending: yes       # Newest at top.
+        DisableInlineAttachmentViewing: true  # Show attachments as icons.
+        SpellCheckingBehavior: "NoSpellCheckingEnabled"  # Disable spell check.

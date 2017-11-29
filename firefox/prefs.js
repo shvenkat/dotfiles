@@ -9,6 +9,9 @@ user_pref("browser.search.defaultenginename", "DuckDuckGo");
 // Enable search engine suggestions.
 user_pref("browser.search.suggest.enabled", true);
 
+// Combine URL and search bar.
+user_pref("browser.search.widget.inNavBar", true);
+
 
 // ----------  Browsing  -----------------------------------------------------
 
@@ -29,7 +32,7 @@ user_pref("security.OCSP.enabled", 1);
 user_pref("security.OCSP.require", false);
 
 // Use worker processes for rendering and remote code execution.
-user_pref("browser.tabs.remote.autostart", true);
+// user_pref("browser.tabs.remote.autostart", true);
 user_pref("browser.tabs.remote.autostart.2", true);
 
 // Do not reset bookmarks.
@@ -48,6 +51,7 @@ user_pref("browser.shell.checkDefaultBrowser", false);
 
 // Opt out of statistics and error reporting.
 user_pref("datareporting.healthreport.uploadEnabled", false);
+user_pref("app.shield.optoutstudies.enabled", false);
 user_pref("browser.crashReports.unsubmittedCheck.autoSubmit", false);
 
 
@@ -81,6 +85,7 @@ user_pref("browser.safebrowsing.malware.enabled", true);
 user_pref("browser.safebrowsing.downloads.enabled", true);
 
 // Use a remote service (such as one provided by Google) to detect malware.
+// See https://wiki.mozilla.org/Security/Download_Protection.
 // See https://feeding.cloud.geek.nz/posts/how-safe-browsing-works-in-firefox/.
 user_pref("browser.safebrowsing.downloads.remote.enabled", true);
 user_pref("browser.safebrowsing.downloads.remote.block_dangerous", true);
@@ -149,8 +154,16 @@ user_pref("browser.startup.page", 3);
 
 // New windows and tabs start with a blank page. Not "top" sites or ads.
 user_pref("browser.startup.homepage", "about:blank");
-user_pref("browser.newtabpage.enabled", false);
-user_pref("browser.newtabpage.enhanced", false);
+// Disabling the "enhanced new tab" feature requires an add-on since v. 41. ಠ_ಠ
+// user_pref("browser.newtabpage.enabled", false);
+// user_pref("browser.newtabpage.enhanced", false);
+// So, disable all sections of the "enhanced new tab".
+user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
+user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
+user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
+user_pref("browser.newtabpage.activity-stream.prerender", false);
+user_pref("browser.newtabpage.activity-stream.showSearch", false);
+user_pref("browser.newtabpage.activity-stream.showTopSites", false);
 
 // Search text only on request. Highlight matches.
 user_pref("accessibility.typeaheadfind", false);
@@ -171,3 +184,9 @@ user_pref("devtools.performance.enabled", false);
 user_pref("devtools.responsiveUI.rotate", false);
 user_pref("devtools.storage.enabled", true);
 user_pref("devtools.theme", "light");
+
+// ----------  Misc  ---------------------------------------------------------
+
+user_pref("lightweightThemes.selectedThemeID", "firefox-compact-light@mozilla.org");
+user_pref("reader.color_scheme", "sepia");
+user_pref("general.warnOnAboutConfig", false);

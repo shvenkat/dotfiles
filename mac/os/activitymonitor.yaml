@@ -7,5 +7,3 @@ user:
 
         # Visualize CPU history in the Activity Monitor Dock icon
         IconType: 6
-
-        # Show all processes in Activity Monitor

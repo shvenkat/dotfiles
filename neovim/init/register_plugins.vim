@@ -10,6 +10,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 " File/buffer navigation
 Plug 'kien/ctrlp.vim'
+Plug 'scrooloose/nerdtree'
 
 " Look and feel
 Plug 'altercation/vim-colors-solarized'

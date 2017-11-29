@@ -1,0 +1,4 @@
+user:
+    com.apple.DiskUtility:
+        DUDebugMenuEnabled: true
+        advanced-image-options: true

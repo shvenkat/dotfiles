@@ -116,7 +116,7 @@ ln_safe "$FRESHRC_TARGET" "$FRESHRC_SYMLINK"
 info "Cloning/updating fresh repo."
 run "$BIN/git-safeclone" "$FRESH_URL" "$FRESH_CLONE"
 info "Installing (a read-only copy of) dotfiles per $FRESHRC_SYMLINK."
-run "$FRESH_CLONE/bin/fresh"
+run "$FRESH_CLONE/bin/fresh install"
 
 # Create build cache, if needed.
 mkdir -p "$PLUGIN_CACHE"
@@ -136,6 +136,7 @@ if which nvim >/dev/null 2>&1; then
     info "Installing/updating neovim plugins."
     run nvim --headless +PlugUpgrade +PlugUpdate +PlugClean +qall
     info "Caching neovim plugin builds."
+    # TODO Use rsync.
     run cp -a "$neovim_plugin_install/" "$neovim_plugin_cache/"
 fi
 
@@ -155,6 +156,7 @@ if which zsh >/dev/null 2>&1; then
     run "$zplug_preamble zplug clean"
     run "$zplug_preamble zplug clear"
     info "Caching zsh plugin builds."
+    # TODO Use rsync.
     run cp -a "$zsh_plugin_install/" "$zsh_plugin_cache/"
 fi
 

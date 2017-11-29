@@ -10,6 +10,9 @@ ssh/known_hosts
 # Auto-generated files.
 .DS_STORE
 .mypy_cache/
+__pycache__
+*.pyc
 
 # Build files.
 env
+.venv

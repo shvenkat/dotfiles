@@ -9,7 +9,7 @@ PREFIX="$(dirname -- "$0")"
 
 # Show usage; do not exit.
 usage () {
-	echo "Usage: $NAME [-h|--help]"
+    echo "Usage: $NAME [-h|--help]"
     echo '    Runs the other installer modules in a bootstrap sequence.'
 }
 
@@ -105,4 +105,4 @@ esac
 
 run_module "$PREFIX/dotfiles"
 run_module "$PREFIX/apps"
-run_module "$PREFIX/config"
+run_module "$PREFIX/settings"

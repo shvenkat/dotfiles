@@ -1,0 +1,7 @@
+# For each tracked file, convert line endings to LF on check-in _if it is a text
+# file_. If the file has been committed with CRLF line endings, no conversion is
+# performed.
+*    text=auto
+
+# Explicitly handle certain files.
+*.py    text diff=python

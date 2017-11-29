@@ -101,4 +101,4 @@ if [ ! -d "$default_profile" ]; then
 fi
 firefox_prefs_js="${default_profile}/prefs.js"
 info "Merging preferences to $firefox_prefs_js."
-cat < "$PREFS_JS" | sed -e "s/DOWNLOAD_DIR/${download_dir}/" >> "$firefox_prefs_js"
+cat < "$PREFS_JS" | sed -e "s#DOWNLOAD_DIR#${download_dir}#" >> "$firefox_prefs_js"

@@ -1,0 +1,14 @@
+user:
+    com.apple.screensaver:
+        askForPassword: 1       # Require password to unlock.
+        askForPasswordDelay: 5  # Delay until screensaver locks.
+
+local:
+    com.apple.screensaver:
+        moduleDict:
+            moduleName: Word of the Day
+            path: /System/Library/Screen Savers/Word of the Day.qtz
+            type: 1
+        showClock: 1
+        idleTime: 300
+        PrefsVersion: 100

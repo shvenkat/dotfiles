@@ -1,0 +1,12 @@
+user:
+    com.apple.TextEdit:
+        # Use a plain text format, encoded in UTF-8.
+        RichText: 0
+        PlainTextEncoding: 4
+        PlainTextEncodingForWrite: 4
+        # Disable auto-correction.
+        SmartCopyPaste: false
+        TextReplacement: false
+        # UI.
+        ShowRuler: false
+        WidthInChars: 80

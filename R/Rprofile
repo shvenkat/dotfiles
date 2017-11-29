@@ -4,7 +4,7 @@
 # Set a default CRAN mirror.
 local({
     repo <- getOption("repos")
-    repo["CRAN"] <- "http://cran.cnr.berkeley.edu/"
+    repo["CRAN"] <- "https://cran.cnr.berkeley.edu/"
     options("repos" = repo)
 })
 

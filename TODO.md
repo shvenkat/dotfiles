@@ -14,6 +14,8 @@
   *.py text/plain;python    highlight
   *.c *.h text/plain;C      highlight
   *.sqlite3                 peek_db
+  *.json                    jq
+  *.log                     highlight Error and Warn lines
   ...
   highlight     source-highlight or highlight or pygmentize or code2color
 * Allow chaining handlers. untar followed by syntax-highlight.
@@ -22,3 +24,5 @@
 
 
 # vim Focus Mode
+
+VertSplit

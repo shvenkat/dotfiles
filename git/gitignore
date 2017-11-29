@@ -1,3 +1,66 @@
-.ropeproject/
-env/
+# OS.
+.DS_Store
+
+# Shell.
 .autoenv.zsh
+
+# Misc.
+*.log
+*~
+
+# Editor/IDE litter.
+*.swp*
+.idea/
+
+# Compilers.
+*.o
+*.so
+*.class
+
+# ----  Python  ----
+
+## Build, packaging and installation.
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+parts/
+pip-log.txt
+pip-delete-this-directory.txt
+sdist/
+*.egg-info/
+.installed.cfg
+*.egg
+*.manifest
+*.spec
+docs/_build/
+target/
+
+## Linters.
+.mypy_cache/
+
+## Bytecode files.
+__pycache__/
+*.py[cod]
+
+## Environments.
+env/
+.venv/
+
+## iPython files.
+.ipython/*
+!.ipython/profile_default
+.ipython/profile_default/*
+!.ipython/profile_default/ipython_config.py
+
+## Unit testing and code coverage.
+htmlcov/
+.cache
+*.cover
+.coverage
+.coverage.*
+coverage.xml
+.hypothesis/
+nosetests.xml
+.tox/

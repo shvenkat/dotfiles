@@ -1,0 +1,10 @@
+user:
+    com.apple.SoftwareUpdate:
+        AutomaticCheckEnabled: true      # Check for updates.
+        ScheduleFrequency: 1             # Check daily.
+        AutomaticDownload: 1             # Download updates automatically.
+        CriticalUpdateInstall: 1         # Install critical updates.
+
+    com.apple.commerce:
+        AutoUpdate: true                 # Automatically update apps.
+        AutoUpdateRestartRequired: true  # Allow updates that need a restart.

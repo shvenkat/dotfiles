@@ -1,0 +1,64 @@
+local:
+    com.apple.systemuiserver:
+
+        # Hide some menu bar icons.
+        dontAutoLoad:
+        - /System/Library/CoreServices/Menu Extras/TextInput.menu
+        - /System/Library/CoreServices/Menu Extras/TimeMachine.menu
+        - /System/Library/CoreServices/Menu Extras/Volume.menu
+        - /System/Library/CoreServices/Menu Extras/User.menu
+
+user:
+    .GlobalPreferences:
+
+        # Automatically hide/show the menu bar.
+        _HIHideMenuBar: true
+
+    com.apple.systemuiserver:
+
+        # Show certain menu bar icons.
+        menuExtras:
+        - /System/Library/CoreServices/Menu Extras/VPN.menu
+        - /Applications/Utilities/Keychain Access.app/Contents/Resources/Keychain.menu
+        - /System/Library/CoreServices/Menu Extras/Bluetooth.menu
+        - /System/Library/CoreServices/Menu Extras/AirPort.menu
+        - /System/Library/CoreServices/Menu Extras/Battery.menu
+        - /System/Library/CoreServices/Menu Extras/Clock.menu
+
+    com.apple.menuextra.battery:
+        ShowPercent: YES  # Show charge as a percentage.
+
+    com.apple.menuextra.clock:
+        IsAnalog: true    # Display a clock dial.
+
+    com.apple.dock:
+        orientation: left  # Dock location.
+        autohide: true     # Automatically hide and show the Dock.
+        tilesize: 64       # Icon size.
+        show-process-indicators: true  # Mark open applications.
+        static-only: true  # Show only open applications in the Dock.
+        launchanim: false  # Disable launch animation.
+        mineffect: scale   # Minimize windows by scaling down.
+        minimize-to-application: true  # Minimize windows into app icon.
+        enable-spring-load-actions-on-all-items: true
+
+        # Configure "hot corner" actions.
+        # Possible values:
+        #  0: no-op
+        #  2: Mission Control
+        #  3: Show application windows
+        #  4: Desktop
+        #  5: Start screen saver
+        #  6: Disable screen saver
+        #  7: Dashboard
+        # 10: Put display to sleep
+        # 11: Launchpad
+        # 12: Notification Center
+        wvous-tl-corner: 5
+        wvous-tl-modifier: 0
+        wvous-tr-corner: 5
+        wvous-tr-modifier: 0
+        wvous-bl-corner: 5
+        wvous-bl-modifier: 0
+        wvous-br-corner: 5
+        wvous-br-modifier: 0

@@ -2,7 +2,7 @@
 
 
 # Constants.
-CRAN_URL = "http://cran.cnr.berkeley.edu/"
+CRAN_URL <- getOption("repos")["CRAN"]
 
 
 # ---- Utility functions ----

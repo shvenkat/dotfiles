@@ -53,7 +53,7 @@ fresh shvenkat/dotfiles source-highlight --file=~/.local/share/source-highlight/
 fresh shvenkat/dotfiles util/nanorc --file
 
 # Miscellany.
-fresh shvenkat/dotfiles bin/kill-tree --bin
+fresh shvenkat/dotfiles bin/kill-pstree --bin
 fresh shvenkat/dotfiles bin/machine-dashboard --bin
 fresh shvenkat/dotfiles bin/machine-status --bin
 fresh shvenkat/dotfiles bin/ssh-agent-connect --bin
@@ -62,7 +62,7 @@ fresh shvenkat/dotfiles bin/git-safeclone --bin
 
 # ----------  PROGRAMMING  ---------------------------------------------------
 
-# vim. UI done right. Scripting is FUBAR.
+# vim. UI done right. FUBAR scripting.
 fresh-options --file=~/.config/nvim/init.vim
     fresh shvenkat/dotfiles neovim/init/register_plugins.vim
     fresh shvenkat/dotfiles neovim/init/core_key_bindings.vim
@@ -88,10 +88,12 @@ fresh syl20bnr/spacemacs . --file=~/.emacs.d/
 fresh shvenkat/dotfiles util/editorconfig --file
 
 # git. What else.
-fresh shvenkat/dotfiles git/gitconfig --file
-fresh git/git contrib/diff-highlight/DiffHighlight.pm --file=~/perl5/lib/perl5/DiffHighlight.pm
+fresh shvenkat/dotfiles git/gitconfig --file=~/.config/git/config
+fresh shvenkat/dotfiles git/gitignore --file=~/.config/git/ignore
+fresh shvenkat/dotfiles git/gitattributes --file=~/.config/git/attributes
+fresh git/git contrib/diff-highlight/DiffHighlight.pm --file=~/.local/share/perl5/lib/perl5/DiffHighlight.pm
 fresh git/git contrib/diff-highlight/diff-highlight.perl --bin=~/bin/diff-highlight \
-    --filter="cat <(echo -e \"#!/usr/bin/perl\n\nuse lib '${HOME}/perl5/lib/perl5';\nuse DiffHighlight;\n\") -"
+    --filter="cat <(echo -e \"#!/usr/bin/perl\n\nuse lib '${HOME}/.local/share/perl5/lib/perl5';\nuse DiffHighlight;\n\") -"
 
 # python. At least it's not perl.
 fresh shvenkat/dotfiles python/flake8 --file
@@ -106,7 +108,7 @@ fresh shvenkat/dotfiles R/Rprofile --file
 # ----------  CRYPTO  --------------------------------------------------------
 
 # PKI. The illusion of trust.
-fresh shvenkat/dotfiles certs --file=~/.certs/
+# fresh shvenkat/dotfiles certs --file=~/.certs/
 
 # GPG. Comes with a tin foil hat.
 fresh shvenkat/dotfiles gnupg/gpg.conf --file=~/.gnupg/gpg.conf
