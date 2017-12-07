@@ -2,7 +2,6 @@
 
 set -e -u -o pipefail
 
-
 # Key remapping: CapsLock -> Control.
 kb_properties="$(ioreg -c IOHIDKeyboard -r -d1)"
 kb_count="$(echo "$kb_properties" | grep -c ProductID)"
@@ -20,6 +19,7 @@ if [ "$kb_count" -eq 1 ] && [ ! -z "$kb_vendor_id" ] && [ ! -z "$kb_product_id" 
 else
     echo "WARNING: Key remapping skipped. Unable to determine keyboard vendor and product IDs." 1>&2
 fi
+
 # Key codes (ref: http://apple.stackexchange.com/a/88096).
 #     -1    None
 #      0    Caps Lock

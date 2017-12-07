@@ -1,6 +1,0 @@
-user:
-    com.apple.TimeMachine:
-        DoNotOfferNewDisksForBackup: true
-
-# Disable local Time Machine backups
-#hash tmutil &> /dev/null && sudo tmutil disablelocal

@@ -8,27 +8,18 @@ user:
                 NSDefaultDisplayName: DuckDuckGo
                 NSProviderIdentifier: com.duckduckgo
 
-        # ----------  Developer Tools  ----------------------------------------
-
-        WebKitDeveloperExtras: true  # Show Web Inspector context menu item.
-
     com.apple.Safari:
 
         # ----------  Search  -------------------------------------------------
 
         # Show search engine suggestions.
-        defaultsSuppressSearchSuggestions: false
-        defaultsShowFavoritesUnderSmartSearchField: true
-
-        # Disable spell-checking and auto-correct.
-        WebContinuousSpellCheckingEnabled: false
-        WebAutomaticSpellingCorrectionEnabled: false
+        SuppressSearchSuggestions: false
 
         # Don’t send search queries to Apple.
-        defaultsUniversalSearchEnabled: false
+        UniversalSearchEnabled: false
 
         # Disable Quick Website Search, which records searches on websites.
-        defaultsWebsiteSpecificSearchEnabled: false
+        WebsiteSpecificSearchEnabled: false
 
         # ----------  Browsing  -----------------------------------------------
 
@@ -36,28 +27,19 @@ user:
         WarnAboutFraudulentWebsites: true
 
         # Send “Do Not Track” requests.
-        defaultsSendDoNotTrackHTTPHeader: true
-
-        # Block pop-up windows.
-        defaultsWebKitJavaScriptCanOpenWindowsAutomatically: false
-        com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaScriptCanOpenWindowsAutomatically: false
+        SendDoNotTrackHTTPHeader: true
 
         # Do not automatically play videos.
-        defaultsWebKitMediaPlaybackAllowsInline: false
-        com.apple.Safari.ContentPageGroupIdentifier.WebKit2AllowsInlineMediaPlayback: false
+        com.apple.Safari.ContentPageGroupIdentifier.WebKit2InvisibleAutoplayNotPermitted: true
 
         # Enable WebGL.
         com.apple.Safari.ContentPageGroupIdentifier.WebKit2WebGLEnabled: true
 
+        PreloadTopHit: false
+
         # ----------  Plugins and Extensions  ---------------------------------
 
-        # Disable Java.
-        defaultsWebKitJavaEnabled: false
-        com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled: false
-
         # Enable selected plugins.
-        defaultsWebKitPluginsEnabled: true
-        com.apple.Safari.ContentPageGroupIdentifier.WebKit2PluginsEnabled: true
         ManagedPlugInPolicies:
             com.apple.QuickTime Plugin.plugin:
                 PlugInDisallowPromptBeforeUseDialog: true
@@ -67,7 +49,6 @@ user:
             com.google.o1dbrowserplugin:
                 PlugInFirstVisitPolicy: PlugInPolicyAsk
             com.macromedia.Flash Player.plugin:
-                PlugInDisallowPromptBeforeUseDialog: true
                 PlugInFirstVisitPolicy: PlugInPolicyBlock
             com.oracle.java.JavaAppletPlugin:
                 PlugInFirstVisitPolicy: PlugInPolicyBlock
@@ -85,10 +66,7 @@ user:
         ExtensionsEnabled: true
 
         # Lazy-load extensions.
-        defaultsSkipLoadingExtensionsAtLaunch: true
-
-        # Update extensions automatically.
-        InstallExtensionUpdatesAutomatically: true
+        SkipLoadingExtensionsAtLaunch: true
 
         # ----------  Downloads  ----------------------------------------------
 
@@ -100,7 +78,7 @@ user:
         # ----------  Autofill and Passwords  ---------------------------------
 
         # Disable AutoFill.
-        defaultsAutoFillFromAddressBook: false
+        AutoFillFromAddressBook: false
         AutoFillPasswords: false
         AutoFillCreditCardData: false
         AutoFillMiscellaneousForms: false
@@ -114,6 +92,7 @@ user:
 
         # ----------  History  ------------------------------------------------
 
+        AlwaysRestoreSessionAtLaunch: true
         HistoryAgeInDaysLimit: 1
 
         # ----------  UI  -----------------------------------------------------
@@ -122,44 +101,40 @@ user:
         HomePage: about:blank
 
         # New tabs and new windows are empty.
-        defaultsNewTabBehavior: 1
+        NewTabBehavior: 1
         NewWindowBehavior: 1
 
         # Address bar.
         ShowFullURLInSmartSearchField: true
 
         # Bookmarks bar.
-        ShowFavoritesBar: false
         ShowFavoritesBar-v2: false
-        ProxiesInBookmarksBar: ()
 
         # Tab bar.
-        defaultsAlwaysShowTabBar: true
+        AlwaysShowTabBar: true
 
         # Sidebar.
-        defaultsShowSidebarInTopSites: false
+        ShowSidebarInNewWindows: false
+        ShowSidebarInTopSites: false
 
         # Status bar.
-        defaultsShowStatusBar: false
-
-        # Text search.
-        defaultsFindOnPageMatchesWordStartsOnly: false
+        ShowStatusBar: false
+        ShowOverlayStatusBar: true
 
         # Fullscreen.
-        defaultsAutoShowToolbarInFullScreen: true
+        AutoShowToolbarInFullScreen: true
         AlwaysShowFavoritesBarInFullScreen: false
         AlwaysShowTabBarInFullScreen: false
         ShowStatusBarInFullScreen: false
 
         # Press Tab to cycle between text fields, not links.
-        defaultsWebKitTabToLinksPreferenceKey: false
-        com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks: false
+        com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks: true
 
         # ----------  Developer Tools  ----------------------------------------
 
         # Enable the Develop menu.
-        defaultsIncludeDevelopMenu: true
+        IncludeDevelopMenu: true
 
         # Enable the Web Inspector.
-        defaultsWebKitDeveloperExtrasEnabledPreferenceKey: true
+        WebKitDeveloperExtrasEnabledPreferenceKey: true
         com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled: true

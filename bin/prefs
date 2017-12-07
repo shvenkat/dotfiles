@@ -334,6 +334,7 @@ def merge(desired: KeyValue, base: Optional[KeyValue]) -> KeyValue:
             result[desired_key] = dict(base[desired_key])  # type: ignore
             result[desired_key].update(desired_value)      # type: ignore
         else:
+            # Log novel key.
             result[desired_key] = desired_value
     return result
 

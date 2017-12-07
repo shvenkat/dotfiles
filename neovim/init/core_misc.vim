@@ -29,4 +29,4 @@ set lazyredraw
 set scrolloff=3
 
 " Python for plugins.
-let g:python_host_prog='python3'
+let g:loaded_python_provider = 1

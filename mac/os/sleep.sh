@@ -1,25 +1,18 @@
-# ----------  Hibernate / Suspend-to-Disk / SafeSleep  -----------------------
+# Disable hibernate. Speeds up sleep (suspend-to-RAM).
+sudo pmset -a \
+    hibernatemode 0 \
+    standby 0 \
+    autopoweroff 0
 
-# Disable hibernate. Speeds up sleep (suspend-to-RAM) and wake.
-sudo pmset -a hibernatemode 0
-sudo pmset -a standby 0
-sudo pmset -a autopoweroff 0
-
-# Remove the hibernate image file to save disk space, and prevent it from being created.
-sudo rm /private/var/vm/sleepimage
-sudo touch /private/var/vm/sleepimage
-sudo chflags uchg /private/var/vm/sleepimage
-
-
-# ----------  Sleep / Suspend-to-RAM  ----------------------------------------
-
-sudo pmset -a displaysleep 10
-sudo pmset -a sleep 30
-sudo pmset -a womp 0
-sudo pmset -a ring 0
-sudo pmset -a powernap 0
-sudo pmset -a lidwake 0
-sudo pmset -a acwake 0
-sudo pmset -a lessbright 0
-sudo pmset -a halfdim 0
-sudo pmset -a ttyskeepawake 0
+# Set various power management settings.
+sudo pmset -a \
+    displaysleep 10 \
+    sleep 15 \         # Sleep after 15 minutes of idling.
+    womp 0 \           # Do not wake on network activity.
+    ring 0 \           # Do not wake on modem activity.
+    powernap 0 \
+    lidwake 0 \        # Do not wake on opening the lid.
+    acwake 0 \
+    lessbright 0 \
+    halfdim 0 \
+    ttyskeepawake 0

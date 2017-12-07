@@ -1,8 +1,8 @@
 user:
+    # /Users/shiv/Library/Containers/com.apple.TextEdit/Data/Library/Preferences/com.apple.TextEdit.plist
     com.apple.TextEdit:
         # Use a plain text format, encoded in UTF-8.
-        RichText: 0
-        PlainTextEncoding: 4
+        RichText: false
         PlainTextEncodingForWrite: 4
         # Disable auto-correction.
         SmartCopyPaste: false
@@ -10,3 +10,6 @@ user:
         # UI.
         ShowRuler: false
         WidthInChars: 80
+        HeightInChars: 25
+        NSFixedPitchFont: DroidSansMono
+        NSFixedPitchFontSize: 14
