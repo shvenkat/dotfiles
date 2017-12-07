@@ -65,14 +65,7 @@ fresh shvenkat/dotfiles bin/git-safeclone --bin
 # vim. UI done right. FUBAR scripting.
 fresh-options --file=~/.config/nvim/init.vim
     fresh shvenkat/dotfiles neovim/init/register_plugins.vim
-    fresh shvenkat/dotfiles neovim/init/core_key_bindings.vim
-    fresh shvenkat/dotfiles neovim/init/core_whitespace.vim
-    fresh shvenkat/dotfiles neovim/init/core_textwidth.vim
-    fresh shvenkat/dotfiles neovim/init/core_folding.vim
-    fresh shvenkat/dotfiles neovim/init/core_syntax.vim
-    fresh shvenkat/dotfiles neovim/init/core_completion.vim
-    fresh shvenkat/dotfiles neovim/init/core_focus.vim
-    fresh shvenkat/dotfiles neovim/init/core_misc.vim
+    fresh shvenkat/dotfiles 'neovim/init/core_*.vim'
     fresh shvenkat/dotfiles 'neovim/init/plugin_*.vim'
 fresh-options
 fresh shvenkat/dotfiles neovim/after --file=~/.config/nvim/after/

@@ -16,6 +16,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'altercation/vim-colors-solarized'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'shvenkat/vim-focus'
 " Plug 'junegunn/goyo.vim'
 " Plug 'vim-scripts/ShowMarks'
 

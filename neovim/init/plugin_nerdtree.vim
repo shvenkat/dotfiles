@@ -1,3 +1,7 @@
+
+
+" ----------  NERDTree  ------------------------------------------------------
+
 map <C-n> :NERDTreeToggle<CR>
 
 " Show hidden files.
