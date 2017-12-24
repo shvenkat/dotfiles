@@ -8,8 +8,10 @@ fresh freshshell/fresh bin/fresh --bin
 # ----------  TERMINAL  ------------------------------------------------------
 
 # tmux. Delusions of multi-tasking.
-fresh shvenkat/dotfiles tmux/tmux.conf --file=~/.tmux.conf
-fresh shvenkat/dotfiles tmux/colorscheme_solarized_dark.conf --file=~/.tmux.conf
+fresh-options --file=~/.tmux.conf
+    fresh shvenkat/dotfiles tmux/tmux.conf
+    fresh shvenkat/dotfiles tmux/colorscheme_solarized_dark.conf
+fresh-options
 
 # X/xterm. The GUI that drove me to the text terminal.
 # fresh shvenkat/dotfiles x/xinitrc --file
@@ -20,7 +22,6 @@ fresh shvenkat/dotfiles tmux/colorscheme_solarized_dark.conf --file=~/.tmux.conf
 # zsh. F*** yeah!
 fresh zplug/zplug . --file=~/.zplug/
 fresh-options --file=~/.zshrc
-    fresh shvenkat/dotfiles shell/zsh/zshrc
     fresh shvenkat/dotfiles shell/shared/misc
     fresh shvenkat/dotfiles shell/shared/path
     fresh shvenkat/dotfiles shell/shared/less
@@ -30,7 +31,9 @@ fresh-options --file=~/.zshrc
     fresh shvenkat/dotfiles shell/shared/term
     fresh shvenkat/dotfiles shell/shared/alias
     fresh shvenkat/dotfiles shell/shared/local
+    fresh shvenkat/dotfiles shell/zsh/zshrc
 fresh-options
+fresh shvenkat/dotfiles shell/zsh/autoenv.zsh --file
 
 
 # ----------  UTILITIES  -----------------------------------------------------
