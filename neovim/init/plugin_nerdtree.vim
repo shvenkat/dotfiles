@@ -10,9 +10,11 @@ let NERDTreeShowHidden=1
 " Ignore certain files and directories.
 let NERDTreeIgnore=[
     \ '^\.git$[[dir]]',
-    \ '^\.mypy_cache$[[dir]]',
-    \ '^\env$[[dir]]',
+    \ '^env$[[dir]]',
     \ '^\.venv$[[dir]]',
+    \ '^dist$[[dir]]',
     \ '\.egg-info$[[dir]]',
     \ '^__pycache__$[[dir]]',
+    \ '^\.mypy_cache$[[dir]]',
+    \ '^\.hypothesis$[[dir]]',
     \ ]

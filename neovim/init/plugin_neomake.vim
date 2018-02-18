@@ -5,6 +5,7 @@
 let g:neomake_ft_maker_remove_invalid_entries = 0
 let g:neomake_python_enabled_makers = ['flake8', 'mypy']
 let g:neomake_sh_enabled_makers = ['sh', 'shellcheck']
+let g:neomake_tex_enabled_makers = ['lacheck', 'pdflatex']
 
 autocmd BufWritePost,BufEnter * Neomake
 

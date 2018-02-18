@@ -51,19 +51,3 @@ alias mean="awk 'BEGIN { n = 0; s = 0 } { n += 1; s += \$1 } END { print s/n }'"
 
 # Remote file synchronization.
 alias rdiff='rsync -nacOziHS --delete'
-TRANSFER_CMD=(
-    "rsync"
-    "--delete" "--update"
-    "--recursive" "--checksum" "--compress" "--itemize-changes"
-    "--exclude" '.git/'
-    "--exclude" 'build/'
-    "--exclude" '*~'
-    "--exclude" 'env/'
-    "--exclude" '__pycache__/'
-    "--exclude" '.ipython/'
-    "--exclude" '*.pyc'
-)
-dget () { "${TRANSFER_CMD[@]}" --dry-run "${1}/" "${PWD}/"; }
-dput () { "${TRANSFER_CMD[@]}" --dry-run "${PWD}/" "${1}/"; }
-get () { "${TRANSFER_CMD[@]}" "${1}/" "${PWD}/"; }
-put () { "${TRANSFER_CMD[@]}" "${PWD}/" "${1}/"; }
