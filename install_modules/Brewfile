@@ -1,0 +1,86 @@
+# NOTE: Changes to the `args` parameter are not automatically applied by `brew
+# bundle` for a formula that has already been installed. Run `brew uninstall
+# --force <formula>` before `brew bundle` to ensure that the options used for
+# installation match those specified in `args`.
+
+# ----  UTILITIES  ----
+
+tap "homebrew/core"
+tap "homebrew/services"
+
+# General use.
+brew "clamav"
+brew "colordiff"
+brew "coreutils"
+brew "findutils", args: ["with-default-names"]
+brew "git", args: ["with-blk-sha1", "with-pcre2"]
+brew "gnupg", args: ["with-readline"]
+brew "grep", args: ["with-default-names"]
+brew "htop"
+brew "jq"
+brew "less", args: ["with-pcre"]
+brew "lesspipe"
+brew "openssh"
+brew "pigz"
+brew "rsync"
+brew "source-highlight"
+brew "tmux"
+brew "tree"
+brew "unison"
+brew "watch"
+brew "wdiff"
+brew "wget"
+brew "zsh"
+brew "zsh-completions"
+brew "zstd"
+
+# Programming.
+brew "automake"
+brew "cmake"
+brew "coq"
+brew "cscope"
+brew "ctags"
+brew "emacs", args: ["with-cocoa", "with-gnutls", "with-imagemagick@6",
+                     "with-librsvg", "with-modules"]
+# brew "gcc"
+brew "go"
+brew "haskell-stack"
+brew "idris"
+# brew "neovim"
+# brew "node"
+brew "python3"
+brew "r"
+brew "rust"
+brew "shellcheck"
+brew "sqlite3"
+brew "valgrind"
+
+# Math and Science.
+brew "blast"
+brew "bowtie2"
+brew "igv"
+brew "samtools"
+
+# Cloud.
+brew "awscli"
+
+
+# # ----  APPS  ----
+#
+# tap "caskroom/cask"
+# tap "caskroom/fonts"
+# tap "caskroom/versions"
+#
+# # Apps.
+# cask "docker"
+# cask "firefox"
+# cask "google-chrome"
+# cask "google-drive"
+# cask "isabelle"
+# cask "iterm2"
+# cask "mactex"
+# cask "slack"
+# cask "xquartz"
+#
+# # Fonts.
+# cask "font-droid-sans-mono"

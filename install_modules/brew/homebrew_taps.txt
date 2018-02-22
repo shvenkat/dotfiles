@@ -1,6 +1,2 @@
 homebrew/core
-homebrew/dupes
-homebrew/fuse
-homebrew/science
-neovim/neovim
-d12frosted/emacs-plus
+homebrew/services

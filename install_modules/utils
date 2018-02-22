@@ -10,17 +10,19 @@ OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 HOMEBREW_INSTALL_URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
 LINUXBREW_INSTALL_URL="https://raw.githubusercontent.com/Linuxbrew/install/master/install"
 
-HOMEBREW_TAPS="$PREFIX/brew/homebrew_taps.txt"
-HOMEBREW_FORMULAS="$PREFIX/brew/homebrew_formulas.txt"
-LINUXBREW_TAPS="$PREFIX/brew/linuxbrew_taps.txt"
-LINUXBREW_FORMULAS="$PREFIX/brew/linuxbrew_formulas.txt"
+HOMEBREW_BREWFILE="$PREFIX/Brewfile"
+LINUXBREW_BREWFILE="$PREFIX/Brewfile"
+# HOMEBREW_TAPS="$PREFIX/brew/homebrew_taps.txt"
+# HOMEBREW_FORMULAS="$PREFIX/brew/homebrew_formulas.txt"
+# LINUXBREW_TAPS="$PREFIX/brew/linuxbrew_taps.txt"
+# LINUXBREW_FORMULAS="$PREFIX/brew/linuxbrew_formulas.txt"
 
 
 # Show usage.
 # Args: None.
 usage () {
     echo "Usage: $NAME [-h|--help]"
-    echo '    Installs various utilities, using bork.'
+    echo '    Installs various utilities and apps, using homebrew.'
 }
 
 
@@ -111,11 +113,11 @@ if ! which brew >/dev/null 2>&1; then
     esac
 fi
 
-# Bork.
-if ! which bork >/dev/null 2>&1; then
-    info "Installing bork (bleeding edge version)."
-    run brew install --HEAD bork
-fi
+# # Bork.
+# if ! which bork >/dev/null 2>&1; then
+#     info "Installing bork (bleeding edge version)."
+#     run brew install --HEAD bork
+# fi
 
 # Git
 if ! which git >/dev/null 2>&1; then
@@ -123,31 +125,17 @@ if ! which git >/dev/null 2>&1; then
     run brew install git
 fi
 
-# Various utilities.
 case "$OSTYPE" in
     linux*)
-        TAPS="$LINUXBREW_TAPS"
-        FORMULAS="$LINUXBREW_FORMULAS"
+        brewfile="$LINUXBREW_BREWFILE"
         ;;
     darwin*)
-        TAPS="$HOMEBREW_TAPS"
-        FORMULAS="$HOMEBREW_FORMULAS"
+        brewfile="$HOMEBREW_BREWFILE"
         ;;
     *)
         error "Error: unknown OS - $OSTYPE."
         ;;
 esac
-if [ -r "$TAPS" ] && [ -r "$FORMULAS" ]; then
-    while IFS='' read -r tap; do
-        if echo "$tap" | grep -q '^[^#]'; then
-            info "Ensuring installation of brew tap $tap."
-            run bork 'do' ok brew-tap "$tap"
-        fi
-    done < "$TAPS"
-    while IFS='' read -r formula; do
-        if echo "$formula" | grep -q '^[^#]'; then
-            info "Ensuring installation of brew formula $formula."
-            run bork 'do' ok brew "$formula"
-        fi
-    done < "$FORMULAS"
-fi
+info "Ensuring installation of utilities and apps specified in $brewfile."
+run brew bundle --file="$brewfile"
+run brew cleanup

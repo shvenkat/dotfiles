@@ -79,3 +79,12 @@ zplug load
 # ssh-agent
 # vi-mode
 # zsh-syntax-highlighting
+
+
+# ----------  MISC  ---------------------------------------------------------
+
+# Additional completion.
+zsh_completions_dir="/usr/local/share/zsh-completions"
+if [[ -d "$zsh_completions_dir" ]]; then
+    FPATH="${zsh_completions_dir}:${FPATH}"
+fi

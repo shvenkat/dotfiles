@@ -53,7 +53,8 @@ info () {
     env echo -e "${BOLD}INFO    [$NAME]  $*${NORMAL}"
 }
 
-# Run a command, logging its output. If an error is encountered, output an error message and exit.
+# Run a command, logging its output. If an error is encountered, output an error
+# message and exit.
 # Args:
 #   $@: Command and arguments to be run.
 run () {

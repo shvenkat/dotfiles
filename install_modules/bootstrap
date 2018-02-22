@@ -5,6 +5,7 @@ set -e -u -o pipefail
 
 NAME="$(basename -- "$0")"
 PREFIX="$(dirname -- "$0")"
+OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 
 # Show usage; do not exit.
@@ -104,5 +105,5 @@ case "$OSTYPE" in
 esac
 
 run_module "$PREFIX/dotfiles"
-run_module "$PREFIX/apps"
+# run_module "$PREFIX/apps"
 run_module "$PREFIX/settings"

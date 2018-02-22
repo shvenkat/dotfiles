@@ -1,24 +1,22 @@
-# Apps.
-firefox
-google-chrome
-
-# Utilities.
-flux
-macfusion
-osxfuse
-xquartz
-
-# Terminal.
-font-dejavu-sans
-font-droid-sans-mono
-iterm2-beta
-
-# Programming.
-java
-
-# Collaboration.
-skype
-
-# Cloud.
 docker
+epub-to-pdf
+evernote
+flux
+font-droid-sans-mono
+font-droid-sans-mono-slashed
+font-fira-mono
+ghc
 google-drive
+isabelle
+iterm2-beta
+java
+macfusion
+mactex
+mendeley-desktop
+omnigraffle
+osxfuse
+skype
+sshfs
+tunnelblick
+vagrant
+xquartz

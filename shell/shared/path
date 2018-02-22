@@ -25,7 +25,6 @@ case $OSTYPE in
     darwin*)
         PATH="/usr/local/sbin:/sbin:/usr/sbin"
         PATH="${PATH}:/usr/local/opt/coreutils/libexec/gnubin"
-        PATH="${PATH}:/usr/local/opt/findutils/libexec/gnubin"
         PATH="${PATH}:/usr/local/bin:/bin:/usr/bin"
         PATH="${PATH}:/Library/TeX/texbin"
         PATH="${PATH}:/opt/X11/bin"

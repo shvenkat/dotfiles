@@ -1,8 +1,61 @@
-#!/bin/bash
+#!/bin/sh
 
-if which brew > /dev/null && brew --version | grep -qi homebrew; then
-    this_dir=$(dirname $0)
-    brew tap > $this_dir/homebrew_taps.txt
-    brew leaves > $this_dir/homebrew_leaves.txt
-    brew cask list > $this_dir/homebrew_casks.txt
+set -e -u -o pipefail
+
+NAME="$(basename "$0")"
+
+USAGE="Usage:  $NAME [-h|--help] <output_dir>
+    Saves the names of installed homebrew packages and apps (formulae and casks)
+    and the homebrew repositories (taps) to files in <output_dir>. Only directly
+    installed i.e. non-dependency packages are listed. These files can be used
+    to achieve a similar homebrew setup on another machine."
+
+# ----  functions  ----
+
+# Checks if homebrew is installed.
+# Args: None.
+# Returns: Status 0 if homebrew is installed; status 1 otherwise.
+homebrew_installed () {
+    if which brew >/dev/null 2>&1 && brew --version | grep -qi homebrew; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Saves the names of homebrew taps, and installed non-dependency formulae and
+# casks to the files homebrew_taps.txt, homebrew_cask_taps.txt,
+# homebrew_formulae.txt and homebrew_casks.txt. One name per line.
+# $1: Output directory.
+list_installed_packages () {
+    taps="$(brew tap | grep -E '^[^/]+/[^/]+$')"
+    echo "$taps" | grep -v caskroom | sort >"$1"/homebrew_taps.txt
+    echo "$taps" | grep caskroom | sort >"$1"/homebrew_cask_taps.txt
+    brew leaves | sort >"$1"/homebrew_formulas.txt
+    brew cask list | sort > "$1"/homebrew_casks.txt
+}
+
+# ----  main  ----
+
+output_dir=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        *)
+            output_dir="$1"
+            shift
+            break
+            ;;
+    esac
+done
+if [ -z "$output_dir" ]; then
+    echo "$USAGE"
+    exit 1
+fi
+
+if homebrew_installed; then
+    list_installed_packages "$output_dir"
 fi

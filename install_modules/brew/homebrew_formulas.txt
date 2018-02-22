@@ -9,7 +9,7 @@ gnupg2
 homebrew/dupes/grep
 htop
 jq
-homebrew/dupes/less
+less
 lesspipe
 homebrew/dupes/openssh
 pigz
@@ -41,10 +41,10 @@ sqlite3
 valgrind
 
 # Math and Science.
-homebrew/science/blast
-homebrew/science/igv
-homebrew/science/r
-homebrew/science/samtools
+blast
+igv
+r
+samtools
 
 # Cloud.
 awscli
