@@ -5,7 +5,6 @@ set -e -u -o pipefail
 
 NAME="$(basename -- "$0")"
 PREFIX="$(dirname -- "$0")"
-OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 MAC_CONFIG="$PREFIX/config/mac"
 LINUX_CONFIG="$PREFIX/config/linux"
@@ -78,6 +77,9 @@ run () {
 
 # ----------  main  ----------------------------------------------------------
 
+echo "Under construction!"
+exit 1
+
 init_logger
 
 # Check usage.
@@ -90,6 +92,7 @@ if [ $# -gt 0 ]; then
     exit 1
 fi
 
+OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 case "$OSTYPE" in
     linux*)
         ;;

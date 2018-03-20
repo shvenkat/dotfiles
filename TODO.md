@@ -25,7 +25,11 @@ Design:
   * Close apps before setting to prevent apps from ignoring or over-writing the
     updated preferences.
 
-mac-prefs (get|set) --yaml foo.yaml [--yaml bar.yaml [...]]
+mac-prefs (get|set|diff) --yaml foo.yaml [--yaml bar.yaml [...]]
+
+Implementation:
+
+  * ...
 
 Usage patterns:
 

@@ -14,18 +14,26 @@ import re
 import string
 import subprocess
 import sys
-from typing import Any, ByteString, Dict, Mapping, Optional, Sequence, Set, TextIO, Union
+from typing import (Any, ByteString, Dict, Mapping, Optional, Sequence, Set,
+                    TextIO, Union)
 import xml.parsers.expat as expat
 
 try:
     import yaml
 except ImportError:
-    sys.stderr.write("Python3 'yaml' module is missing. Try `pip3 install [--user] pyyaml`.\n")
-    sys.exit(1)
+    from subprocess import run, SubprocessError
+    try:
+        run(["pip3", "install", "pyyaml"], check = True)
+    except (OSError, SubprocessError):
+        sys.stderr.write(
+            "Error: Installation of required python yaml package failed.\n")
+        sys.exit(1)
+    else:
+        import yaml
 
 
 PROGRAM = sys.argv[0]
-NAME = os.path.basename(PROGRAM)
+NAME = Path(PROGRAM).name
 
 
 def main() -> None:
@@ -36,7 +44,8 @@ def main() -> None:
     subparsers.add_parser("help").add_argument("topic", nargs = "?")
     subparsers.add_parser("load")
     parser_dump = subparsers.add_parser("dump")
-    parser_dump.add_argument("--filter", type = Path, help = "Only dump keys present in a YAML.")
+    parser_dump.add_argument("--filter", type = Path,
+                             help = "Only dump keys present in a YAML.")
     args = parser.parse_args()
 
     # Dispatch appropriately.
@@ -60,31 +69,35 @@ def main() -> None:
 
 
 def load() -> None:
-    """Load/set preferences from YAML on stdin, after merging with current preferences."""
+    """Load/set preferences from YAML on stdin, after merging with current
+    preferences."""
     desired_prefs = read_pref()
     for category, domains in desired_prefs.items():
         if category == "system" and os.geteuid() != 0:
-            # System preference files must be owned by root. To write these files, acquire root
-            # access by invoking this program via `sudo`.
+            # System preference files must be owned by root. To write these
+            # files, acquire root access by invoking this program via `sudo`.
             get_sudo()
             try:
                 subprocess.run(["sudo", PROGRAM, "load"],
-                               input = yaml.dump({category: domains}), stderr = subprocess.PIPE,
+                               input = yaml.dump({category: domains}),
+                               stderr = subprocess.PIPE,
                                universal_newlines = True, check = True)
             except subprocess.CalledProcessError as e:
                 sys.stderr.write(e.stderr.decode())
                 sys.exit(e.returncode)
         elif category != "system" and os.geteuid() == 0:
-            # User preference files must be owned by the user; don't write these as root.
-            error(2, "incorrect usage. Do not run this program as root when setting user"
-                     "(non-privileged) preferences.")
+            # User preference files must be owned by the user; don't write these
+            # as root.
+            error(2, "incorrect usage. Do not run this program as root when"
+                     "setting user (non-privileged) preferences.")
         else:
             # Set preferences, after merging with current settings.
             load_category(category, domains)
 
 
 def dump(filter_by: Optional[Path] = None) -> None:
-    """Dump current preferences to YAML on stdout, optionally filtering the output."""
+    """Dump current preferences to YAML on stdout, optionally filtering the
+    output."""
     filter_prefs = read_filter(filter_by)
     pref = {}  # type: Dict[str, Any]
     for category, domains in filter_prefs.items():
@@ -185,7 +198,7 @@ def read_plist(category: Category, domain: Domain) -> Optional[KeyValue]:
     path = plist_path(category, domain)
     try:
         with open(path, "rb") as plist_file:
-            keyvalue = plistlib.load(plist_file, use_builtin_types = True)
+            keyvalue = plistlib.load(plist_file, use_builtin_types = True)  # type: Any
     except FileNotFoundError:
         return None
     except (plistlib.InvalidFileException, expat.ExpatError) as e:  # type: ignore
@@ -471,7 +484,7 @@ Desired value  Current value  Final value
 -------------  -------------  -----------
 scalar A       <any>          scalar A
 array A        <any>          array A
-dict A         dict B         dict C (union of keys; dict A values take precedence)
+dict A         dict B         dict C (union of keys; dict A values override B)
 dict A         <other>        dict A
 
 For array and dictionary values, the above behavior emulates the `-array` (not
