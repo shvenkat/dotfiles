@@ -1,0 +1,128 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+
+NAME="$(basename -- "$0")"
+
+USAGE="USAGE: $NAME [-v|--verbose]"
+HELP="
+Installs various software prerequisites, which are used by other installers.
+
+$USAGE
+
+    -v|--verbose      Show informational messages during execution. Repeat to
+                      see debug messages too.
+    -h|--help         Show this help message.
+"
+
+
+# ----------  functions  -----------------------------------------------------
+
+# Format and print log messages.
+#   $1: Log level: error, warn, info or debug.
+#   $2 [$3 ...]: Log messages (will be concatenated with spaces in between).
+log () {
+    if [ -t 1 ]; then
+        NORMAL="\\033[0m"
+        BOLD="\\033[1m"
+        RED="\\033[31m"
+        YELLOW="\\033[33m"
+    else
+        NORMAL=""
+        BOLD=""
+        RED=""
+        YELLOW=""
+    fi
+    level="$1"
+    shift
+    if [ "$level" = "error" ]; then
+        echo " ${RED}E${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+    elif [ "$level" = "warn" ]; then
+        echo " ${YELLOW}W${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+    elif [ "$level" = "info" ]; then
+        if [ "$VERBOSITY" -gt 0 ]; then
+            echo "   $*" 1>&2
+        fi
+    elif [ "$level" = "debug" ]; then
+        if [ "$VERBOSITY" -gt 1 ]; then
+            echo "   $*" 1>&2
+        fi
+    fi
+}
+
+# Run a command, logging its output. Errors are logged.
+# Args:
+#   $@: Command and arguments to be run.
+run () {
+    log debug "    $*"
+    set +e
+    output="$("$@" 2>&1)"
+    retval=$?
+    set -e
+    echo "$output" | while IFS='' read -r line; do log debug "    $line"; done
+    if [ "$retval" -ne 0 ]; then
+        log error "Failed: $*"
+        return 1
+    fi
+}
+
+install_linux_prereqs () {
+    log info "Satisfying Linux-specific prerequisites."
+    run sudo apt-get install build-essential curl file git python-setuptools \
+        ruby
+}
+
+install_macos_prereqs () {
+    log info "Satisfying MacOS-specific prerequisites."
+    test -x /usr/bin/clang || run xcode-select --install
+}
+
+install_generic_prereqs () {
+    log info "Satisfying generic (non OS-specific) prerequisites."
+    which python >/dev/null 2>&1 || log error "python not found."
+    which ruby >/dev/null 2>&1 || log error "ruby not found."
+}
+
+# ----------  main  ----------------------------------------------------------
+
+# Parse arguments.
+VERBOSITY=0
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -v|--verbose)
+            VERBOSITY=$((VERBOSITY + 1))
+            shift
+            ;;
+        -vv)
+            VERBOSITY=$((VERBOSITY + 2))
+            shift
+            ;;
+        -h|--help)
+            echo "$HELP"
+            exit 0
+            ;;
+        *)
+            log error "Invalid argument $1." 1>&2
+            echo "$USAGE" 1>&2
+            exit 1
+    esac
+done
+
+# OS-specific prereqs.
+ostype="$(uname -s | tr '[:upper:]' '[:lower:]')"
+case "$ostype" in
+    linux*)
+        install_linux_prereqs
+        ;;
+    darwin*)
+        install_macos_prereqs
+        ;;
+    *)
+        log error "Unknown OS."
+        exit 1
+        ;;
+esac
+
+# Generic prereqs.
+install_generic_prereqs

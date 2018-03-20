@@ -1,0 +1,23 @@
+# Sync settings.
+times = true
+auto = false
+confirmbigdel = true
+confirmmerge = true
+contactquietly = true
+logfile = /tmp/unison.log
+sortbysize = true
+
+# Backup settings.
+backup = Name *
+backupdir = backups
+backuploc = central
+
+# ----  EXCLUDED FILES  ----
+
+## Python.
+ignore = Name env
+ignore = Name .venv
+ignore = Name .mypy_cache
+ignore = Name __pycache__
+ignore = Name *.pyc
+ignore = Name .ipynb_checkpoints

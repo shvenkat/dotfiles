@@ -5,91 +5,50 @@ set -e -u -o pipefail
 
 NAME="$(basename -- "$0")"
 PREFIX="$(dirname -- "$0")"
-MODULE_DIR="$PREFIX/install_modules"
-MODULES="$(find "$MODULE_DIR" -mindepth 1 -maxdepth 1 -type f -perm -a+rx -print \
-            | sed -e "s#^${MODULE_DIR}/##")"
+
+USAGE="USAGE: $NAME [-h|--help]"
+HELP="$USAGE
+    Installs prerequisites, utilities, dotfiles, apps and settings."
+
+# Parse arguments.
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)
+            echo "$HELP"
+            exit 0
+            ;;
+        *)
+            echo "Invalid argument $1." 1>&2
+            echo "$USAGE" 1>&2
+            exit 1
+    esac
+done
 
 
-# Show usage.
-# Args: None.
-usage () {
-    echo "Usage: $NAME [-h|--help] <module> [module-arguments]"
-    if [ -n "$MODULES" ]; then
-        echo 'Runs the requested install module from the list below:'
-        echo "$MODULES" | while IFS='' read -r line; do echo "    $line"; done
-    fi
-}
+echo "Installing software prerequisites." 1>&2
+"$PREFIX/installers/prereq"
 
+echo "Installing utilities and apps." 1>&2
+ostype="$(uname -s | tr '[:upper:]' '[:lower:]')"
+case "$ostype" in
+    linux*)
+        brewfile="$PREFIX/installers/Brewfile.linuxbrew"
+        brew_path="$HOME/.linuxbrew/bin"
+        ;;
+    darwin*)
+        brewfile="$PREFIX/installers/Brewfile.homebrew"
+        brew_path="/usr/local/bin"
+        ;;
+    *)
+        echo "Unknown OS." 1>&2
+        exit 1
+        ;;
+esac
+"$PREFIX/installers/brew" --brewfile "$brewfile"
+export PATH="${brew_path}:$PATH"
 
-# ----------  Logging  -------------------------------------------------------
+echo "Installing python packages."
+"$PREFIX/installers/pip3"
 
-# Initialize logging by setting global variables.
-# Args: None.
-init_logger () {
-    if [ -t 1 ]; then
-        NORMAL="\e[0m"
-        BOLD="\e[1m"
-        RED="\e[31m"
-        YELLOW="\e[33m"
-    else
-        NORMAL=""
-        BOLD=""
-        RED=""
-        YELLOW=""
-    fi
-}
-
-# Output formatted error message _and exit_.
-# Args:
-#   $@: Messages.
-error () {
-    env echo -e "${RED}ERROR${NORMAL}${BOLD}   [$NAME]  $*${NORMAL}"
-    exit 1
-}
-
-# Output formatted warning messages.
-# Args:
-#   $@: Messages.
-warn () {
-    env echo -e "${YELLOW}WARNING${NORMAL}${BOLD} [$NAME]  $*${NORMAL}"
-}
-
-# Output formatted informational messages.
-# Args:
-#   $@: Messages.
-info () {
-    env echo -e "${BOLD}INFO    [$NAME]  $*${NORMAL}"
-}
-
-# Run a command, logging its output. If an error is encountered, output an error message and exit.
-# Args:
-#   $@: Command and arguments to be run.
-run () {
-    info "Running: $* (in $(pwd))."
-    ("$@" 2>&1 | while IFS='' read -r line; do echo "        $line"; done) \
-        || error "$1 command failed."
-}
-
-
-# ----------  main  ----------------------------------------------------------
-
-init_logger
-
-# Check for modules.
-if [ -z "$MODULES" ]; then
-    warn "No modules (executable scripts) found in $MODULE_DIR."
-fi
-# Check usage.
-if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-    usage
-    exit 0
-fi
-if ! (echo "$MODULES" | grep -qF -e "$1"); then
-    usage
-    error "Unknown module: $1."
-fi
-
-# Run the given module with the remaining arguments.
-module="$1"
-shift
-run "$MODULE_DIR/$module" "$@"
+echo "Installing dotfiles." 1>&2
+"$PREFIX/installers/dotfiles" --freshrc "$PREFIX/installers/freshrc" --update

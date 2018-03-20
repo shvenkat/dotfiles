@@ -1,16 +1,10 @@
 user:
     org.macosforge.xquartz.X11:
 
-        startx_script: /opt/X11/bin/startx -- /opt/X11/bin/Xquartz
-        app_to_run: /opt/X11/bin/xterm
-        login_shell: /bin/sh
+        no_auth: false               # X clients must use xauth.
+        nolisten_tcp: true           # X server only accepts local connections.
 
-        no_auth: false                      # X clients must provide a valid xauth token.
-        nolisten_tcp: true                  # X server only accepts local connections.
-
-        sync_keymap: true                   # Use system keyboard layout.
+        sync_keymap: true            # Use system keyboard layout.
         option_sends_alt: true
 
-        sync_pasteboard: false              # Do not use the system clipboard.
-
-        SUAutomaticallyUpdate: true
+        sync_pasteboard: false       # Do not use the system clipboard.

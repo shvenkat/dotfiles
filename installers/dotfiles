@@ -1,0 +1,335 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+
+NAME="$(basename -- "$0")"
+FRESH_URL="https://github.com/freshshell/fresh"
+FRESH_CLONE="${HOME}/.fresh/source/freshshell/fresh"
+FRESHRC="${HOME}/.freshrc"
+
+USAGE="USAGE: $NAME [-v|--verbose] [--freshrc <path>] [--install|--update]"
+HELP="
+SYNOPSIS
+
+Installs dotfiles and updates plugins. Dotfiles are installed using fresh and as
+specified in ~/.freshrc [1]. If needed, fresh is installed and ~/.freshrc is
+created as a symlink. Plugins for certain programs (currently zsh/zplug, neovim
+and emacs) are installed/updated (using a build cache for speed).
+
+$USAGE
+
+    --freshrc <path>  Symlinks ~/.freshrc -> <path>. Required if ~/.freshrc does
+                      not exist. <path> may be absolute or relative to ~ (HOME).
+    --install         Installs dotfiles without fetching updates (the default).
+    --update          Fetches updates and installs dotfiles.
+    -v|--verbose      Show informational messages during execution. Repeat to
+                      see debug messages too.
+    -h|--help         Show this help message.
+
+NOTE FOR NEW USERS
+
+With fresh, you can build your dotfiles by composition. For each dotfile, you
+can concatenate files from various authors with your own, allowing you to build
+on the work of others very easily. You can source files from any remote git
+repository, and one local one (at ~/.dotfiles or FRESH_LOCAL) by writing a
+simple freshrc file in a declarative style. Place your freshrc and custom
+dotfiles (or dotfile portions) in ~/.dotfiles and push it to a suitable remote
+for backup and synchronization. Avoid including in your repo, content you have
+copied verbatim from elsewhere -- instead source it using fresh. You can then
+use this script to build and install your dotfiles using fresh, and update
+plugins for common programs.
+
+[1]: $FRESH_URL"
+
+
+# ----------  functions  -----------------------------------------------------
+
+# Format and print log messages.
+#   $1: Log level: error, warn, info or debug.
+#   $2 [$3 ...]: Log messages (will be concatenated with spaces in between).
+log () {
+    if [ -t 1 ]; then
+        NORMAL="\\033[0m"
+        BOLD="\\033[1m"
+        RED="\\033[31m"
+        YELLOW="\\033[33m"
+    else
+        NORMAL=""
+        BOLD=""
+        RED=""
+        YELLOW=""
+    fi
+    level="$1"
+    shift
+    if [ "$level" = "error" ]; then
+        echo " ${RED}E${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+    elif [ "$level" = "warn" ]; then
+        echo " ${YELLOW}W${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+    elif [ "$level" = "info" ]; then
+        if [ "$VERBOSITY" -gt 0 ]; then
+            echo "   $*" 1>&2
+        fi
+    elif [ "$level" = "debug" ]; then
+        if [ "$VERBOSITY" -gt 1 ]; then
+            echo "   $*" 1>&2
+        fi
+    fi
+}
+
+# Run a command, logging its output. Errors are logged.
+# Args:
+#   $@: Command and arguments to be run.
+run () {
+    log debug "    $*"
+    set +e
+    output="$("$@" 2>&1)"
+    retval=$?
+    set -e
+    echo "$output" | while IFS='' read -r line; do log debug "    $line"; done
+    if [ "$retval" -ne 0 ]; then
+        log error "Failed: $*"
+        return 1
+    fi
+}
+
+# Install fresh if needed. Fail if installation cannot be verified.
+# Args: None.
+install_fresh () {
+    if [ ! -e "$FRESH_CLONE" ]; then
+        log info "Cloning $FRESH_URL."
+        run git clone "$FRESH_URL" "$FRESH_CLONE"
+    elif [ -d "$FRESH_CLONE" ] && [ -z "$(find "$FRESH_CLONE" -mindepth 1 -print)" ]; then
+        log info "Cloning $FRESH_URL."
+        run git clone "$FRESH_URL" "$FRESH_CLONE"
+    fi
+    if [ ! -d "${FRESH_CLONE}/.git" ] || [ ! -x "$FRESH_CLONE/bin/fresh" ]; then
+        log error "$FRESH_CLONE exists but does not appear to be clone of $FRESH_URL."
+        exit 1
+    fi
+}
+
+# Creates ~/.freshrc as a symlink if needed.
+#   $1: Path to freshrc file. Empty string if not specified.
+install_freshrc () {
+    link="$FRESHRC"
+    target="$1"
+    # Create the freshrc symlink if needed.
+    if [ -z "$target" ]; then
+        if [ ! -e "$link" ]; then
+            log error "$link does not exist, so --freshrc <path> is required."
+            echo "$USAGE" 1>&2
+            exit 2
+        fi
+    else
+        if [ ! -e "$target" ]; then
+            log error "freshrc file $target does not exist."
+            exit 1
+        fi
+        if [ ! -e "$link" ] || [ -h "$link" ]; then
+            log info "Creating symlink $link -> $target."
+            run ln -sf "$target" "$link"
+        else
+            log error "$link already exists; cannot symlink it to $target."
+            exit 1
+        fi
+    fi
+
+    # Check that freshrc is readable.
+    if [ ! -r "$link" ]; then
+        log error "Cannot read freshrc file $link."
+        exit 1
+    fi
+
+    # Warn if freshrc is not tracked in the git repo at ~/.dotfiles.
+    if [ ! -h "$link" ]; then
+        log warn "Consider placing ~/.freshrc in a git repo at \\~/.dotfiles" \
+            "and using --freshrc to symlink it in ~."
+    elif [ -h "$link" ]; then
+        if [ -z "$target" ]; then
+            target="$(readlink "$link")"
+        fi
+        relative_target="${target##$HOME/}"
+        if [ "${relative_target##.dotfiles}" = "$relative_target" ]; then
+            log warn "Consider placing ~/${relative_target} in a git repo" \
+                "at \\~/.dotfiles and using --freshrc to symlink it in ~."
+        fi
+    fi
+}
+
+# Runs fresh to install dotfiles.
+#   $1: fresh execution mode, either "install" or "update".
+run_fresh () {
+    mode="$1"
+    if [ "$mode" != "install" ] && [ "$mode" != "update" ]; then
+        log error "Unknown mode: --${mode}."
+        echo "$USAGE" 1>&2
+        exit 2
+    fi
+    log info "Running fresh to install dotfiles specified in $FRESHRC."
+    run "$FRESH_CLONE/bin/fresh" "$1"
+
+    # Check time since last fresh update.
+    if [ -z "$(find "$FRESH_CLONE/.git" -maxdepth 0 -mmin -$((60 * 24 * 90)) -print)" ];
+    then
+        log warn "Consider using --update next time to check for updates."
+    fi
+}
+
+# Updates plugins for certain programs, currently zsh/zplug, neovim and emacs.
+# Args: None.
+update_plugins () {
+    cache_dir="${HOME}/.cache/plugin_installer"
+    if [ ! -e "$cache_dir" ]; then
+        mkdir -p "$cache_dir"
+    elif [ ! -d "$cache_dir" ]; then
+        log error "Cannot create $cache_dir; conflicting file found."
+        exit 1
+    fi
+    log info "Installing and/or updating plugins."
+    update_zsh_zplug_plugins "$cache_dir"
+    update_neovim_plugins "$cache_dir"
+    update_emacs_plugins "$cache_dir"
+}
+
+# Updates zsh plugins managed by zplug.
+#   $1: Top-level plugin cache directory path.
+update_zsh_zplug_plugins () {
+    cache="$1/.zplug/repos"
+    install="$HOME/.zplug/repos"
+    if ! which zsh >/dev/null 2>&1 || [ ! -d "$HOME/.zplug" ]; then
+        return
+    fi
+    if [ ! -d "$install" ] && [ -d "$cache" ]; then
+        log debug "Restoring zsh/zplug plugins."
+        mkdir -p "$install"
+        rsync -a --delete "$cache/" "$install/"
+    fi
+    log debug "Installing/updating zsh plugins."
+    zplug="source $HOME/.zshrc && zplug"
+    zsh -c "$zplug check" || run zsh -c "$zplug install"
+    run zsh -c "$zplug update"
+    run zsh -c "$zplug clean"
+    run zsh -c "$zplug clear"
+    if [ -d "$install" ]; then
+        log debug "Caching built zsh plugins."
+        mkdir -p "$cache"
+        rsync -a --delete "$install/" "$cache/"
+    fi
+}
+
+# Updates neovim plugins managed by vim-plug.
+#   $1: Top-level plugin cache directory path.
+update_neovim_plugins () {
+    cache="$1/.config/nvim/bundle"
+    install="$HOME/.config/nvim/bundle"
+    if ! which nvim >/dev/null 2>&1 || [ ! -d "$HOME/.config/nvim" ]; then
+        return
+    fi
+    # Plugins that use python need the neovim package.
+    if which pip >/dev/null 2>&1; then
+        # shellcheck disable=SC2143
+        if [ -z "$(pip list 2>/dev/null | grep neovim 2>/dev/null)" ]; then
+            log debug "Installing python package neovim."
+            run pip install neovim
+        fi
+    elif which pip3 >/dev/null 2>&1; then
+        # shellcheck disable=SC2143
+        if [ -z "$(pip3 list 2>/dev/null | grep neovim 2>/dev/null)" ]; then
+            log debug "Installing python package neovim."
+            run pip3 install neovim
+        fi
+    fi
+    if [ ! -d "$install" ] && [ -d "$cache" ]; then
+        log debug "Restoring neovim plugins."
+        mkdir -p "$install"
+        rsync -a --delete "$cache/" "$install/"
+    fi
+    log debug "Installing/updating neovim plugins."
+    run nvim --headless +PlugUpgrade +PlugUpdate +PlugClean +qall
+    if [ -d "$install" ]; then
+        log debug "Caching built neovim plugins."
+        mkdir -p "$cache"
+        rsync -a --delete "$install/" "$cache/"
+    fi
+}
+
+# Updates emacs plugins.
+#   $1: Top-level plugin cache directory path.
+update_emacs_plugins () {
+    cache="$1/.emacs.d"
+    install="$HOME/.emacs.d"
+    files="elpa .cache"
+    if ! which emacs >/dev/null 2>&1 || [ ! -d "$install" ]; then
+        return
+    fi
+    log debug "Restoring emacs plugins."
+    for file in $files; do
+        if [ ! -e "$install/$file" ] && [ -e "$cache/$file" ]; then
+            rsync -a --delete "$cache/$file" "$install/"
+        fi
+    done
+    log debug "Installing/updating emacs plugins."
+    :  # FIXME: Add emacs command to update plugins, e.g. emacs -e '(...)'
+    log debug "Caching built emacs plugins."
+    for file in $files; do
+        if [ -e "$install/$file" ]; then
+            mkdir -p "$cache"
+            rsync -a --delete "$install/$file" "$cache/"
+        fi
+    done
+}
+
+
+# ----------  main  ----------------------------------------------------------
+
+# Parse arguments.
+freshrc_path=""
+fresh_mode=""
+VERBOSITY=0
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --freshrc)
+            if [ $# -lt 2 ]; then
+                log error "Missing <path> argument following --freshrc."
+                echo "$USAGE" 1>&2
+                exit 1
+            fi
+            freshrc_path="$2"
+            shift
+            shift
+            ;;
+        --install|--update)
+            if [ -n "$fresh_mode" ]; then
+                echo "$USAGE" 1>&2
+                exit 1
+            fi
+            fresh_mode="${1%--}"
+            shift
+            ;;
+        -v|--verbose)
+            VERBOSITY=$((VERBOSITY + 1))
+            shift
+            ;;
+        -vv)
+            VERBOSITY=$((VERBOSITY + 2))
+            shift
+            ;;
+        -h|--help)
+            echo "$HELP"
+            exit 0
+            ;;
+        *)
+            log error "Invalid argument $1." 1>&2
+            echo "$USAGE" 1>&2
+            exit 1
+    esac
+done
+if [ -z "$fresh_mode" ]; then
+    fresh_mode="install"
+fi
+
+install_fresh
+install_freshrc "$freshrc_path"
+run_fresh "$fresh_mode"
+update_plugins

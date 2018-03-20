@@ -1,0 +1,176 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+
+NAME="$(basename -- "$0")"
+
+USAGE="USAGE: $NAME [-v|--verbose] --brewfile <path>"
+HELP="
+Installs utilities and apps specified in a Brewfile, using brew bundle [1].
+homebrew [1] (MacOS) or linuxbrew [2] (Linux) is installed if needed.
+
+$USAGE
+
+    --brewfile <path>  Uses the Brewfile at <path>.
+    -v|--verbose       Show informational messages during execution. Repeat to
+                       see debug messages too.
+    -h|--help          Show this help message.
+
+[1]: https://github.com/Homebrew/homebrew-bundle.
+[2]: https://brew.sh/
+[3]: http://linuxbrew.sh/"
+
+# brew install URL.
+HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/master/install"
+LINUXBREW_URL="https://raw.githubusercontent.com/Linuxbrew/install/master/install"
+# PATH component to locate brew executables.
+HOMEBREW_PATH="/usr/local/bin"
+LINUXBREW_PATH="$HOME/.linuxbrew/bin"
+
+
+# ----------  functions  -----------------------------------------------------
+
+# Format and print log messages.
+#   $1: Log level: error, warn, info or debug.
+#   $2 [$3 ...]: Log messages (will be concatenated with spaces in between).
+log () {
+    if [ -t 1 ]; then
+        NORMAL="\\033[0m"
+        BOLD="\\033[1m"
+        RED="\\033[31m"
+        YELLOW="\\033[33m"
+    else
+        NORMAL=""
+        BOLD=""
+        RED=""
+        YELLOW=""
+    fi
+    level="$1"
+    shift
+    if [ "$level" = "error" ]; then
+        echo " ${RED}E${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+    elif [ "$level" = "warn" ]; then
+        echo " ${YELLOW}W${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+    elif [ "$level" = "info" ]; then
+        if [ "$VERBOSITY" -gt 0 ]; then
+            echo "   $*" 1>&2
+        fi
+    elif [ "$level" = "debug" ]; then
+        if [ "$VERBOSITY" -gt 1 ]; then
+            echo "   $*" 1>&2
+        fi
+    fi
+}
+
+# Run a command, logging its output. Errors are logged.
+# Args:
+#   $@: Command and arguments to be run.
+run () {
+    log debug "    $*"
+    set +e
+    output="$("$@" 2>&1)"
+    retval=$?
+    set -e
+    echo "$output" | while IFS='' read -r line; do log debug "    $line"; done
+    if [ "$retval" -ne 0 ]; then
+        log error "Failed: $*"
+        return 1
+    fi
+}
+
+# Install brew, if needed.
+# Args:
+#   $1: brew install URL.
+#   $2: path component to locate brew executables.
+install_brew () {
+    brew_url="$1"
+    brew_path="$2"
+    if ! which brew >/dev/null 2>&1; then
+        log info "Installing brew."
+        install_rb="$(curl -fsS "$brew_url")" \
+            || { log error "Failed to download $brew_url, got:";
+                 echo "$install_rb" 1>&2;
+                 exit 1; }
+        run /usr/bin/env ruby -e "$install_rb"
+        export PATH="${brew_path}:$PATH"
+        log warn "Add $brew_path to PATH in your shell config file:" \
+            "export PATH=\"${brew_path}:\$PATH\""
+    fi
+}
+
+# Install utilities and apps specified in a Brewfile.
+#   $1: Path to Brewfile.
+run_brew_bundle () {
+    brewfile="$1"
+    log info "Updating brew."
+    run brew update
+    log info "Installing/upgrading utilities and apps specified in $brewfile."
+    run brew bundle --file="$brewfile"
+    log info "Deleting obsolete versions of utilities and apps."
+    run brew cleanup
+    run brew cask cleanup
+}
+
+
+# ----------  main  ----------------------------------------------------------
+
+# Parse arguments.
+brewfile_path=""
+VERBOSITY=0
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --brewfile)
+            if [ $# -lt 2 ]; then
+                log error "Missing <path> argument following --brewfile."
+                echo "$USAGE" 1>&2
+                exit 2
+            fi
+            brewfile_path="$2"
+            shift
+            shift
+            ;;
+        -v|--verbose)
+            VERBOSITY=$((VERBOSITY + 1))
+            shift
+            ;;
+        -vv)
+            VERBOSITY=$((VERBOSITY + 2))
+            shift
+            ;;
+        -h|--help)
+            echo "$HELP"
+            exit 0
+            ;;
+        *)
+            echo "Invalid argument $1." 1>&2
+            echo "$USAGE" 1>&2
+            exit 1
+    esac
+done
+if [ -z "$brewfile_path" ]; then
+    log error "Missing required arguments --brewfile <path>."
+    echo "$USAGE" 1>&2
+    exit 2
+fi
+
+# Install brew.
+ostype="$(uname -s | tr '[:upper:]' '[:lower:]')"
+case "$ostype" in
+    linux*)
+        brew_url="$LINUXBREW_URL"
+        brew_path="$LINUXBREW_PATH"
+        ;;
+    darwin*)
+        brew_url="$HOMEBREW_URL"
+        brew_path="$HOMEBREW_PATH"
+        ;;
+    *)
+        log error "Unknown OS."
+        exit 1
+        ;;
+esac
+install_brew "$brew_url" "$brew_path"
+
+# Install utilities and apps.
+run_brew_bundle "$brewfile_path"

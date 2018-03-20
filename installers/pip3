@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e -u -o pipefail
+
+requirements="
+# Development.
+pipenv
+mypy
+flake8
+neovim
+ipython
+jupyter
+
+# Misc.
+pyyaml
+
+# Math, science.
+numpy
+pandas
+scipy"
+
+if which pip3 >/dev/null 2>&1; then
+    echo "$requirements" | pip3 install -q -r /dev/stdin
+fi
