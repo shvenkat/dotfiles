@@ -37,8 +37,9 @@ alias ends='(head -n5; echo ...; tail -n5)'
 
 # Defaults for programs.
 alias R='R --quiet'
-alias vim='vim -X'
-alias svim='nvim -n -i NONE'
+alias vim='nvim'
+alias vim-vanilla='nvim -n -i NONE'
+alias emacs='emacs -nw'
 
 # Diff.
 diff-sort () { diff <(sort "$1") <(sort "$2"); }

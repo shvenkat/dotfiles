@@ -80,8 +80,26 @@ fresh junegunn/vim-plug plug.vim --file=config-nvim-autoload/plug.vim
 fresh neovim/UltiSnips --file=~/.config/nvim/UltiSnips/
 
 # emacs. Scripting done right. Sadistic UI.
-fresh emacs/spacemacs --file
-fresh syl20bnr/spacemacs . --file=~/.emacs.d/
+fresh-options --file=~/.emacs.d/init.el
+    fresh emacs/config_usepackage_quelpa.el
+    fresh emacs/config_evil.el
+    fresh emacs/config_whitespace.el
+    fresh emacs/config_pairs.el
+    fresh emacs/config_margins.el
+    fresh emacs/config_menu_and_mode_bars.el
+    fresh emacs/config_theme.el
+    fresh emacs/config_splash_message.el
+    fresh emacs/config_backup.el
+    fresh emacs/config_custom.el
+    fresh emacs/config_misc_keys.el
+    fresh emacs/config_ido.el
+    fresh emacs/config_editorconfig.el
+    fresh emacs/config_flycheck.el
+    fresh emacs/config_neotree.el
+    fresh emacs/config_markdown.el
+    fresh emacs/config_proof_general.el
+fresh-options
+# fresh emacs/custom.el --file=~/.emacs.d/custom.el
 
 # editorconfig. When you just can't avoid collaborating.
 fresh util/editorconfig --file

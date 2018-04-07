@@ -7,22 +7,28 @@ NAME="$(basename -- "$0")"
 FRESH_URL="https://github.com/freshshell/fresh"
 FRESH_CLONE="${HOME}/.fresh/source/freshshell/fresh"
 FRESHRC="${HOME}/.freshrc"
+CACHE_DIR="${HOME}/.cache/plugin_installer"
+ZPLUG_CACHE_DIR="$CACHE_DIR/.zplug/repos"
+ZPLUG_INSTALL_DIR="$HOME/.zplug/repos"
 
 USAGE="USAGE: $NAME [-v|--verbose] [--freshrc <path>] [--install|--update]"
 HELP="
 SYNOPSIS
 
-Installs dotfiles and updates plugins. Dotfiles are installed using fresh and as
-specified in ~/.freshrc [1]. If needed, fresh is installed and ~/.freshrc is
-created as a symlink. Plugins for certain programs (currently zsh/zplug, neovim
-and emacs) are installed/updated (using a build cache for speed).
+Installs dotfiles and updates plugins/packages. Dotfiles are installed using
+fresh and as specified in ~/.freshrc [1]. If needed, fresh is installed and
+~/.freshrc is created as a symlink. Add-on packages or plugins for certain
+programs (currently zsh/zplug, neovim and emacs) are installed/updated (using a
+build cache for speed).
 
 $USAGE
 
     --freshrc <path>  Symlinks ~/.freshrc -> <path>. Required if ~/.freshrc does
                       not exist. <path> may be absolute or relative to ~ (HOME).
-    --install         Installs dotfiles without fetching updates (the default).
-    --update          Fetches updates and installs dotfiles.
+    --install         (Default) Installs dotfiles without pulling updates. Does
+                      not install or update plugins/packages.
+    --update          Fetches updates and installs dotfiles. Installs and
+                      updates plugins/packages.
     -v|--verbose      Show informational messages during execution. Repeat to
                       see debug messages too.
     -h|--help         Show this help message.
@@ -38,7 +44,7 @@ dotfiles (or dotfile portions) in ~/.dotfiles and push it to a suitable remote
 for backup and synchronization. Avoid including in your repo, content you have
 copied verbatim from elsewhere -- instead source it using fresh. You can then
 use this script to build and install your dotfiles using fresh, and update
-plugins for common programs.
+plugins/packages for common programs.
 
 [1]: $FRESH_URL"
 
@@ -161,13 +167,8 @@ install_freshrc () {
 #   $1: fresh execution mode, either "install" or "update".
 run_fresh () {
     mode="$1"
-    if [ "$mode" != "install" ] && [ "$mode" != "update" ]; then
-        log error "Unknown mode: --${mode}."
-        echo "$USAGE" 1>&2
-        exit 2
-    fi
     log info "Running fresh to install dotfiles specified in $FRESHRC."
-    run "$FRESH_CLONE/bin/fresh" "$1"
+    run "$FRESH_CLONE/bin/fresh" "$mode"
 
     # Check time since last fresh update.
     if [ -z "$(find "$FRESH_CLONE/.git" -maxdepth 0 -mmin -$((60 * 24 * 90)) -print)" ];
@@ -176,54 +177,80 @@ run_fresh () {
     fi
 }
 
-# Updates plugins for certain programs, currently zsh/zplug, neovim and emacs.
+# Cache plugins for certain programs.
 # Args: None.
-update_plugins () {
-    cache_dir="${HOME}/.cache/plugin_installer"
-    if [ ! -e "$cache_dir" ]; then
-        mkdir -p "$cache_dir"
-    elif [ ! -d "$cache_dir" ]; then
-        log error "Cannot create $cache_dir; conflicting file found."
+cache_plugins () {
+    if [ ! -e "$CACHE_DIR" ]; then
+        mkdir -p "$CACHE_DIR"
+    elif [ ! -d "$CACHE_DIR" ]; then
+        log error "Cannot create $CACHE_DIR; conflicting file found."
         exit 1
     fi
+    log info "Caching installed plugins."
+    cache_zsh_zplug_plugins
+}
+
+# Restores plugins for certain programs from the cache.
+# Args: None.
+restore_plugins () {
+    log info "Restoring cached plugins."
+    restore_zsh_zplug_plugins
+}
+
+# Updates plugins for certain programs.
+# Args: None.
+update_plugins () {
     log info "Installing and/or updating plugins."
-    update_zsh_zplug_plugins "$cache_dir"
-    update_neovim_plugins "$cache_dir"
-    update_emacs_plugins "$cache_dir"
+    update_zsh_zplug_plugins
+    update_neovim_plugins
+    update_emacs_plugins
+}
+
+# Caches zsh plugins managed by zplug.
+# Args: None.
+cache_zsh_zplug_plugins () {
+    if ! which zsh >/dev/null 2>&1; then
+        return
+    fi
+    if [ -d "$ZPLUG_INSTALL_DIR" ]; then
+        log debug "Caching zsh plugins."
+        mkdir -p "$ZPLUG_CACHE_DIR"
+        rsync -a --delete "$ZPLUG_INSTALL_DIR/" "$ZPLUG_CACHE_DIR/"
+    fi
+}
+
+# Restores cached zsh plugins managed by zplug.
+# Args: None.
+restore_zsh_zplug_plugins () {
+    if ! which zsh >/dev/null 2>&1; then
+        return
+    fi
+    if [ -d "$ZPLUG_CACHE_DIR" ] && [ ! -d "$ZPLUG_INSTALL_DIR" ]; then
+        log debug "Restoring zsh/zplug plugins."
+        mkdir -p "$ZPLUG_INSTALL_DIR"
+        rsync -a --delete "$ZPLUG_CACHE_DIR/" "$ZPLUG_INSTALL_DIR/"
+    fi
 }
 
 # Updates zsh plugins managed by zplug.
-#   $1: Top-level plugin cache directory path.
+# Args: None.
 update_zsh_zplug_plugins () {
-    cache="$1/.zplug/repos"
-    install="$HOME/.zplug/repos"
-    if ! which zsh >/dev/null 2>&1 || [ ! -d "$HOME/.zplug" ]; then
+    load_zplug="source $HOME/.zshrc"
+    if ! which zsh >/dev/null 2>&1 \
+           || ! zsh -c "$load_zplug && which zplug" >/dev/null 2>&1; then
         return
     fi
-    if [ ! -d "$install" ] && [ -d "$cache" ]; then
-        log debug "Restoring zsh/zplug plugins."
-        mkdir -p "$install"
-        rsync -a --delete "$cache/" "$install/"
-    fi
     log debug "Installing/updating zsh plugins."
-    zplug="source $HOME/.zshrc && zplug"
+    zplug="$load_zplug && zplug"
     zsh -c "$zplug check" || run zsh -c "$zplug install"
     run zsh -c "$zplug update"
     run zsh -c "$zplug clean"
     run zsh -c "$zplug clear"
-    if [ -d "$install" ]; then
-        log debug "Caching built zsh plugins."
-        mkdir -p "$cache"
-        rsync -a --delete "$install/" "$cache/"
-    fi
 }
 
 # Updates neovim plugins managed by vim-plug.
-#   $1: Top-level plugin cache directory path.
 update_neovim_plugins () {
-    cache="$1/.config/nvim/bundle"
-    install="$HOME/.config/nvim/bundle"
-    if ! which nvim >/dev/null 2>&1 || [ ! -d "$HOME/.config/nvim" ]; then
+    if ! which nvim >/dev/null 2>&1; then
         return
     fi
     # Plugins that use python need the neovim package.
@@ -240,44 +267,18 @@ update_neovim_plugins () {
             run pip3 install neovim
         fi
     fi
-    if [ ! -d "$install" ] && [ -d "$cache" ]; then
-        log debug "Restoring neovim plugins."
-        mkdir -p "$install"
-        rsync -a --delete "$cache/" "$install/"
-    fi
     log debug "Installing/updating neovim plugins."
     run nvim --headless +PlugUpgrade +PlugUpdate +PlugClean +qall
-    if [ -d "$install" ]; then
-        log debug "Caching built neovim plugins."
-        mkdir -p "$cache"
-        rsync -a --delete "$install/" "$cache/"
-    fi
 }
 
 # Updates emacs plugins.
 #   $1: Top-level plugin cache directory path.
 update_emacs_plugins () {
-    cache="$1/.emacs.d"
-    install="$HOME/.emacs.d"
-    files="elpa .cache"
-    if ! which emacs >/dev/null 2>&1 || [ ! -d "$install" ]; then
+    if ! which emacs >/dev/null 2>&1; then
         return
     fi
-    log debug "Restoring emacs plugins."
-    for file in $files; do
-        if [ ! -e "$install/$file" ] && [ -e "$cache/$file" ]; then
-            rsync -a --delete "$cache/$file" "$install/"
-        fi
-    done
     log debug "Installing/updating emacs plugins."
-    :  # FIXME: Add emacs command to update plugins, e.g. emacs -e '(...)'
-    log debug "Caching built emacs plugins."
-    for file in $files; do
-        if [ -e "$install/$file" ]; then
-            mkdir -p "$cache"
-            rsync -a --delete "$install/$file" "$cache/"
-        fi
-    done
+    emacs -nw --kill
 }
 
 
@@ -290,6 +291,10 @@ VERBOSITY=0
 while [ $# -gt 0 ]; do
     case "$1" in
         --freshrc)
+            if [ -n "$freshrc_path" ]; then
+                echo "$USAGE" 1>&2
+                exit 1
+            fi
             if [ $# -lt 2 ]; then
                 log error "Missing <path> argument following --freshrc."
                 echo "$USAGE" 1>&2
@@ -304,7 +309,7 @@ while [ $# -gt 0 ]; do
                 echo "$USAGE" 1>&2
                 exit 1
             fi
-            fresh_mode="${1%--}"
+            fresh_mode="${1#--}"
             shift
             ;;
         -v|--verbose)
@@ -331,5 +336,9 @@ fi
 
 install_fresh
 install_freshrc "$freshrc_path"
+cache_plugins
 run_fresh "$fresh_mode"
-update_plugins
+restore_plugins
+if [ "$fresh_mode" = "update" ]; then
+    update_plugins
+fi
