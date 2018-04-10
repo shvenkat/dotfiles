@@ -10,3 +10,6 @@
              ((t (:foreground "brightgreen" :background "black" :box nil))))
         '(mode-line-inactive
              ((t (:foreground "brightgreen" :background "black" :box nil))))))
+
+(set-frame-parameter nil 'background-mode 'dark)
+(set-terminal-parameter nil 'background-mode 'dark)

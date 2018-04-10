@@ -80,7 +80,8 @@ fresh junegunn/vim-plug plug.vim --file=config-nvim-autoload/plug.vim
 fresh neovim/UltiSnips --file=~/.config/nvim/UltiSnips/
 
 # emacs. Scripting done right. Sadistic UI.
-fresh-options --file=~/.emacs.d/init.el
+fresh-options --file=~/.emacs.d/init.el --marker='
+;; ---------- '
     fresh emacs/config_usepackage_quelpa.el
     fresh emacs/config_evil.el
     fresh emacs/config_whitespace.el
