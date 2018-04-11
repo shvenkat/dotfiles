@@ -10,7 +10,7 @@ fresh freshshell/fresh bin/fresh --bin
 # tmux. Delusions of multi-tasking.
 fresh-options --file=~/.tmux.conf
     fresh tmux/tmux.conf
-    fresh tmux/colorscheme_solarized_dark.conf
+    fresh tmux/colorscheme_solarized_light.conf
 fresh-options
 
 # X/xterm. The GUI that drove me to the text terminal.

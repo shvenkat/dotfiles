@@ -14,7 +14,7 @@ Profiles:
   Smart Cursor Color: false  # Use the cursor colors specified below.
 
   # ANSI colors.
-  Ansi 7 Color:      &focus
+  Ansi 0 Color:      &focus
     Color Space:     Calibrated
     Red Component:   0.09952328354120255
     Green Component: 0.1574315130710602
@@ -56,13 +56,13 @@ Profiles:
     Green Component: 0.5384811758995056
     Blue Component:  0.4264693856239319
     Alpha Component: 1
-  Ansi 0 Color:      &tint
+  Ansi 7 Color:      &tint
     Color Space:     Calibrated
     Red Component:   0.9118795394897461
     Green Component: 0.8812500238418579
     Blue Component:  0.788764476776123
     Alpha Component: 1
-  Ansi 15 Color:     &highlight
+  Ansi 8 Color:     &highlight
     Color Space:     Calibrated
     Red Component:   0
     Green Component: 0
@@ -74,19 +74,19 @@ Profiles:
     Green Component: 0.3473283052444458
     Blue Component:  0.2069955468177795
     Alpha Component: 1
-  Ansi 14 Color:     &emphasis
+  Ansi 10 Color:     &emphasis
     Color Space:     Calibrated
     Red Component:   0.1976534873247147
     Green Component: 0.2791695296764374
     Blue Component:  0.2887926995754242
     Alpha Component: 1
-  Ansi 12 Color:     &text
+  Ansi 11 Color:     &text
     Color Space:     Calibrated
     Red Component:   0.3286603391170502
     Green Component: 0.42820805311203
     Blue Component:  0.4345231652259827
     Alpha Component: 1
-  Ansi 11 Color:     &note
+  Ansi 12 Color:     &note
     Color Space:     Calibrated
     Red Component:   0.424635112285614
     Green Component: 0.4973183870315552
@@ -98,13 +98,13 @@ Profiles:
     Green Component: 0.391489565372467
     Blue Component:  0.6505767107009888
     Alpha Component: 1
-  Ansi 10 Color:     &comment
+  Ansi 14 Color:     &comment
     Color Space:     Calibrated
     Red Component:   0.5104034543037415
     Green Component: 0.5777903199195862
     Blue Component:  0.5808526277542114
     Alpha Component: 1
-  Ansi 8 Color:      &background
+  Ansi 15 Color:      &background
     Color Space:     Calibrated
     Red Component:   0.9894248843193054
     Green Component: 0.9577928781509399

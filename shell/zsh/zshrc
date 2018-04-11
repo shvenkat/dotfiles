@@ -59,7 +59,7 @@ zplug "plugins/gitfast", from:oh-my-zsh, defer:1
 zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", defer:3
 DEXTER_EXIT_FAILURE_COLOR=$fg[red]
-DEXTER_HOSTNAME_COLOR=$fg_bold[green]
+DEXTER_HOSTNAME_COLOR=$fg_bold[cyan]
 DEXTER_WORKDIR_COLOR="$DEXTER_HOSTNAME_COLOR"
 DEXTER_GIT_COLOR="$DEXTER_HOSTNAME_COLOR"
 DEXTER_VENV_COLOR="$DEXTER_HOSTNAME_COLOR"

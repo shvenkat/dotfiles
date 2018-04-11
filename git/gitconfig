@@ -45,36 +45,36 @@
 [color "branch"]
     current = reverse
     local = normal
-    upstream = white
-    remote = bold green
-    plain = bold green
+    upstream = black
+    remote = bold cyan
+    plain = bold cyan
 [color "diff"]
     plain = normal
     old = magenta
     new = cyan
     frag = blue
     func = blue
-    meta = bold cyan
+    meta = bold green
     commit = reverse
     whitespace = red reverse
 [color "grep"]
     context = normal
     selected = normal
-    match = bold white
+    match = bold black
     filename = yellow
     function = blue
-    linenumber = black
+    linenumber = white
     separator = normal
 [color "interactive"]
     prompt = bold magenta
-    header = bold white
-    help = bold green
+    header = bold black
+    help = bold cyan
     error = red
 [color "status"]
     header = normal
     added = green
     changed = blue
-    untracked = bold white
+    untracked = bold black
     branch = reverse
     nobranch = bold red
     unmerged = bold magenta
@@ -97,19 +97,19 @@
 
     ; Simple - one line per commit in the current branch.
     logs = log \
-        --format=format:'%C(bold green)%h%C(reset)  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+        --format=format:'%C(bold cyan)%h%C(reset)  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
 
     ; Overview - one line for the tip of each branch/tag in the repo.
     logo = log --graph --all --simplify-by-decoration --date-order \
-        --format=format:'%C(bold green)%h%C(reset)  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+        --format=format:'%C(bold cyan)%h%C(reset)  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
 
     ; Graph - one commit per commit in the current branch with ancestry graph.
     logg = log --graph --date-order \
-        --format=format:'%C(bold green)%h%C(reset)  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+        --format=format:'%C(bold cyan)%h%C(reset)  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
 
     ; Verify - Graph + verification of signed commit/tag
     logv = log --graph --date-order \
-        --format=format:'%C(bold green)%h%C(reset)  %C(bold white)%G?%C(reset) %GK  %C(bold yellow)%<(6,trunc)%ar%C(reset)  %C(bold green)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+        --format=format:'%C(bold cyan)%h%C(reset)  %C(bold black)%G?%C(reset) %GK  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
 
     ; First common ancestor (as opposed to last common ancestor returned by merge-base)
     fca = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -

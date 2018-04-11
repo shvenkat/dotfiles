@@ -35,7 +35,7 @@ between palettes.
     between light and dark palettes, use the appropriate feature of your
     emulator (e.g. profile switching). This method has the advantage that you do
     *not* need to switch the color scheme of every terminal application such as
-    tmux and vim. The latter should be configured to use the solarized dark
+    tmux and vim. The latter should be configured to use the solarized light
     colorscheme _for both palettes_.
 
   * Option 2: Enable "true color" (24-bit) support in your terminal emulator.
@@ -163,14 +163,14 @@ chroma are approximate, while the accent color values are linearly interpolated.
                                   -----------------------------    -----------------------------
 NAME         16/8    TERMCOL      Munsell*          sRGB           Munsell*          sRGB
 ---------    ----    --------     --------------    -----------    --------------    -----------
-highlight    15/7    brwhite      5Y    9.7 /1.3    253 246 228    N     0   /0        0   0   0
-focus         7/7    white        5Y    9.3 /1.3    237 230 211    10BG  2   /2       33  53  56
-emphasis     14/4    brcyan       10BG  7.75/1.5    181 197 198    10BG  3.5 /2       65  89  92
-text         12/6    brblue       10BG  6.25/1.5    142 161 162    10BG  5   /2      102 128 130
-note         11/7    bryellow     10BG  5.5 /1.5    121 141 142    10BG  5.75/1.5    127 145 146
-comment      10/7    brgreen      10BG  4.75/1.5    101 122 124    10BG  6.5 /1.3    148 164 165
-tint          0/4    black        10BG  1.75/1.7     26  46  52    5Y    9.3 /1.3    237 230 211
-backgrnd      8/4    brblack      10BG  1.3 /1.7     15  37  43    5Y    9.7 /1.3    253 246 228
+highlight     8/4    brblack      5Y    9.7 /1.3    253 246 228    N     0   /0        0   0   0
+focus         0/4    black        5Y    9.3 /1.3    237 230 211    10BG  2   /2       33  53  56
+emphasis     10/7    brgreen      10BG  7.75/1.5    181 197 198    10BG  3.5 /2       65  89  92
+text         11/7    bryellow     10BG  6.25/1.5    142 161 162    10BG  5   /2      102 128 130
+note         12/6    brblue       10BG  5.5 /1.5    121 141 142    10BG  5.75/1.5    127 145 146
+comment      14/4    brcyan       10BG  4.75/1.5    101 122 124    10BG  6.5 /1.3    148 164 165
+tint          7/7    white        10BG  1.75/1.7     26  46  52    5Y    9.3 /1.3    237 230 211
+backgrnd     15/7    brwhite      10BG  1.3 /1.7     15  37  43    5Y    9.7 /1.3    253 246 228
 
 blue          4/4    blue         2.5PB 6.25/8      101 161 211    2.5PB 5.25/8       73 135 184
 cyan          6/6    cyan         10G   6.25/5       95 169 148    10G   5.5 /7       29 153 128

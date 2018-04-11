@@ -5,13 +5,13 @@ type yellow;       // basic types
 usertype yellow;   // user-defined types
 classname yellow;  // class names
 function blue;     // function declarations and calls
-normal blue b;     // regular text
-variable blue b;   // variable names
-symbol blue b;     // symbols (e.g. <, >, +)
-cbracket blue b;   // block brackets (e.g. {, })
-number blue b;     // literal numbers
-string green b;    // strings and regular chars
-comment green b;   // comments
+normal yellow b;     // regular text
+variable yellow b;   // variable names
+symbol yellow b;     // symbols (e.g. <, >, +)
+cbracket yellow b;   // block brackets (e.g. {, })
+number yellow b;     // literal numbers
+string cyan b;    // strings and regular chars
+comment cyan b;   // comments
 preproc pink b;    // preproc directives (e.g. #include, import)
 specialchar cyan;  // special chars (e.g. \n, \t, \\)
 label cyan;        // goto labels
@@ -20,14 +20,14 @@ todo red b;        // TODO and FIXME
 
 // ----------  Latex  ------------------------------------------------
 
-italics white;
-bold white b;
-underline white b;
+italics black;
+bold black b;
+underline black b;
 math pink b;
-fixed blue b;
+fixed yellow b;
 argument blue;
 optionalargument blue;
-bibtex green b;
+bibtex cyan b;
 
 // ----------  Misc  -------------------------------------------------
 
@@ -35,11 +35,11 @@ oldfile pink;    // diff/patch
 newfile cyan;    // diff/patch
 difflines blue;  // diff/patch
 
-url blue b;      // URLs
+url yellow b;      // URLs
 
 selector purple; // CSS
 property blue;   // CSS
-value green b;   // CSS
+value cyan b;   // CSS
 
 error red;       // Compiler errors
 warning red b;   // Compiler errors
