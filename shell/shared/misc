@@ -9,7 +9,7 @@ umask 0022
 ulimit -c 0
 
 # Preferred editor.
-export EDITOR=nvim
+export EDITOR='emacsclient -nw -a ""'
 
 # Time zone.
 export TZ='America/Los_Angeles'

@@ -9,7 +9,9 @@
         :fetcher github :repo "ProofGeneral/PG"
         :files ("*.el" "acl2" "ccc" "coq" "doc" "easycrypt" "etc" "generic"
                 "hol-light" "hol98" "isar" "lego" "lib" "obsolete" "pghaskell"
-                "pgocaml" "pgshell" "phox" "twelf")))
+                "pgocaml" "pgshell" "phox" "twelf"))
+    :config
+    (setq proof-splash-seen t))
 
 ;; Use company-coq for additional integration.
 ;; https://github.com/cpitclaudel/company-coq
