@@ -12,6 +12,7 @@ tap "homebrew/services"
 brew "clamav"
 brew "colordiff"
 brew "coreutils"
+brew "dos2unix"
 brew "findutils", args: ["with-default-names"]
 brew "git", args: ["with-blk-sha1", "with-pcre2"]
 brew "gnupg", args: ["with-readline"]

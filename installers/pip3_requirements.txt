@@ -1,0 +1,17 @@
+# Development.
+pipenv
+mypy
+flake8
+neovim
+ipython
+jupyter
+
+# Misc.
+pyyaml
+
+# Math, science.
+matplotlib
+numpy
+pandas
+seaborn
+scipy

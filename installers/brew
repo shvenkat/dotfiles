@@ -5,7 +5,7 @@ set -e -u -o pipefail
 
 NAME="$(basename -- "$0")"
 
-USAGE="USAGE: $NAME [-v|--verbose] --brewfile <path>"
+USAGE="USAGE: $NAME [-v|--verbose] [--update] --brewfile <path>"
 HELP="
 Installs utilities and apps specified in a Brewfile, using brew bundle [1].
 homebrew [1] (MacOS) or linuxbrew [2] (Linux) is installed if needed.
@@ -13,6 +13,7 @@ homebrew [1] (MacOS) or linuxbrew [2] (Linux) is installed if needed.
 $USAGE
 
     --brewfile <path>  Uses the Brewfile at <path>.
+    --update           Update outdated utilities and dependencies.
     -v|--verbose       Show informational messages during execution. Repeat to
                        see debug messages too.
     -h|--help          Show this help message.
@@ -101,12 +102,18 @@ install_brew () {
 
 # Install utilities and apps specified in a Brewfile.
 #   $1: Path to Brewfile.
+#   $2: If "false", use --no-upgrade with brew bundle.
 run_brew_bundle () {
     brewfile="$1"
+    bundle_upgrade="$2"
     log info "Updating brew."
     run brew update
     log info "Installing/upgrading utilities and apps specified in $brewfile."
-    run brew bundle --file="$brewfile"
+    if [[ "$bundle_upgrade" = "true" ]]; then
+        run brew bundle --file="$brewfile"
+    else
+        run brew bundle --no-upgrade --file="$brewfile"
+    fi
     log info "Deleting obsolete versions of utilities and apps."
     run brew cleanup
     run brew cask cleanup
@@ -117,6 +124,7 @@ run_brew_bundle () {
 
 # Parse arguments.
 brewfile_path=""
+bundle_upgrade="false"
 VERBOSITY=0
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -128,6 +136,10 @@ while [ $# -gt 0 ]; do
             fi
             brewfile_path="$2"
             shift
+            shift
+            ;;
+        --update)
+            bundle_upgrade="true"
             shift
             ;;
         -v|--verbose)
@@ -173,4 +185,4 @@ esac
 install_brew "$brew_url" "$brew_path"
 
 # Install utilities and apps.
-run_brew_bundle "$brewfile_path"
+run_brew_bundle "$brewfile_path" "$bundle_upgrade"

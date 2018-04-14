@@ -21,3 +21,6 @@ ignore = Name .mypy_cache
 ignore = Name __pycache__
 ignore = Name *.pyc
 ignore = Name .ipynb_checkpoints
+
+## MacOS
+ignore = Name .DS_Store
