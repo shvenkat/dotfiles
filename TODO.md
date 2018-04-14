@@ -1,3 +1,7 @@
+# zsh config
+
+Split .zshrc, placing some init code in .zshenv, .zprofile and .zlogin if needed.
+
 # `dotmacos` - manage MacOS preferences using YAML config files
 
 See https://github.com/shvenkat/dotmacos
