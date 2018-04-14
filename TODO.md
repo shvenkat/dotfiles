@@ -1,3 +1,7 @@
+# Install
+
+Migrate installers from sh to bash.
+
 # zsh config
 
 Split .zshrc, placing some init code in .zshenv, .zprofile and .zlogin if needed.
