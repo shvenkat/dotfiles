@@ -1,0 +1,3 @@
+xterm-16color|xterm with 16 colors and italics,
+  sitm=\E[3m, ritm=\E[23m,
+  use=xterm-16color,

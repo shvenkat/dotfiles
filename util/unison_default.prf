@@ -9,8 +9,9 @@ sortbysize = true
 
 # Backup settings.
 backup = Name *
-backupdir = backups
 backuploc = central
+# backupdir = ~/.unison/backups
+# ignore = Path backups
 
 # ----  EXCLUDED FILES  ----
 
