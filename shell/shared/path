@@ -27,6 +27,7 @@ case $OSTYPE in
         PATH="${PATH}:/usr/local/opt/coreutils/libexec/gnubin"
         PATH="${PATH}:/usr/local/bin:/bin:/usr/bin"
         PATH="${PATH}:/Library/TeX/texbin"
+        PATH="${PATH}:/Applications/Isabelle2014.app/Contents/Resources/Isabelle2014/bin"
         PATH="${PATH}:/opt/X11/bin"
         PATH="${PATH}:${HOME}/bin"
         # PATH="${PATH}:${HOME}/Library/Python/2.7/bin"
