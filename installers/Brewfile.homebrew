@@ -7,6 +7,7 @@
 
 tap "homebrew/core"
 tap "homebrew/services"
+tap "shvenkat/extra"
 
 # General use.
 brew "clamav"
@@ -73,16 +74,17 @@ brew "awscli"
 
 tap "caskroom/cask"
 tap "caskroom/fonts"
+tap "caskroom/versions"
 
 # Apps.
 cask "docker"
 cask "firefox"
 cask "google-chrome"
 cask "google-drive"
-cask "isabelle"
+cask "isabelle2014"
 cask "iterm2"
-cask "java"
-cask "mactex"
+cask "java8"
+cask "mactex" unless system "tex --version >/dev/null"
 cask "slack"
 cask "xquartz"
 

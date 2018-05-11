@@ -6,6 +6,7 @@ set -e -u -o pipefail
 NAME="$(basename -- "$0")"
 FRESH_URL="https://github.com/freshshell/fresh"
 FRESH_CLONE="${HOME}/.fresh/source/freshshell/fresh"
+FRESH_LOCAL="${FRESH_LOCAL:-$HOME/.dotfiles}"
 FRESHRC="${HOME}/.freshrc"
 CACHE_DIR="${HOME}/.cache/plugin_installer"
 ZPLUG_CACHE_DIR="$CACHE_DIR/.zplug/repos"
@@ -38,7 +39,7 @@ NOTE FOR NEW USERS
 With fresh, you can build your dotfiles by composition. For each dotfile, you
 can concatenate files from various authors with your own, allowing you to build
 on the work of others very easily. You can source files from any remote git
-repository, and one local one (at ~/.dotfiles or FRESH_LOCAL) by writing a
+repository, and one local one (at ~/.dotfiles or $FRESH_LOCAL) by writing a
 simple freshrc file in a declarative style. Place your freshrc and custom
 dotfiles (or dotfile portions) in ~/.dotfiles and push it to a suitable remote
 for backup and synchronization. Avoid including in your repo, content you have
@@ -105,12 +106,14 @@ install_fresh () {
     if [ ! -e "$FRESH_CLONE" ]; then
         log info "Cloning $FRESH_URL."
         run git clone "$FRESH_URL" "$FRESH_CLONE"
-    elif [ -d "$FRESH_CLONE" ] && [ -z "$(find "$FRESH_CLONE" -mindepth 1 -print)" ]; then
+    elif [ -d "$FRESH_CLONE" ] \
+             && [ -z "$(find "$FRESH_CLONE" -mindepth 1 -print)" ]; then
         log info "Cloning $FRESH_URL."
         run git clone "$FRESH_URL" "$FRESH_CLONE"
     fi
     if [ ! -d "${FRESH_CLONE}/.git" ] || [ ! -x "$FRESH_CLONE/bin/fresh" ]; then
-        log error "$FRESH_CLONE exists but does not appear to be clone of $FRESH_URL."
+        log error "$FRESH_CLONE exists but does not appear to be git clone of" \
+            "$FRESH_URL."
         exit 1
     fi
 }
@@ -147,18 +150,22 @@ install_freshrc () {
         exit 1
     fi
 
-    # Warn if freshrc is not tracked in the git repo at ~/.dotfiles.
+    # Warn if freshrc is not tracked in the git repo at ~/.dotfiles or
+    # $FRESH_LOCAL.
     if [ ! -h "$link" ]; then
-        log warn "Consider placing ~/.freshrc in a git repo at \\~/.dotfiles" \
-            "and using --freshrc to symlink it in ~."
+        log warn "Consider placing \\~/.freshrc in a git repo at $FRESH_LOCAL" \
+            'and using --freshrc to symlink it in ~.'
     elif [ -h "$link" ]; then
         if [ -z "$target" ]; then
             target="$(readlink "$link")"
         fi
-        relative_target="${target##$HOME/}"
-        if [ "${relative_target##.dotfiles}" = "$relative_target" ]; then
-            log warn "Consider placing ~/${relative_target} in a git repo" \
-                "at \\~/.dotfiles and using --freshrc to symlink it in ~."
+        # Ensure that $target is an absolute path.
+        if [ ${target:0:1} != '/' ]; then
+            target="$(dirname "$link")/${target}"
+        fi
+        if [ "${target##$FRESH_LOCAL}" = "$target" ]; then
+            log warn "Consider placing ${target} in a git repo at " \
+                "$FRESH_LOCAL and using --freshrc to symlink it in ~."
         fi
     fi
 }

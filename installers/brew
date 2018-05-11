@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e -u -o pipefail
 
@@ -106,17 +106,17 @@ install_brew () {
 run_brew_bundle () {
     brewfile="$1"
     bundle_upgrade="$2"
-    log info "Updating brew."
-    run brew update
-    log info "Installing/upgrading utilities and apps specified in $brewfile."
     if [[ "$bundle_upgrade" = "true" ]]; then
+        log info "Updating brew."
+        run brew update
+        log info "Installing/upgrading utilities and apps specified in $brewfile."
         run brew bundle --file="$brewfile"
     else
+        log info "Installing utilities and apps specified in $brewfile."
         run brew bundle --no-upgrade --file="$brewfile"
     fi
-    log info "Deleting obsolete versions of utilities and apps."
-    run brew cleanup
-    run brew cask cleanup
+    log info "Run 'brew cleanup' and 'brew cask cleanup' to remove old " \
+        "versions and cached downloads."
 }
 
 
