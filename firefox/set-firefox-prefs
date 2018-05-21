@@ -4,9 +4,9 @@ set -e -u -o pipefail
 
 
 NAME="$(basename -- "$0")"
-PREFIX="$(dirname -- "$0")"
+REPO="$(cd "$(dirname -- "$0")" && git rev-parse --show-toplevel)"
+PREFS_JS="$REPO/firefox/prefs.js"
 OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
-PREFS_JS="$PREFIX/prefs.js"
 
 
 # Show usage.
