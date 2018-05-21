@@ -1,0 +1,15 @@
+{
+  "user": {
+    "com.apple.TextEdit": {
+      "RichText": false,                    // Don't use RTF.
+      "PlainTextEncodingForWrite": 4,       // Write files in UTF-8.
+      "SmartCopyPaste": false,              // Disable auto-correct when pasting.
+      "TextReplacement": false,             // Disable auto-correct when typing.
+      "ShowRuler": false,
+      "WidthInChars": 80,
+      "HeightInChars": 25,
+      "NSFixedPitchFont": "DroidSansMono",
+      "NSFixedPitchFontSize": "14"
+    }
+  }
+}

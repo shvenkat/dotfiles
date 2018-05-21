@@ -1,0 +1,115 @@
+{
+  "user": {
+    ".GlobalPreferences": {
+
+      // SEARCH
+      "NSPreferredWebServices": {
+        "NSWebServicesProviderWebSearch": {   // Default search engine.
+          "NSDefaultDisplayName": "DuckDuckGo",
+          "NSProviderIdentifier": "com.duckduckgo"
+        }
+      }
+    },
+
+    "com.apple.Safari": {
+
+      // SEARCH
+      "SuppressSearchSuggestions": false,     // Show suggestions.
+      "UniversalSearchEnabled": false,        // Don’t send queries to Apple.
+      "WebsiteSpecificSearchEnabled": false,  // Don't record searches on sites.
+
+      // BROWSING
+      // "WarnAboutFraudulentWebsites": true,    // Warn about fraudulent websites.
+      "SendDoNotTrackHTTPHeader": true,       // Send “Do Not Track” requests.
+      "com.apple.Safari.ContentPageGroupIdentifier.WebKit2InvisibleAutoplayNotPermitted": true,
+                                              // Do not automatically play videos.
+      "com.apple.Safari.ContentPageGroupIdentifier.WebKit2WebGLEnabled": true,
+                                              // Enable WebGL.
+      "PreloadTopHit": false,                 // Only load sites on demand.
+
+      // PLUGINS AND EXTENSIONS
+      // Enable or disable specific plugins.
+      "ManagedPlugInPolicies": {
+        "com.apple.QuickTime Plugin.plugin": {
+          "PlugInDisallowPromptBeforeUseDialog": true,
+          "PlugInFirstVisitPolicy": "PlugInPolicyAllowWithSecurityRestrictions"
+        },
+        "com.google.googletalkbrowserplugin": {
+          "PlugInFirstVisitPolicy": "PlugInPolicyAsk"
+        },
+        "com.google.o1dbrowserplugin": {
+          "PlugInFirstVisitPolicy": "PlugInPolicyAsk"
+        },
+        "com.macromedia.Flash Player.plugin": {
+          "PlugInFirstVisitPolicy": "PlugInPolicyBlock"
+        },
+        "com.oracle.java.JavaAppletPlugin": {
+          "PlugInFirstVisitPolicy": "PlugInPolicyBlock"
+        }
+      },
+      "PlugInInfo": {
+        "com.google.googletalkbrowserplugin": {
+          "plugInCurrentState": true
+        },
+        "com.google.o1dbrowserplugin": {
+          "plugInCurrentState": true
+        },
+        "com.macromedia.Flash Player.plugin": {
+          "plugInCurrentState": false
+        },
+        "com.oracle.java.JavaAppletPlugin": {
+          "plugInCurrentState": false
+        }
+      },
+      "ExtensionsEnabled": true,              // Enable use of extensions.
+      "SkipLoadingExtensionsAtLaunch": true,  // Lazy-load extensions.
+
+      // DOWNLOADS
+      "AutoOpenSafeDownloads": false,         // Don't auto-open downloads.
+      "DownloadsPath": "~/Downloads",
+      "DownloadsPathWasConverted": true,
+
+      // AUTOFILL AND PASSWORDS
+      // Disable all Autofill.
+      "AutoFillFromAddressBook": false,
+      "AutoFillPasswords": false,
+      "AutoFillCreditCardData": false,
+      "AutoFillMiscellaneousForms": false,
+
+      // LOCAL STORAGE
+      "LocalFileRestrictionsEnabled": true,
+      "BlockStoragePolicy": 2,
+      "WebKitStorageBlockingPolicy": 1,
+      "com.apple.Safari.ContentPageGroupIdentifier.WebKit2StorageBlockingPolicy": 1,
+
+      // HISTORY
+      "AlwaysRestoreSessionAtLaunch": true,
+      "HistoryAgeInDaysLimit": 1,
+
+      // UI
+      // "HomePage": "about:blank",              // Home page.
+      "NewTabBehavior": 1,                    // New tabs are empty.
+      "NewWindowBehavior": 1,                 // New windows are empty.
+      "ShowFullURLInSmartSearchField": true,  // Show URL not just hostname.
+      "ShowFavoritesBar-v2": false,           // Hide bookmarks bar.
+      "AlwaysShowTabBar": true,               // Always show the tab bar.
+      "ShowSidebarInNewWindows": false,
+      "ShowSidebarInTopSites": false,
+      "ShowStatusBar": false,                 // Hide the status bar.
+      "ShowOverlayStatusBar": true,
+      // Fullscreen.
+      "AutoShowToolbarInFullScreen": true,
+      "AlwaysShowFavoritesBarInFullScreen": false,
+      "AlwaysShowTabBarInFullScreen": false,
+      "ShowStatusBarInFullScreen": false,
+      // Press Tab to cycle between text fields, not links.
+      "com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks": true,
+
+      // DEVELOPER TOOLS
+      "IncludeDevelopMenu": true,
+      // Enable the Web Inspector.
+      "WebKitDeveloperExtrasEnabledPreferenceKey": true,
+      "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled": true
+    }
+  }
+}

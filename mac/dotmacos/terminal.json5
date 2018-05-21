@@ -1,0 +1,9 @@
+{
+  "user": {
+    "com.apple.terminal": {
+      // Enable 'Secure Keyboard Entry' for what it's worth.
+      // See discussion at https://security.stackexchange.com/a/47786/8918.
+      "SecureKeyboardEntry": true
+    }
+  }
+}

@@ -1,6 +1,0 @@
-user:
-    com.apple.ActivityMonitor:
-        OpenMainWindow: true  # Show the app window upon launch.
-        SelectedTab: 0        # Show CPU tab.
-        ShowCategory: 100     # Show all processes.
-        IconType: 6           # Show CPU history in the Dock icon.

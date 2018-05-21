@@ -1,12 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e -u -o pipefail
 
 # Key remapping: CapsLock -> Control.
-kb_properties="$(ioreg -c IOHIDKeyboard -r -d1)"
-kb_count="$(echo "$kb_properties" | grep -c ProductID)"
-kb_vendor_id="$(echo "$kb_properties" | sed -n -e 's/^ *"VendorID" *= *//p')"
-kb_product_id="$(echo "$kb_properties" | sed -n -e 's/^ *"ProductID" *= *//p')"
+kb_properties="$(ioreg -c AppleHSSPIDevice -r -d1)"
+kb_count="$(echo "$kb_properties" | grep -c idProduct)"
+kb_vendor_id="$(echo "$kb_properties" | sed -n -e 's/^ *"idVendor" *= *//p')"
+kb_product_id="$(echo "$kb_properties" | sed -n -e 's/^ *"idProduct" *= *//p')"
+
+
 if [ "$kb_count" -eq 1 ] && [ ! -z "$kb_vendor_id" ] && [ ! -z "$kb_product_id" ]; then
     defaults -currentHost write NSGlobalDomain \
         "com.apple.keyboard.modifiermapping.${kb_vendor_id}-${kb_product_id}-0" -array \

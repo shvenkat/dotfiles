@@ -1,0 +1,35 @@
+{
+  "user": {
+
+    ".GlobalPreferences": {
+      "AppleLanguages": [
+        "en-US"                         // Default language.
+      ],
+      "AppleLocale": "en_US",           // Default locale.
+      "AppleKeyboardUIMode": 2,         // Use Tab to select an option in popup dialogs.
+      "KeyRepeat": 2,                   // Fast key repeat when held down.
+      "InitialKeyRepeat": 15,           // Short delay before key repeat.
+      "com.apple.keyboard.fnState": false,            // fn + F1 to invoke F1.
+      "NSAutomaticCapitalizationEnabled": false,      // Disable uppercasing.
+      "NSAutomaticDashSubstitutionEnabled": false,    // Disable hyphen to dash.
+      "NSAutomaticPeriodSubstitutionEnabled": false,  // Disable space to period.
+      "NSAutomaticQuoteSubstitutionEnabled": false,   // Disable smart quotes.
+      "NSAutomaticSpellingCorrectionEnabled": false,  // Disable autocorrect.
+      "NSTextShowsControlCharacters": true            // Show ^M ^I ... in text.
+    },
+
+    "com.apple.AppleMultitouchTrackpad": {
+      "Clicking": true,                 // Tap to click.
+      "Dragging": false                 // Tap cannot drag-and-drop.
+    },
+
+    "com.apple.universalaccess": {
+      "closeViewScrollWheelToggle": true  // Ctrl-scroll to zoom.
+    },
+
+    "com.apple.HIToolbox": {
+      // Enable Unicode input using Alt + hex codepoint.
+      "AppleCurrentKeyboardLayoutInputSourceID": "com.apple.keylayout.UnicodeHexInput"
+    }
+  }
+}

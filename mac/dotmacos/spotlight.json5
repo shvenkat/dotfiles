@@ -1,0 +1,111 @@
+{
+  "user": {
+
+    "com.apple.spotlight": {
+      // Change search results order and disable some search results.
+      "orderedItems": [
+        {
+          "name": "MENU_EXPRESSION",    // Calculator.
+          "enabled": true
+        },
+        {
+          "name": "MENU_CONVERSION",    // Unit conversion.
+          "enabled": true
+        },
+        {
+          "name": "MENU_DEFINITION",    // Dictionary.
+          "enabled": true
+        },
+        {
+          "name": "APPLICATIONS",
+          "enabled": true
+        },
+        {
+          "name": "SYSTEM_PREFS",
+          "enabled": true
+        },
+        {
+          "name": "DIRECTORIES",
+          "enabled": true
+        },
+        {
+          "name": "IMAGES",
+          "enabled": true
+        },
+        {
+          "name": "PDF",
+          "enabled": true
+        },
+        {
+          "name": "PRESENTATIONS",
+          "enabled": true
+        },
+        {
+          "name": "SPREADSHEETS",
+          "enabled": true
+        },
+        {
+          "name": "DOCUMENTS",          // Text files.
+          "enabled": true
+        },
+        {
+          "name": "MENU_OTHER",         // Other files.
+          "enabled": false
+        },
+        {
+          "name": "SOURCE",             // Source code.
+          "enabled": false
+        },
+        // {
+        //   "name": "MENU_WEBSEARCH",
+        //   "enabled": false
+        // },
+        {
+          // Do not send query or result selection data to Apple. See
+          // https://support.apple.com/kb/PH25164?viewlocale=en_US&locale=en_US.
+          // Disabling this option may interfere with a subset of advanced
+          // searches. For instance, using 'define:word' to look up the
+          // dictionary definition of word doesn't work. However, using
+          // 'kind:pdf foo' to limit the search results to PDF documents does
+          // still work.
+          "name": "MENU_SPOTLIGHT_SUGGESTIONS",
+          "enabled": false
+        },
+        {
+          "name": "FONTS",
+          "enabled": false
+        },
+        {
+          "name": "MESSAGES",
+          "enabled": false
+        },
+        {
+          "name": "CONTACT",
+          "enabled": false
+        },
+        {
+          "name": "EVENT_TODO",
+          "enabled": false
+        },
+        {
+          "name": "BOOKMARKS",
+          "enabled": false
+        },
+        {
+          "name": "MUSIC",
+          "enabled": false
+        },
+        {
+          "name": "MOVIES",
+          "enabled": false
+        }
+      ]
+    },
+
+    // Do not send "Look Up" suggestion query data to Apple. See
+    // https://support.apple.com/kb/PH25164?viewlocale=en_US&locale=en_US.
+    "com.apple.lookup.shared": {
+      "LookupSuggestionsDisabled": true,
+    }
+  }
+}

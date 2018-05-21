@@ -50,16 +50,16 @@ log () {
     level="$1"
     shift
     if [ "$level" = "error" ]; then
-        echo " ${RED}E${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+        echo -e " ${RED}E${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
     elif [ "$level" = "warn" ]; then
-        echo " ${YELLOW}W${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
+        echo -e " ${YELLOW}W${NORMAL} ${BOLD}$*${NORMAL}" 1>&2
     elif [ "$level" = "info" ]; then
         if [ "$VERBOSITY" -gt 0 ]; then
-            echo "   $*" 1>&2
+            echo -e "   $*" 1>&2
         fi
     elif [ "$level" = "debug" ]; then
         if [ "$VERBOSITY" -gt 1 ]; then
-            echo "   $*" 1>&2
+            echo -e "   $*" 1>&2
         fi
     fi
 }

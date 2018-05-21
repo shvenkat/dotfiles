@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
 # Do not index removable media.
 sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array-add "/Volumes"
 

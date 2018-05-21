@@ -47,10 +47,12 @@ esac
 "$PREFIX/installers/brew" --brewfile "$brewfile"
 export PATH="${brew_path}:$PATH"
 
-if which pip3 >/dev/null 2>&1; then
-    echo "Installing python packages." 1>&2
-    pip3 install -q -r "$PREFIX/installers/pip3_requirements.txt"
-fi
+echo "Installing python packages." 1>&2
+"$PREFIX/installers/python3"
 
 echo "Installing dotfiles." 1>&2
 "$PREFIX/installers/dotfiles" --freshrc "$PREFIX/installers/freshrc" --update
+
+echo "Settings OS and app preferences." 1>&2
+"$PREFIX/installers/settings" --config-dir "$PREFIX/mac/dotmacos" --format json5
+"$PREFIX/installers/settings" --exec-dir "$PREFIX/mac/misc"
