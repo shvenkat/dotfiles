@@ -22,8 +22,9 @@ fresh-options
 # zsh. F*** yeah!
 fresh zplug/zplug . --file=~/.zplug/
 fresh-options --file=~/.zshrc
-    fresh shell/shared/misc
     fresh shell/shared/path
+    fresh shell/shared/env
+    fresh shell/shared/misc
     fresh shell/shared/less
     fresh shell/shared/ls
     fresh shell/shared/source-highlight
@@ -98,6 +99,7 @@ fresh-options --file=~/.emacs.d/init.el --marker='
     fresh emacs/config_flycheck.el
     fresh emacs/config_neotree.el
     fresh emacs/config_markdown.el
+    fresh emacs/config_python.el
     fresh emacs/config_proof_general.el
 fresh-options
 # fresh emacs/custom.el --file=~/.emacs.d/custom.el

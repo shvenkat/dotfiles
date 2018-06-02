@@ -14,5 +14,5 @@ __pycache__
 *.pyc
 
 # Build files.
-env
-.venv
+env/
+.venv/

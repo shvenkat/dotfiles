@@ -1,0 +1,37 @@
+
+
+# ----------  ENV  -----------------------------------------------------------
+
+# Preferred editor.
+export EDITOR='emacsclient -nw -a ""'
+
+# Time zone.
+export TZ='America/Los_Angeles'
+
+# Compiler messages.
+# export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Python.
+# Make pipenv create/use .venv directories within each project.
+export PIPENV_VENV_IN_PROJECT=1
+
+# OS-specific miscellany.
+case $OSTYPE in
+    linux*)
+        ;;
+    darwin*)
+        ;;
+    cygwin*)
+        unset TMP
+        unset TEMP
+        # export TMPDIR=/tmp
+
+        # # start cron
+        # if ! ps -es | grep -iqF '/usr/sbin/cron' ; then
+        #     echo "starting cron ..."
+        #     /usr/sbin/cron
+        # else
+        #     echo "cron is already running ..."
+        # fi
+        ;;
+esac

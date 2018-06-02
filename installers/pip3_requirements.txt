@@ -2,6 +2,8 @@
 pipenv
 mypy
 flake8
+black
+isort
 neovim
 ipython
 jupyter
