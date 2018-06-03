@@ -21,15 +21,17 @@ fresh-options
 
 # zsh. F*** yeah!
 fresh zplug/zplug . --file=~/.zplug/
-fresh-options --file=~/.zshrc
+fresh-options --file=~/.zprofile
     fresh shell/shared/path
     fresh shell/shared/env
+    fresh shell/shared/term
+fresh-options
+fresh-options --file=~/.zshrc
     fresh shell/shared/misc
     fresh shell/shared/less
     fresh shell/shared/ls
     fresh shell/shared/source-highlight
     fresh shell/shared/ssh
-    fresh shell/shared/term
     fresh shell/shared/alias
     fresh shell/shared/local
     fresh shell/zsh/zshrc

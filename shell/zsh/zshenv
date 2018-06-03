@@ -1,3 +1,5 @@
-# Unset RCS or GLOBAL_RCS to skip all or only global zsh config files.
+# Unset RCS to skip reading all zsh config files.
 # unset RCS
+
+# Unset GLOBAL_RCS to skip reading only global zsh config files.
 # unset GLOBAL_RCS
