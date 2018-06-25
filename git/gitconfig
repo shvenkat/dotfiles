@@ -66,7 +66,7 @@
     linenumber = white
     separator = normal
 [color "interactive"]
-    prompt = bold magenta
+    prompt = reverse
     header = bold black
     help = bold cyan
     error = red
