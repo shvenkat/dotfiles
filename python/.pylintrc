@@ -1,0 +1,120 @@
+[MASTER]
+
+load-plugins=pylint.extensions.check_elif,
+             pylint.extensions.comparetozero,
+             pylint.extensions.docparams,
+             pylint.extensions.docstyle,
+             pylint.extensions.overlapping_exceptions
+
+suggestion-mode=yes
+
+
+[MESSAGES CONTROL]
+
+# Valid levels: <empty> (show all), HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED.
+confidence=
+
+# See http://pylint.pycqa.org/en/latest/technical_reference/features.html for allowed values.
+enable=c-extension-no-member
+
+# See http://pylint.pycqa.org/en/latest/technical_reference/features.html for allowed values.
+# Disable the following checks:
+# fixme - Encourage the use of FIXME and TODO tags to mark gaps in non-regulated code.
+# unused-import - Checking imports is left to flake8.
+# too-few-public-methods - Raises a false positive for data classes such as NamedTuple sub-classes.
+# no-member: Raises false positives because pylint is not very good at type inference.
+# bad-continuation: Code formatting is left to black.
+# line-too-long: Code formatting is left to black.
+# no-else-return: Raises false-positives.
+# ungrouped-imports: Grouping imports is left to isort.
+disable=fixme,
+        unused-import,
+        too-few-public-methods,
+        no-member,
+        bad-continuation,
+        line-too-long,
+        no-else-return,
+        ungrouped-imports
+
+
+[REPORTS]
+
+evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)
+output-format=text
+reports=no
+score=yes
+
+
+[MISCELLANEOUS]
+
+notes=FIXME,TODO
+
+
+[VARIABLES]
+
+dummy-variables-rgx=_+$
+ignored-argument-names=
+
+
+[FORMAT]
+
+max-module-lines=1000
+
+
+[BASIC]
+
+docstring-min-length=-1
+no-docstring-rgx=
+
+good-names=i,j,k,e
+bad-names=foo,bar,baz,ii,jj
+include-naming-hint=yes
+
+argument-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+attr-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+function-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+method-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+module-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+variable-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
+
+
+[IMPORTS]
+
+ext-import-graph=external_dependencies.png
+import-graph=all_dependencies.png
+int-import-graph=internal_dependencies.png
+
+
+[CLASSES]
+
+# List of member names, which should be excluded from the protected access warning.
+exclude-protected=_fields
+
+
+[DESIGN]
+
+max-args=5
+max-attributes=7
+max-bool-expr=5
+max-branches=12
+max-locals=15
+max-parents=7
+max-public-methods=20
+max-returns=6
+max-statements=50
+
+
+[EXCEPTIONS]
+
+overgeneral-exceptions=Exception
+
+
+# See https://pylint.readthedocs.io/en/latest/technical_reference/extensions.html for extension
+# configuration options.
+
+[PARAMETER_DOCUMENTATION]
+
+accept-no-param-doc=no
+accept-no-return-doc=no
+accept-no-yields-doc=no
+accept-no-raise-doc=no
