@@ -11,3 +11,12 @@
     (walk-windows (lambda (window) (center-window window)) nil 1))
 ;; Listen to window changes.
 (add-hook 'window-configuration-change-hook 'center-windows)
+
+;; Use a straight line without gaps as the vertical window border.
+;; Set the border drawing character.
+(defun set-window-divider ()
+    (let ((display-table (or buffer-display-table standard-display-table)))
+        (set-display-table-slot display-table 5 ?│)
+        (set-window-display-table (selected-window) display-table)))
+;; Apply setting whenever the window configuration changes.
+(add-hook 'window-configuration-change-hook 'set-window-divider)
