@@ -2,7 +2,7 @@
 
 set -e -u -o pipefail
 
-REPO="$(git rev-parse --show-toplevel)"
+REPO="$(cd "$(dirname "$0")" && git rev-parse --show-toplevel)"
 YAML2JSON="${REPO}/bin/yaml2json"
 SOURCE_DIR="${REPO}/mac/iterm2/profiles"
 INSTALL_DIR="$HOME/Library/Application Support/iTerm2/DynamicProfiles"

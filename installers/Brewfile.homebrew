@@ -58,6 +58,7 @@ brew "r"
 brew "rust"
 brew "shellcheck"
 brew "sqlite3"
+brew "tokei"
 brew "valgrind"
 
 # Math and Science.
