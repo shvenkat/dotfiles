@@ -5,14 +5,14 @@ set -e -u -o pipefail
 
 NAME="$(basename -- "$0")"
 REPO="$(cd "$(dirname -- "$0")" && git rev-parse --show-toplevel)"
-PREFS_JS="$REPO/firefox/prefs.js"
+USER_JS="$REPO/firefox/user.js"
 OSTYPE="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 
 # Show usage.
 usage () {
     echo "Usage: $NAME [-h|--help]"
-    echo "    Merges $PREFS_JS with Firefox config."
+    echo "    Copies $USER_JS to the default Firefox profile."
 }
 
 
@@ -100,6 +100,6 @@ default_profile="$(find "$profiles_dir" -mindepth 1 -maxdepth 1 -type d -name '*
 if [ ! -d "$default_profile" ]; then
     error "Cannot locate a default Firefox profile in $profiles_dir."
 fi
-firefox_prefs_js="${default_profile}/prefs.js"
-info "Merging preferences to $firefox_prefs_js."
-cat < "$PREFS_JS" | sed -e "s#DOWNLOAD_DIR#${download_dir}#" >> "$firefox_prefs_js"
+firefox_user_js="${default_profile}/user.js"
+info "Copying $USER_JS to $firefox_user_js."
+sed -e "s#DOWNLOAD_DIR#${download_dir}#" < "$USER_JS" > "$firefox_user_js"

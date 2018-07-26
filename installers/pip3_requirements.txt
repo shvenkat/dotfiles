@@ -6,7 +6,7 @@ black
 isort
 neovim
 ipython
-jupyter
+jupyterlab
 
 # Misc.
 pyyaml

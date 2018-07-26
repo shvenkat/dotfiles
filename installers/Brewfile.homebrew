@@ -17,12 +17,15 @@ brew "dos2unix"
 brew "findutils", args: ["with-default-names"]
 brew "git", args: ["with-blk-sha1", "with-pcre2"]
 brew "gnupg", args: ["with-readline"]
+brew "graphviz"
 brew "grep", args: ["with-default-names"]
 brew "gzip"
 brew "htop"
 brew "jq"
 brew "less", args: ["with-pcre"]
+brew "loc"
 brew "lesspipe"
+brew "mosh"
 brew "openssh"
 brew "pandoc"
 brew "pigz"
@@ -52,12 +55,12 @@ brew "go"
 brew "haskell-stack"
 brew "idris"
 brew "neovim"
-brew "node"
-brew "python3"
+brew "node@6"
+brew "python"
 brew "r"
 brew "rust"
 brew "shellcheck"
-brew "sqlite3"
+brew "sqlite"
 brew "tokei"
 brew "valgrind"
 
@@ -73,15 +76,15 @@ brew "awscli"
 
 # ----  APPS  ----
 
-tap "caskroom/cask"
-tap "caskroom/fonts"
-tap "caskroom/versions"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
 
 # Apps.
 cask "docker"
 cask "firefox"
 cask "google-chrome"
-cask "isabelle2014"
+cask "shvenkat/extra/isabelle2014"
 cask "iterm2"
 cask "java8"
 cask "mactex" unless system "tex --version >/dev/null"
