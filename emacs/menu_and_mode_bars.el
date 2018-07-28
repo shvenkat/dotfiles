@@ -1,3 +1,7 @@
+
+
+;; ----------  MENU / MODE BAR  ----------
+
 ;; Disable top menu bar.
 (menu-bar-mode -1)
 

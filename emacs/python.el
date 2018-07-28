@@ -1,3 +1,7 @@
+
+
+;; ----------  PYTHON  ----------
+
 ;; Python IDE configuration.
 
 ;; Configure python checkers - mypy, flake8 and pylint.
@@ -58,8 +62,8 @@
     :modes python-mode)
 
 ;; Make python-mypy the default python checker.
-(add-to-list 'flycheck-checkers 'python-pylint-project-root)
-(add-to-list 'flycheck-checkers 'python-flake8-project-root)
+;; (add-to-list 'flycheck-checkers 'python-pylint-project-root)
+;; (add-to-list 'flycheck-checkers 'python-flake8-project-root)
 (add-to-list 'flycheck-checkers 'python-mypy-project-root)
 
 

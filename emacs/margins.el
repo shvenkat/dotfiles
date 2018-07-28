@@ -1,7 +1,11 @@
+
+
+;; ----------  MARGINS  ----------
+
 ;; Center the text area by setting a suitably wide left margin. The right margin
 ;; is NOT set as this would cause long lines to be wrapped.
 ;; https://stackoverflow.com/a/23731757
-;; Add left and right margins, when file is markdown or text.
+;; Add margins, when file is markdown or text.
 (defun center-window (window) ""
     (let* ((max-text-width fill-column)
            (margin (max 0 (/ (- (window-total-width window) max-text-width) 2))))

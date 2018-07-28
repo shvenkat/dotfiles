@@ -1,3 +1,7 @@
+
+
+;; ----------  VIM KEY-BINDINGS  ----------
+
 ;; Use evil for vim-like keybindings.
 (use-package evil
     :config

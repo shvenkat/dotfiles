@@ -1,3 +1,7 @@
+
+
+;; ----------  COLOR THEME  ----------
+
 ;; Use a light background for the initial frame.
 (set-frame-parameter nil 'background-mode 'light)
 (set-terminal-parameter nil 'background-mode 'light)

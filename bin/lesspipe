@@ -100,7 +100,7 @@ preprocess () {
             if which lesspipe.sh >/dev/null; then
                 lesspipe.sh "$1"
             else
-                echo "Install lesspipe to view files of this type."
+                echo "Install lesspipe.sh to view files of this type."
             fi
             ;;
         *)

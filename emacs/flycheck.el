@@ -1,3 +1,7 @@
+
+
+;; ----------  LINTER AUTOMATION  ----------
+
 ;; Flycheck.
 ;; http://www.flycheck.org/en/latest/
 (use-package flycheck

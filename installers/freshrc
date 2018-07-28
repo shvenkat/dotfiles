@@ -85,24 +85,24 @@ fresh neovim/UltiSnips --file=~/.config/nvim/UltiSnips/
 # emacs. Scripting done right. Sadistic UI.
 fresh-options --file=~/.emacs.d/init.el --marker='
 ;; ---------- '
-    fresh emacs/config_usepackage_quelpa.el
-    fresh emacs/config_evil.el
-    fresh emacs/config_whitespace.el
-    fresh emacs/config_pairs.el
-    fresh emacs/config_margins.el
-    fresh emacs/config_menu_and_mode_bars.el
-    fresh emacs/config_theme.el
-    fresh emacs/config_splash_message.el
-    fresh emacs/config_backup.el
-    fresh emacs/config_custom.el
-    fresh emacs/config_misc_keys.el
-    fresh emacs/config_ido.el
-    fresh emacs/config_editorconfig.el
-    fresh emacs/config_flycheck.el
-    fresh emacs/config_neotree.el
-    fresh emacs/config_markdown.el
-    fresh emacs/config_python.el
-    fresh emacs/config_proof_general.el
+    fresh emacs/usepackage_quelpa.el
+    fresh emacs/evil.el
+    fresh emacs/whitespace.el
+    fresh emacs/pairs.el
+    fresh emacs/margins.el
+    fresh emacs/menu_and_mode_bars.el
+    fresh emacs/theme.el
+    fresh emacs/splash_message.el
+    fresh emacs/backup.el
+    fresh emacs/custom.el
+    fresh emacs/misc_keys.el
+    fresh emacs/ido.el
+    fresh emacs/editorconfig.el
+    fresh emacs/flycheck.el
+    fresh emacs/neotree.el
+    fresh emacs/markdown.el
+    fresh emacs/python.el
+    fresh emacs/proof_general.el
 fresh-options
 # fresh emacs/custom.el --file=~/.emacs.d/custom.el
 
@@ -110,9 +110,9 @@ fresh-options
 fresh util/editorconfig --file
 
 # git. What else.
-fresh git/gitconfig --file=~/.config/git/config
-fresh git/gitignore --file=~/.config/git/ignore
-fresh git/gitattributes --file=~/.config/git/attributes
+fresh git/config --file=~/.config/git/config
+fresh git/ignore --file=~/.config/git/ignore
+fresh git/attributes --file=~/.config/git/attributes
 fresh git/git contrib/diff-highlight/DiffHighlight.pm --file=~/.local/share/perl5/lib/perl5/DiffHighlight.pm
 fresh git/git contrib/diff-highlight/diff-highlight.perl --bin=~/bin/diff-highlight \
     --filter="cat <(echo -e \"#!/usr/bin/perl\n\nuse lib '${HOME}/.local/share/perl5/lib/perl5';\nuse DiffHighlight;\n\") -"

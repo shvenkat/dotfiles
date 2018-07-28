@@ -1,3 +1,7 @@
+
+
+;; ----------  PROOF GENERAL  ----------
+
 ;; Use Proof General to integrate with proof assistants.
 ;; Proof General is a multi-directory package, so the directory structure of the
 ;; source must be preserved when installed. With use-package and/or quelpa,

@@ -1,3 +1,7 @@
+
+
+;; ----------  FILE / BUFFER NAVIGATION  ----------
+
 ;; Use ido to quickly jump to buffers or files.
 (require 'ido)
 (setq ido-enable-flex-matching t)

@@ -1,3 +1,7 @@
+
+
+;; ----------  PROJECT NAVIGATION  ----------
+
 ;; File browser.
 (use-package neotree
     :config

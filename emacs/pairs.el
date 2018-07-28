@@ -1,3 +1,7 @@
+
+
+;; ----------  PAIRED DELIMITERS  ----------
+
 ;; Automatically insert closing delimiter for parentheses, brackets, braces and quotes.
 (electric-pair-mode 1)
 

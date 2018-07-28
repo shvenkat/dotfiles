@@ -1,3 +1,7 @@
+
+
+;; ----------  WHITESPACE  ----------
+
 ;; Automatically insert newlines to maintain a maximum line length of
 ;; 'fill-column'. Apply this setting to all major modes.
 ;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Turning-on-auto_002dfill-by-default.html

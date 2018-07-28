@@ -1,10 +1,14 @@
+
+
+;; ----------  PACKAGE MANAGER  ----------
+
 ;; Bootstrap package managers.
 
 ;; Configure repos to find and install new packages.
 ;; https://www.emacswiki.org/emacs/InstallingPackages
 (require 'package)
 (add-to-list 'package-archives
-    '("MELPA" . "http://melpa.org/packages/")
+    '("MELPA" . "https://melpa.org/packages/")
     ;; '("MELPA Stable" . "https://stable.melpa.org/packages/")
 )
 (package-initialize)

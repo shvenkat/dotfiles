@@ -1,3 +1,7 @@
+
+
+;; ----------  MARKDOWN  ----------
+
 ;; Use a markdown mode for .md and .markdown files. Use Github-flavored markdown
 ;; (sigh!) for README.md files.
 (use-package markdown-mode
