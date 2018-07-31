@@ -1,3 +1,17 @@
 [flake8]
-ignore = E251,E241
-max-line-length = 80
+max-line-length = 100
+
+# Enable the following categories of checks:
+#   E: PEP8 errors
+#   W: PEP8 warnings
+#   F: pyflakes fatals
+#   C: complexity
+#   B: bugbear default checks
+select = E,W,F,C,B,B9
+
+# Ignore the following issues. Code formatting is handled by other tools.
+#   E203: whitespace before (a delimiter in) ,;:
+#   E241: multiple spaces after ‘,’
+#   E251: unexpected spaces around keyword / parameter equals
+#   W503: line break before binary operator
+ignore = E203,E241,E251,W503
