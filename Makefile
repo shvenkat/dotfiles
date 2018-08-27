@@ -34,9 +34,9 @@ emacs: $(HOME)/.emacs.d/init.el
 $(HOME)/.emacs.d/init.el: \
         $(addprefix emacs/, \
             usepackage_quelpa.el evil.el whitespace.el pairs.el margins.el \
-            menu_and_mode_bars.el theme.el splash_message.el backup.el \
-            custom.el misc_keys.el ido.el editorconfig.el flycheck.el \
-            markdown.el python.el proof_general.el)
+            menu_and_mode_bars.el theme.el fonts.el splash_message.el \
+            backup.el custom.el misc_keys.el ido.el editorconfig.el \
+            flycheck.el org.el markdown.el python.el proof_general.el)
 
 zsh: $(addprefix $(HOME)/,.zprofile .zshrc .zplug .autoenv.zsh)
 $(HOME)/.zprofile: $(addprefix shell/shared/,path env term)

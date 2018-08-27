@@ -2,8 +2,10 @@
 
 ;; ----------  MENU / MODE BAR  ----------
 
-;; Disable top menu bar.
+;; Disable text menu bar and graphical tool bar at the top.
 (menu-bar-mode -1)
+(if (display-graphic-p)
+    (tool-bar-mode -1))
 
 ;; Use a simple modeline:
 ;;   left: filename
@@ -21,4 +23,4 @@
                     (if (featurep 'flycheck)
                         (flycheck-mode-line-status-text)
                         (""))
-                    (format-mode-line " %l:%c  %m "))))))
+                    (format-mode-line "  %l:%c  %m"))))))

@@ -25,3 +25,9 @@
              ((t (:foreground "brightcyan" :background "white" :box nil))))
         '(mode-line-inactive
              ((t (:foreground "brightcyan" :background "white" :box nil))))))
+
+;; Highlight matching delimiter.
+(set-face-attribute 'show-paren-match nil
+    :foreground (face-attribute 'default :foreground)
+    :background (face-attribute 'default :background)
+    :inverse-video t)

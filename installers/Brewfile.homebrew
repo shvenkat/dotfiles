@@ -21,6 +21,7 @@ brew "graphviz"
 brew "grep", args: ["with-default-names"]
 brew "gzip"
 brew "htop"
+brew "ispell"
 brew "jq"
 brew "less", args: ["with-pcre"]
 brew "loc"
@@ -92,4 +93,7 @@ cask "slack"
 cask "xquartz"
 
 # Fonts.
-cask "font-droid-sans-mono"
+# cask "font-droid-sans-mono"
+cask "font-dejavu-sans"
+cask "font-fira-code"
+cask "font-fira-mono"

@@ -1,0 +1,197 @@
+#+TITLE: Notes
+#+AUTHOR: Me
+
+* Introduction
+
+This is a document to test the handling of text, code, figures, tables and notes
+in a single file.
+
+
+* Body
+
+This section includes examples of all types of document elements.
+
+** Lists
+
+Unordered lists:
+
+  - One item.
+  - Another.
+  - And yet another.
+
+Ordered lists:
+
+ 1. First item.
+ 2. Second item.
+ 3. Third item.
+
+Description lists:
+
+  - Plants :: Autotrophs.
+  - Animal :: Droolers.
+  - Fungi :: Who knows.
+
+*** Nested lists
+
+Domains of life:
+
+  - Archaea
+  - Eubacteria
+  - Eukaryota:
+     1. Nucleated.
+     2. Some diverse protists.
+     3. Three "kingdoms":
+          - Plants :: Autotrophs.
+          - Animal :: Droolers.
+          - Fungi :: Who knows.
+
+
+** Notes
+
+I make a claim[fn:1].
+
+[fn:1]: I support the claim.
+
+** Tables
+
+    #+CAPTION: The generic and the specific.
+    #+NAME: tbl:generic-specific
+    | Genus         | Species      | Description             | Name            |
+    |---------------+--------------+-------------------------+-----------------|
+    | Escherichia   | coli         | A common gut bacterium  | E. coli         |
+    | Bacillus      | subtilis     | A common soil bacterium | B. subtilis     |
+    | Mycobacterium | tuberculosis | A serious pathogen      | M. tuberculosis |
+    |---------------+--------------+-------------------------+-----------------|
+    #+TBLFM: $4='(concat (substring $1 0 1) ". " $2)
+
+** Images
+
+To illustrate this:
+
+    #+CAPTION: A simple image.
+    #+NAME: fig:simple-image
+    [[./image.png]]
+
+** Links
+
+These examples were made following the [[https://orgmode.org/orgguide.pdf][Compact Org guide]].
+
+** To do items
+
+#+TODO: INBOX NEXT TODO | DONE
+#+TODO: | CANCELLED
+*** TODO [#B] Make and test a basic Org document [2/4].
+**** DONE [#B] Begin this test document.
+**** TODO [#B] Finish this test document.
+**** NEXT [#A] Configure Org to correctly handle all examples.
+**** CANCELLED [#C] Check support for these elements in ~markdown-mode~ [50%].
+  - [X] Make a test markdown document.
+  - [ ] Test the handling and rendering in Emacs.
+
+** Tags
+
+#+TAGS: { @context : @personal @work @errands }
+
+*** Reading and writing documents.                                    :@work:
+*** Taking notes.                                                 :@personal:
+
+** Timestamps
+
+*** A scheduled item
+<2018-08-20 Mon>
+*** An item with a deadline
+DEADLINE: <2018-09-01 Sat>
+*** A recurring deadline
+    DEADLINE: <2018-10-19 Fri +1m>
+
+
+** Quotes
+
+#+BEGIN_QUOTE
+In theory, theory and practice are the same. In practice, they are not. -- Yogi Berra.
+#+END_QUOTE
+
+#+BEGIN_VERSE
+A rose is a rose is a rose is a rose.
+
+    - W. Shakespeare
+#+END_VERSE
+
+** Code
+
+Some code examples.
+
+    #+BEGIN_SRC sh
+    echo "a b c" \
+    | sort \
+    | uniq
+    #+END_SRC
+
+    #+BEGIN_SRC python
+    def foo(x: float, t: int) -> bool:
+        """Checks whether some value meets a given threshold."""
+        return x >= t
+
+    foo(1.2, 2)  # False.
+    foo(3.2, 2)  # True.
+
+    if __name__ == "__main__":
+        foo(1., 1)
+    #+END_SRC
+
+    #+BEGIN_SRC
+        .= ..= .- := =:= =!= __
+           == != === !== =/=
+
+    <-< <<- <-- <- <-> -> --> ->> >->
+    <=< <<= <==    <=> => ==> =>> >=>
+        >>= >>- >- <~> -< -<< =<<
+            <~~ <~ ~~ ~> ~~>
+
+         <<< << <= <> >= >> >>>
+       {. {| [| <:  ✓  :> |] |} .}
+       <||| <|| <| <|> |> ||> |||>
+
+                <$ <$> $>
+                <+ <+> +>
+                <* <*> *>
+
+           \n \\  /* */  /// //
+          </ <!--  </>  --> />
+
+                0xFF 10x10
+          9:45 [:] m-x m+x *ptr
+
+           ;; :: ::: .. ... ..<
+           !! ?? %% && || ?. ?:
+                 + ++ +++
+                 - -- ---
+                 * ** ***
+
+              ~= ~- www -~ ~@
+              ^= ?= /= /==
+            -| _|_ |- |= ||=
+            #! #= ## ### ####
+          #{ #[ ]# #( #? #_ #_(
+
+
+       a*b a*A B*b A*B *a *A a* A*
+       a-b a-A B-b A-B -a -A a- A-
+       a+b a+A B+b A+B +a +A a+ A+
+       a:b a:A B:b A:B :a :A a: A:
+    #+END_SRC
+
+** Math
+
+Assume $x$ exists. Then $x > t$ for all $t \in T$. Hence,
+
+\begin{equation}
+\begin{aligned}
+e^{i \pi} + 1 &= 0 \\
+\int_0^\infty e^{-x^2} \, \mathrm{d}x &= \frac {\pi^\frac{1}{2}} {2}
+\end{aligned}
+\end{equation}
+
+** Emphasis
+
+Something *bold*, something /blue/, something _borrowed_, something +blue+.
