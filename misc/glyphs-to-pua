@@ -1,0 +1,230 @@
+#!/usr/bin/env python3
+
+"""Copies FiraCode glyphs to codepoints in the Private Use Area (PUA).
+
+Usage:
+    glyphs-to-pua list INPUT_FONT >LIST_TSV
+    glyphs-to-pua copy INPUT_FONT OUTPUT_FONT <LIST_TSV
+
+Modes:
+    list  Lists glyphs, and codepoints to which they will be copied, on stdout.
+    copy  Copies glyphs, listed on stdin, to the given codepoints.
+
+Files:
+    INPUT_FONT, OUTPUT_FONT    Paths to font files (OTF, TTF, etc.)
+    LIST_TSV    Tab-separated file with glyph names and codepoints.
+
+Note: This script must be run with the version of Python3 for which fontforge
+bindings have been installed. To use a specific version that is not the first
+`python3` in $PATH, use `python3.x glyphs-to-pua` instead of `glyphs-to-pua`.
+"""
+
+import sys
+from argparse import ArgumentParser
+from enum import Enum
+from pathlib import Path
+from shutil import copyfile
+from tempfile import NamedTemporaryFile
+from typing import Dict, NamedTuple, Set
+
+import fontforge
+
+
+CODEPOINT_START: int = 0xe200
+NAMED_CHARS: Dict[str, str] = {
+    "ampersand": "&",
+    "asciicircum": "^",
+    "asciitilde": "~",
+    "asterisk": "*",
+    "at": "@",
+    "backslash": "\\",
+    "bar": "|",
+    "braceleft": "{",
+    "braceright": "}",
+    "bracketleft": "[",
+    "bracketright": "]",
+    "colon": ":",
+    "dollar": "$",
+    "equal": "=",
+    "exclam": "!",
+    "greater": ">",
+    "hyphen": "-",
+    "less": "<",
+    "numbersign": "#",
+    "parenleft": "(",
+    "parenright": ")",
+    "percent": "%",
+    "period": ".",
+    "plus": "+",
+    "question": "?",
+    "semicolon": ";",
+    "slash": "/",
+    "underscore": "_",
+    "w": "w",  # www
+    "x": "x",  # times, as in 0xFF
+}
+
+
+class GlyphKind(Enum):
+    ligature = 0
+    alternate = 1
+
+
+class GlyphInfo(NamedTuple):
+    name: str  # e.g. w_w_w.liga, hyphen_greater.liga
+    chars: str  # e.g. www, ->
+    kind: GlyphKind
+
+
+class GlyphPoint(NamedTuple):
+    info: GlyphInfo
+    codepoint: int
+
+
+def main() -> None:
+    args = make_arg_parser().parse_args()
+    if args.mode == "list":
+        glyph_infos = find_substitute_glyphs(args.input_font)
+        glyph_points = assign_codepoints(glyph_infos)
+        write_glyph_points(glyph_points)
+    else:
+        glyph_points = read_glyph_points()
+        copy_glyphs(args.input_font, args.output_font, glyph_points)
+
+
+def make_arg_parser() -> ArgumentParser:
+    parser = ArgumentParser(
+        description="Copies FiraCode glyphs to codepoints in the Private Use Area (PUA)."
+    )
+    subparsers = parser.add_subparsers(dest="mode")
+    list_parser = subparsers.add_parser(
+        "list",
+        help="Lists glyphs, and codepoints to which they will be copied, on stdout.",
+    )
+    list_parser.add_argument("input_font", help="Input font path.")
+    copy_parser = subparsers.add_parser(
+        "copy", help="Copies glyphs, listed on stdin, to the given codepoints."
+    )
+    copy_parser.add_argument("input_font", help="Input font path.")
+    copy_parser.add_argument("output_font", help="Output font path.")
+    return parser
+
+
+def find_substitute_glyphs(font_path: str) -> Set[GlyphInfo]:
+    try:
+        font = fontforge.open(font_path)
+        glyph_infos = set(
+            parse_glyph_name(subst_name)
+            for glyph in font.glyphs()
+            if glyph.getPosSub("*")
+            and parse_glyph_name(glyph.glyphname).chars in NAMED_CHARS.values()
+            for pos_sub in glyph.getPosSub("*")
+            for subst_name in pos_sub[2:]
+            if subst_name != "LIG"
+            and ".locl" not in subst_name
+            and not any(
+                subst_name.endswith(suffix)
+                for suffix in [".tosf", ".numr", ".dnom"]
+            )
+        )
+    finally:
+        font.close()
+    return glyph_infos
+
+
+def parse_glyph_name(glyph_name: str) -> GlyphInfo:
+    if "." in glyph_name and glyph_name.endswith(".liga"):
+        stem_name = glyph_name[: glyph_name.index(".")]
+    else:
+        stem_name = glyph_name
+    if "_" in stem_name:
+        glyph_info = GlyphInfo(
+            name=glyph_name,
+            chars="".join(
+                NAMED_CHARS.get(char_name, char_name)
+                for char_name in stem_name.split("_")
+            ),
+            kind=GlyphKind.ligature,
+        )
+    else:
+        glyph_info = GlyphInfo(
+            name=glyph_name,
+            chars=NAMED_CHARS.get(stem_name, stem_name),
+            kind=GlyphKind.alternate,
+        )
+    return glyph_info
+
+
+def assign_codepoints(glyph_infos: Set[GlyphInfo]) -> Set[GlyphPoint]:
+    return set(
+        GlyphPoint(info=glyph_info, codepoint=CODEPOINT_START + i)
+        for i, glyph_info in enumerate(
+            sorted(glyph_infos, key=lambda gi: gi.chars)
+        )
+    )
+
+
+def write_glyph_points(glyph_points: Set[GlyphPoint]) -> None:
+    sys.stdout.write(
+        "{}\t{}\t{}\t{}\n".format(
+            "Codepoint", "Characters", "Substitution", "GlyphName"
+        )
+    )
+    for glyph_point in sorted(glyph_points, key=lambda gp: gp.codepoint):
+        sys.stdout.write(
+            "0x{:x}\t{}\t{}\t{}\n".format(
+                glyph_point.codepoint,
+                glyph_point.info.chars,
+                glyph_point.info.kind.name,
+                glyph_point.info.name,
+            )
+        )
+
+
+def read_glyph_points() -> Set[GlyphPoint]:
+    glyph_points: Dict[str, GlyphPoint] = {}
+    for line in sys.stdin:
+        if not line.startswith("0x"):
+            continue
+        fields = line.rstrip().split("\t")
+        codepoint = int(fields[0], base=16)
+        chars = fields[1]
+        kind = GlyphKind[fields[2]]
+        name = fields[3]
+        glyph_points[name] = GlyphPoint(
+            info=GlyphInfo(name=name, chars=chars, kind=kind),
+            codepoint=codepoint,
+        )
+    return set(glyph_points.values())
+
+
+def copy_glyphs(
+    input_font_path: str, output_font_path: str, glyph_points: Set[GlyphPoint]
+) -> None:
+    with NamedTemporaryFile(suffix=".otf") as temp_file:
+        temp_path = temp_file.name
+        copyfile(input_font_path, temp_path)
+        base_font = fontforge.open(input_font_path)
+        temp_font = fontforge.open(temp_path)
+        for glyph_point in sorted(glyph_points, key=lambda gp: gp.codepoint):
+            name = glyph_point.info.name
+            private_name = "private_" + name
+            codepoint = glyph_point.codepoint
+            temp_font.selection.none()
+            temp_font.selection.select(name)
+            temp_font.copy()
+            base_font.createChar(codepoint, private_name)
+            base_font.selection.none()
+            base_font.selection.select(codepoint)
+            base_font.paste()
+        base_font.generate(output_font_path)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except SystemExit:
+        raise
+    except Exception as e:
+        sys.stderr.write(str(e))
+        sys.exit(1)

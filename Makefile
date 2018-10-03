@@ -1,13 +1,13 @@
 .DEFAULT_GOAL:=help
 MAKEFLAGS+=--warn-undefined-variables
-SHELL:=/bin/bash -e -o pipefail -u -c
+SHELL:=BASH_ENV= /bin/bash -e -o pipefail -u -c
 .DELETE_ON_ERROR:
 .SILENT:
 
 
 DOTFILES := \
-        emacs zsh git tmux readline colordiff htop less unison editorconfig \
-        python
+        emacs xfce4-terminal lxterminal zsh git tmux readline colordiff htop \
+        less unison editorconfig python
 
 
 .PHONY: help all clean $(DOTFILES)
@@ -35,8 +35,14 @@ $(HOME)/.emacs.d/init.el: \
         $(addprefix emacs/, \
             usepackage_quelpa.el evil.el whitespace.el pairs.el margins.el \
             menu_and_mode_bars.el theme.el fonts.el splash_message.el \
-            backup.el custom.el misc_keys.el ido.el editorconfig.el \
+            backup.el custom.el misc_keys.el mouse.el ido.el editorconfig.el \
             flycheck.el org.el markdown.el python.el proof_general.el)
+
+xfce4-terminal: $(HOME)/.config/xfce4/terminal/terminalrc
+$(HOME)/.config/xfce4/terminal/terminalrc: linux/xfce4_terminalrc
+
+lxterminal: $(HOME)/.config/lxterminal/lxterminal.conf
+$(HOME)/.config/lxterminal/lxterminal.conf: linux/lxterminal.conf
 
 zsh: $(addprefix $(HOME)/,.zprofile .zshrc .zplug .autoenv.zsh)
 $(HOME)/.zprofile: $(addprefix shell/shared/,path env term)
@@ -90,6 +96,8 @@ $(HOME)/.isort.cfg: python/isort.cfg
 
 # Symlink dotfile.
 $(addprefix $(HOME)/, \
+        .config/xfce4/terminal/terminalrc \
+        .config/lxterminal/lxterminal.conf \
         .autoenv.zsh \
         $(addprefix .config/git/,config ignore attributes) \
         .inputrc \

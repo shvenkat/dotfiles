@@ -119,7 +119,7 @@
 (setq org-format-latex-options
     '(:foreground default
       :background default
-      :scale 1.5
+      :scale 2.0
       :html-foreground "Black"
       :html-background "Transparent"
       :html-scale 1.0

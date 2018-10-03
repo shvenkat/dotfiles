@@ -11,6 +11,7 @@
 # Editor/IDE litter.
 *.swp*
 .idea/
+ltximg/
 
 # Compilers.
 *.o
@@ -48,11 +49,17 @@ __pycache__/
 env/
 .venv/
 
-## iPython files.
+## Sphinx auto-generated documentation.
+docs/sphinx/build
+docs/sphinx/source/*.rst
+!docs/sphinx/source/index.rst
+
+## Jupyter/iPython files.
 .ipython/*
 !.ipython/profile_default
 .ipython/profile_default/*
 !.ipython/profile_default/ipython_config.py
+.ipynb_checkpoints/
 
 ## Unit testing and code coverage.
 htmlcov/
@@ -64,3 +71,9 @@ coverage.xml
 .hypothesis/
 nosetests.xml
 .tox/
+
+
+# ----  TeX  ----
+
+*.dvi
+*.aux

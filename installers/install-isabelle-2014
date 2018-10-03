@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e -o pipefail -u
+
+url='https://isabelle.in.tum.de/website-Isabelle2014/dist/Isabelle2014_linux.tar.gz'
+archive="${HOME}/Downloads/isabelle_2014.tar.gz"
+sha256='5e8aa384f41727d2a3d40d5dab564f6bdd3553f4a6bb533251732b4a39bf017d'
+install_dir="${HOME}/install/isabelle_2014"
+
+curl -f -o "$archive" "$url"
+if [[ "$(sha256sum -b < "$archive" | cut -d' ' -f1)" != "$sha256" ]]; then
+    echo "Downloaded file has incorrect checksum." 1>&2
+    exit 1
+fi
+gunzip -tv "$archive"
+mkdir -p "$install_dir"
+tar -xzf "$archive" -C "$install_dir" --strip-components=1
+ln -s "${install_dir}/bin/isabelle" "${HOME}/bin"

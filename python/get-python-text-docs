@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e -o pipefail -u
+
+version="${PYTHON_VERSION:-3.7.0}"
+archive="python-${version}-docs-text.tar.bz2"
+url="https://docs.python.org/3/archives/${archive}"
+
+curl -fsS "$url" > "$archive"
+bunzip2 --test "$archive"
+tar -xjf "$archive"

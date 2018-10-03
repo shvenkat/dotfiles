@@ -4,17 +4,18 @@
 
 ;; Use evil for vim-like keybindings.
 (use-package evil
+    :demand
     :config
     (evil-mode 1))
 
 ;; Use a configurable prefix key to add custom keybindings.
 ;; https://github.com/cofi/evil-leader
+;; Load evil-leader immediately to allow custom key bindings in init.el.
 (use-package evil-leader
+    :demand
     :config
     (global-evil-leader-mode)
     (evil-leader/set-leader ","))
-;; Load evil-leader to allow custom key bindings to be set in init.el.
-(require 'evil-leader)
 
 ;; Use an emacs port of the vim commentary plugin. This provides normal mode
 ;; bindings to toggle comments, such as:

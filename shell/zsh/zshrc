@@ -54,7 +54,7 @@ AUTOENV_HANDLE_LEAVE=1
 
 # Theme (command prompt).
 zplug "plugins/shrink-path", from:oh-my-zsh
-zplug "plugins/gitfast", from:oh-my-zsh, defer:1
+# zplug "plugins/gitfast", from:oh-my-zsh, defer:1
 zplug "plugins/virtualenv", from:oh-my-zsh
 zplug "shvenkat/zsh-theme-dexter", use:"*.zsh", defer:3
 
