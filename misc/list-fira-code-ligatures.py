@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 from argparse import ArgumentParser
 from collections import namedtuple
@@ -11,25 +11,25 @@ import fontforge
 def main():
     # type: () -> None
     args = make_parser().parse_args()
-    if args.glyph_names:
-        print_glyph_names(args.font)
+    if args.glyphs:
+        print_glyphs(args.font)
     elif args.ligatures:
         print_ligatures(args.font)
     elif args.ligature_groups:
         print_ligature_groups(args.font)
-    elif args.glyph_substitutions:
-        print_glyph_substitutions(args.font)
-    elif args.glyph_substitution_groups:
-        print_glyph_substitution_groups(args.font)
+    elif args.substitutions:
+        print_substitutions(args.font)
+    elif args.substitution_groups:
+        print_substitution_groups(args.font)
 
 
 def make_parser():
     # type: () -> ArgumentParser
     parser = ArgumentParser()
     parser.add_argument(
-        "--glyph-names",
+        "--glyphs",
         action="store_true",
-        help="Print ligature names and codepoints.",
+        help="Print names and codepoints of all glyphs.",
     )
     parser.add_argument(
         "--ligatures",
@@ -45,12 +45,12 @@ def make_parser():
         ),
     )
     parser.add_argument(
-        "--glyph-substitutions",
+        "--substitutions",
         action="store_true",
         help="Print glyph substitutions based on positional substitution info.",
     )
     parser.add_argument(
-        "--glyph-substitution-groups",
+        "--substitution-groups",
         action="store_true",
         help=(
             "Print glyph substitutions based on positional substitution info,"
@@ -61,7 +61,7 @@ def make_parser():
     return parser
 
 
-def print_glyph_names(fontpath):
+def print_glyphs(fontpath):
     # type: (str) -> None
     try:
         font = fontforge.open(fontpath)
@@ -111,7 +111,7 @@ def get_ligature_strs(fontpath):
     return ligature_strs
 
 
-def print_glyph_substitutions(fontpath):
+def print_substitutions(fontpath):
     # type: (str) -> None
     glyph_subs = get_glyph_subst_pairs(fontpath)
     for glyphname, subst_glyph in sorted(
@@ -120,7 +120,7 @@ def print_glyph_substitutions(fontpath):
         print("%s\t%s" % (subst_glyph.str, glyphname))
 
 
-def print_glyph_substitution_groups(fontpath):
+def print_substitution_groups(fontpath):
     # type: (str) -> None
     glyph_subs = get_glyph_subst_pairs(fontpath)
     key_func = lambda tpl: tpl[0]

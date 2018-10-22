@@ -2,20 +2,81 @@
 
 # ----------  PATH  ----------------------------------------------------------
 
+# Combines colon-separated path lists, removing duplicates. By default, the last
+# occurence among duplicates is kept, unless '--keep-first' is passed.
+# Args:
+#   $1 $2: Colon-separated path lists.
+#   $3: "--keep-first" to keep the first of duplicates, instead of the last.
+combine_paths () {
+    if [[ -n "$1" && -n "$2" ]]; then
+        local path="$1:$2"
+    elif [[ -n "$1" ]]; then
+        local path="$1"
+    else
+        local path="$2"
+    fi
+    if [[ $# -gt 2 ]] && [[ "$3" == "--keep-first" ]]; then
+        path="$(__uniq_path_keep_first "$path")"
+    else
+        path="$(__reverse_path "$path")"
+        path="$(__uniq_path_keep_first "$path")"
+        path="$(__reverse_path "$path")"
+    fi
+    echo "$path"
+}
+
+__uniq_path_keep_first () {
+    local ifs="$IFS"
+    IFS=":"
+    local -a paths=($1)
+    local -a uniques=()
+    local x y
+    for x in "${paths[@]}"; do
+        for y in "${uniques[@]}"; do
+            if [[ "$x" == "$y" ]]; then
+                continue 2
+            fi
+        done
+        uniques=("${uniques[@]}" "$x")
+    done
+    echo "${uniques[*]}"
+    IFS="$ifs"
+}
+
+__reverse_path () {
+    local ifs="$IFS"
+    IFS=":"
+    local -a in_order=($1)
+    local -a rev_order=()
+    local x
+    for x in "${in_order[@]}"; do
+        rev_order=("$x" "${rev_order[@]}")
+    done
+    echo "${rev_order[*]}"
+    IFS="$ifs"
+}
+
+
 case $OSTYPE in
     linux*)
-        PATH="/usr/local/sbin:/sbin:/usr/sbin"
-        PATH="${PATH}:${HOME}/.linuxbrew/bin:/usr/local/bin:/bin:/usr/bin"
-        PATH="${PATH}:${HOME}/bin"
+        PATH="${PATH:-}"
+        PATH="$(combine_paths "/usr/local/bin:/bin:/usr/bin" "$PATH")"
+        PATH="$(combine_paths "${HOME}/alt" "${PATH}" --keep-first)"
+        PATH="$(combine_paths "/usr/local/sbin:/sbin:/usr/sbin" "$PATH" --keep-first)"
+        PATH="$(combine_paths "$PATH" "${HOME}/bin")"
+        # PATH="$(combine_paths "$PATH" "${HOME}/.linuxbrew/bin")"
         export PATH
 
-        MANPATH=/usr/local/share/man:/usr/share/man:/usr/share/man/en
-        # MANPATH="${HOME}/.linuxbrew/share/man${MANPATH:+:${MANPATH}}"
+        MANPATH="${MANPATH:-}"
+        MANPATH="$(combine_paths "$MANPATH" /usr/local/share/man:/usr/share/man:/usr/share/man/en)"
+        # MANPATH="$(combine_paths "$MANPATH" "${HOME}/.linuxbrew/share/man")"
         export MANPATH
 
         # export R_HOME=/usr/lib64/R
 
-        PERL5LIB="${PERL5LIB:+${PERL5LIB}:}${HOME}/perl5/lib/perl5"
+        PERL5LIB="${PERL5LIB:-}"
+        PERL5LIB="$(combine_paths "$PERL5LIB" "${HOME}/perl5/lib/perl5")"
+        export PERL5LIB
         ;;
     cygwin*)
         PATH="$PATH:$HOME/bin"
@@ -30,7 +91,6 @@ case $OSTYPE in
         PATH="${PATH}:/Applications/Isabelle2014.app/Contents/Resources/Isabelle2014/bin"
         PATH="${PATH}:/opt/X11/bin"
         PATH="${PATH}:${HOME}/bin"
-        # PATH="${PATH}:${HOME}/Library/Python/2.7/bin"
         export PATH
 
         MANPATH="/usr/local/opt/coreutils/libexec/gnuman"

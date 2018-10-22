@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e -o pipefail -u
+
+# License: BSD License
+# (https://tla.msr-inria.inria.fr/tlaps/content/Download/License.html).
+# Source: https://tla.msr-inria.inria.fr/tlaps/dist/current/tlaps-1.4.3.tar.gz
+# Instructions: https://tla.msr-inria.inria.fr/tlaps/content/Download/Source.html
+url='https://tla.msr-inria.inria.fr/tlaps/dist/current/tlaps-1.4.3.tar.gz'
+archive='tlaps-1.4.3.tar.gz'
+# sha256=''
+install_dir="${HOME}/install/tlaps"
+
+# curl -f -o "$archive" "$url"
+# if [[ "$(sha256sum -b < "$archive" | cut -d' ' -f1)" != "$sha256" ]]; then
+#     echo "Downloaded file has incorrect checksum." 1>&2
+#     exit 1
+# fi
+# unzip -t "$archive" >/dev/null 2>&1
+# mkdir -p "$install_dir"
+# unzip -d "$(dirname "$install_dir")" "$archive" >/dev/null
+
+# Documentation.
+# https://tla.msr-inria.inria.fr/tlaps/content/Documentation/Tutorial.html

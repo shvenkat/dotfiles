@@ -1,0 +1,32 @@
+# https://leanprover.github.io/
+# https://github.com/leanprover/lean
+# https://github.com/leanprover/lean/releases/latest
+# https://github.com/leanprover/lean-mode
+# https://github.com/leanprover/mathlib
+
+# Tutorials.
+# https://leanprover.github.io/theorem_proving_in_lean/
+# https://leanprover.github.io/theorem_proving_in_lean/theorem_proving_in_lean.pdf
+# https://leanprover.github.io/introduction_to_lean
+# https://leanprover.github.io/introduction_to_lean/introduction_to_lean.pdf
+# https://leanprover.github.io/programming_in_lean
+# https://leanprover.github.io/programming_in_lean/programming_in_lean.pdf
+# https://github.com/leanprover/mathlib/blob/master/docs/extras.md
+
+# Manuals.
+# https://leanprover.github.io/reference/lean_reference.pdf
+
+# Papers.
+# https://leanprover.github.io/papers/system.pdf
+
+# Presentations.
+# http://leanprover.github.io/talks/FM2018.pdf
+# https://leanprover.github.io/talks/from_z3_to_lean.pdf
+# http://leanprover.github.io/talks/LeanAtGalois.pdf
+
+# Use in verification.
+# https://github.com/Kha/masters-thesis/blob/master/main.pdf
+# https://github.com/Kha/electrolysis
+
+# Courses.
+# https://leanprover.github.io/logic_and_proof

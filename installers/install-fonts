@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+NAME="$(basename -- "$0")"
+FONTS_DIR="${HOME}/.local/share/fonts"
+USAGE="$NAME [-h|--help]"
+HELP="
+SYNOPSIS
+    $USAGE
+
+DESCRIPTION
+    Installs certain fonts to $FONTS_DIR.
+"
+
+# Parse arguments.
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)
+            echo "$HELP"
+            exit 0
+            ;;
+        *)
+            echo "Usage: $USAGE" 1>&2
+            exit 1
+            ;;
+    esac
+done
+
+# Download fonts.
+mkdir -p "$FONTS_DIR"
+echo "Downloading to $FONTS_DIR."
+
+# Fira Code - Fira Sans Mono with ligatures for programming operators.
+fira_code_url_prefix="https://github.com/tonsky/FiraCode/blob/master/distr/otf/"
+fira_code_url_suffix="?raw=true"
+fira_code_files=(
+    "FiraCode-Light.otf"
+    "FiraCode-Regular.otf"
+    "FiraCode-Medium.otf"
+    "FiraCode-Bold.otf"
+    "FiraCode-Retina.otf"
+)
+for fontfile in "${fira_code_files[@]}"; do
+    echo "    $fontfile"
+    curl -fsSL -o "$FONTS_DIR/$fontfile" \
+        "${fira_code_url_prefix}${fontfile}${fira_code_url_suffix}"
+done
+
+# Fira Code Symbol - Fira Code ligatures mapped to Unicode private codepoints.
+fira_symbol_file="FiraCode-Regular-Symbol.zip"
+fira_symbol_url="https://github.com/tonsky/FiraCode/files/412440/${fira_symbol_file}"
+echo "    $fira_symbol_file"
+curl -fsSL -o "/tmp/${fira_symbol_file}" "$fira_symbol_url"
+unzip -d "$FONTS_DIR" "/tmp/${fira_symbol_file}"
+rm -f "/tmp/${fira_symbol_file}"
+
+# Inform the system to make the new fonts available.
+echo "Updating font cache."
+fc-cache -f

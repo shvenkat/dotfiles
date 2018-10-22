@@ -7,13 +7,15 @@ gnupg/trustdb.gpg
 ssh/authorized_keys
 ssh/known_hosts
 
-# Auto-generated files.
+# MacOS cruft.
 .DS_STORE
-.mypy_cache/
-__pycache__
-*.pyc
-ltximg/
 
-# Build files.
+# Python files.
 env/
 .venv/
+.mypy_cache/
+__pycache__/
+*.pyc
+
+# Emacs.
+ltximg/

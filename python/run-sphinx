@@ -1,0 +1,45 @@
+#!/bin/bash
+
+project_dir="$1"
+sphinx_dir="$project_dir/docs/sphinx"
+index_rst="$sphinx_dir/source/index.rst"
+
+# Check requirements.
+if ! which sphinx-build >/dev/null 2>&1; then
+    echo "sphinx-build not found." 1>&2
+    exit 1
+fi
+if ! cd "$sphinx_dir"; then
+    echo "$sphinx_dir not found." 1>&2
+    exit 1
+fi
+
+# Clean the 'source/' directory.
+find source -maxdepth 1 -type f -name '*.rst' ! -name 'index.rst' -delete
+
+# Create 'source/index.rst' if needed.
+if [[ ! -e "$index_rst" ]]; then
+    cat > "$index_rst" <<EOF
+Project documentation
+=====================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   modules
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+EOF
+fi
+
+# Extract documentation from source.
+sphinx-apidoc --force --separate --module-first -o source "$project_dir" "$project_dir/setup.py" > /dev/null
+
+# Build HTML documentation.
+make html > /dev/null

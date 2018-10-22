@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -e -u -o pipefail
+
+NAME="$(basename -- "$0")"
+REQS_FILE="$(dirname -- "$0")/python-packages.txt"
+
+USAGE="$NAME [-h|--help]"
+HELP="
+SYNOPSIS
+    $USAGE
+
+DESCRIPTION
+    Installs Python packages listed in $REQS_FILE
+    using pip. It will not install packages in a virtual environment.
+"
+
+# Parse arguments.
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -h|--help)
+            echo "$HELP"
+            exit 0
+            ;;
+        *)
+            echo "Usage: $USAGE" 1>&2
+            exit 1
+            ;;
+    esac
+done
+
+# Check that no virtual environment is active.
+if [[ -n "${VIRTUAL_ENV:-}" ]]; then
+    echo "Cannot run with an active virtual environment. Run 'deactivate'." 1>&2
+    exit 1
+fi
+
+# Check that Python3 is available.
+if ! which python3 >/dev/null 2>&1; then
+    echo "python3 not found." 1>&2
+    exit 1
+fi
+python_path="$(which python3)"
+python_version="$(python3 -V)"
+echo "Using $python_path ($python_version)."
+
+# Install pip if needed.
+if ! python3 -m pip -V >/dev/null 2>&1; then
+    echo "Installing pip."
+    python3 -m ensurepip --user --upgrade
+fi
+
+# Install packages.
+echo "Installing packages specified in $REQS_FILE."
+python3 -m pip install --user -r "$REQS_FILE"

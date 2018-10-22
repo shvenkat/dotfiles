@@ -1,0 +1,88 @@
+#!/bin/bash
+
+set -e -o pipefail -u
+
+# License: MIT License (http://lamport.azurewebsites.net/tla/license.html)
+# git: https://github.com/tlaplus/tlaplus
+# ZIP: https://tla.msr-inria.inria.fr/tlatoolbox/dist/tla.zip
+# JAR: https://tla.msr-inria.inria.fr/tlatoolbox/dist/tla2tools.jar
+url='https://tla.msr-inria.inria.fr/tlatoolbox/dist/tla.zip'
+archive='tla.zip'
+sha256='f1c8742489509191a254329dffbdb0f5e089975c4fe6e27eabc34139e504cdf0'
+install_dir="${HOME}/install/tla"
+
+curl -f -o "$archive" "$url"
+if [[ "$(sha256sum -b < "$archive" | cut -d' ' -f1)" != "$sha256" ]]; then
+    echo "Downloaded file has incorrect checksum." 1>&2
+    exit 1
+fi
+unzip -t "$archive" >/dev/null 2>&1
+mkdir -p "$install_dir"
+unzip -d "$(dirname "$install_dir")" "$archive" >/dev/null
+
+#
+# Executable wrappers for tools.
+#
+
+cat > "${HOME}/bin/tlc2" <<EOF
+#!/bin/bash
+CLASSPATH="$install_dir" exec java tlc2.TLC "\$@"
+EOF
+
+cat > "${HOME}/bin/sany" <<EOF
+#!/bin/bash
+CLASSPATH="$install_dir" exec java tla2sany.SANY "\$@"
+EOF
+
+cat > "${HOME}/bin/pcal" <<EOF
+#!/bin/bash
+CLASSPATH="$install_dir" exec java pcal.trans "\$@"
+EOF
+
+cat > "${HOME}/bin/tla2tex" <<EOF
+#!/bin/bash
+CLASSPATH="$install_dir" exec java tla2tex.TLA "\$@"
+EOF
+
+#
+# Documentation.
+#
+
+# TLA+ website.
+# https://lamport.azurewebsites.net/tla/tla.html
+# https://github.com/tlaplus/Examples
+# https://lamport.azurewebsites.net/tla/summary-standalone.pdf
+# https://lamport.azurewebsites.net/tla/papers.html
+# https://lamport.azurewebsites.net/pubs/pubs.html
+
+# The new TLA+ book on TLA+2, the current version..
+# https://lamport.azurewebsites.net/tla/hyperbook.html
+# https://lamport.azurewebsites.net/tla/hyperbook.zip (PDF)
+# https://lamport.azurewebsites.net/tla/hyper-tla-hyperbook.zip (latex source)
+
+# TLA+2 tools: SANY syntax checker, TLC model checker, PlusCal translator, TLATeX.
+# https://lamport.azurewebsites.net/tla/tools.html
+
+# PlusCal, the algorithm specification language.
+# https://lamport.azurewebsites.net/tla/pluscal.html
+# https://lamport.azurewebsites.net/tla/c-manual.pdf
+# https://lamport.azurewebsites.net/tla/p-manual.pdf
+# https://lamport.azurewebsites.net/pubs/pluscal.pdf
+# https://lamport.azurewebsites.net/pubs/dcas.pdf
+# https://lamport.azurewebsites.net/tla/dcas-example.html
+# https://lamport.azurewebsites.net/tla/PlusCal.tla
+
+# TLAPS, the proof system that uses various automated prover backends.
+# https://lamport.azurewebsites.net/tla/tla2.html
+# https://lamport.azurewebsites.net/pubs/lamport-how-to-write.pdf
+# https://lamport.azurewebsites.net/tla/tla2-guide.pdf
+# https://lamport.azurewebsites.net/tla/TLAPlus2Grammar.tla
+# https://lamport.azurewebsites.net/tla/TLAPlus2Grammar.pdf
+# https://tla.msr-inria.inria.fr/tlaps
+# https://tla.msr-inria.inria.fr/tlaps/content/Documentation/Tutorial/The_example.html
+
+# Specifying Systems, the original TLA+ book on the outdated first version.
+# https://lamport.azurewebsites.net/tla/book.html
+# https://lamport.azurewebsites.net/tla/book-02-08-08.pdf
+# https://lamport.azurewebsites.net/tla/errata.pdf
+# https://lamport.azurewebsites.net/tla/web.tar.gz
