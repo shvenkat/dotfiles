@@ -12,6 +12,7 @@ ssh/known_hosts
 .mypy_cache/
 __pycache__
 *.pyc
+ltximg/
 
 # Build files.
 env/

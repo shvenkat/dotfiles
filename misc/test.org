@@ -119,7 +119,7 @@ A rose is a rose is a rose is a rose.
 
 ** Code
 
-Some code examples.
+Some code examples. For instance, x -> t in text and =x -> t= in code.
 
     #+BEGIN_SRC sh
     echo "a b c" \

@@ -11,6 +11,7 @@
 # Editor/IDE litter.
 *.swp*
 .idea/
+ltximg/
 
 # Compilers.
 *.o

@@ -6,6 +6,7 @@ confirmmerge = true
 contactquietly = true
 logfile = /tmp/unison.log
 sortbysize = true
+sshargs = -C
 
 # Backup settings.
 backup = Name *
@@ -14,6 +15,9 @@ backuploc = central
 # ignore = Path backups
 
 # ----  EXCLUDED FILES  ----
+
+## Ad-hoc backup files.
+ignore = Name *~
 
 ## Python.
 ignore = Name env
@@ -25,3 +29,6 @@ ignore = Name .ipynb_checkpoints
 
 ## MacOS
 ignore = Name .DS_Store
+
+## Ephemera.
+ignore = Name *.log
