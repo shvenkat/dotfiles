@@ -3,7 +3,8 @@
 
     ".GlobalPreferences": {
       "_HIHideMenuBar": true,           // Automatically hide/show the menu bar.
-      "AppleActionOnDoubleClick": "Maximize"  // Double-click window title bar to maximize.
+      "AppleActionOnDoubleClick": "Maximize",  // Double-click window title bar to maximize.
+      "AppleWindowTabbingMode": "always"       // Use tabs instead of new windows.
     },
 
     "com.apple.dock": {
@@ -13,6 +14,7 @@
       "launchanim": false,              // Disable launch animation.
       "mineffect": "scale",             // Minimize windows by scaling down.
       "minimize-to-application": true,  // Minimize windows into app icon.
+      "show-recents": false,            // Don't show recent apps in the dock.
 
       // Configure "hot corner" actions.
       // Possible values:
@@ -75,6 +77,11 @@
       "showClock": 1,                   // Show time on screen saver.
       "idleTime": 300,                  // Idle time before starting.
       "PrefsVersion": 100
+    },
+
+    "com.apple.coreservices.useractivityd": {  // Disable "Handoff" activity syncing.
+      "ActivityAdvertisingAllowed": false,
+      "ActivityReceivingAllowed": false
     }
   }
 }
