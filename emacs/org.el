@@ -8,7 +8,6 @@
     (lambda ()
         (progn
             (variable-pitch-mode t)
-            (flyspell-mode 1)
             (blink-cursor-mode 0)
             (linum-mode 0))))
 
