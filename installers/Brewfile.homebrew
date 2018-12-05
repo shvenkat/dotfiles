@@ -68,7 +68,9 @@ brew "valgrind"
 brew "blast"
 brew "bowtie2"
 brew "igv"
+brew "q"
 brew "samtools"
+brew "xsv"
 
 # Cloud.
 brew "awscli"

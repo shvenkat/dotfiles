@@ -12,4 +12,7 @@
      ("\\.markdown\\'" . markdown-mode))
     :init
     (setq markdown-command "multimarkdown")
-    (setq markdown-enable-math t))
+    (setq markdown-enable-math t)
+    :config
+    (add-hook 'markdown-mode-hook
+        '(lambda () (set-face-attribute 'markdown-italic-face nil :underline nil))))

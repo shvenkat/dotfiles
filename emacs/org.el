@@ -3,7 +3,7 @@
 ;; ----------  TEXT MODE  ----------
 
 ;; Customize the display of text documents (as opposed to code).
-;; Use a proportional font, enable spell checking, and hide line numbers.
+;; Use a proportional font, and hide line numbers.
 (add-hook 'text-mode-hook
     (lambda ()
         (progn

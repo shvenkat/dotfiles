@@ -288,7 +288,7 @@
         (lambda (el)
             (let* ((codepoint (car el))
                    (nchar (string-width (cadr el)))
-                   (regex (caddr el))
+                   (regex (car (cddr el)))
                    (comp-rule
                        (append
                            (apply #'append (make-list (- nchar 1) '(?\s (Br . Bl))))
