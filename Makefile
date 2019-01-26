@@ -6,8 +6,20 @@ SHELL:=BASH_ENV= /bin/bash -e -o pipefail -u -c
 
 
 DOTFILES := \
-        emacs xfce4-terminal lxterminal zsh git tmux readline colordiff htop \
-        less unison editorconfig python
+        emacs \
+        xfce4-terminal \
+        lxterminal \
+        zsh \
+        git \
+        tmux \
+        ssh \
+        readline \
+        colordiff \
+        htop \
+        less \
+        unison \
+        editorconfig \
+        python
 
 
 .PHONY: help all clean $(DOTFILES)
@@ -63,6 +75,9 @@ diff-highlight: $(HOME)/bin/diff-highlight
 tmux: $(HOME)/.tmux.conf
 $(HOME)/.tmux.conf: tmux/tmux.conf tmux/colorscheme_solarized_light.conf
 
+ssh: $(HOME)/bin/ssh-agent-connect
+$(HOME)/bin/ssh-agent-connect: bin/ssh-agent-connect
+
 readline: $(HOME)/.inputrc
 $(HOME)/.inputrc: util/inputrc
 
@@ -100,6 +115,7 @@ $(addprefix $(HOME)/, \
         .config/lxterminal/lxterminal.conf \
         .autoenv.zsh \
         $(addprefix .config/git/,config ignore attributes) \
+        bin/ssh-agent-connect \
         .inputrc \
         .colordiffrc \
         .config/htop/htoprc \
