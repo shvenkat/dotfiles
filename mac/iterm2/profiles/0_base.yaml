@@ -5,9 +5,9 @@ Profiles:
   Guid:                       B73E09EE-8F03-4895-B59B-6DA2FE7AB8EC
 
   # Typography settings.
-  Normal Font:                FiraCode-Regular 17
+  Normal Font:                FiraCode-Regular 19
   ASCII Ligatures:            true
-  Non Ascii Font:             DejaVuSansMonoForPowerline 17  # For non-ASCII characters.
+  Non Ascii Font:             DejaVuSansMonoForPowerline 19  # For non-ASCII characters.
   Use Non-ASCII Font:         true
   Use Italic Font:            true
   ASCII Anti Aliased:         true

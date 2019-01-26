@@ -5,3 +5,6 @@
 # Connect to ssh-agent, starting it if needed.
 [[ -x "$HOME/bin/ssh-agent-connect" ]] \
     && eval "$("$HOME/bin/ssh-agent-connect")"
+
+# Set the mosh escape key to match ssh.
+export MOSH_ESCAPE_KEY='~'
