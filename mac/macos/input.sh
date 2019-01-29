@@ -19,7 +19,8 @@ if [ "$kb_count" -eq 1 ] && [ ! -z "$kb_vendor_id" ] && [ ! -z "$kb_product_id" 
             <integer>2</integer> \
         </dict>"
 else
-    echo "WARNING: Key remapping skipped. Unable to determine keyboard vendor and product IDs." 1>&2
+    echo -e '\033[31mWARNING: Key remapping skipped.\033[0m' \
+         'Unable to determine keyboard vendor and product IDs.'
 fi
 
 # Key codes (ref: http://apple.stackexchange.com/a/88096).
