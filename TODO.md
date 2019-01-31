@@ -1,8 +1,3 @@
-# zsh config
-
-Split .zshrc, placing some init code in .zshenv, .zprofile and .zlogin if
-needed.
-
 # lesspipe
 
 * Handles all inputs including stdin and with failsafe behavior.
@@ -17,3 +12,8 @@ needed.
 * Allow chaining handlers. untar followed by syntax-highlight.
 * Powerful file type inference for stdin.
 * Suggested map and handlers.
+
+# Invert brightness
+
+http://unix.stackexchange.com/questions/107337/invert-only-brightness-for-monitor
+http://stackoverflow.com/questions/42681456/how-to-invert-brightness-but-not-color-given-rgb-gamma-ramps

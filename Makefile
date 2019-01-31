@@ -126,7 +126,7 @@ curl git ruby:
 
 prereq: brew python3
 
-brew: curl ruby git
+brew: curl ruby git buildtools
 	if ! test -x /usr/local/bin/brew; then \
 	    url='https://raw.githubusercontent.com/Homebrew/install/master/install'; \
 	    if ! install_rb="$$(curl -fsS "$$url")"; then \
