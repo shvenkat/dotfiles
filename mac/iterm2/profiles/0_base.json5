@@ -1,0 +1,67 @@
+{
+  "Profiles": [
+    // A base profile without a color palette.
+    {
+      "Name": "Base",
+      "Guid": "B73E09EE-8F03-4895-B59B-6DA2FE7AB8EC",
+
+      // Typography settings.
+      "Normal Font": "FiraCode-Regular 19",
+      "ASCII Ligatures": true,
+      "Non Ascii Font": "DejaVuSansMono 19",  // For non-ASCII characters.
+      "Use Non-ASCII Font": true,
+      "Use Italic Font": true,
+      "ASCII Anti Aliased": true,
+      "Non-ASCII Anti Aliased": true,
+      "Horizontal Spacing": 1.0,
+      "Vertical Spacing": 1.0,
+      "Thin Strokes": 0,                      // Always preserve stroke width.
+      "Cursor Type": 2,                       // Block cursor.
+      "Blink Allowed": false,
+      "Blinking Cursor": false,
+      "Ambiguous Double Width": false,
+
+      // Window settings.
+      "Transparency": 0,                      // Opaque rendering.
+      "Window Type": 1,                       // Fullscreen window.
+
+      // Terminal settings.
+      "Terminal Type": "xterm-16color",       // For canonical solarized colors.
+      "Character Encoding": 4,                // UTF-8.
+      "Silence Bell": true,
+      "Visual Bell": true,
+      "Flashing Bell": true,
+      "Disable Smcup Rmcup": false,           // Enable alternative screen.
+      "Unlimited Scrollback": false,
+      "Scrollback Lines": 10000,
+      "Scrollback With Status Bar": false,    // No scrollback for vim/tmux.
+      "Scrollback in Alternate Screen": true, // Scrollback for pagers.
+      "Disable Printing": true,               // What is this?
+      "Disable Window Resizing": true,        // Apps can't set term size.
+      "Sync Title": false,                    // Apps can't set term title.
+      "Allow Title Reporting": false,         // Apps can't get term title.
+      "Mouse Reporting": false,               // Don't send mouse events.
+
+      // Session settings.
+      "Custom Command": "No",                 // Run the login shell.
+      "Command": "",                          // No custom login command.
+      "Initial Text": "",                     // No input to custom command.
+      "Set Local Environment Vars": true,     // Set LC_LANG, LC_CTYPE, etc.
+      "Custom Directory": "No",
+      "Automatically Log": false,
+      "Send Code When Idle": false,
+      "Close Sessions On End": true,          // Close window on shell exit.
+      "Prompt Before Closing 2": 2,           // Prompt for unlisted jobs.
+      "Jobs to Ignore": [
+        "tmux"
+      ],
+
+      // Key bindings.
+      "Option Key Sends": 2,                  // Left option = Esc.
+      "Right Option Key Sends": 0,            // Right option = Alt/Option.
+
+      // Notification settings.
+      "BM Growl": false,                      // No desktop notifications.
+    }
+  ]
+}

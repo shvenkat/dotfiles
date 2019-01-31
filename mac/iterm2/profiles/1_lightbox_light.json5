@@ -1,0 +1,247 @@
+{
+  "Profiles": [
+    // Base profile plus the lightbox light color palette.
+    {
+      "Name": "Lightbox Light",
+      "Guid": "3CB52AA6-5BBB-4F15-B00D-237B896E9FEA",
+
+      // Include settings from the Base profile, unless overridden below.
+      "Dynamic Profile Parent Name": "Base",
+
+      // Required color-related settings.
+      "Use Bold Font": false,       // Don't use bold fonts.
+      "Use Bright Bold": true,      // Use bright ANSI colors instead of bold fonts.
+      "Minimum Contrast": 0,        // Use the colors exactly as specified below.
+      "Smart Cursor Color": false,  // Use the cursor colors specified below.
+
+      // ----------  ANSI colors  ----------
+
+      // Focus color.
+      "Ansi 0 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.09952328,
+        "Green Component": 0.1574315,
+        "Blue Component": 0.1660819,
+        "Alpha Component": 1
+      },
+
+      // Red.
+      "Ansi 1 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.8754981,
+        "Green Component": 0.06846258,
+        "Blue Component": 0.2833338,
+        "Alpha Component": 1
+      },
+
+      // Green.
+      "Ansi 2 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.3478746,
+        "Green Component": 0.5543851,
+        "Blue Component": 0.193211,
+        "Alpha Component": 1
+      },
+
+      // Yellow.
+      "Ansi 3 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.5573444,
+        "Green Component": 0.4563016,
+        "Blue Component": 0.1174967,
+        "Alpha Component": 1
+      },
+
+      // Blue.
+      "Ansi 4 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.2292068,
+        "Green Component": 0.450114,
+        "Blue Component": 0.6637887,
+        "Alpha Component": 1
+      },
+
+      // Magenta.
+      "Ansi 5 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.5971564,
+        "Green Component": 0.3378257,
+        "Blue Component": 0.5422153,
+        "Alpha Component": 1
+      },
+
+      // Cyan.
+      "Ansi 6 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.1144665,
+        "Green Component": 0.5384812,
+        "Blue Component": 0.4264694,
+        "Alpha Component": 1
+      },
+
+      // Tint color.
+      "Ansi 7 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.9118795,
+        "Green Component": 0.88125,
+        "Blue Component": 0.7887645,
+        "Alpha Component": 1
+      },
+
+      // Highlight color.
+      "Ansi 8 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0,
+        "Green Component": 0,
+        "Blue Component": 0,
+        "Alpha Component": 1
+      },
+
+      // Orange.
+      "Ansi 9 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.6804969,
+        "Green Component": 0.3473283,
+        "Blue Component": 0.2069955,
+        "Alpha Component": 1
+      },
+
+      // Emphasis color.
+      "Ansi 10 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.1976535,
+        "Green Component": 0.2791695,
+        "Blue Component": 0.2887927,
+        "Alpha Component": 1
+      },
+
+      // Text color.
+      "Ansi 11 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.3286603,
+        "Green Component": 0.4282081,
+        "Blue Component": 0.4345232,
+        "Alpha Component": 1
+      },
+
+      // Note color.
+      "Ansi 12 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.4246351,
+        "Green Component": 0.4973184,
+        "Blue Component": 0.5001242,
+        "Alpha Component": 1
+      },
+
+      // Violet.
+      "Ansi 13 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.4333031,
+        "Green Component": 0.3914896,
+        "Blue Component": 0.6505767,
+        "Alpha Component": 1
+      },
+
+      // Comment color.
+      "Ansi 14 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.5104035,
+        "Green Component": 0.5777903,
+        "Blue Component": 0.5808526,
+        "Alpha Component": 1
+      },
+
+      // Background color.
+      "Ansi 15 Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.9894249,
+        "Green Component": 0.9577929,
+        "Blue Component": 0.8688238,
+        "Alpha Component": 1
+      },
+
+      // ----------  Default colors  ----------
+
+      // Same as background color above.
+      "Background Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.9894249,
+        "Green Component": 0.9577929,
+        "Blue Component": 0.8688238,
+        "Alpha Component": 1
+      },
+
+      // Same as text color above.
+      "Foreground Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.3286603,
+        "Green Component": 0.4282081,
+        "Blue Component": 0.4345232,
+        "Alpha Component": 1
+      },
+
+      // Same as highlight color above.
+      "Bold Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0,
+        "Green Component": 0,
+        "Blue Component": 0,
+        "Alpha Component": 1
+      },
+
+      // Same as highlight color above.
+      "Cursor Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0,
+        "Green Component": 0,
+        "Blue Component": 0,
+        "Alpha Component": 1
+      },
+
+      // Same as note color above.
+      "Cursor Text Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.4246351,
+        "Green Component": 0.4973184,
+        "Blue Component": 0.5001242,
+        "Alpha Component": 1
+      },
+
+      // Same as highlight color above.
+      "Selection Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0,
+        "Green Component": 0,
+        "Blue Component": 0,
+        "Alpha Component": 1
+      },
+
+      // Same as note color above.
+      "Selected Text Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.4246351,
+        "Green Component": 0.4973184,
+        "Blue Component": 0.5001242,
+        "Alpha Component": 1
+      },
+
+      // Same as highlight color above.
+      "Link Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0,
+        "Green Component": 0,
+        "Blue Component": 0,
+        "Alpha Component": 1
+      },
+
+      // Same as comment color above, except for alpha value.
+      "Badge Color": {
+        "Color Space": "Calibrated",
+        "Red Component": 0.5104035,
+        "Green Component": 0.5777903,
+        "Blue Component": 0.5808526,
+        "Alpha Component": 0.5
+      }
+    }
+  ]
+}
