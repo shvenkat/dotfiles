@@ -73,7 +73,7 @@
 
 .DEFAULT_GOAL:=help
 MAKEFLAGS+=--warn-undefined-variables
-SHELL:=BASH_ENV= /bin/bash -e -o pipefail -u -c
+SHELL:=/bin/bash -e -o pipefail -u -c
 .DELETE_ON_ERROR:
 
 OSTYPE := $(shell uname -s | tr '[:upper:]' '[:lower:]')
