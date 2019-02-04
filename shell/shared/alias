@@ -58,3 +58,6 @@ alias mean="awk 'BEGIN { n = 0; s = 0 } { n += 1; s += \$1 } END { print s/n }'"
 
 # Remote file synchronization.
 alias rdiff='rsync -nacOziHS --delete'
+
+# Misc.
+alias rm-ssh-agent-sockets="find /tmp -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -user $USER -print0 | xargs -0 rm -rf"

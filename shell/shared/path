@@ -8,12 +8,13 @@
 #   $1 $2: Colon-separated path lists.
 #   $3: "--keep-first" to keep the first of duplicates, instead of the last.
 combine_paths () {
+    local path
     if [[ -n "$1" && -n "$2" ]]; then
-        local path="$1:$2"
+        path="$1:$2"
     elif [[ -n "$1" ]]; then
-        local path="$1"
+        path="$1"
     else
-        local path="$2"
+        path="$2"
     fi
     if [[ $# -gt 2 ]] && [[ "$3" == "--keep-first" ]]; then
         path="$(__uniq_path_keep_first "$path")"
