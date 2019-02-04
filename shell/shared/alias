@@ -2,6 +2,10 @@
 
 # ----------  ALIASES  -------------------------------------------------------
 
+# Shell aliases.
+alias ds='dirs'
+alias pd='pushd'
+
 # OS-specific aliases.
 case $OSTYPE in
     linux*)
