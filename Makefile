@@ -253,7 +253,7 @@ $(addprefix $(HOME)/, \
         .editorconfig \
         .mypy.ini .flake8 .pylintrc .isort.cfg):
 	mkdir -p "$$(dirname $@)"
-	ln -sf "$(PWD)/$<" "$@"
+	ln -sf "$$(pwd)/$<" "$@"
 
 # Generate dotfile by concatenation.
 $(addprefix $(HOME)/, \
@@ -415,7 +415,8 @@ PROGS := \
 ifeq ($(OSTYPE),linux)
 else
 PROGS += \
-        iterm-prog
+        iterm-prog \
+        mactimer
 endif
 
 .PHONY: progs $(PROGS)
@@ -553,6 +554,11 @@ else
 iterm-prog: brew
 	test -x /Applications/iTerm.app/Contents/MacOS/iTerm2 \
 	    || brew cask install iterm2
+
+mactimer: $(HOME)/bin/mactimer
+$(HOME)/bin/mactimer: bin/mactimer
+	mkdir -p "$$(dirname $@)"
+	ln -sf "$$(pwd)/$<" "$@"
 endif
 
 

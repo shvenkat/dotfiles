@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e -o pipefail -u -E
+
+NAME="$(basename "$0")"
+USAGE="$NAME <minutes> <message> &"
+
+
+if [[ $# -ne 2 ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+    echo "$USAGE" 1>&2
+    exit 2
+fi
+minutes="$1"
+message="$2"
+
+sleep $((minutes * 60))
+
+done="false"
+while osascript -e "display dialog \"${message}\" with title \"Reminder\" buttons {\"Snooze 5\", \"Done\"} default button \"Snooze 5\" cancel button \"Done\"" &>/dev/null; do
+    sleep 300
+done
