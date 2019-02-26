@@ -3,19 +3,64 @@
 set -e -o pipefail -u -E
 
 NAME="$(basename "$0")"
-USAGE="$NAME <minutes> <message> &"
+USAGE="Usage: $NAME [-h|--help] (--for | --till) hh:mm <message> &"
 
+# Returns the current time as hh:mm.
+now () {
+    date '+%H:%M'
+}
 
-if [[ $# -ne 2 ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+# Add two times expressed as hh:mm, returning hh:mm.
+add_time () {
+    hh1="${1:0:2}"
+    hh2="${2:0:2}"
+    mm1="${1:3:2}"
+    mm2="${2:3:2}"
+    mm=$(( (10#$mm1 + 10#$mm2) % 60 ))
+    hh=$(( (10#$hh1 + 10#$hh2 + (10#$mm1 + 10#$mm2) / 60) % 24 ))
+    printf '%02d:%02d' "$hh" "$mm"
+}
+
+# Subtract two times expressed as hh:mm, returning minutes.
+subtract_time () {
+    hh1="${1:0:2}"
+    hh2="${2:0:2}"
+    mm1="${1:3:2}"
+    mm2="${2:3:2}"
+    mm=$(( (10#$mm1 - 10#$mm2 + 60) % 60 ))
+    hh=$(( (10#$hh1 - 10#$hh2 - (10#$mm1 < 10#$mm2 ? 1 : 0) + 24) % 24 ))
+    echo "$((10#$hh * 60 + 10#$mm))"
+}
+
+# Parse arguments.
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            echo "$USAGE" 1>&2
+            exit 2
+            ;;
+        --for)
+            stop_time="$(add_time "$(now)" "$2")"
+            shift 2
+            break
+            ;;
+        --till)
+            stop_time="$2"
+            shift 2
+            break
+            ;;
+    esac
+done
+if [[ $# -lt 1 ]]; then
     echo "$USAGE" 1>&2
     exit 2
 fi
-minutes="$1"
-message="$2"
+message="$1"
 
-sleep $((minutes * 60))
+while [[ "$(subtract_time "$stop_time" "$(now)")" -gt 0 ]]; do
+    sleep 60
+done
 
-done="false"
 while osascript -e "display dialog \"${message}\" with title \"Reminder\" buttons {\"Snooze 5\", \"Done\"} default button \"Snooze 5\" cancel button \"Done\"" &>/dev/null; do
     sleep 300
 done
