@@ -18,7 +18,7 @@
 
 (flycheck-define-checker python-mypy-project-root
   "Run mypy from the project root, followed by flake8."
-    :command ("mypy" source-original)
+    :command ("python3" "-m" "mypy" source-original)
     :working-directory flycheck-python--find-project-root
     :error-patterns
     (
@@ -30,7 +30,7 @@
 
 (flycheck-define-checker python-flake8-project-root
   "Run flake8 from the project root, followed by pylint."
-    :command ("flake8" source-original)
+    :command ("python3" "-m" "flake8" source-original)
     :working-directory flycheck-python--find-project-root
     :error-patterns
     ((warning
@@ -42,7 +42,7 @@
 
 (flycheck-define-checker python-pylint-project-root
   "Run pylint from the project root."
-    :command ("pylint"
+    :command ("python3" "-m" "pylint"
               "--reports" "n"
               "--output-format" "text"
               "--score" "n"
