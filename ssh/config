@@ -1,8 +1,7 @@
 Host *
 	# ChallengeResponseAuthentication	no
 	CheckHostIP	yes
-	# Ciphers		aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc
-    Ciphers 	chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-cbc,aes192-cbc,aes128-cbc
+	Ciphers 	chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-cbc,aes192-cbc,aes128-cbc
 	Compression	yes
 	ControlMaster	no
 	ControlPath	none
@@ -14,7 +13,7 @@ Host *
 	GatewayPorts	no
 	# GSSAPIAuthentication	    no
 	# GSSAPIDelegateCredentials no
-	# HostbasedAuthentication	no
+	HostbasedAuthentication	no
 	# IdentifyFile	~/.ssh/id_rsa
 	# KbdInteractiveAuthentication	no
 	# KbdInteractiveDevices	    skey,bsdauth,pam
@@ -26,9 +25,8 @@ Host *
 	# PasswordAuthentication    no
 	PermitLocalCommand	no
 	PreferredAuthentications	publickey,password
-	# PreferredAuthentications	publickey,gssapi-with-mic,keyboard-interactive,hostbased,password
+	# PreferredAuthentications	publickey,gssapi-with-mic,keyboard-interactive,password
 	Protocol	2
-	# PubkeyAuthentication	no
 	RekeyLimit  256M
 	ServerAliveCountMax	24
 	ServerAliveInterval	5
