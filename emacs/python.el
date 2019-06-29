@@ -86,7 +86,7 @@
   :lighter " Isort"
   (if isort-mode
       (add-hook 'before-save-hook #'py-isort-before-save nil t)
-      (remove-hook 'before-save-hook #'py-isort-before-save t t)))
+      (remove-hook 'before-save-hook #'py-isort-before-save t)))
 (use-package py-isort
     :defer t
     :commands (py-isort-before-save)

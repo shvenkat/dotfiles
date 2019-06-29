@@ -99,6 +99,8 @@ preprocess () {
             # Delegate to `lesspipe` if available.
             if which lesspipe.sh >/dev/null; then
                 lesspipe.sh "$1"
+            elif which lesspipe >/dev/null; then
+                lesspipe "$1"
             else
                 echo "Install lesspipe.sh to view files of this type."
             fi
