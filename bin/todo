@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+"""
+Usage:
+
+    todo -n|--next [-p|--priority n] [dir-path]
+    todo -i|--interactive [dir-path]
+"""
+
+from argparse import ArgumentParser
+from pathlib import Path
+
+
+def main() -> None:
+    """Parse arguments and dispatch accordingly."""
+    parser = ArgumentParser(
+        description="Manage a folder of tasks lists in Github-flavored markdown."
+    )
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        "-n", "--next", action="store_true", help="Print next tasks."
+    )
+    group.add_argument(
+        "-i",
+        "--interactive",
+        action="store_true",
+        help="Enter interactive mode.",
+    )
+    parser.add_argument(
+        "-p",
+        "--priority",
+        type=int,
+        default=0,
+        help="Minimum priority of tasks to display or work on.",
+    )
+    parser.add_argument(
+        "path",
+        type=Path,
+        nargs="?",
+        default=Path("."),
+        help="Directory to the task directory",
+    )
+    args = parser.parse_args()
+    if args.next:
+        show_next_tasks(path=args.path, min_priority=args.priority)
+    else:
+        interact(path=args.path, min_priority=args.priority)
+
+
+def show_next_tasks(path: Path, min_priority: int) -> None:
+    file_paths = find_task_files(path)
+
+
+if __name__ == "__main__":
+    main()
