@@ -109,6 +109,9 @@ curl:
 git:
 	which git &>/dev/null || sudo apt-get install git
 
+python3:
+	which python3 &>/dev/null || sudo apt-get install python3
+
 else
 
 buildtools:
@@ -560,6 +563,11 @@ $(HOME)/bin/mactimer: bin/mactimer
 	mkdir -p "$$(dirname $@)"
 	ln -sf "$$(pwd)/$<" "$@"
 endif
+
+todo: $(HOME)/bin/todo
+$(HOME)/bin/todo: bin/todo python3
+	mkdir -p "$$(dirname $@)"
+	ln -sf "$$(pwd)/$<" "$@"
 
 
 #  ----------  FONT TARGETS  ---------------------------------------------------
