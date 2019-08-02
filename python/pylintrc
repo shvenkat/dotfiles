@@ -19,14 +19,17 @@ enable=c-extension-no-member
 
 # See http://pylint.pycqa.org/en/latest/technical_reference/features.html for allowed values.
 # Disable the following checks:
-# fixme - Encourage the use of FIXME and TODO tags to mark gaps in non-regulated code.
-# unused-import - Checking imports is left to flake8.
-# too-few-public-methods - Raises a false positive for data classes such as NamedTuple sub-classes.
-# no-member: Raises false positives because pylint is not very good at type inference.
-# bad-continuation: Code formatting is left to black.
-# line-too-long: Code formatting is left to black.
-# no-else-return: Raises false-positives.
-# ungrouped-imports: Grouping imports is left to isort.
+#   fixme - Encourage the use of FIXME and TODO tags to mark gaps in non-regulated code.
+#   unused-import - Checking imports is left to flake8.
+#   too-few-public-methods - Raises a false positive for data classes such as NamedTuple sub-classes.
+#   no-member: Raises false positives because pylint is not very good at type inference.
+#   bad-continuation: Code formatting is left to black.
+#   line-too-long: Code formatting is left to black.
+#   no-else-return: Raises false-positives.
+#   ungrouped-imports: Grouping imports is left to isort.
+#   logging-fstring-interpolation: Allow the use of "f-string" interpolation in logging.
+#       See discussion at https://github.com/PyCQA/pylint/issues/1788.
+#   missing-type-doc: Types are in the function/method signature.
 disable=fixme,
         unused-import,
         too-few-public-methods,
@@ -34,7 +37,9 @@ disable=fixme,
         bad-continuation,
         line-too-long,
         no-else-return,
-        ungrouped-imports
+        ungrouped-imports,
+        logging-fstring-interpolation,
+        missing-type-doc
 
 
 [REPORTS]
@@ -66,7 +71,7 @@ max-module-lines=1000
 docstring-min-length=-1
 no-docstring-rgx=
 
-good-names=i,j,k,e,f,id
+good-names=i,j,k,m,n,p,q,e,f,T,S
 bad-names=foo,bar,baz,ii,jj
 include-naming-hint=yes
 

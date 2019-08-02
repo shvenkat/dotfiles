@@ -13,5 +13,7 @@ select = E,W,F,C,B,B9
 #   E203: whitespace before (a delimiter in) ,;:
 #   E241: multiple spaces after ‘,’
 #   E251: unexpected spaces around keyword / parameter equals
+#   E252: missing space around keyword / parameter equals
 #   W503: line break before binary operator
-ignore = E203,E241,E251,W503
+#   B950: line too long (redundant with E501 and cannot be ignored by noqa: B950)
+ignore = E203,E241,E252,W503,B950

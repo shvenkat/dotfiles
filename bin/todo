@@ -1,20 +1,35 @@
 #!/usr/bin/env python3
 
-"""
+"""Manage a directory of tasks list files in Github-flavored markdown.
+
 Usage:
 
-    todo -n|--next [-p|--priority n] [dir-path]
-    todo -i|--interactive [dir-path]
-"""
 
+    todo -n|--next        [options] [dir-path]
+    todo -i|--interactive [options] [dir-path]
+
+Options:
+
+-p|--priority n    Only display projects with priority at least n.
+-m|--max n         Only display n tasks per group.
+-g|--group         Display group names
+"""
+import curses
+import datetime
+import enum
+import os
+import subprocess as sp
+import sys
 from argparse import ArgumentParser
+from collections import OrderedDict
 from pathlib import Path
+from typing import Dict, List, NamedTuple
 
 
 def main() -> None:
     """Parse arguments and dispatch accordingly."""
     parser = ArgumentParser(
-        description="Manage a folder of tasks lists in Github-flavored markdown."
+        description="Manage a directory of tasks list files in Github-flavored markdown."
     )
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
@@ -34,21 +49,385 @@ def main() -> None:
         help="Minimum priority of tasks to display or work on.",
     )
     parser.add_argument(
-        "path",
-        type=Path,
-        nargs="?",
-        default=Path("."),
-        help="Directory to the task directory",
+        "-m",
+        "--max",
+        type=int,
+        default=1,
+        help="Maximum number of tasks per markdown section to be displayed.",
+    )
+    parser.add_argument(
+        "-g",
+        "--group",
+        action="store_true",
+        help="Display group names i.e. Markdown section headers.",
+    )
+    parser.add_argument(
+        "path", type=Path, help="Directory to the task directory"
     )
     args = parser.parse_args()
     if args.next:
-        show_next_tasks(path=args.path, min_priority=args.priority)
+        show_next_tasks(
+            path=args.path,
+            min_priority=args.priority,
+            max_per_group=args.max,
+            show_groups=args.group,
+        )
     else:
-        interact(path=args.path, min_priority=args.priority)
+        interact(
+            dir_path=args.path,
+            min_priority=args.priority,
+            max_per_group=args.max,
+            show_groups=args.group,
+        )
 
 
-def show_next_tasks(path: Path, min_priority: int) -> None:
-    file_paths = find_task_files(path)
+def show_next_tasks(
+    path: Path, min_priority: int, max_per_group: int, show_groups: bool
+) -> None:
+    """One-shot listing of the next tasks.
+
+    Args:
+        path: Path of the directory of task list files.
+        min_priority: Minimum priority of the projects to display.
+        max_per_group: Maximum number to tasks to display per markdown section.
+        show_groups: Whether to show the markdown section headers.
+    """
+    priorities = find_task_files(path, min_priority=min_priority)
+    task_groups = {path: read_task_groups(path) for path in priorities.keys()}
+    sys.stdout.write(
+        "\n".join(
+            format_task_groups(
+                task_groups,
+                priorities,
+                max_per_group=max_per_group,
+                show_groups=show_groups,
+                use_ansi=os.isatty(1),
+            ).values()
+        )
+        + "\n"
+    )
+
+
+def find_task_files(path: Path, min_priority: int) -> Dict[Path, int]:
+    """Searches the given directory for .md files at any depth.
+
+    Args:
+        path: Path of the directory of task list files.
+        min_priority: Minimum priority, below which files (projects) will be excluded.
+
+    Returns:
+        Task file paths and their priorities.
+    """
+    paths = list(path.glob("**/*.md"))
+    priorities = {path: int(path.name.split("_")[0]) for path in paths}
+    return {
+        path: priority
+        for path, priority in priorities.items()
+        if priority >= min_priority
+    }
+
+
+class Status(enum.Enum):
+    done = enum.auto()
+    not_done = enum.auto()
+
+
+class Task(NamedTuple):
+    """A task list item corresponding to a line in a file, beginning with '- ['.
+    """
+
+    text: str
+    status: Status
+    date: datetime.date
+    path: Path
+    line_number: int
+
+
+class TaskGroup(NamedTuple):
+    """A group of tasks within the same markdown section of a file."""
+
+    name: str
+    tasks: List[Task]
+    path: Path
+    line_number: int
+
+
+def read_task_groups(path: Path) -> List[TaskGroup]:
+    """Reads task lists from path, grouping tasks by markdown section.
+
+    Args:
+        path: Task file.
+
+    Returns:
+        Task items, grouped by markdown section.
+    """
+    task_groups: List[TaskGroup] = []
+    with open(path, "rt") as handle:
+        tasks: List[Task] = []
+        group_name = ""
+        group_line_number = 0
+        for i, line in enumerate(handle):
+            if line.startswith("#"):
+                if tasks:
+                    task_groups.append(
+                        TaskGroup(
+                            name=group_name,
+                            tasks=tasks,
+                            path=path,
+                            line_number=group_line_number,
+                        )
+                    )
+                    tasks = []
+                group_name = line.rstrip("\n")
+                group_line_number = i + 1
+            elif line.lstrip().startswith("- ["):
+                status = (
+                    Status.done
+                    if line[line.index("[") + 1] == "x"
+                    else Status.not_done
+                )
+                date = datetime.date(
+                    *[
+                        int(x)
+                        for x in line[
+                            (line.index("/") - 2) : (line.index("/") + 6)
+                        ].split("/")
+                    ]
+                )
+                tasks.append(
+                    Task(
+                        text=line.rstrip("\n"),
+                        status=status,
+                        date=date,
+                        path=path,
+                        line_number=i + 1,
+                    )
+                )
+            else:
+                continue
+        if tasks:
+            task_groups.append(
+                TaskGroup(
+                    name=group_name,
+                    tasks=tasks,
+                    path=path,
+                    line_number=group_line_number,
+                )
+            )
+    return task_groups
+
+
+class FileLine(NamedTuple):
+    """Represents the file and line corresponding to a task, group or project.
+    """
+
+    path: Path
+    line: int
+
+
+def format_task_groups(
+    task_groups: Dict[Path, List[TaskGroup]],
+    priorities: Dict[Path, int],
+    max_per_group: int,
+    show_groups: bool,
+    use_ansi: bool,
+) -> Dict[FileLine, str]:
+    """Pretty-print task groups with file name headers.
+
+    Args:
+        task_groups: Map between task files and groups of tasks within.
+        priorities: Map between task files and priorities.
+        max_per_group: Maximum number to tasks to display per markdown section.
+        show_groups: Whether to show the markdown section headers.
+        use_ansi: Whether to highlight the output with ANSI terminal escape sequences.
+
+    Returns:
+        Formatted tasks, one per line.
+    """
+    if use_ansi:
+        bold = "\033[1m"
+        normal = "\033[0m"
+    else:
+        bold = ""
+        normal = ""
+    lines: Dict[FileLine, str] = OrderedDict()
+    for path, priority in sorted(
+        priorities.items(), key=lambda pp: pp[1], reverse=True
+    ):
+        project = "_".join(path.stem.split("_")[1:])
+        lines[
+            FileLine(path=path, line=1)
+        ] = f"{bold}{project.upper()}  ({priority}){normal}"
+        for task_group in task_groups[path]:
+            if show_groups:
+                lines[
+                    FileLine(path=path, line=task_group.line_number)
+                ] = task_group.name
+            for i, task in enumerate(
+                sorted(
+                    filter(lambda t: t.status != Status.done, task_group.tasks),
+                    key=lambda t: t.date,
+                )
+            ):
+                if i < max_per_group:
+                    lines[
+                        FileLine(path=path, line=task.line_number)
+                    ] = task.text
+    return lines
+
+
+def interact(  # pylint: disable=too-many-branches,too-many-statements
+    dir_path: Path, min_priority: int, max_per_group: int, show_groups: bool
+) -> None:
+    """Interactive mode for viewing tasks and changing their status.
+
+    Args:
+        dir_path: Path of the directory of task list files.
+        min_priority: Minimum priority of the projects to display.
+        max_per_group: Maximum number to tasks to display per markdown section.
+        show_groups: Whether to show the markdown section headers.
+
+    Usage:
+        -pn  Set project priority to n.
+        -mn  Set maximum displayed tasks per group to n.
+        -g   Show/hide markdown section headers.
+        k    Highlight previous line.
+        j    Highlight next line.
+        e    Edit task file at highlighted point.
+        r    Reload all files and refresh display.
+        q    Quit.
+    """
+
+    def init_term() -> None:
+        """Initialize the terminal for curses."""
+        curses.noecho()
+        curses.cbreak()
+        stdscr.keypad(True)
+        try:
+            curses.start_color()
+        except Exception:  # noqa pylint: disable=broad-except
+            pass
+        curses.use_default_colors()
+
+    def update_display() -> None:
+        stdscr.clear()
+        for i, (_, line) in enumerate(lines):
+            if i >= max_lines:
+                break
+            stdscr.addstr(
+                top_margin + i,
+                left_margin,
+                line[:max_length],
+                curses.A_REVERSE if i == selected_line else curses.A_NORMAL,
+            )
+        help_line = "  ".join(
+            [
+                "q:quit",
+                "j,k:down,up",
+                "e:edit",
+                "-pN:min priority",
+                "-mN:max tasks",
+                "-g:group title",
+                "r:reload",
+            ]
+        )
+        stdscr.addstr(
+            top_margin + max_lines + 1,
+            left_margin,
+            help_line[: max_length - 1],
+            curses.A_NORMAL,
+        )
+        stdscr.refresh()
+
+    # Init terminal.
+    stdscr = curses.initscr()
+    init_term()
+    left_margin = max(1, int((curses.COLS - 100) / 2))
+    top_margin = max(1, int((curses.LINES - 30) / 2))
+    max_length = curses.COLS - left_margin
+    max_lines = curses.LINES - top_margin - 2
+    # Read files and tasks.
+    priorities = find_task_files(dir_path, min_priority=min_priority)
+    task_groups = {path: read_task_groups(path) for path in priorities.keys()}
+    selected_line = 0
+    # Enter event loop.
+    while True:
+        # Format tasks
+        lines = list(
+            format_task_groups(
+                task_groups,
+                priorities,
+                max_per_group=max_per_group,
+                show_groups=show_groups,
+                use_ansi=False,
+            ).items()
+        )
+        # Update display.
+        update_display()
+        # Read key.
+        input_key = stdscr.getkey()
+        if input_key == "q":
+            break
+        elif input_key == "j":
+            if selected_line < min(max_lines, len(lines)) - 1:
+                selected_line += 1
+        elif input_key == "k":
+            if selected_line > 0:
+                selected_line -= 1
+        elif input_key == "e":
+            fileline, _ = lines[selected_line]
+            path = fileline.path
+            sp.run(
+                ["emacsclient", "-nw", "-a", "", f"+{fileline.line}", str(path)]
+            )
+            task_groups[path] = read_task_groups(path)
+            init_term()
+            left_margin = max(1, int((curses.COLS - 100) / 2))
+            top_margin = max(1, int((curses.LINES - 30) / 2))
+            max_length = curses.COLS - left_margin
+            max_lines = curses.LINES - top_margin - 2
+            selected_line = 0
+        elif input_key == "-":
+            input_key = stdscr.getkey()
+            if input_key == "p":
+                input_key = stdscr.getkey()
+                if input_key in "0123456789":
+                    min_priority = int(input_key)
+                    priorities = find_task_files(
+                        dir_path, min_priority=min_priority
+                    )
+                    task_groups = {
+                        path: read_task_groups(path)
+                        for path in priorities.keys()
+                    }
+                    selected_line = 0
+            elif input_key == "m":
+                input_key = stdscr.getkey()
+                if input_key in "0123456789":
+                    max_per_group = int(input_key)
+                    selected_line = 0
+            elif input_key == "g":
+                show_groups = not show_groups
+                selected_line = 0
+        elif input_key == "r":
+            priorities = find_task_files(dir_path, min_priority=min_priority)
+            task_groups = {
+                path: read_task_groups(path) for path in priorities.keys()
+            }
+            selected_line = 0
+        elif input_key == "KEY_RESIZE":
+            curses.update_lines_cols()
+            left_margin = max(1, int((curses.COLS - 100) / 2))
+            top_margin = max(1, int((curses.LINES - 30) / 2))
+            max_length = curses.COLS - left_margin
+            max_lines = curses.LINES - top_margin - 2
+            selected_line = 0
+    # De-init terminal.
+    if "stdscr" in locals():
+        stdscr.keypad(False)
+        curses.echo()
+        curses.nocbreak()
+        curses.endwin()
 
 
 if __name__ == "__main__":
