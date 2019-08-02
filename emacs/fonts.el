@@ -30,7 +30,7 @@
 ;;
 ;;  B. Applies ligatures to all fonts. In `variable-pitch-mode', some ligatures
 ;;     may need to be disabled to avoid applying them to proportionally-spaced
-;;     text. Works on MacOS and Linux.
+;;     text. Works on Linux, but not MacOS as of Emacs 26.2.
 ;;
 ;;  C. Applies ligatures to all fonts. Some ligatures may need to be disabled,
 ;;     as in the case of B, in `variable-pitch-mode'. Requires whitespace around
@@ -367,6 +367,7 @@
 
 ;; Select one of methods A, B and C.
 (if (display-graphic-p)
-    ;; (enable-firacode-by-composition-function))     ;; Method A.
-    (enable-firacode-by-font-lock))                ;; Method B.
+    (if (eq system-type 'darwin)
+        (enable-firacode-by-composition-function)     ;; Method A for MacOS.
+        (enable-firacode-by-font-lock)))              ;; Method B for Linux.
     ;; (enable-firacode-by-prettify-symbols))         ;; Method C.
