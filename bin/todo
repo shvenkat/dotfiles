@@ -31,15 +31,15 @@ def main() -> None:
     parser = ArgumentParser(
         description="Manage a directory of tasks list files in Github-flavored markdown."
     )
-    group = parser.add_mutually_exclusive_group(required=True)
+    group = parser.add_mutually_exclusive_group()
     group.add_argument(
-        "-n", "--next", action="store_true", help="Print next tasks."
+        "-n", "--next", action="store_true", help="Print next tasks and exit."
     )
     group.add_argument(
         "-i",
         "--interactive",
         action="store_true",
-        help="Enter interactive mode.",
+        help="View and edit tasks interactively.",
     )
     parser.add_argument(
         "-p",
@@ -119,7 +119,7 @@ def find_task_files(path: Path, min_priority: int) -> Dict[Path, int]:
         Task file paths and their priorities.
     """
     paths = list(path.glob("**/*.md"))
-    priorities = {path: int(path.name.split("_")[0]) for path in paths}
+    priorities = {path: int(path.stem.split("_")[-1]) for path in paths}
     return {
         path: priority
         for path, priority in priorities.items()
@@ -254,7 +254,9 @@ def format_task_groups(
     for path, priority in sorted(
         priorities.items(), key=lambda pp: pp[1], reverse=True
     ):
-        project = "_".join(path.stem.split("_")[1:])
+        project = "_".join(path.stem.split("_")[:-1])
+        if lines:
+            lines[FileLine(path=path, line=0)] = " "
         lines[
             FileLine(path=path, line=1)
         ] = f"{bold}{project.upper()}  ({priority}){normal}"
