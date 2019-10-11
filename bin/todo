@@ -11,25 +11,53 @@ Usage:
 Options:
 
 -p|--priority n    Only display projects with priority at least n.
--m|--max n         Only display n tasks per group.
--g|--group         Display group names
+-m|--max n         Only display n tasks per file.
 """
 import curses
 import datetime
 import enum
 import os
+import shlex
 import subprocess as sp
 import sys
-from argparse import ArgumentParser
-from collections import OrderedDict
+import textwrap
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from pathlib import Path
-from typing import Dict, List, NamedTuple
+from typing import Dict, List, NamedTuple, Tuple
 
 
 def main() -> None:
     """Parse arguments and dispatch accordingly."""
     parser = ArgumentParser(
-        description="Manage a directory of tasks list files in Github-flavored markdown."
+        formatter_class=RawDescriptionHelpFormatter,
+        description="Manage a directory of tasks list files in Github-flavored markdown.",
+        epilog=textwrap.dedent(
+            """
+        Task file format:
+
+            # Blah blah...
+
+            - [x]  yy/mm/dd  Foo...
+
+            ## Yada yada...
+
+            - [ ]  today+1   Bar...
+            - [ ]  someday   Quux...
+
+        Format notes:
+
+        * '[x]' indicates a completed task, '[ ]' an incomplete one.
+        * Due date can be absolute (yy/mm/dd), relative to today (today+n) or
+          unspecified (someday).
+        * Lines other than section header lines (starting with '#') and task
+          lines (starting with '- [') are ignored. So header lines and tasks can
+          be freely mixed with text notes and any other markdown syntax.
+
+        Task editing:
+
+        To edit tasks, set the environment variable EDITOR and use 'e' to edit
+        the selected task, section or file."""
+        ),
     )
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
@@ -53,56 +81,41 @@ def main() -> None:
         "--max",
         type=int,
         default=1,
-        help="Maximum number of tasks per markdown section to be displayed.",
+        help="Maximum number of tasks per markdown file to be displayed.",
     )
     parser.add_argument(
-        "-g",
-        "--group",
-        action="store_true",
-        help="Display group names i.e. Markdown section headers.",
-    )
-    parser.add_argument(
-        "path", type=Path, help="Directory to the task directory"
+        "path", type=Path, help="Directory of .md task list files."
     )
     args = parser.parse_args()
     if args.next:
         show_next_tasks(
-            path=args.path,
-            min_priority=args.priority,
-            max_per_group=args.max,
-            show_groups=args.group,
+            path=args.path, min_priority=args.priority, max_tasks=args.max
         )
     else:
         interact(
-            dir_path=args.path,
-            min_priority=args.priority,
-            max_per_group=args.max,
-            show_groups=args.group,
+            dir_path=args.path, min_priority=args.priority, max_tasks=args.max
         )
 
 
-def show_next_tasks(
-    path: Path, min_priority: int, max_per_group: int, show_groups: bool
-) -> None:
+def show_next_tasks(path: Path, min_priority: int, max_tasks: int) -> None:
     """One-shot listing of the next tasks.
 
     Args:
         path: Path of the directory of task list files.
         min_priority: Minimum priority of the projects to display.
-        max_per_group: Maximum number to tasks to display per markdown section.
-        show_groups: Whether to show the markdown section headers.
+        max_tasks: Maximum number to tasks to display per markdown section.
     """
     priorities = find_task_files(path, min_priority=min_priority)
     task_groups = {path: read_task_groups(path) for path in priorities.keys()}
     sys.stdout.write(
         "\n".join(
-            format_task_groups(
+            line
+            for line, _ in format_task_groups(
                 task_groups,
                 priorities,
-                max_per_group=max_per_group,
-                show_groups=show_groups,
+                max_tasks=max_tasks,
                 use_ansi=os.isatty(1),
-            ).values()
+            )
         )
         + "\n"
     )
@@ -132,6 +145,15 @@ class Status(enum.Enum):
     not_done = enum.auto()
 
 
+class FileLine(NamedTuple):
+    """Represents the file and (1-based) line corresponding to a task, group or
+    project.
+    """
+
+    path: Path
+    line_number: int
+
+
 class Task(NamedTuple):
     """A task list item corresponding to a line in a file, beginning with '- ['.
     """
@@ -139,8 +161,7 @@ class Task(NamedTuple):
     text: str
     status: Status
     date: datetime.date
-    path: Path
-    line_number: int
+    source: FileLine
 
 
 class TaskGroup(NamedTuple):
@@ -148,8 +169,7 @@ class TaskGroup(NamedTuple):
 
     name: str
     tasks: List[Task]
-    path: Path
-    line_number: int
+    source: FileLine
 
 
 def read_task_groups(path: Path) -> List[TaskGroup]:
@@ -161,6 +181,28 @@ def read_task_groups(path: Path) -> List[TaskGroup]:
     Returns:
         Task items, grouped by markdown section.
     """
+
+    def parse_status(line: str) -> Status:  # pylint: disable=all
+        return (
+            Status.done if line[line.index("[") + 1] == "x" else Status.not_done
+        )
+
+    def parse_date(line: str) -> datetime.date:  # pylint: disable=all
+        date_text = line.lstrip()[5:].split()[0]
+        if "/" in date_text:
+            date = datetime.date(*[int(x) for x in date_text.split("/")])
+        elif date_text == "today":
+            date = datetime.date.today()
+        elif date_text.startswith("today+"):
+            date = datetime.date.today() + datetime.timedelta(
+                days=int(date_text[6:])
+            )
+        elif date_text == "someday":
+            date = datetime.date.max
+        else:
+            raise ValueError(f"Invalid date: {line}.")
+        return date
+
     task_groups: List[TaskGroup] = []
     with open(path, "rt") as handle:
         tasks: List[Task] = []
@@ -173,34 +215,21 @@ def read_task_groups(path: Path) -> List[TaskGroup]:
                         TaskGroup(
                             name=group_name,
                             tasks=tasks,
-                            path=path,
-                            line_number=group_line_number,
+                            source=FileLine(
+                                path=path, line_number=group_line_number
+                            ),
                         )
                     )
                     tasks = []
                 group_name = line.rstrip("\n")
                 group_line_number = i + 1
             elif line.lstrip().startswith("- ["):
-                status = (
-                    Status.done
-                    if line[line.index("[") + 1] == "x"
-                    else Status.not_done
-                )
-                date = datetime.date(
-                    *[
-                        int(x)
-                        for x in line[
-                            (line.index("/") - 2) : (line.index("/") + 6)
-                        ].split("/")
-                    ]
-                )
                 tasks.append(
                     Task(
                         text=line.rstrip("\n"),
-                        status=status,
-                        date=date,
-                        path=path,
-                        line_number=i + 1,
+                        status=parse_status(line),
+                        date=parse_date(line),
+                        source=FileLine(path=path, line_number=i + 1),
                     )
                 )
             else:
@@ -210,35 +239,24 @@ def read_task_groups(path: Path) -> List[TaskGroup]:
                 TaskGroup(
                     name=group_name,
                     tasks=tasks,
-                    path=path,
-                    line_number=group_line_number,
+                    source=FileLine(path=path, line_number=group_line_number),
                 )
             )
     return task_groups
 
 
-class FileLine(NamedTuple):
-    """Represents the file and line corresponding to a task, group or project.
-    """
-
-    path: Path
-    line: int
-
-
 def format_task_groups(
     task_groups: Dict[Path, List[TaskGroup]],
     priorities: Dict[Path, int],
-    max_per_group: int,
-    show_groups: bool,
+    max_tasks: int,
     use_ansi: bool,
-) -> Dict[FileLine, str]:
+) -> List[Tuple[str, FileLine]]:
     """Pretty-print task groups with file name headers.
 
     Args:
         task_groups: Map between task files and groups of tasks within.
         priorities: Map between task files and priorities.
-        max_per_group: Maximum number to tasks to display per markdown section.
-        show_groups: Whether to show the markdown section headers.
+        max_tasks: Maximum number to tasks to display per markdown section.
         use_ansi: Whether to highlight the output with ANSI terminal escape sequences.
 
     Returns:
@@ -250,49 +268,47 @@ def format_task_groups(
     else:
         bold = ""
         normal = ""
-    lines: Dict[FileLine, str] = OrderedDict()
+    lines: List[Tuple[str, FileLine]] = []
     for path, priority in sorted(
         priorities.items(), key=lambda pp: pp[1], reverse=True
     ):
-        project = "_".join(path.stem.split("_")[:-1])
+        project = " ".join(path.stem.split("_")[:-1])
         if lines:
-            lines[FileLine(path=path, line=0)] = " "
-        lines[
-            FileLine(path=path, line=1)
-        ] = f"{bold}{project.upper()}  ({priority}){normal}"
-        for task_group in task_groups[path]:
-            if show_groups:
-                lines[
-                    FileLine(path=path, line=task_group.line_number)
-                ] = task_group.name
-            for i, task in enumerate(
-                sorted(
-                    filter(lambda t: t.status != Status.done, task_group.tasks),
-                    key=lambda t: t.date,
-                )
-            ):
-                if i < max_per_group:
-                    lines[
-                        FileLine(path=path, line=task.line_number)
-                    ] = task.text
+            lines.append((" ", FileLine(path=path, line_number=0)))
+        lines.append(
+            (
+                f"{bold}{project.upper()}  ({priority}){normal}",
+                FileLine(path=path, line_number=1),
+            )
+        )
+        tasks = sorted(
+            [
+                task
+                for task_group in task_groups[path]
+                for task in task_group.tasks
+                if task.status != Status.done
+            ],
+            key=lambda t: (t.date, t.source.line_number),
+        )
+        if tasks:
+            for _, task in zip(range(max_tasks), tasks):
+                lines.append((task.text, task.source))
     return lines
 
 
-def interact(  # pylint: disable=too-many-branches,too-many-statements
-    dir_path: Path, min_priority: int, max_per_group: int, show_groups: bool
+def interact(  # pylint: disable=too-many-branches,too-many-statements,too-many-locals
+    dir_path: Path, min_priority: int, max_tasks: int
 ) -> None:
     """Interactive mode for viewing tasks and changing their status.
 
     Args:
         dir_path: Path of the directory of task list files.
         min_priority: Minimum priority of the projects to display.
-        max_per_group: Maximum number to tasks to display per markdown section.
-        show_groups: Whether to show the markdown section headers.
+        max_tasks: Maximum number to tasks to display per markdown section.
 
     Usage:
         -pn  Set project priority to n.
         -mn  Set maximum displayed tasks per group to n.
-        -g   Show/hide markdown section headers.
         k    Highlight previous line.
         j    Highlight next line.
         e    Edit task file at highlighted point.
@@ -313,7 +329,10 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements
 
     def update_display() -> None:
         stdscr.clear()
-        for i, (_, line) in enumerate(lines):
+        stdscr.addstr(
+            0, left_margin, status_line[:max_length], curses.A_STANDOUT
+        )
+        for i, (line, _) in enumerate(lines):
             if i >= max_lines:
                 break
             stdscr.addstr(
@@ -329,7 +348,6 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements
                 "e:edit",
                 "-pN:min priority",
                 "-mN:max tasks",
-                "-g:group title",
                 "r:reload",
             ]
         )
@@ -351,18 +369,14 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements
     # Read files and tasks.
     priorities = find_task_files(dir_path, min_priority=min_priority)
     task_groups = {path: read_task_groups(path) for path in priorities.keys()}
+    # Initialize state.
     selected_line = 0
+    status_line = ""
     # Enter event loop.
     while True:
         # Format tasks
-        lines = list(
-            format_task_groups(
-                task_groups,
-                priorities,
-                max_per_group=max_per_group,
-                show_groups=show_groups,
-                use_ansi=False,
-            ).items()
+        lines = format_task_groups(
+            task_groups, priorities, max_tasks=max_tasks, use_ansi=False
         )
         # Update display.
         update_display()
@@ -377,11 +391,13 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements
             if selected_line > 0:
                 selected_line -= 1
         elif input_key == "e":
-            fileline, _ = lines[selected_line]
+            _, fileline = lines[selected_line]
             path = fileline.path
-            sp.run(
-                ["emacsclient", "-nw", "-a", "", f"+{fileline.line}", str(path)]
-            )
+            editor_cmd = shlex.split(os.environ.get("EDITOR", ""))
+            if not editor_cmd:
+                status_line = "Set EDITOR environment variable to edit tasks."
+            else:
+                sp.run(editor_cmd + [f"+{fileline.line_number}", str(path)])
             task_groups[path] = read_task_groups(path)
             init_term()
             left_margin = max(1, int((curses.COLS - 100) / 2))
@@ -406,17 +422,15 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements
             elif input_key == "m":
                 input_key = stdscr.getkey()
                 if input_key in "0123456789":
-                    max_per_group = int(input_key)
+                    max_tasks = int(input_key)
                     selected_line = 0
-            elif input_key == "g":
-                show_groups = not show_groups
-                selected_line = 0
         elif input_key == "r":
             priorities = find_task_files(dir_path, min_priority=min_priority)
             task_groups = {
                 path: read_task_groups(path) for path in priorities.keys()
             }
             selected_line = 0
+            status_line = ""
         elif input_key == "KEY_RESIZE":
             curses.update_lines_cols()
             left_margin = max(1, int((curses.COLS - 100) / 2))

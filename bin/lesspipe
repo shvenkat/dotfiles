@@ -1,8 +1,7 @@
 #! /bin/sh
 
-set -e -u
-
-# An input preprocessor for `less` that handles syntax highlighting, decompression and un-archiving.
+# An input preprocessor for `less` that handles syntax highlighting,
+# decompression and un-archiving.
 #
 # Author: Shiv <shiv@alum.mit.edu>
 # Based on:
@@ -11,6 +10,8 @@ set -e -u
 # License: GPLv2
 #
 # USAGE: Run this program with no arguments to get usage info.
+
+set -e -u
 
 
 NAME="$(basename "$0")"
@@ -27,8 +28,9 @@ stderr () {
 usage () {
     stderr 'To use lesspipe:'
     stderr '1. Place lesspipe in a directory in your PATH.'
-    stderr '2. Add the following line to your shell initialization script (e.g. .bashrc, .zshrc),' \
-        'replacing SHELL with the name of your shell: sh, bash, zsh, csh, or tcsh.'
+    stderr '2. Add the following line to your shell initialization script' \
+           ' (e.g. .bashrc, .zshrc), replacing SHELL with sh, bash, zsh, csh,' \
+           ' or tcsh.'
     stderr '    eval $(lesspipe --init SHELL)'
 }
 
@@ -39,7 +41,8 @@ error () {
 }
 
 
-# Emit shell code to set the environment variable LESSOPEN to allow `less` to call this program.
+# Emit shell code to set the environment variable LESSOPEN to allow `less` to
+# call this program.
 # Args:
 #   $1: Name of the shell being initialized, e.g. zsh, bash, ksh, tcsh, csh.
 # Output: Shell code to set LESSOPEN.
@@ -59,7 +62,8 @@ emit_shell_init_code () {
 }
 
 
-# Call source-highlight with an inline style definition.
+# Call source-highlight to apply ANSI terminal escape sequences. If
+# source-highlight is not found, just pass the input through unchanged.
 # Args:
 #   $1: Source path.
 #   (Optional) Additional arguments to source-highlight.
@@ -68,25 +72,32 @@ highlight () {
     input=$1
     shift
     style_file="$HOME/.config/source-highlight/esc.style"
-    if [ -r "$style_file" ]; then
-        source-highlight "$@" --failsafe --out-format esc --style-file "$style_file" --input "$input"
+    if command -v source-highlight >/dev/null; then
+        if [ -r "$style_file" ]; then
+            source-highlight "$@" --input "$input" --failsafe --out-format esc \
+                --style-file "$style_file"
+        else
+            source-highlight "$@" --input "$input" --failsafe --out-format esc
+        fi
     else
-        source-highlight "$@" --failsafe --out-format esc --input "$input"
+        cat "$input"
     fi
 }
 
 
-# Preprocess the input, applying the appropriate transformation based on file type. Handles syntax
-# highlighting, decompression and archive content listing.
+# Preprocess the input, applying the appropriate transformation based on file
+# type. Handles syntax highlighting, decompression and archive content listing.
 # Args:
-#   $1: Input file. '-' if input appears on standard input. Otherwise an _existing_ file path.
+#   $1: Input file. '-' if input appears on standard input. Otherwise an
+#   _existing_ file path.
 # Output: Preprocessed input, which may be empty.
 preprocess () {
-    # Print shell code to set LESSOPEN.
-    # Syntax highlight source code. Delegate to `lesspipe` for compressed and archive files.
+    # Syntax highlight source code. Delegate to `lesspipe` for compressed and
+    # archive files.
     case "$1" in
         -)
-            # Input passed via stdin. Filetype cannot be inferred from filename or extension.
+            # Input passed via stdin. Filetype cannot be inferred from filename
+            # or extension.
             cat
             ;;
         *ChangeLog|*changelog)
@@ -97,12 +108,20 @@ preprocess () {
             ;;
         *.tar|*.tgz|*.gz|*.bz2|*.xz)
             # Delegate to `lesspipe` if available.
-            if which lesspipe.sh >/dev/null; then
+            if command -v lesspipe.sh >/dev/null; then
                 lesspipe.sh "$1"
-            elif which lesspipe >/dev/null; then
-                lesspipe "$1"
+            elif command -v /usr/bin/lesspipe >/dev/null; then
+                /usr/bin/lesspipe "$1"
             else
                 echo "Install lesspipe.sh to view files of this type."
+            fi
+            ;;
+        *.html)
+            if command -v tidy >/dev/null; then
+                tidy -quiet -utf8 -indent -wrap 100 "$1" 2>/dev/null \
+                    | highlight /dev/stdin --lang-def=html.lang
+            else
+                cat "$1"
             fi
             ;;
         *)
