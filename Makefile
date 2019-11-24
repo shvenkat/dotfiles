@@ -2,7 +2,7 @@
 # ---
 #
 # Q. "How do I use this Makefile?"
-# A. You don't. I do. Write your own dam* Makefile :)
+# A. You don't. I do. Write your own damn Makefile :)
 #
 #    But if you insist, so be it. You first run `make help` to view all
 #    available targets. Then `make <target>` to install one or more programs
@@ -12,7 +12,7 @@
 # Q. Why do you have so many targets in this fakakta Makefile?
 # A. I use this Makefile to manage the programs I often use and their
 #    configuration. There are quite a few of these and I needed a way to set
-#    them up (JUST the way I like them) very quickly.
+#    them up (juuuust the way I like them) very quickly.
 #
 # Q. Why use a Makefile just to copy/symlink your dotfiles?
 # A. This Makefile does more than copy or symlink my dotfiles into my home
@@ -53,7 +53,7 @@
 # Q. What is the dependency logic between targets?
 # A. For a program foo, the target foo-prog can depend on foo-config. Thus,
 #    configuration can be installed very quickly as it doesn't require program
-#    or extension installation. And, the latter also leaves the program
+#    or extension installation. And, the foo-prog also leaves the program
 #    configured.
 #
 # Q. Are there any software requirements for using this Makefile?
@@ -179,8 +179,8 @@ $(HOME)/.emacs.d/init.el: \
         $(addprefix emacs/, \
             usepackage_quelpa.el evil.el whitespace.el pairs.el margins.el \
             menu_and_mode_bars.el theme.el fonts.el splash_message.el \
-            backup.el custom.el misc_keys.el mouse.el ido.el editorconfig.el \
-            flycheck.el org.el markdown.el python.el proof_general.el)
+            backup.el misc_keys.el mouse.el ido.el editorconfig.el flycheck.el \
+            org.el markdown.el python.el proof_general.el custom.el)
 
 xfce4-terminal: $(HOME)/.config/xfce4/terminal/terminalrc
 $(HOME)/.config/xfce4/terminal/terminalrc: linux/xfce4_terminalrc

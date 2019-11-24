@@ -24,7 +24,9 @@
         '(mode-line
              ((t (:foreground "brightcyan" :background "white" :box nil))))
         '(mode-line-inactive
-             ((t (:foreground "brightcyan" :background "white" :box nil))))))
+             ((t (:foreground "brightcyan" :background "white" :box nil))))
+        '(font-lock-doc-face
+             ((t (:foreground "brightyellow" :slant normal))))))
 
 ;; Highlight matching delimiter.
 ;; (set-face-attribute 'show-paren-match nil
