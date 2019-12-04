@@ -2,11 +2,11 @@
 
 # ----------  SSH  -----------------------------------------------------------
 
+
 # Connect to ssh-agent, starting it if needed.
+alias ssh-agent-clean="find /tmp -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -user $USER -print0 | xargs -0 rm -rf"
 [[ -x "$HOME/bin/ssh-agent-connect" ]] \
     && eval "$("$HOME/bin/ssh-agent-connect")"
 
 # Set the mosh escape key to match ssh.
 export MOSH_ESCAPE_KEY='~'
-
-alias ssh-agent-clean="find /tmp -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -user $USER -print0 | xargs -0 rm -rf"
