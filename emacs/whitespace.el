@@ -2,10 +2,14 @@
 
 ;; ----------  WHITESPACE  ----------
 
-;; Automatically insert newlines to maintain a maximum line length of
-;; 'fill-column'. Apply this setting to all major modes.
+;; Hard-wrap text past 'fill-column' by automatically insert newlines. Apply
+;; this setting to all major modes.
 ;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Turning-on-auto_002dfill-by-default.html
 (setq-default auto-fill-function 'do-auto-fill)
+
+;; Don't use two spaces between sentences or after a colon.
+(setq-default sentence-end-double-space nil)
+(setq-default colon-double-space nil)
 
 ;; Indicate (by highlighting):
 ;; - long lines (the portion longer than 'fill-column').

@@ -54,7 +54,7 @@
     new = cyan
     frag = blue
     func = blue
-    meta = bold green
+    meta = bold black
     commit = reverse
     whitespace = red reverse
 [color "grep"]
