@@ -17,6 +17,7 @@ specialchar cyan;  // special chars (e.g. \n, \t, \\)
 label cyan;        // goto labels
 regex, regexp cyan;  // regular expressions
 todo red b;        // TODO and FIXME
+doc green b;      // documentation
 
 // ----------  Latex  ------------------------------------------------
 
