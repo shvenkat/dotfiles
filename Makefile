@@ -256,7 +256,7 @@ $(addprefix $(HOME)/, \
         .editorconfig \
         .mypy.ini .flake8 .pylintrc .isort.cfg):
 	mkdir -p "$$(dirname $@)"
-	ln -sf "$$(pwd)/$<" "$@"
+	ln -sfT "$$(pwd)/$<" "$@"
 
 # Generate dotfile by concatenation.
 $(addprefix $(HOME)/, \
@@ -561,13 +561,13 @@ iterm-prog: brew
 mactimer: $(HOME)/bin/mactimer
 $(HOME)/bin/mactimer: bin/mactimer
 	mkdir -p "$$(dirname $@)"
-	ln -sf "$$(pwd)/$<" "$@"
+	ln -sfT "$$(pwd)/$<" "$@"
 endif
 
 todo: $(HOME)/bin/todo
 $(HOME)/bin/todo: bin/todo python3
 	mkdir -p "$$(dirname $@)"
-	ln -sf "$$(pwd)/$<" "$@"
+	ln -sfT "$$(pwd)/$<" "$@"
 
 
 #  ----------  FONT TARGETS  ---------------------------------------------------
