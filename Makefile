@@ -180,7 +180,7 @@ $(HOME)/.emacs.d/init.el: \
             usepackage_quelpa.el evil.el whitespace.el pairs.el margins.el \
             menu_and_mode_bars.el theme.el fonts.el splash_message.el \
             backup.el misc_keys.el mouse.el ido.el editorconfig.el flycheck.el \
-            org.el markdown.el python.el proof_general.el custom.el)
+            org.el markdown.el python.el bash.el proof_general.el custom.el)
 
 xfce4-terminal: $(HOME)/.config/xfce4/terminal/terminalrc
 $(HOME)/.config/xfce4/terminal/terminalrc: linux/xfce4_terminalrc
