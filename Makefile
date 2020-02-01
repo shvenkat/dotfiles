@@ -191,9 +191,9 @@ $(HOME)/.config/lxterminal/lxterminal.conf: linux/lxterminal.conf
 zsh-config: $(addprefix $(HOME)/,.zprofile .zshrc .zplug .autoenv.zsh)
 $(HOME)/.zprofile: $(addprefix shell/shared/,path env term)
 $(HOME)/.zshrc: \
-        $(addprefix shell/shared/,misc less ls source-highlight ssh alias \
-            local) \
-        shell/zsh/zshrc
+        $(addprefix shell/shared/,misc less ls source-highlight ssh alias) \
+        shell/zsh/zshrc \
+        shell/shared/local
 $(HOME)/.autoenv.zsh: shell/zsh/autoenv.zsh
 
 git-config: \

@@ -1,5 +1,10 @@
 # shellcheck disable=SC2059
 #
+# This file provides completion of just options and justfile targets. The simple
+# use case is assumed i.e. a justfile is present in the current directory and
+# just is being run with it. In other words, -d,--working-directory and
+# --justfile are not used.
+#
 # To use these completions in bash, just source this file in your ~/.bashrc.
 # To use these in zsh, just add to your `.zshrc`:
 #   autoload bashcompinit
