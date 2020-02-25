@@ -19,21 +19,38 @@ _just() {
     local prev="${COMP_WORDS[COMP_CWORD-1]}"
     local options targets
 
-    # If just is not a word in the command so far, don't offer completions.
-    # local word
-    # for word in "${COMP_WORDS[@]}"; do
-    #     if [[ "$word" == "just" ]]; then
-    #         cmd="just"
-    #         break
-    #     fi
-    # done
+    # If the command is not just, don't offer completions.
     if [[ "$cmd" != "just" ]]; then
         return 0
     fi
 
     # Complete short and long options.
-    options="-q -v -e -l -h -V -f -d -s  --dry-run --highlight --no-highlight --quiet --clear-shell-args --verbose --dump --edit --evaluate --init --list --summary --help --version --color --justfile --set --shell --shell-arg --working-directory --completions --show"
+    options="
+            --clear-shell-args
+            --color
+            --completions
+            --dry-run
+            --dump
+        -e  --edit
+            --evaluate
+        -f  --justfile
+        -h  --help
+            --highlight
+            --init
+        -l  --list
+            --no-highlight
+        -q  --quiet
+            --set
+            --shell
+            --shell-arg
+        -s  --show
+            --summary
+        -v  --verbose
+        -V  --version
+        -d  --working-directory
+    "
     if [[ "$cur" == -* ]] ; then
+        # COMPREPLY=( $(compgen -W "$options" -- "$cur") )
         COMPREPLY=( $(compgen -W "$options" -- "$cur") )
         return 0
     fi
@@ -72,8 +89,11 @@ _just() {
     esac
 
     # Complete targets.
-    targets="$(just --summary)"
-    COMPREPLY=($(compgen -W "$targets" -- "$cur"))
+    # targets="$(just --summary)"
+    # COMPREPLY=($(compgen -W "$targets" -- "$cur"))
+    COMPREPLY=($(just --summary | tr ' ' '\n' | fzf --filter "$cur" | tr '\n' ' '))
+    # COMPREPLY=("pull-images" "rebuild-images")
+    # echo "${COMPREPLY[@]}"
     return 0
 }
 
