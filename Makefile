@@ -93,7 +93,7 @@ endif
 
 #  ----------  PREREQ. TARGETS  ------------------------------------------------
 
-.PHONY: prereq buildtools curl git
+.PHONY: prereq buildtools curl git bash5
 .SILENT: prereq buildtools curl git
 
 prereq: buildtools curl git
@@ -111,6 +111,33 @@ git:
 
 python3:
 	which python3 &>/dev/null || sudo apt-get install python3
+
+gpg:
+	which gpg &>/dev/null || sudo apg-get install gnupg
+
+bash5: $(HOME)/bin/bash5 curl gpg
+$(HOME)/bin/bash5: | curl gpg
+	build_dir="$$(mktemp --directory)" ;\
+	cd "$$build_dir" ;\
+	curl -fsS \
+	    -O http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz \
+	    -O http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz.sig ;\
+	gpg --verify bash-5.0.tar.gz.sig bash-5.0.tar.gz ;\
+	tar -xzf bash-5.0.tar.gz ;\
+	for i in $$(seq --equal-width 1 999); do \
+	    curl -fsS \
+	        -O "http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-$${i}" \
+	        -O "http://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-$${i}.sig" \
+	    || break ;\
+	    gpg --verify "bash50-$${i}.sig" "bash50-$${i}" ;\
+	    patch --directory=bash-5.0 -p0 < "bash50-$${i}" ;\
+	done ;\
+	cd bash-5.0 ;\
+	./configure ;\
+	make ;\
+	cp bash $@ ;\
+	cd ;\
+	&& rm -rf "$$build_dir"
 
 else
 
@@ -149,6 +176,9 @@ python3: brew
 	    brew install python3; \
 	fi
 
+bash5:
+	brew install bash
+
 endif
 
 
@@ -158,7 +188,7 @@ DOTFILES := \
         emacs-config \
         xfce4-terminal-config \
         lxterminal-config \
-        zsh-config \
+        bash-config \
         git-config \
         tmux-config \
         ssh-config \
@@ -169,6 +199,7 @@ DOTFILES := \
         unison-config \
         editorconfig-config \
         python-config
+        # zsh-config \
 
 .PHONY: dotfiles $(DOTFILES)
 
@@ -195,6 +226,14 @@ $(HOME)/.zshrc: \
         shell/zsh/zshrc \
         shell/shared/local
 $(HOME)/.autoenv.zsh: shell/zsh/autoenv.zsh
+
+bash-config: $(addprefix $(HOME)/,.bash_profile .bashrc)
+$(HOME)/.bash_profile: $(addprefix shell/shared/,path env term) \
+        shell/bash/bash_profile
+$(HOME)/.bashrc: \
+        shell/bash/bashrc \
+        $(addprefix shell/shared/,misc less ls source-highlight ssh alias) \
+        shell/shared/local
 
 git-config: \
         $(addprefix $(HOME)/.config/git/,config ignore attributes) \
@@ -262,6 +301,7 @@ $(addprefix $(HOME)/, \
 $(addprefix $(HOME)/, \
         .emacs.d/init.el \
         .zprofile .zshrc \
+        .bash_profile .bashrc \
         .tmux.conf):
 	rm -f "$@"
 	mkdir -p "$$(dirname $@)"

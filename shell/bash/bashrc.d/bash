@@ -1,4 +1,0 @@
-shopt -s cdspell
-# set -o notify
-set -o ignoreeof
-# shopt -s nocaseglob

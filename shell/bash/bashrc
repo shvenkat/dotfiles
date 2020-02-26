@@ -1,32 +1,69 @@
-# BASE CONFIG ---------------------------------------------------------------
 
-# export LANG=en_US.UTF-8
+
+# ----------  OPTIONS  -------------------------------------------------------
+
+shopt -s cdspell
+# set -o notify
+set -o ignoreeof
+# shopt -s nocaseglob
+
+
+# ----------  HISTORY  -------------------------------------------------------
+
+shopt -s histappend
+export HISTCONTROL="ignoredups"
+export HISTSIZE=1000000
+export HISTFILESIZE=1000000
+export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
+#export PROMPT_COMMAND="history -a"
+
+
+# ----------  COMPLETION  ----------------------------------------------------
+
+# These completion tuning parameters change the default behavior of bash_completion:
+
+# Define to avoid stripping description in --option=description of './configure --help'
+COMP_CONFIGURE_HINTS=1
+
+# Define to avoid flattening internal contents of tar files
+COMP_TAR_INTERNAL_PATHS=1
+
+# If this shell is interactive, turn on programmable completion enhancements.
+# Any completions you add in ~/.bash_completion are sourced last.
+if ! shopt -oq posix && echo $- | grep -q i; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+  if [ -f /usr/local/etc/bash_completion ]; then
+    . /usr/local/etc/bash_completion
+  fi
+fi
+
+
+# ----------  PROMPT  --------------------------------------------------------
+
+# If the shell is interactive, customize the prompt.
+if [ "$PS1" ]; then
+    export PROMPT_COMMAND='echo; PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
+        echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:2}; done;
+        echo -n "${q:2:3}")'
+    export PS1='${HOSTNAME:0:4} $PS1X\[\e[0m\] ◀▶ '
+fi
 
 
 # CONFIG MODULES ------------------------------------------------------------
 
-case $(uname) in
-Linux)  OSENV=linux ;;
-Darwin) OSENV=macosx ;;
-Cygwin) OSENV=cygwin ;;
-*)      OSENV=unknown ;;
-esac
-. ~/.rc/.bashrc.d/bash
-. ~/.rc/.zshrc.d/path
-. ~/.rc/.zshrc.d/alias
-. ~/.rc/.zshrc.d/less
-. ~/.rc/.zshrc.d/ls
-. ~/.rc/.zshrc.d/ssh
-. ~/.rc/.zshrc.d/term
-. ~/.rc/.zshrc.d/misc
-. ~/.rc/.bashrc.d/completion
-. ~/.rc/.bashrc.d/hist
-. ~/.rc/.bashrc.d/prompt
-unset OSENV
-
-# for more config options, see http://www.linuxselfhelp.com/HOWTO/Config-HOWTO/config.html
+# case $(uname) in
+# Linux)  OSENV=linux ;;
+# Darwin) OSENV=macosx ;;
+# Cygwin) OSENV=cygwin ;;
+# *)      OSENV=unknown ;;
+# esac
+# unset OSENV
 
 
 # MISC CONFIG ---------------------------------------------------------------
 
-export EDITOR=vim
+# export EDITOR=vim
