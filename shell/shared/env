@@ -17,6 +17,7 @@ export TZ='America/Los_Angeles'
 # Python.
 # Make pipenv create/use .venv directories within each project.
 export PIPENV_VENV_IN_PROJECT=1
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # OS-specific miscellany.
 case $OSTYPE in

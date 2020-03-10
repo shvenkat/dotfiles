@@ -2,4 +2,6 @@
 
 # ----------  LOCAL CONFIG  --------------------------------------------------
 
-[[ -r ~/.local.sh ]] && source ~/.local.sh
+if [[ -n "$PS1" ]]; then
+    [[ -r ~/.local.sh ]] && source ~/.local.sh
+fi

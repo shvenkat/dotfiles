@@ -45,11 +45,46 @@ fi
 # ----------  PROMPT  --------------------------------------------------------
 
 # If the shell is interactive, customize the prompt.
-if [ "$PS1" ]; then
-    export PROMPT_COMMAND='echo; PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] &&
-        echo -n "~"; IFS=/; for q in ${p:1}; do echo -n /${q:0:2}; done;
-        echo -n "${q:2:3}")'
-    export PS1='${HOSTNAME:0:4} $PS1X\[\e[0m\] ◀▶ '
+if [[ -n "$PS1" ]]; then
+    # Abbreviates a path ($1), e.g. /home/me/some/directory -> ~/so/direc.
+    __shrink_path () {
+        p="${1#${HOME}}"
+        if [[ "${PWD}" != "${p}" ]]; then
+            echo -n "~"
+        fi
+        local OIFS="$IFS"
+        IFS=/
+        for q in ${p:1}; do
+            echo -n "/${q:0:2}"
+        done
+        echo -n "${q:2:3}"
+        IFS="$OIFS"
+    }
+    # Updates $PS1.
+    __update_prompt () {
+        PS1="${HOSTNAME:0:4} $(__shrink_path "$(pwd)") ◀▶ "
+    }
+    # Redefine cd, pushd and popd to update the prompt.
+    cd () {
+        builtin cd "$@" && __update_prompt
+    }
+    pushd () {
+        builtin pushd "$@" && __update_prompt
+    }
+    popd () {
+        builtin popd && __update_prompt
+    }
+    # Set the prompt now.
+    __update_prompt
+
+    # Shows the non-zero exit code of the previous command.
+    __retval=0
+    __show_exit () {
+        if [[ "$__retval" -ne 0 ]]; then
+            echo -e "== \\e[31mexit ${__retval}\\e[0m =="
+        fi
+    }
+    PROMPT_COMMAND='__retval=$?; __show_exit; echo'
 fi
 
 

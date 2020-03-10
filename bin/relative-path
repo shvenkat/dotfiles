@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# Usage: relative-path src dst
+#
+# Prints the path of src relative to the dst directory. If either src or dst is
+# relative, this is assumed to be relative to the current directory. Both paths
+# are canonicalized by removal of . .. and //. Symlinks are NOT dereferenced. In
+# fact, src dst and their ancestors are not assumed to exist.
+#
+# The following two commands should create the "same" effective symlink, except
+# that the link target path is relative in the second case.
+#
+#     ln -sT target link
+#     ln -sT "$(relative-path target "$(dirname link)")" link
+
+
+show_usage () {
+    echo "Usage: $(basename "$0") src dst" 1>&2
+}
+
+# Concatenates $1 and $2 using / as the separator. $2 must be a relative path.
+combine_paths () {
+    if [[ -z "$1" ]]; then
+        echo "$2"
+    elif [[ -z "$2" ]]; then
+        echo "$1"
+    else
+        echo "${1%/}/${2}"
+    fi
+}
+
+# If $1 does not start with /, prints $PWD/$1.
+make_absolute () {
+    if [[ "${1:0:1}" == "/" ]]; then
+        echo "$1"
+    else
+        combine_paths "$PWD" "$1"
+    fi
+}
+
+# Remove . .. and // from the absolute path $1.
+remove_dots () {
+    path="/"
+    while read -r -d '/' node; do
+        if [[ "$node" == '.' ]]; then
+            continue
+        elif [[ "$node" == '..' ]]; then
+            path="$(dirname "$path")"
+        else
+            path="$(combine_paths "$path" "$node")"
+        fi
+    done <<<"${1:+${1%/}/}"
+    echo "$path"
+}
+
+# Prints $1 relative to the directory $2.
+make_relative () {
+    src="$(remove_dots "$(make_absolute "$1")")"
+    dst="$(remove_dots "$(make_absolute "$2")")"
+    prefix=""
+    while :; do
+        if [[ "${src:0:${#dst}}" == "$dst" ]]; then
+            suffix="${src#${dst}}"
+            suffix="${suffix#/}"
+            if [[ -z "$suffix" ]]; then
+                path="$prefix"
+            else
+                path="${prefix:+${prefix}/}${suffix}"
+            fi
+            break
+        else
+            prefix="${prefix:+${prefix}/}.."
+            dst="$(dirname "$dst")"
+        fi
+    done
+    if [[ -z "$path" ]]; then
+        path="."
+    fi
+    echo "$path"
+}
+
+# Runs a single test case, reporting failure.
+test_case () {
+    path="$(make_relative "$1" "$2")"
+    if [[ "$path" != "$3" ]]; then
+        echo "Failing test: $(basename "$0") '$1' '$2' == $path != '$3'"
+    fi
+}
+
+# Runs test cases and exits non-zero if any errors are found.
+self_test () {
+    status=0
+    # Basic logic.
+    test_case '/a/b/c/d/e' '/a/b/y/z' '../../c/d/e' || status=1
+    # Correct handling of /.
+    test_case '/a/b/c/d/e' '/'        'a/b/c/d/e'   || status=1
+    test_case '/'          '/a/b/y/z' '../../../..' || status=1
+    # Correct use of '.' and '..' in the output.
+    test_case '/a/b'       '/a/b'     '.'           || status=1
+    test_case '/a'         '/a/b'     '..'          || status=1
+    # Correct handling of . .. and // in the input.
+    test_case '/a/../c/.'  '/c/d///e'   '../..'     || status=1
+    if [[ "$status" -eq 1 ]]; then
+        echo "One or more tests failed. See above."
+        exit 2
+    fi
+}
+
+
+# ---- main ----
+
+if [[ $# -eq 2 ]]; then
+    make_relative "$1" "$2"
+elif [[ $# -eq 1 ]] && [[ "$1" == "test" || "$1" == "--test" ]]; then
+    self_test
+elif [[ $# -eq 1 ]] \
+    && [[ "$1" == "help" || "$1" == "-h" || "$1" == "--help" ]]; then
+    show_usage
+    exit 0
+else
+    echo "$(basename "$0"): Usage error"
+    show_usage
+    exit 1
+fi
