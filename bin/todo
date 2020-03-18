@@ -132,7 +132,11 @@ def find_task_files(path: Path, min_priority: int) -> Dict[Path, int]:
         Task file paths and their priorities.
     """
     paths = list(path.glob("**/*.md"))
-    priorities = {path: int(path.stem.split("_")[-1]) for path in paths}
+    priorities = {
+        path: int(path.stem.split("_")[-1])
+        for path in paths
+        if all(x in "0123456789" for x in path.stem.split("_")[-1])
+    }
     return {
         path: priority
         for path, priority in priorities.items()

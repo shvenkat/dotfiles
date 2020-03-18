@@ -44,8 +44,8 @@ fi
 
 # ----------  PROMPT  --------------------------------------------------------
 
-# If the shell is interactive, customize the prompt.
-if [[ -n "$PS1" ]]; then
+# If the shell is interactive and the terminal suitable, customize the prompt.
+if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty -s; then
     # Abbreviates a path ($1), e.g. /home/me/some/directory -> ~/so/direc.
     __shrink_path () {
         p="${1#${HOME}}"
@@ -86,19 +86,3 @@ if [[ -n "$PS1" ]]; then
     }
     PROMPT_COMMAND='__retval=$?; __show_exit; echo'
 fi
-
-
-# CONFIG MODULES ------------------------------------------------------------
-
-# case $(uname) in
-# Linux)  OSENV=linux ;;
-# Darwin) OSENV=macosx ;;
-# Cygwin) OSENV=cygwin ;;
-# *)      OSENV=unknown ;;
-# esac
-# unset OSENV
-
-
-# MISC CONFIG ---------------------------------------------------------------
-
-# export EDITOR=vim
