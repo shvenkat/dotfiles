@@ -20,6 +20,8 @@
 [pager]
     diff = diff-highlight | less --tabs=4 -iGRS --pattern '^diff'
     ; diff = diff-so-fancy | less --tabs=4 -iGRS --pattern '^(Date|added|deleted|modified): '
+[diff]
+    algorithm = histogram
 [interactive]
     diffFilter = diff-highlight | less --tabs=4 -iGRS
     ; diff-so-fancy breaks the custom diff header expected by interactive git
