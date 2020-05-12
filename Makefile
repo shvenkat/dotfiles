@@ -211,7 +211,8 @@ $(HOME)/.emacs.d/init.el: \
             usepackage_quelpa.el evil.el whitespace.el pairs.el margins.el \
             menu_and_mode_bars.el theme.el fonts.el splash_message.el \
             backup.el misc_keys.el mouse.el ido.el editorconfig.el flycheck.el \
-            org.el markdown.el python.el bash.el proof_general.el custom.el)
+            org.el markdown.el python.el bash.el proof_general.el racket.el \
+            custom.el)
 
 xfce4-terminal: $(HOME)/.config/xfce4/terminal/terminalrc
 $(HOME)/.config/xfce4/terminal/terminalrc: linux/xfce4_terminalrc
@@ -453,7 +454,8 @@ PROGS := \
         tex-prog \
         shellcheck-prog \
         docker-prog \
-        firefox-prog
+        firefox-prog \
+        racket-prog
 
 ifeq ($(OSTYPE),linux)
 else
@@ -590,6 +592,12 @@ else
 firefox-prog: brew
 	test -x /Applications/Firefox.app/Contents/MacOS/firefox \
 	    || brew cask install firefox
+endif
+
+ifeq ($(OSTYPE),linux)
+else
+racket-prog: brew
+	command -v racket &>/dev/null || brew install minimal-racket
 endif
 
 ifeq ($(OSTYPE),linux)
