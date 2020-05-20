@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+
+# Converts secret on stdin to TOTP code, according to RFC 6238.
+import base64, hashlib, hmac, struct, sys, time
+digest = hmac.new(
+    base64.b32decode(sys.stdin.read().strip().upper()),  # base32 secret (K).
+    struct.pack(">Q", int(time.time()) // 30),  # 8-byte TOTP counter (C).
+    hashlib.sha1,
+).digest()
+print(
+    "{:0>6}".format(
+        # 31 LSB of 4 bytes at offset given by 4 LSB of last byte of digest.
+        (struct.unpack(">I", digest[(digest[-1] & 0x0F):][:4])[0] & 0x7FFFFFFF)
+        % (10 ** 6)  # 6 decimal digits.
+    )
+)

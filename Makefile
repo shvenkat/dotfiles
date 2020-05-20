@@ -280,6 +280,8 @@ $(HOME)/.flake8: python/flake8
 $(HOME)/.pylintrc: python/pylintrc
 $(HOME)/.isort.cfg: python/isort.cfg
 
+$(HOME)/bin/totp: bin/totp
+
 # Symlink dotfile.
 $(addprefix $(HOME)/, \
         .config/xfce4/terminal/terminalrc \
@@ -294,7 +296,8 @@ $(addprefix $(HOME)/, \
         .config/source-highlight/esc.style .local/share/source-highlight \
         .unison/default.prf \
         .editorconfig \
-        .mypy.ini .flake8 .pylintrc .isort.cfg):
+        .mypy.ini .flake8 .pylintrc .isort.cfg \
+        bin/totp):
 	mkdir -p "$$(dirname $@)"
 	ln -sfT "$$(bin/relative-path "$$(pwd)/$<" "$$(dirname "$@")")" "$@"
 
