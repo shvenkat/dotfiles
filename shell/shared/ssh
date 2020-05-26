@@ -10,3 +10,8 @@ alias ssh-agent-clean="find /tmp -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -
 
 # Set the mosh escape key to match ssh.
 export MOSH_ESCAPE_KEY='~'
+
+
+# ----------  GPG  -----------------------------------------------------------
+
+export GPG_TTY="$(tty)"
