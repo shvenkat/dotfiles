@@ -33,13 +33,13 @@
 ;; Install new packages automatically.
 (setq use-package-always-ensure t)
 
-;; Load QUELPA integration for use-package to install packages from source repos.
-;; https://github.com/quelpa/quelpa-use-package
-(use-package quelpa)
-(use-package quelpa-use-package)
-;; Do not automatically upgrade quelpa or melpa.
-(setq quelpa-self-upgrade-p nil)
-(setq quelpa-update-melpa-p nil)
-(require 'quelpa-use-package)
-;; Install non-quelpa packages using the default ELPA repo.
-(quelpa-use-package-activate-advice)
+;; ;; Load QUELPA integration for use-package to install packages from source repos.
+;; ;; https://github.com/quelpa/quelpa-use-package
+;; (use-package quelpa)
+;; (use-package quelpa-use-package)
+;; ;; Do not automatically upgrade quelpa or melpa.
+;; (setq quelpa-self-upgrade-p nil)
+;; (setq quelpa-update-melpa-p nil)
+;; (require 'quelpa-use-package)
+;; ;; Install non-quelpa packages using the default ELPA repo.
+;; (quelpa-use-package-activate-advice)

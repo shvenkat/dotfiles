@@ -11,16 +11,16 @@
     (lambda (frame)
         (set-frame-parameter frame 'background-mode 'light)
         (set-terminal-parameter frame 'background-mode 'light)
-        (enable-theme 'solarized)))
+        (enable-theme 'solarized-light)))
 
 ;; Use the solarized color theme. Make the mode line less conspicuous.
 ;; https://emacs.stackexchange.com/q/28940
-(use-package color-theme-solarized
+(use-package solarized-theme
     :defer t
     :init
-    (load-theme 'solarized t)
+    (load-theme 'solarized-light t)
     (custom-theme-set-faces
-        'solarized
+        'solarized-light
         '(mode-line
              ((t (:foreground "brightcyan" :background "white" :box nil))))
         '(mode-line-inactive
