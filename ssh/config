@@ -1,37 +1,45 @@
-Host *
-	# ChallengeResponseAuthentication	no
-	CheckHostIP	yes
-	Ciphers 	chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-cbc,aes192-cbc,aes128-cbc
-	Compression	yes
-	ControlMaster	no
-	ControlPath	none
-	ControlPersist	no
-	EscapeChar	~
-	ForwardAgent	no
-	ForwardX11	no
-	ForwardX11Trusted	no
-	GatewayPorts	no
-	# GSSAPIAuthentication	    no
-	# GSSAPIDelegateCredentials no
-	HostbasedAuthentication	no
-	# IdentifyFile	~/.ssh/id_rsa
-	# KbdInteractiveAuthentication	no
-	# KbdInteractiveDevices	    skey,bsdauth,pam
-	# KexAlgorithms	curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1
-	LogLevel    INFO
-	MACs	    umac-128-etm@openssh.com,umac-64-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha1-etm@openssh.com,umac-128@openssh.com,umac-64@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-sha1
-	# MACs	    hmac-ripemd160-etm@openssh.com,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha1-etm@openssh.com,hmac-md5-etm@openssh.com,umac-128-etm@openssh.com,umac-64-etm@openssh.com,hmac-sha1-96-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-ripemd160,hmac-sha2-512,hmac-sha2-256,hmac-sha1,hmac-md5,umac-128@openssh.com,umac-64@openssh.com,hmac-sha1-96,hmac-md5-96
-	NoHostAuthenticationForLocalhost    no
-	# PasswordAuthentication    no
-	PermitLocalCommand	no
-	PreferredAuthentications	publickey,password
-	# PreferredAuthentications	publickey,gssapi-with-mic,keyboard-interactive,password
-	Protocol	2
-	RekeyLimit  256M
-	ServerAliveCountMax	24
-	ServerAliveInterval	5
-	StrictHostKeyChecking	ask
-	TcpKeepAlive	no
-	UserKnownHostsFile	~/.ssh/known_hosts
-	# VerifyHostKeyDNS	yes
-	# VisualHostKey	    yes
+Host    *
+    AddKeysToAgent    confirm
+    CanonicalizeHostname    no
+    ChallengeResponseAuthentication    no
+    CheckHostIP    yes
+    Compression    yes
+    ConnectTimeout    2
+    ControlMaster    no
+    ControlPath    none
+    ControlPersist    no
+    EscapeChar    ~
+    FingerprintHash    sha256
+    ForwardAgent    no
+    ForwardX11    no
+    ForwardX11Trusted    no
+    GatewayPorts    no
+    # GSSAPIAuthentication    no
+    # GSSAPIDelegateCredentials    no
+    HashKnownHosts    no
+    HostbasedAuthentication    no
+    IdentitiesOnly    yes
+    IdentityFile    ~/.ssh/id_ed25519
+    KbdInteractiveAuthentication    no
+    # KbdInteractiveDevices    skey,bsdauth,pam
+    LogLevel    QUIET
+    NoHostAuthenticationForLocalhost    no
+    PasswordAuthentication    no
+    PermitLocalCommand    no
+    # PKCS11Provider    /lib/foo.so
+    PreferredAuthentications    publickey
+    PubkeyAuthentication    yes
+    # SecurityKeyProvider    /lib/bar.so
+    ServerAliveCountMax    24
+    ServerAliveInterval    5
+    StrictHostKeyChecking    ask
+    TcpKeepAlive    no
+    UpdateHostKeys    ask
+    UserKnownHostsFile    ~/.ssh/known_hosts
+    # VerifyHostKeyDNS    yes
+
+# Host    foo
+    # Hostname    foo.bar
+    # HostKeyAlias    foo
+    # IdentifyFile    ~/.ssh/id_alt_rsa
+    # User    me

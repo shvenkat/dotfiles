@@ -185,20 +185,21 @@ endif
 #  ----------  DOTFILE TARGETS  ------------------------------------------------
 
 DOTFILES := \
-        emacs-config \
-        xfce4-terminal-config \
-        lxterminal-config \
         bash-config \
+        readline-config \
+        ssh-config \
+        gnupg-config \
+        emacs-config \
+        editorconfig-config \
         git-config \
         tmux-config \
-        ssh-config \
-        readline-config \
         colordiff-config \
-        htop-config \
+        python-config \
         less-config \
+        htop-config \
         unison-config \
-        editorconfig-config \
-        python-config
+        xfce4-terminal-config \
+        lxterminal-config
         # zsh-config \
 
 .PHONY: dotfiles $(DOTFILES)

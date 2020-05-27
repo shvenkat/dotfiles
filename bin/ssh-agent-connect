@@ -99,6 +99,7 @@ set_env () {
 make_link () {
     info_msg "Creating symlink ${CANONICAL_SOCKET} -> $1."
     mkdir -p "$(dirname "$CANONICAL_SOCKET")"
+    chmod 0700 "$(dirname "$CANONICAL_SOCKET")"
     ln -sf "$1" "$CANONICAL_SOCKET"
     set_env
 }
@@ -123,6 +124,7 @@ find_socket () {
 start_agent () {
     info_msg "Starting a new agent."
     mkdir -p "$(dirname "$CANONICAL_ENV")"
+    chmod 0700 "$(dirname "$CANONICAL_ENV")"
     touch "$CANONICAL_ENV"
     chmod 0600 "$CANONICAL_ENV"
     ssh-agent -s > "$CANONICAL_ENV"
@@ -136,7 +138,7 @@ connect_agent () {
     if test -h "$CANONICAL_SOCKET" && test_socket "$CANONICAL_SOCKET"; then
         # If the symlink is valid, just update the environment.
         set_env
-    elif test -n "$SSH_AUTH_SOCK" && test_socket "$SSH_AUTH_SOCK"; then
+    elif test -n "${SSH_AUTH_SOCK:-}" && test_socket "$SSH_AUTH_SOCK"; then
         # If the socket is known, create the symlink and update the environment.
         make_link "$SSH_AUTH_SOCK"
     else
