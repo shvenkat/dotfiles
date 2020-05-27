@@ -248,6 +248,14 @@ $(HOME)/.tmux.conf: tmux/tmux.conf tmux/colorscheme_solarized_light.conf
 ssh-config: $(HOME)/bin/ssh-agent-connect
 $(HOME)/bin/ssh-agent-connect: bin/ssh-agent-connect
 
+gnupg-config: $(addprefix $(HOME)/.gnupg/,gpg.conf gpg-agent.conf dirmngr.conf)
+$(HOME)/.gnupg/gpg.conf: gnupg/gpg.conf gnupg-dir
+$(HOME)/.gnupg/gpg-agent.conf: gnupg/gpg-agent.conf gnupg-dir
+$(HOME)/.gnupg/dirmngr.conf: gnupg/dirmngr.conf gnupg-dir
+.PHONY: gnupg-dir
+gnupg-dir:
+	mkdir -p $(HOME)/.gnupg && chmod 0700 $(HOME)/.gnupg
+
 readline-config: $(HOME)/.inputrc
 $(HOME)/.inputrc: util/inputrc
 
@@ -288,6 +296,7 @@ $(addprefix $(HOME)/, \
         .autoenv.zsh \
         $(addprefix .config/git/,config ignore attributes) \
         bin/ssh-agent-connect \
+        $(addprefix .gnupg/,gpg.conf gpg-agent.conf dirmngr.conf) \
         .inputrc \
         .colordiffrc \
         .config/htop/htoprc \
