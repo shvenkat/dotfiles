@@ -45,7 +45,7 @@ fi
 # ----------  PROMPT  --------------------------------------------------------
 
 # If the shell is interactive and the terminal suitable, customize the prompt.
-if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty -s; then
+if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
     # Abbreviates a path ($1), e.g. /home/me/some/directory -> ~/so/direc.
     __shrink_path () {
         p="${1#${HOME}}"

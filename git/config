@@ -37,13 +37,13 @@
 
 [color]
     branch = always
-    diff = always
+    ; diff = always
     grep = always
     interactive = always
     pager = true
     showbranch = always
     status = always
-    ui = always
+    ; ui = always
 [color "branch"]
     current = reverse
     local = normal
