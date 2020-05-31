@@ -19,7 +19,7 @@ colorize_gnu_ls () {
             TERM screen-16color-bce-s   # For screen/tmux.
             TERM screen-256color-bce-s  # For screen/tmux.
             TERM screen-w               # For screen/tmux.
-            TERM console                # Linux console (without X or other display server).
+            TERM linux                  # Linux console (without X or other display server).
             TERM cygwin                 # Windows.
             TERM putty                  # Windows.
             TERM rxvt

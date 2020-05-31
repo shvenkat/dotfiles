@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Uses ANSI OSC sequences to enable the lightbox palette on a linux console.
+
+# Color values.
+C_highlight="fdf6e4"
+C_focus="d7cdbb"
+C_emphasis="fdf6e4"
+C_text="d7cdbb"
+C_note="b6af99"
+C_comment="959077"
+C_tint="000000"
+C_backgrnd="000000"
+
+C_blue="777fff"
+C_cyan="00bfbf"
+C_green="6fbf53"
+C_yellow="b3b359"
+C_orange="df8658"
+C_red="ff3b47"
+C_magenta="df65bc"
+C_violet="9a95cf"
+
+# Emit ANSI sequences to set each color.
+printf '\033]P0%s' "$C_tint"      # black
+printf '\033]P1%s' "$C_red"       # red
+printf '\033]P2%s' "$C_green"     # green
+printf '\033]P3%s' "$C_yellow"    # yellow
+printf '\033]P4%s' "$C_blue"      # blue
+printf '\033]P5%s' "$C_magenta"   # magenta
+printf '\033]P6%s' "$C_cyan"      # cyan
+printf '\033]P7%s' "$C_focus"     # white
+printf '\033]P8%s' "$C_backgrnd"  # br. black
+printf '\033]P9%s' "$C_orange"    # br. red
+printf '\033]Pa%s' "$C_emphasis"  # br. green
+printf '\033]Pb%s' "$C_text"      # br. yellow
+printf '\033]Pc%s' "$C_note"      # br. blue
+printf '\033]Pd%s' "$C_violet"    # br. magenta
+printf '\033]Pe%s' "$C_comment"   # br. cyan
+printf '\033]Pf%s' "$C_highlight" # br. white
