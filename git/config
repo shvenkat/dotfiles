@@ -48,38 +48,38 @@
     current = reverse
     local = normal
     upstream = black
-    remote = bold cyan
-    plain = bold cyan
+    remote = 14
+    plain = 14
 [color "diff"]
     plain = normal
     old = magenta
     new = cyan
     frag = blue
     func = blue
-    meta = bold black
+    meta = 8
     commit = reverse
     whitespace = red reverse
 [color "grep"]
     context = normal
     selected = normal
-    match = bold black
+    match = 8
     filename = yellow
     function = blue
     linenumber = white
     separator = normal
 [color "interactive"]
     prompt = reverse
-    header = bold black
-    help = bold cyan
+    header = 8
+    help = 14
     error = red
 [color "status"]
     header = normal
     added = green
     changed = blue
-    untracked = bold black
+    untracked = 8
     branch = reverse
-    nobranch = bold red
-    unmerged = bold magenta
+    nobranch = 9
+    unmerged = 13
 
 [diff-so-fancy]
     markEmptyLines = true

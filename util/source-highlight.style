@@ -1,46 +1,46 @@
 // ----------  Most Programming Languages  ---------------------------
 
-keyword green;     // language keywords
-type yellow;       // basic types
-usertype yellow;   // user-defined types
-classname yellow;  // class names
-function blue;     // function declarations and calls
-normal yellow b;     // regular text
-variable yellow b;   // variable names
-symbol yellow b;     // symbols (e.g. <, >, +)
-cbracket yellow b;   // block brackets (e.g. {, })
-number yellow b;     // literal numbers
-string cyan b;    // strings and regular chars
-comment cyan b;   // comments
-preproc pink b;    // preproc directives (e.g. #include, import)
-specialchar cyan;  // special chars (e.g. \n, \t, \\)
+keyword "32";      // language keywords
+type "33";         // basic types
+usertype "33";     // user-defined types
+classname "33";    // class names
+function "34";     // function declarations and calls
+normal "93";       // regular text
+variable "93";     // variable names
+symbol "93";       // symbols (e.g. <, >, +)
+cbracket "93";     // block brackets (e.g. {, })
+number "93";       // literal numbers
+string "96";       // strings and regular chars
+comment "96";      // comments
+preproc "95";      // preproc directives (e.g. #include, import)
+specialchar "36";  // special chars (e.g. \n, \t, \\)
 label cyan;        // goto labels
-regex, regexp cyan;  // regular expressions
-todo red b;        // TODO and FIXME
-doc green b;      // documentation
+regex, regexp "36";  // regular expressions
+todo "91";         // TODO and FIXME
+doc "92";          // documentation
 
 // ----------  Latex  ------------------------------------------------
 
-italics black;
-bold black b;
-underline black b;
-math pink b;
-fixed yellow b;
-argument blue;
-optionalargument blue;
-bibtex cyan b;
+italics "30";
+bold "90";
+underline "90";
+math "95";
+fixed "93";
+argument "34";
+optionalargument "34";
+bibtex "96";
 
 // ----------  Misc  -------------------------------------------------
 
-oldfile pink;    // diff/patch
-newfile cyan;    // diff/patch
-difflines blue;  // diff/patch
+oldfile "35";    // diff/patch
+newfile "36";    // diff/patch
+difflines "34";  // diff/patch
 
-url yellow b;      // URLs
+url "93";        // URLs
 
-selector purple; // CSS
-property blue;   // CSS
-value cyan b;   // CSS
+selector "95";   // CSS
+property "34";   // CSS
+value "96";      // CSS
 
-error red;       // Compiler errors
-warning red b;   // Compiler errors
+error "31";      // Compiler errors
+warning "91";    // Compiler errors
