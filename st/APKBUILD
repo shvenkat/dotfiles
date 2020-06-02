@@ -1,0 +1,50 @@
+# Contributor: Sören Tempel <soeren+alpine@soeren-tempel.net>
+# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+pkgname=st
+pkgver=0.8.3
+pkgrel=1
+pkgdesc="Simple terminal emulator for X"
+url="https://st.suckless.org"
+arch="all"
+license="MIT"
+depends="ncurses-terminfo-base"
+makedepends="fontconfig-dev freetype-dev libx11-dev libxext-dev libxft-dev harfbuzz-dev"
+subpackages="$pkgname-doc $pkgname-dbg"
+source="https://dl.suckless.org/st/st-$pkgver.tar.gz
+st-anysize-0.8.1.patch::https://st.suckless.org/patches/anysize/st-anysize-0.8.1.diff
+st-ligatures-20200430-0.8.3.patch::https://st.suckless.org/patches/ligatures/0.8.3/st-ligatures-20200430-0.8.3.diff
+st-no_bold_colors-0.8.1.patch::https://st.suckless.org/patches/solarized/st-no_bold_colors-0.8.1.diff
+st-invert-0.8.3.patch
+st.patch"
+
+prepare() {
+	default_prepare
+	sed -i '/tic/d' Makefile
+}
+
+build() {
+	make
+}
+
+package() {
+	make install PREFIX=/usr DESTDIR="$pkgdir"
+	mkdir -p "$pkgdir"/usr/share/applications
+
+	cat > "$pkgdir"/usr/share/applications/st.desktop <<-EOF
+		[Desktop Entry]
+		Name=st
+		Comment=st is a simple virtual terminal emulator for X which sucks less
+		Exec=st
+		Terminal=false
+		Type=Application
+		Icon=gnome-xterm
+		Categories=System;TerminalEmulator;
+	EOF
+}
+
+sha512sums="2a824e43d9b3085d9c5c772e3411d744509be79301937c946b27f25451f68813f46c863dd37babbf67716506e86bc70d03645b39d7b124390b07f8f3e0c0c573  st-0.8.3.tar.gz
+75a32b4f82702ac09ab5c3493c5839c8725475ea6504d74fc06789193c5124235975e83e5edb9e14ed3ef19484da5ddad0b7434ca50016c0a3eafd723e785fcc  st-anysize-0.8.1.patch
+b95d9e0770d0bf141f67cd46f0011d905169a89ea11eb5bec4a0ac0faa2fea84ffed237abb21dd3efa05d52e6dc98dcc2767f1b07ea8ca8b21e5b6ae46e9cad9  st-ligatures-20200430-0.8.3.patch
+334a102b77401a8a2aad7571e3395a74275a80b8feb8b040d36f849940a7535295f8be77249a6b78b78917aa3837d0fcf659d038f7e74ac6816ddade2fce111d  st-no_bold_colors-0.8.1.patch
+4f96232879d9ed790baceec9ef74d396fa63409a44e85522d218220274094f1412bb6805c7c55bad2ba05a6bcad749d81b88dc20d3fd9f5ed94922234068f991  st-invert-0.8.3.patch
+e84a162272ac9d4f39f57266c9042d52348458d6e084e79a05580fd7b9ba796d6f985c1dd9d083d636118986b5e886a28076e905d336e91e648cf0013062b3ed  st.patch"
