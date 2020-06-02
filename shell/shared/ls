@@ -10,6 +10,7 @@ colorize_gnu_ls () {
 
             # ----------  COLOR-CAPABLE TERMINALS  --------------------------
             # List color-capable terminals below.
+            TERM st-16color             # A simpler terminal.
             TERM xterm                  # Ubiquitous.
             TERM xterm-color            # Ubiquitous.
             TERM xterm-16color          # Ubiquitous.

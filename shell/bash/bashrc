@@ -62,7 +62,7 @@ if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
     }
     # Updates $PS1.
     __update_prompt () {
-        PS1="${HOSTNAME:0:4} $(__shrink_path "$(pwd)") ◀▶ "
+        PS1="\[\033[7m\] \[\033[0m\]${HOSTNAME:0:4} $(__shrink_path "$(pwd)")>> "
     }
     # Redefine cd, pushd and popd to update the prompt.
     cd () {
