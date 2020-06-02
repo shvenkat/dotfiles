@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ -e ~/.xmodmaprc ]]; then
+    xmodmap ~/.xmodmaprc
+fi
+
+# xrdb -merge ~/.Xresources
+
+exec dwm
