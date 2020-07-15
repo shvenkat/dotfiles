@@ -199,8 +199,9 @@ DOTFILES := \
         htop-config \
         unison-config \
         x-config \
-        xfce4-terminal-config \
-        lxterminal-config
+        firejail-config
+        # xfce4-terminal-config \
+        # lxterminal-config
         # zsh-config \
 
 .PHONY: dotfiles $(DOTFILES)
@@ -293,6 +294,9 @@ x-config: $(addprefix $(HOME)/,.xinitrc .xmodmaprc)
 $(HOME)/.xinitrc: x/xinitrc
 $(HOME)/.xmodmaprc: x/xmodmaprc
 
+firejail-config: $(HOME)/.config/firejail
+$(HOME)/.config/firejail: firejail
+
 $(HOME)/bin/totp: bin/totp
 
 # Symlink dotfile.
@@ -312,6 +316,7 @@ $(addprefix $(HOME)/, \
         .editorconfig \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
         .xinitrc .xmodmaprc \
+        .config/firejail \
         bin/totp):
 	mkdir -p "$$(dirname $@)"
 	ln -sfT "$$(bin/relative-path "$$(pwd)/$<" "$$(dirname "$@")")" "$@"

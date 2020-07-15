@@ -1,0 +1,78 @@
+# Simple secure config for a desktop/laptop.
+
+# Use `iptables-restore < rules-save` to load this configuration. By
+# default, this flushes all tables first.
+
+# Prevent some IP spoofing.
+*raw
+:PREROUTING ACCEPT
+:OUTPUT ACCEPT
+-A PREROUTING -m rpfilter --invert -j DROP
+COMMIT
+
+
+# Silently drop packets that are not specifically allowed below.
+*filter
+:INPUT DROP
+:FORWARD DROP
+:OUTPUT DROP
+
+# Allow "incoming" packets arising from the local machine.
+-A INPUT -i lo -j ACCEPT
+
+# Allow incoming packets related to existing valid connections.
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+
+# Allow connection failures to be quickly detected.
+-A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
+
+# Allow new incoming connections to local servers (e.g. sshd), if any.
+# e.g. -A INPUT -p tcp --dport 22 -j ACCEPT
+
+# Log other incoming packets (before dropping them).
+-A INPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[blocked in]"
+
+# Allow "outgoing" packets headed to the local machine.
+-A OUTPUT -o lo -j ACCEPT
+
+# Allow outgoing packets related to existing connections.
+-A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# Allow DNS requests so hostnames can be resolved.
+-A OUTPUT -p udp --dport 53 -j ACCEPT
+-A OUTPUT -p tcp --dport 53 -j ACCEPT
+
+# Allow DHCP requests so IP addresses can be obtained dynamically.
+-A OUTPUT -p udp --dport 67 --sport 68 -j ACCEPT
+
+# Silently drop all other outgoing packets to the local network. This prevents
+# programs on this machine from exploiting insecure services, such as router web
+# consoles.
+-A OUTPUT -d 192.168.0.0/16 -j DROP
+-A OUTPUT -d 10.0.0.0/8 -j DROP
+-A OUTPUT -d 172.16.0.0/12 -j DROP
+-A OUTPUT -d 169.254.0.0/16 -j DROP
+
+# Drop multicast traffic.
+-A OUTPUT -d 224.0.0.0/4 -j DROP
+
+# Allow new outgoing connections for the following services:
+# * NTP
+# * SSH
+# * HTTP/HTTPS
+# * git pack transfer
+-A OUTPUT -p udp --dport 123 -j ACCEPT
+-A OUTPUT -p tcp --dport 22 -j ACCEPT
+-A OUTPUT -p udp --dport 22 -j ACCEPT
+-A OUTPUT -p tcp --dport 80 -j ACCEPT
+-A OUTPUT -p tcp --dport 443 -j ACCEPT
+-A OUTPUT -p tcp --dport 9418 -j ACCEPT
+
+# Log other outgoing packets (before dropping them).
+-A OUTPUT -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[blocked out]"
+
+COMMIT
+
+# Done.

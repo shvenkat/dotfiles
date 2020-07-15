@@ -1,0 +1,44 @@
+# Firewall config for a Firejail sandbox for Firefox.
+
+# Prevent some IP spoofing.
+*raw
+:PREROUTING ACCEPT
+:OUTPUT ACCEPT
+-A PREROUTING -m rpfilter --invert -j DROP
+COMMIT
+
+# Unless overridden below, deny all incoming traffic. Allow all outgoing
+# traffic, since Firefox supports a large number of protocols.
+*filter
+:INPUT DROP
+:FORWARD DROP
+:OUTPUT ACCEPT
+
+# Allow "incoming" packets arising from the local machine.
+-A INPUT -i lo -j ACCEPT
+
+# Allow incoming packets related to existing valid connections.
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+
+# Allow connection failures to be quickly detected.
+-A INPUT -p icmp --icmp-type destination-unreachable -j ACCEPT
+-A INPUT -p icmp --icmp-type time-exceeded -j ACCEPT
+
+# Allow DNS requests so hostnames can be resolved.
+-A OUTPUT -p udp --dport 53 -j ACCEPT
+
+# Silently drop all other outgoing packets to the local network. This prevents
+# a compromised browser from exploiting insecure services, such as router web
+# consoles.
+-A OUTPUT -d 192.168.0.0/16 -j DROP
+-A OUTPUT -d 10.0.0.0/8 -j DROP
+-A OUTPUT -d 172.16.0.0/12 -j DROP
+-A OUTPUT -d 169.254.0.0/16 -j DROP
+
+# Drop multicast traffic.
+-A OUTPUT -d 224.0.0.0/4 -j DROP
+
+COMMIT
+
+# Done.
