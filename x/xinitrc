@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if command -v xcalib >/dev/null; then
+    rgb_args="1.3 0 100"
+    xcalib -alter -red ${rgb_args} -green ${rgb_args} -blue ${rgb_args}
+fi
+
 if [[ -e ~/.xmodmaprc ]]; then
     xmodmap ~/.xmodmaprc
 fi

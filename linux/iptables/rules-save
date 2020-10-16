@@ -40,6 +40,9 @@ COMMIT
 # Allow outgoing packets related to existing connections.
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 
+# Allow pings.
+-A OUTPUT -p icmp --icmp-type echo-request -j ACCEPT
+
 # Allow DNS requests so hostnames can be resolved.
 -A OUTPUT -p udp --dport 53 -j ACCEPT
 -A OUTPUT -p tcp --dport 53 -j ACCEPT

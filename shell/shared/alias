@@ -72,10 +72,9 @@ rdiff () {
 }
 
 # Graphics.
-alias xa='xinit -- :0 vt7 -config xorg.conf.intel &'
-alias xz='xinit -- :1 vt9 -config xorg.conf.fbdev &'
+alias x11a='xinit -- :0 vt7 -quiet -nolisten tcp -config xorg.conf.intel &'
+alias x11z='xinit -- :1 vt9 -quiet -nolisten tcp -config xorg.conf.fbdev &'
 
 # Firejail-ed programs.
-alias ff='firejail --name=ff --output-stderr=/tmp/firejail_firefox.log --quiet -- firefox -no-remote &'
-alias es='firejail --name=emacs --output-stderr=/tmp/firejail_emacs.log --quiet -- emacs -nw --daemon &'
+alias es='firejail --name=emacs --quiet -- emacs -nw --daemon &'
 alias ec='firejail --join=emacs -- emacsclient -nw'

@@ -1,0 +1,100 @@
+#!/bin/bash
+
+set -e -o pipefail -u
+
+MOZ=".mozilla"
+MOZ_CLEAN=".mozilla.ext_cfg"
+MOZ_DIRTY=".mozilla.bak"
+PROFILE_NAME="quick"
+PROFILE_DIR="firefox/6kdj93mi.quick"
+USER_JS=(
+    "${HOME}/.dotfiles/firefox/ghacks-user.js"
+    "${HOME}/.dotfiles/firefox/user-overrides.js"
+)
+SEARCH_JSON="${HOME}/.dotfiles/firefox/search.json.mozlz4"
+
+USAGE="Usage: ff [-h|--help] [-d|--debug] [-c|--clean] [-u|--update]
+
+Starts firefox in a sandbox.
+
+  -c|--clean    Revert ~/$MOZ to the clean state of ~/$MOZ_CLEAN
+  -u|--update   Make the extensions/ directory within the profile
+                writable, so that extensions can be updated.
+  -d|--debug    Be verbose
+"
+
+# Parse arguments.
+clean="false"
+debug="false"
+update="false"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -c|--clean)
+            clean="true"
+            shift
+            ;;
+        -d|--debug)
+            debug="true"
+            shift
+            ;;
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        -u|--update)
+            update="true"
+            shift
+            ;;
+        *)
+            echo "Invalid arg: $1" 1>&2
+            echo "$USAGE" 1>&2
+            exit 1
+            ;;
+    esac
+done
+
+# Select the snapshot of .mozilla to use.
+if [[ "$clean" == "true" ]]; then
+    moz="$MOZ_CLEAN"
+else
+    moz="$MOZ_DIRTY"
+fi
+
+# Set debug mode.
+if [[ "$debug" == "true" ]]; then
+    set -x
+fi
+
+# Create .mozilla and populate specific files.
+cd "${HOME:?}"
+rm -rf "$MOZ"
+cp -a "$moz" "$MOZ"
+cat "${USER_JS[@]}" > "$MOZ/$PROFILE_DIR/user.js"
+cp "${SEARCH_JSON}" "$MOZ/$PROFILE_DIR/"
+
+# Run firefox within a sandbox. Make the extensions read-only.
+cmd=(
+    "firejail"
+    "--name=ff" "--quiet"
+    "--noblacklist=\${HOME}/$MOZ" "--whitelist=\${HOME}/$MOZ"
+)
+if [[ "$update" != "true" ]]; then
+    cmd+=("--read-only=\${HOME}/$MOZ/$PROFILE_DIR/extensions")
+fi
+cmd+=("--" "firefox" "-no-remote" "-P" "$PROFILE_NAME")
+if [[ "$debug" == "true" ]]; then
+    "${cmd[@]}"
+else
+    "${cmd[@]}" &>/dev/null
+fi
+
+# firejail --name=ff --quiet \
+#     "--noblacklist=\${HOME}/$MOZ" "--whitelist=\${HOME}/$MOZ" \
+#     "--read-only=\${HOME}/$MOZ/$PROFILE_DIR/extensions" \
+#     -- firefox -no-remote -P "$PROFILE_NAME" >/dev/null
+
+# If the dirty mode was used, snapshot .mozilla for the next use.
+if [[ "$clean" == "false" ]] || [[ "$update" == "true" ]]; then
+    rm -rf "$moz"
+    cp -a "$MOZ" "$moz"
+fi

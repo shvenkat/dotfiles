@@ -1,8 +1,10 @@
 # Firejail profile for emacs (text interface).
 # Allowed: read/write access to most of HOME, few executables.
-# Restricted: Network, devices, storage,
+# Restricted: Network, devices, storage.
 # To install/update plugins, use the firejail options:
 # --net=<interface>  # Allow network access.
+# --read-only=${HOME}
+# --read-only=${HOME}/.dotfiles
 # --read-write=${HOME}/.emacs.d
 # --ignore 'private-bin'  # Allow access to curl, tar, gzip, etc.
 

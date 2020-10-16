@@ -190,3 +190,7 @@ user_pref("devtools.theme", "light");
 user_pref("lightweightThemes.selectedThemeID", "firefox-compact-light@mozilla.org");
 user_pref("reader.color_scheme", "sepia");
 user_pref("general.warnOnAboutConfig", false);
+
+// ----------  Canary  -------------------------------------------------------
+
+user_pref("_user.js.parrot", "SUCCESS!");

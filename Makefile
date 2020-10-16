@@ -101,19 +101,19 @@ prereq: buildtools curl git
 ifeq ($(OSTYPE),linux)
 
 buildtools:
-	sudo apt-get install build-essential file
+	{ echo "build tools build-essential/file not found" 1>&2; exit 1; }
 
 curl:
-	which curl &>/dev/null || sudo apt-get install curl
+	which curl &>/dev/null || { echo "curl not found" 1>&2; exit 1; }
 
 git:
-	which git &>/dev/null || sudo apt-get install git
+	which git &>/dev/null || { echo "git not found" 1>&2; exit 1; }
 
 python3:
-	which python3 &>/dev/null || sudo apt-get install python3
+	which python3 &>/dev/null || { echo "python3 not found" 1>&2; exit 1; }
 
 gpg:
-	which gpg &>/dev/null || sudo apg-get install gnupg
+	which gpg &>/dev/null || { echo "gpg not found" 1>&2; exit 1; }
 
 bash5: $(HOME)/bin/bash5 curl gpg
 $(HOME)/bin/bash5: | curl gpg
@@ -317,6 +317,7 @@ $(addprefix $(HOME)/, \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
         .xinitrc .xmodmaprc \
         .config/firejail \
+        bin/ff \
         bin/totp):
 	mkdir -p "$$(dirname $@)"
 	ln -sfT "$$(bin/relative-path "$$(pwd)/$<" "$$(dirname "$@")")" "$@"
@@ -412,9 +413,11 @@ dotmacos: python3
 	fi
 endif
 
-firefox-config:
 ifeq ($(OSTYPE),linux)
+firefox-config: $(HOME)/bin/ff
+$(HOME)/bin/ff: bin/ff
 else
+firefox-config:
 	# if pgrep -U "$$(id -u)" -x firefox >/dev/null 2>&1; then \
 	# 	echo -e '\033[31mERROR: Cannot install Firefox preferences' \
 	#         'because Firefox is running. Quit the app and try again.'; \
