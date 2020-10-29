@@ -72,4 +72,3 @@ rdiff () {
 }
 
 # Misc.
-alias rm-ssh-agent-sockets="find /tmp -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -user $USER -print0 | xargs -0 rm -rf"
