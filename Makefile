@@ -139,7 +139,7 @@ $(HOME)/bin/bash5: | curl gpg
 	cd ;\
 	&& rm -rf "$$build_dir"
 
-else
+else ifeq ($(OSTYPE),darwin)
 
 buildtools:
 	which clang &>/dev/null || xcode-select --install
@@ -199,7 +199,9 @@ DOTFILES := \
         htop-config \
         unison-config \
         x-config \
-        firejail-config
+        firejail-config \
+        firefox-config \
+        font-config
         # xfce4-terminal-config \
         # lxterminal-config
         # zsh-config \
@@ -297,6 +299,12 @@ $(HOME)/.xmodmaprc: x/xmodmaprc
 firejail-config: $(HOME)/.config/firejail
 $(HOME)/.config/firejail: firejail
 
+firefox-config: $(HOME)/bin/ff
+$(HOME)/bin/ff: bin/ff
+
+font-config: $(HOME)/.config/fontconfig/fonts.conf
+$(HOME)/.config/fontconfig/fonts.conf: util/fonts.conf
+
 $(HOME)/bin/totp: bin/totp
 
 # Symlink dotfile.
@@ -317,6 +325,7 @@ $(addprefix $(HOME)/, \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
         .xinitrc .xmodmaprc \
         .config/firejail \
+        .config/fontconfig/fonts.conf \
         bin/ff \
         bin/totp):
 	mkdir -p "$$(dirname $@)"
@@ -374,22 +383,17 @@ dotfiles-clean:
 
 #  ----------  SETTINGS TARGETS  -----------------------------------------------
 
+ifeq ($(OSTYPE),darwin)
+
 SETTINGS := \
         os-config \
-        firefox-config
-
-ifeq ($(OSTYPE),linux)
-else
-SETTINGS += \
+        firefox-config \
         iterm2-config \
         xquartz-config
-endif
 
 .PHONY: settings $(SETTINGS)
 settings: $(SETTINGS)
 
-ifeq ($(OSTYPE),linux)
-else
 os-config: dotmacos
 	for file in mac/macos/*.sh; do \
 	    if [[ -x "$$file" ]]; then \
@@ -411,12 +415,7 @@ dotmacos: python3
 	    python3 -m pip install \
 	        'git+https://github.com/shvenkat/dotmacos#egg=dotmacos'; \
 	fi
-endif
 
-ifeq ($(OSTYPE),linux)
-firefox-config: $(HOME)/bin/ff
-$(HOME)/bin/ff: bin/ff
-else
 firefox-config:
 	# if pgrep -U "$$(id -u)" -x firefox >/dev/null 2>&1; then \
 	# 	echo -e '\033[31mERROR: Cannot install Firefox preferences' \
@@ -433,10 +432,6 @@ firefox-config:
 	    firefox_user_js="$${default_profile}/user.js"; \
 	    sed -e "s#DOWNLOAD_DIR#$${download_dir}#" < firefox/user.js > "$$firefox_user_js"; \
 	fi
-endif
-
-ifeq ($(OSTYPE),linux)
-else
 
 iterm2-config: dotmacos
 	python3 -m dotmacos.cli set --format json5 mac/iterm2/iterm2.json5
@@ -456,6 +451,8 @@ iterm2-config: dotmacos
 xquartz-config: dotmacos
 	python3 -m dotmacos.cli set --format json5 mac/xquartz.json5
 
+else
+SETTINGS :=
 endif
 
 
@@ -483,8 +480,7 @@ PROGS := \
         firefox-prog \
         racket-prog
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 PROGS += \
         iterm-prog \
         mactimer
@@ -493,8 +489,7 @@ endif
 .PHONY: progs $(PROGS)
 progs: $(PROGS)
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 coreutils: brew
 	if ! which shuf &>/dev/null; then \
 	    brew install coreutils ; \
@@ -510,17 +505,17 @@ coreutils: brew
 endif
 
 emacs-prog: emacs-config
-ifeq ($(OSTYPE),linux)
-emacs-prog:
-	if ! which emacs &>/dev/null; then \
-	    echo "Error: Please figure out how to install emacs."; \
-	    exit 1; \
-	fi
-else
+ifeq ($(OSTYPE),darwin)
 emacs-prog: brew
 	if ! which emacs &>/dev/null; then \
 	    brew install emacs --with-cocoa --with-imagemagick@6 \
 	        --with-librsvg --with-modules --with-gnutls; \
+	fi
+else
+emacs-prog:
+	if ! which emacs &>/dev/null; then \
+	    echo "Error: Please figure out how to install emacs."; \
+	    exit 1; \
 	fi
 endif
 
@@ -528,16 +523,16 @@ emacs-ext: emacs-prog
 	emacs -nw --kill
 
 zsh-prog: zsh-config
-ifeq ($(OSTYPE),linux)
+ifeq ($(OSTYPE),darwin)
+zsh-prog: brew
+	if ! which zsh &>/dev/null; then \
+	    brew install zsh zsh-completions; \
+	fi
+else
 zsh-prog:
 	if ! which zsh &>/dev/null; then \
 	    echo "Error: Please figure out how to install zsh."; \
 	    exit 1; \
-	fi
-else
-zsh-prog: brew
-	if ! which zsh &>/dev/null; then \
-	    brew install zsh zsh-completions; \
 	fi
 endif
 
@@ -552,8 +547,7 @@ zsh-ext: zsh-prog
 
 less-prog: source-highlight-prog
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 tmux-prog \
         colordiff-prog \
         htop-prog \
@@ -567,8 +561,7 @@ tmux-prog \
 	which $* &>/dev/null || brew install $*
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 gnupg-prog: brew
 	which gpg &>/dev/null || brew install gnupg
 endif
@@ -586,14 +579,12 @@ python-packages: python3
 		click pyyaml \
 	    jupyterlab matplotlib numpy pandas scipy seaborn
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 coq-prog: brew
 	which coqc &>/dev/null || brew install coq
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 isabelle-prog: brew
 	if ! test -x /Applications/Isabelle2014.app/Contents/Resources/Isabelle2014/bin/isabelle; then \
 	    brew tap shvenkat/extra; \
@@ -601,33 +592,28 @@ isabelle-prog: brew
 	fi
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 tex-prog: brew
 	test -x /Library/TeX/texbin/tex || brew cask install mactex
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 docker-prog: brew
 	which docker &>/dev/null || brew cask install docker
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 firefox-prog: brew
 	test -x /Applications/Firefox.app/Contents/MacOS/firefox \
 	    || brew cask install firefox
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 racket-prog: brew
 	command -v racket &>/dev/null || brew install minimal-racket
 endif
 
-ifeq ($(OSTYPE),linux)
-else
+ifeq ($(OSTYPE),darwin)
 iterm-prog: brew
 	test -x /Applications/iTerm.app/Contents/MacOS/iTerm2 \
 	    || brew cask install iterm2
@@ -648,14 +634,34 @@ $(HOME)/bin/todo: bin/todo python3
 
 FONTS := \
         font-fira-code \
-        font-dejavu-sans \
-        font-droid-sans-mono
+        font-droid-mono \
+        font-dejavu-mono \
+        font-droid-serif \
+        font-ebgaramond-serif \
+        font-source-serif \
+        font-noto-sans \
+        font-droid-sans
 
 .PHONY: fonts $(FONTS)
 fonts: $(FONTS)
 
 ifeq ($(OSTYPE),linux)
-else
+
+FONTS_DIR := $(HOME)/.local/share/fonts
+
+font-fira-code: $(FONTS_DIR)/firacode/FiraCode-Retina.otf
+$(FONTS_DIR)/firacode/FiraCode-Retina.otf:
+	url="https://github.com/tonsky/FiraCode/releases/download/1.207/FiraCode_1.207.zip"; \
+	sha="29615bba3b70641e8f78ca865f8325a3d8dbeb7a8c72288d1e520d4c82e749118f30980b847d35d3fd120914cf4ca1a9c4f57725c8791ba6291a13e8c52dd1d0"; \
+	dir="$$(dirname "$@")"; \
+	zip="$${dir}/FiraCode.zip"; \
+	mkdir -p "$$dir" \
+	&& curl -fsSL -o "$$zip" "$$url" \
+	&& [[ "$$sha" == "$$(sha512sum -b "$$zip" | cut -d' ' -f1)" ]] \
+	&& unzip -q -o -j "$$zip" 'otf/*.otf' -d "$$dir" \
+	&& rm -f "$$zip"
+
+else ifeq ($(OSTYPE),darwin)
 
 font-fira-code: brew font-tap
 	test -e "$(HOME)/Library/Fonts/FiraCode-Regular.otf" \

@@ -10,8 +10,8 @@ SWAP_WARNING_THRESHOLD=1
 SWAP_CRITICAL_THRESHOLD=100
 DISK_WARNING_THRESHOLD=80
 DISK_CRITICAL_THRESHOLD=95
-BATTERY_WARNING_THRESHOLD=20
-BATTERY_CRITICAL_THRESHOLD=10
+BATTERY_WARNING_THRESHOLD=40
+BATTERY_CRITICAL_THRESHOLD=20
 
 if [[ "$1" == "--color" ]]; then
     warning_color='\033[1m'      # bold text
@@ -105,22 +105,36 @@ Darwin)
     ;;
 
 Linux)
-    battery_percent='--'
-    cpu_percent=$(top -b -n2 -d3 \
-                  | grep -F '%Cpu(s)' \
-                  | tail -n1 \
-                  | sed 's/^.*, *\([0-9.]*\) id,.*$/\1/' \
-                  | awk '{ printf "%i\n",100 - $1}')
-    memory_percent=$(( 100 - 100 \
-                       * $(free | grep -F 'Mem:' | awk '{ print $7 }') \
-                       / $(free | grep -F 'Mem:' | awk '{ print $2 }')))
-    swap_percent=$(( 100 \
-                     * $(free | grep -F 'Swap' | awk '{ print $2 }') \
-                     / $(free | grep -F 'Mem:' | awk '{ print $2 }') ))
-    disk_percent=$(df -h / \
-                   | grep '/$' \
-                   | grep -o '[0-9]\+%' \
-                   | tr -d '%')
+    battery_percent="$((
+        100 \
+        * "$(cat /sys/class/power_supply/BAT1/charge_now)"
+        / "$(cat /sys/class/power_supply/BAT1/charge_full)"
+    ))"
+    cpu_percent="$(
+        top -b -n2 -d3 \
+        | grep '^CPU:' \
+        | tail -n1 \
+        | sed -e 's/^.* \([0-9.]\+\)% idle .*$/\1/' \
+        | awk '{ printf "%i\n",100 - $1 }'
+    )"
+    free_output="$(free)"
+    memory_percent="$((
+        100 \
+        - 100 \
+        * $(echo "$free_output" | grep -F 'Mem:' | awk '{ print $7 }') \
+        / $(echo "$free_output" | grep -F 'Mem:' | awk '{ print $2 }')
+    ))"
+    swap_percent="$((
+        100 \
+        * $(echo "$free_output" | grep -F 'Swap' | awk '{ print $2 }') \
+        / $(echo "$free_output" | grep -F 'Mem:' | awk '{ print $2 }')
+    ))"
+    disk_percent="$(
+        df -h / \
+        | grep '/$' \
+        | grep -o '[0-9]\+%' \
+        | tr -d '%'
+    )"
     ;;
 
 Cygwin)
