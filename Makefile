@@ -634,13 +634,11 @@ $(HOME)/bin/todo: bin/todo python3
 
 FONTS := \
         font-fira-code \
-        font-droid-mono \
         font-dejavu-mono \
-        font-droid-serif \
-        font-ebgaramond-serif \
-        font-source-serif \
-        font-noto-sans \
-        font-droid-sans
+        font-droid \
+        font-ebgaramond \
+        font-noto \
+        font-source-serif
 
 .PHONY: fonts $(FONTS)
 fonts: $(FONTS)
@@ -660,6 +658,49 @@ $(FONTS_DIR)/firacode/FiraCode-Retina.otf:
 	&& [[ "$$sha" == "$$(sha512sum -b "$$zip" | cut -d' ' -f1)" ]] \
 	&& unzip -q -o -j "$$zip" 'otf/*.otf' -d "$$dir" \
 	&& rm -f "$$zip"
+
+font-ebgaramond: $(FONTS_DIR)/ebgaramond/EBGaramond-Regular.otf
+$(FONTS_DIR)/ebgaramond/EBGaramond-Regular.otf:
+	repo="EBGaramond12"; \
+	commit="8e8d2aff04abb39fceca0b1e8da1f444e466fb3b"; \
+	url="https://github.com/octaviopardo/$${repo}/archive/$${commit}.tar.gz"; \
+	sha="a846b2d0b9931a4bc13e1bcfab60d65b8e90caf5cc11829ad2180cb88ac7e91f15642bdeaea280dd919c7da15fd4aea3d1635667507c676d31fb4c0e09c633a4"; \
+	dir="$$(dirname "$@")"; \
+	tar="$${dir}/ebgaramond.tar.gz"; \
+	mkdir -p "$$dir" \
+	&& curl -fsSL -o "$$tar" "$$url" \
+	&& [[ "$$sha" == "$$(sha512sum -b "$$tar" | cut -d' ' -f1)" ]] \
+	&& tar --strip-components 3 --wildcards \
+	    -C "$$dir" -xzf "$$tar" "$${repo}-$${commit}/fonts/otf/*.otf" \
+	&& rm -f "$$tar"
+
+font-noto: $(FONTS_DIR)/noto/NotoSans-Regular.ttf
+$(FONTS_DIR)/noto/NotoSans-Regular.ttf:
+	repo="noto-fonts"; \
+	commit="462ad2d2a45df33785980f9d9f56f6369cfc110d"; \
+	url="https://github.com/googlei18n/$${repo}/archive/$${commit}/$${repo}.tar.gz"; \
+	sha="6e96e8b5ac06ea938a92fdec8d9354796794125db03c82ca2219eb66105b03c303745d1a8b60ed711c365fc115971ad8a5e7096957803c7d2d95b8accd46719e"; \
+	dir="$$(dirname "$@")"; \
+	tar="$${dir}/noto.tar.gz"; \
+	mkdir -p "$$dir" \
+	&& curl -fsSL -o "$$tar" "$$url" \
+	&& [[ "$$sha" == "$$(sha512sum -b "$$tar" | cut -d' ' -f1)" ]] \
+	&& tar --strip-components 2 --wildcards -C "$$dir" -xzf "$$tar" \
+	    "$${repo}-$${commit}/hinted/NotoSansMono-Bold.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSansMono-Light.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSansMono-Medium.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSansMono-Regular.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSans-Bold*.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSans-Italic.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSans-Light*.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSans-Medium*.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSans-Regular.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSerif-Bold*.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSerif-Italic.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSerif-Light*.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSerif-Medium*.ttf" \
+	    "$${repo}-$${commit}/hinted/NotoSerif-Regular.ttf" \
+	&& rm -f "$$tar"
 
 else ifeq ($(OSTYPE),darwin)
 
