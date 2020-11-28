@@ -14,7 +14,7 @@
 (defun flycheck-python--find-project-root (_checker)
     (and
         buffer-file-name
-        (locate-dominating-file buffer-file-name "setup.py")))
+        (locate-dominating-file buffer-file-name ".git")))
 
 (flycheck-define-checker python-mypy-project-root
   "Run mypy from the project root, followed by flake8."
