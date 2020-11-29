@@ -69,16 +69,6 @@
 
 ;; Configure python formatters - black and isort.
 
-;; Use blacken to automatically format code.
-;; https://github.com/proofit404/blacken
-;; Minor mode hooks are set up per https://emacs.stackexchange.com/a/18897.
-(use-package blacken
-    :defer t
-    :commands (blacken-mode)
-    :init
-    (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column)))
-    (add-hook 'python-mode-hook #'blacken-mode))
-
 ;; Use isort to sort import statements in the module header.
 ;; https://github.com/paetzke/py-isort.el
 (define-minor-mode isort-mode
@@ -92,3 +82,13 @@
     :commands (py-isort-before-save)
     :init
     (add-hook 'python-mode-hook 'isort-mode))
+
+;; Use blacken to automatically format code.
+;; https://github.com/proofit404/blacken
+;; Minor mode hooks are set up per https://emacs.stackexchange.com/a/18897.
+(use-package blacken
+    :defer t
+    :commands (blacken-mode)
+    :init
+    (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column)))
+    (add-hook 'python-mode-hook #'blacken-mode))

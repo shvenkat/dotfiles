@@ -19,6 +19,8 @@
         ((t (:foreground "brightred" :slant normal))))
     '(warning
         ((t (:foreground "yellow" :slant normal))))
+    '(region
+        ((t (:inverse-video t))))
     ;; font-lock.
     '(font-lock-builtin-face
         ((t (:foreground "brightyellow" :slant normal))))
