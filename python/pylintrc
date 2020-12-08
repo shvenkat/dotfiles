@@ -1,5 +1,8 @@
 [MASTER]
 
+# List compiled extension modules.
+# extension-pkg-whitelist=foo.bar.quux
+
 load-plugins=pylint.extensions.check_elif,
              pylint.extensions.comparetozero,
              pylint.extensions.docparams,
@@ -7,7 +10,6 @@ load-plugins=pylint.extensions.check_elif,
              pylint.extensions.overlapping_exceptions
 
 suggestion-mode=yes
-
 
 [MESSAGES CONTROL]
 
@@ -30,6 +32,7 @@ enable=c-extension-no-member
 #   logging-fstring-interpolation: Allow the use of "f-string" interpolation in logging.
 #       See discussion at https://github.com/PyCQA/pylint/issues/1788.
 #   missing-type-doc: Types are in the function/method signature.
+#   missing-yield-type-doc: Types are inserted by sphinx_autodoc_typehints from type annotations.
 disable=fixme,
         unused-import,
         too-few-public-methods,
@@ -39,7 +42,8 @@ disable=fixme,
         no-else-return,
         ungrouped-imports,
         logging-fstring-interpolation,
-        missing-type-doc
+        missing-type-doc,
+        missing-yield-type-doc
 
 
 [REPORTS]
@@ -71,10 +75,18 @@ max-module-lines=1000
 docstring-min-length=-1
 no-docstring-rgx=
 
-good-names=i,j,k,m,n,p,q,e,f,T,S
+# Allow conventional short variable names.
+#   i,j,k  Array/iteration index.
+#   m,n    Array dimension.
+#   p,q    Array dimension or probability.
+#   e      Exception in 'except FooException as e'.
+#   f      Wrapper function defined in a decorator.
+#   T,S,F  Type variables for annotation.
+good-names=i,j,k,m,n,p,q,e,f,T,S,F
 bad-names=foo,bar,baz,ii,jj
 include-naming-hint=yes
 
+# Allowed length of names of variables, arguments, attributes, functions, methods, etc.
 argument-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
 attr-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$
 function-rgx=^(([a-z_][a-z0-9_]{1,30})|(_[a-z0-9_]*)|(__[a-z][a-z0-9_]+__))$

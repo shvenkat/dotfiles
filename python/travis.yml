@@ -1,13 +1,14 @@
 sudo: false
-dist: trusty
+dist: focal
 language: python
 python:
-  - "3.6"
+  - "3.8"
 
 cache: pip
 
 install:
-  - pip3 install ...
+  - python -m pip install -r dev_requirements.txt
+  - python -m pip install -e foo/bar
 
 script:
-  - ...
+  - bin/ci.sh
