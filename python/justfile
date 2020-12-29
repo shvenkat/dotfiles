@@ -1,0 +1,136 @@
+# vim: set ft=make :
+
+set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
+
+
+@help:
+    echo "just is a convenient command runner. Tips for this repo:"
+    echo "List tasks:    just -l"
+    echo "Bash auto-completion (add to your .bashrc):"
+    echo "    which just >/dev/null && complete -W '\$(just --summary)' just"
+
+
+# Install packages used for software development.
+@venv-dev:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then python3.8 -m venv .venv; fi
+    . .venv/bin/activate
+    python -m pip install -r dev_requirements.txt
+
+
+# Install package in kariusdx/foo in editable ("dev") mode to provide kariusdx.foo.
+@venv-install pkg:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then python3.8 -m venv .venv; fi
+    . .venv/bin/activate
+    rm -f .venv/lib/python*/site-packages/kariusdx*.egg-link
+    python -m pip install -e "distros/{{pkg}}"
+
+
+# Run all linters, tests and format checks.
+@check: mypy flake8 pylint test
+    for file in {{files}}; do just diff "$file"; done
+
+
+# Run mypy on source code within kariusdx/.
+@mypy +files="kariusdx":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python -m mypy --config-file .mypy.ini --no-error-summary {{files}}
+
+# Run flake8 on source code within kariusdx/.
+@flake8 +files="kariusdx":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python -m flake8 --config .flake8 {{files}}
+
+# Run pylint on source code within kariusdx/.
+@pylint +files="kariusdx":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python -m pylint --rcfile .pylintrc --score no --persistent no --jobs 0 {{files}}
+
+
+# Run isort and black on a single .py file. Save the original with a ~ suffix.
+@format file:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    new="{{file}}"
+    old="${new}~"
+    mv "$new" "$old"
+    cat "$old" \
+        | python3 -m isort --quiet --line-length 99 --settings-path . - \
+        | python3 -m black --quiet --line-length 99 - \
+        > "$new"
+
+# Run isort and black on a single .py file and show the diff.
+@diff file:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    cat "{{file}}" \
+        | python3 -m isort --quiet --line-length 99 --settings-path . - \
+        | python3 -m black --quiet --line-length 99 - \
+        | diff -u --label "a/{{file}}" --label "b/{{file}}" "{{file}}" -
+
+
+# Run the unit tests in tests/unit, except for the slow ones and benchmarks.
+test:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' and 'just venv-install xxx' to install the virtual env."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python -m pytest -c pytest.ini --quiet --last-failed -m 'not slow and not benchmark' \
+        kariusdx tests/unit
+
+# Run all the unit tests in tests/unit.
+test-all:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' and 'just venv-install xxx' to install the virtual env."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python -m pytest --quiet --last-failed tests/unit
+
+
+# Run the script used for continuous integration.
+ci:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' and 'just venv-install xxx' to install the virtual env."
+        exit 1
+    fi
+    . .venv/bin/activate
+    bin/ci.sh

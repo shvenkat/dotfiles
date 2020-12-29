@@ -17,3 +17,9 @@ select = E,W,F,C,B,B9
 #   W503: line break before binary operator
 #   B950: line too long (redundant with E501 and cannot be ignored by noqa: B950)
 ignore = E203,E241,E252,W503,B950
+
+# The mccabe plugin raises false positive errors for functions using local functions.
+# max-complexity = 10
+
+per-file-ignores =
+    __init__.py:F401

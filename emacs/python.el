@@ -7,6 +7,7 @@
 (require 'flycheck)
 (defun flycheck-python-disable-all ()
     (progn
+        (add-to-list 'flycheck-disabled-checkers 'python-pycompile)
         (add-to-list 'flycheck-disabled-checkers 'python-mypy)
         (add-to-list 'flycheck-disabled-checkers 'python-flake8)
         (add-to-list 'flycheck-disabled-checkers 'python-pylint)))
