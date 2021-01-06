@@ -1,4 +1,4 @@
-# vim: set ft=make :
+# vim: set ft=make : -*- Makefile -*-
 
 set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
 
@@ -11,31 +11,30 @@ set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
 
 
 # Install packages used for software development.
-@venv-dev:
+venv-dev:
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then python3.8 -m venv .venv; fi
     . .venv/bin/activate
-    python -m pip install -r dev_requirements.txt
+    python3 -m pip install -r dev_requirements.txt
 
 
-# Install package in kariusdx/foo in editable ("dev") mode to provide kariusdx.foo.
-@venv-install pkg:
+# Install package in foo/pkg in editable ("dev") mode.
+venv-install pkg:
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then python3.8 -m venv .venv; fi
     . .venv/bin/activate
-    rm -f .venv/lib/python*/site-packages/kariusdx*.egg-link
-    python -m pip install -e "distros/{{pkg}}"
+    rm -f .venv/lib/python*/site-packages/foo*.egg-link
+    python3 -m pip install -e "distros/{{pkg}}"
 
 
 # Run all linters, tests and format checks.
-@check: mypy flake8 pylint test
-    for file in {{files}}; do just diff "$file"; done
+@check: mypy flake8 pylint test diff
 
 
-# Run mypy on source code within kariusdx/.
-@mypy +files="kariusdx":
+# Run mypy on source code within foo.
+mypy +files="foo":
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then
@@ -43,10 +42,10 @@ set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
         exit 1
     fi
     . .venv/bin/activate
-    python -m mypy --config-file .mypy.ini --no-error-summary {{files}}
+    python3 -m mypy --config-file .mypy.ini --no-error-summary {{files}}
 
-# Run flake8 on source code within kariusdx/.
-@flake8 +files="kariusdx":
+# Run flake8 on source code within foo/.
+flake8 +files="foo":
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then
@@ -54,10 +53,10 @@ set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
         exit 1
     fi
     . .venv/bin/activate
-    python -m flake8 --config .flake8 {{files}}
+    python3 -m flake8 --config .flake8 {{files}}
 
-# Run pylint on source code within kariusdx/.
-@pylint +files="kariusdx":
+# Run pylint on source code within foo/.
+pylint +files="foo":
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then
@@ -65,11 +64,11 @@ set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
         exit 1
     fi
     . .venv/bin/activate
-    python -m pylint --rcfile .pylintrc --score no --persistent no --jobs 0 {{files}}
+    python3 -m pylint --rcfile .pylintrc --score no --persistent no --jobs 0 {{files}}
 
 
-# Run isort and black on a single .py file. Save the original with a ~ suffix.
-@format file:
+# Run isort and black on .py files and show the diff.
+diff +files=`find foo tests -name '*.py' -print | tr '\n' ' '`:
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then
@@ -77,31 +76,37 @@ set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
         exit 1
     fi
     . .venv/bin/activate
-    new="{{file}}"
-    old="${new}~"
-    mv "$new" "$old"
-    cat "$old" \
+    for file in {{files}}; do
+        cat "$file" \
+        | pyupgrade --py38-plus --exit-zero-even-if-changed - \
+        | python3 -m isort --quiet --line-length 99 --settings-path . - \
+        | python3 -m black --quiet --line-length 99 - \
+        | diff -u --label "a/$file" --label "b/$file" "$file" - \
+        || true  # A difference does not indicate an error.
+    done
+
+# Run isort and black on .py files. Save the original with a ~ suffix.
+format +files=`find foo tests -name '*.py' -print | tr '\n' ' '`:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    for new in {{files}}; do
+        old="${new}~"
+        mv "$new" "$old"
+        cat "$old" \
+        | pyupgrade --py38-plus --exit-zero-even-if-changed - \
         | python3 -m isort --quiet --line-length 99 --settings-path . - \
         | python3 -m black --quiet --line-length 99 - \
         > "$new"
-
-# Run isort and black on a single .py file and show the diff.
-@diff file:
-    #!/bin/sh
-    set -e -u
-    if [ ! -d .venv ]; then
-        echo "First run 'just venv-dev' to install linters."
-        exit 1
-    fi
-    . .venv/bin/activate
-    cat "{{file}}" \
-        | python3 -m isort --quiet --line-length 99 --settings-path . - \
-        | python3 -m black --quiet --line-length 99 - \
-        | diff -u --label "a/{{file}}" --label "b/{{file}}" "{{file}}" -
+    done
 
 
 # Run the unit tests in tests/unit, except for the slow ones and benchmarks.
-test:
+test +files="foo tests/unit":
     #!/bin/sh
     set -e -u
     if [ ! -d .venv ]; then
@@ -109,8 +114,7 @@ test:
         exit 1
     fi
     . .venv/bin/activate
-    python -m pytest -c pytest.ini --quiet --last-failed -m 'not slow and not benchmark' \
-        kariusdx tests/unit
+    python3 -m pytest -c pytest.ini --quiet --last-failed -m 'not slow and not benchmark' {{files}}
 
 # Run all the unit tests in tests/unit.
 test-all:
@@ -121,7 +125,8 @@ test-all:
         exit 1
     fi
     . .venv/bin/activate
-    python -m pytest --quiet --last-failed tests/unit
+    python3 -m pytest -c pytest.ini --quiet --cov=foo --cov-report term-missing \
+        -m 'not benchmark' tests foo
 
 
 # Run the script used for continuous integration.

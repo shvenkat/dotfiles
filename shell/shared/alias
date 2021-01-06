@@ -30,9 +30,9 @@ alias ll='ls -alFh'
 alias df='df -h'
 alias du='du -h'
 alias diff='diff -u'
-alias cdiff='colordiff -u'
 alias grep='grep --color --binary-file=without-match'
 alias tab='column -t -s"	"'
+cdiff () { colordiff -u "$@" | diff-highlight | less -iRS }
 
 # Common use cases.
 alias du1='du -d1'
