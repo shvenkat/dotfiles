@@ -592,7 +592,9 @@ isabelle-prog: brew
 	fi
 endif
 
-ifeq ($(OSTYPE),darwin)
+ifeq ($(OSTYPE),linux)
+.PHONY: tex-prog
+else ifeq ($(OSTYPE),darwin)
 tex-prog: brew
 	test -x /Library/TeX/texbin/tex || brew cask install mactex
 endif
