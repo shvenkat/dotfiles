@@ -11,8 +11,6 @@ sshargs = -C
 # Backup settings.
 backup = Name *
 backuploc = central
-# backupdir = ~/.unison/backups
-# ignore = Path backups
 
 # ----  EXCLUDED FILES  ----
 

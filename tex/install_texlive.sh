@@ -1,8 +1,10 @@
 #!/bin/sh
-set -e -u -x
+set -e -u
+
+# Usage: install_texlive.sh
 
 BIN="${BIN:-${HOME}/bin}"
-TL_DIR="${TL_DIR:-${HOME}/.tinytex}"
+TL_DIR="${TL_DIR:-${HOME}/.texlive}"
 TL_REPO="${TL_REPO:-https://ctan.math.illinois.edu/systems/texlive/tlnet}"
 TL_TAR="install-tl-unx.tar.gz"
 TL_GPG="${TL_GPG:-$(dirname "$0")/texlive.asc}"
@@ -28,7 +30,7 @@ tar -xzf "$TL_TAR"
 tl_install="$(tar -tzf "$TL_TAR" | head -n1 | sed -e 's#/.*$##')"
 
 # Install a "portable" texlive base in a temporary location (atomic install).
-tl_profile="tinytex.profile"
+tl_profile="infraonly.profile"
 cat > "$tl_profile" <<EOF
 selected_scheme scheme-infraonly
 TEXDIR ./
@@ -51,16 +53,21 @@ TL_INSTALL_ENV_NOCHECK=true TL_INSTALL_NO_WELCOME=true \
     --logfile "../install-tl.log" \
     --profile "../${tl_profile}" \
     --repository "$TL_REPO"
-rm -f install-tl
-rm -f bin/man bin/*/man
+rm -f install-tl bin/man bin/*/man
 
 # Copy the portable install to its final location (atomic install).
+if [ -e "${TL_DIR}/bin" ]; then
+    tlmgr="$(find "${TL_DIR}/bin" -name tlmgr -print)"
+    if [ -n "$tlmgr" ]; then
+        "$tlmgr" path remove
+    fi
+fi
 rm -rf "$TL_DIR"
 mkdir -p "$TL_DIR"
 cp -a ./ "${TL_DIR}/"
 
 # Install packages.
-tlmgr="$(find "${TL_DIR}/bin" -name tlmgr)"
+tlmgr="$(find "${TL_DIR}/bin" -name tlmgr -print)"
 "$tlmgr" option repository "$TL_REPO"
 "$tlmgr" install $(tr '\n' ' ' < "$TL_PKGS")
 
