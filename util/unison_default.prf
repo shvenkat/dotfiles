@@ -16,6 +16,7 @@ backuploc = central
 
 ## Ad-hoc backup files.
 ignore = Name *~
+ignore = Name .*~
 
 ## Python.
 ignore = Name env

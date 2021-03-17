@@ -44,8 +44,8 @@ alias R='R --quiet'
 alias v='vim'
 alias vim='nvim'
 alias vim-vanilla='nvim -n -i NONE'
-# alias e='emacsclient -nw -a ""'
-# alias ef='emacs -nw'
+alias e='emacsclient -nw -a ""'
+alias ef='emacs -nw'
 
 # Diff.
 diff-sort () { diff <(sort "$1") <(sort "$2"); }
