@@ -2,75 +2,86 @@
 
 # See https://github.com/erikw/tmux-powerline for tips
 
+USAGE="Usage: $(basename "$0") [-a|--ansi] [-t|--tmux] [-m|--minimal]"
 CPU_WARNING_THRESHOLD=20
 CPU_CRITICAL_THRESHOLD=101
-MEMORY_WARNING_THRESHOLD=90
-MEMORY_CRITICAL_THRESHOLD=101
-SWAP_WARNING_THRESHOLD=1
-SWAP_CRITICAL_THRESHOLD=100
-DISK_WARNING_THRESHOLD=80
-DISK_CRITICAL_THRESHOLD=95
-BATTERY_WARNING_THRESHOLD=40
-BATTERY_CRITICAL_THRESHOLD=20
+MEMORY_WARNING_THRESHOLD=80
+MEMORY_CRITICAL_THRESHOLD=90
+SWAP_WARNING_THRESHOLD=50
+SWAP_CRITICAL_THRESHOLD=80
+DISK_WARNING_THRESHOLD=75
+DISK_CRITICAL_THRESHOLD=90
+BATTERY_WARNING_THRESHOLD=50
+BATTERY_CRITICAL_THRESHOLD=40
 
-if [[ "$1" == "--color" ]]; then
-    warning_color='\033[1m'      # bold text
-    critical_color='\033[31m'    # red text
-    normal_color='\033[0m'       # default colors
-elif [[ "$1" == "--tmux" ]]; then
-    warning_color='#[bold]'      # bold text
-    critical_color='#[fg=red]'   # red text
-    normal_color='#[default]'    # default colors
-else
-    warning_color=''
-    critical_color=''
-    normal_color=''
-fi
-
+# Parse arguments.
+normal_color=''
+warning_color=''
+critical_color=''
+show_info='true'
+show_warn='true'
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -a|--ansi)
+            normal_color='\033[0m'     # Default.
+            warning_color='\033[1m'    # Bold.
+            critical_color='\033[31m'  # Red.
+            shift
+            ;;
+        -t|--tmux)
+            normal_color='#[default]'  # Default.
+            warning_color='#[bold]'    # Bold.
+            critical_color='#[fg=red]' # Red.
+            shift
+            ;;
+        -m|--minimal)
+            show_info='false'
+            show_warn='false'
+            shift
+            ;;
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        *)
+            echo "$USAGE"
+            exit 1
+            ;;
+    esac
+done
 
 # Returns an ANSI color code (or the empty string).
 colorize () {
-    value=$1
-    warning_threshold=$2
-    critical_threshold=$3
+    value="$1"
+    suffix="$2"
+    warning_threshold="$3"
+    critical_threshold="$4"
 
+    if [[ "$value" == '--' ]]; then
+        return
+    fi
     if [[ $warning_threshold -gt $critical_threshold ]]; then
         if [[ "$value" -le ${critical_threshold} ]]; then
-                echo "$critical_color"
-        elif [[ "$value" -le ${warning_threshold} ]]; then
-                echo "$warning_color"
-        else
-                echo "$normal_color"
+            echo "${critical_color}${value}${suffix}${normal_color}"
+        elif [[ "$value" -le ${warning_threshold} ]] \
+                 && [[ "$show_warn" == 'true' ]]; then
+            echo "${warning_color}${value}${suffix}${normal_color}"
+        elif [[ "$show_info" == 'true' ]]; then
+            echo "${normal_color}${value}${suffix}${normal_color}"
         fi
     else
         if [[ "$value" -ge ${critical_threshold} ]]; then
-                echo "$critical_color"
-        elif [[ "$value" -ge ${warning_threshold} ]]; then
-                echo "$warning_color"
-        else
-                echo "$normal_color"
+            echo "${critical_color}${value}${suffix}${normal_color}"
+        elif [[ "$value" -ge ${warning_threshold} ]] \
+                 && [[ "$show_warn" == 'true' ]]; then
+            echo "${warning_color}${value}${suffix}${normal_color}"
+        elif [[ "$show_info" == 'true' ]]; then
+            echo "${normal_color}${value}${suffix}${normal_color}"
         fi
     fi
 }
 
-
-# Format status.
-format_status () {
-    value=$1
-    suffix=$2
-    warning_threshold=$3
-    critical_threshold=$4
-
-    if [[ "$value" == '--' ]]; then
-        echo -n ""
-    else
-        color=$(colorize ${value} ${warning_threshold} ${critical_threshold})
-        echo -n "${color}${value}${suffix}${normal_color}"
-    fi
-}
-
-
-# MAIN
+# -- main --
 
 # Use OS-specific methods to get values of interest.
 case $(uname) in
@@ -151,20 +162,26 @@ esac
 
 
 # Format each value.
-cpu_status=$(format_status $cpu_percent '%C' \
-             $CPU_WARNING_THRESHOLD $CPU_CRITICAL_THRESHOLD)
+cpu_status="$(colorize "$cpu_percent" '%C' \
+              $CPU_WARNING_THRESHOLD $CPU_CRITICAL_THRESHOLD)"
 
-memory_status=$(format_status $memory_percent '%M' \
-                $MEMORY_WARNING_THRESHOLD $MEMORY_CRITICAL_THRESHOLD)
+memory_status="$(colorize "$memory_percent" '%M' \
+                 $MEMORY_WARNING_THRESHOLD $MEMORY_CRITICAL_THRESHOLD)"
 
-swap_status=$(format_status $swap_percent '%S' \
-              $SWAP_WARNING_THRESHOLD $SWAP_CRITICAL_THRESHOLD)
+swap_status="$(colorize "$swap_percent" '%S' \
+               $SWAP_WARNING_THRESHOLD $SWAP_CRITICAL_THRESHOLD)"
 
-disk_status=$(format_status $disk_percent '%D' \
-              $DISK_WARNING_THRESHOLD $DISK_CRITICAL_THRESHOLD)
+disk_status="$(colorize "$disk_percent" '%D' \
+               $DISK_WARNING_THRESHOLD $DISK_CRITICAL_THRESHOLD)"
 
-battery_status=$(format_status $battery_percent '%B' \
-                 $BATTERY_WARNING_THRESHOLD $BATTERY_CRITICAL_THRESHOLD)
+battery_status="$(colorize "$battery_percent" '%B' \
+                  $BATTERY_WARNING_THRESHOLD $BATTERY_CRITICAL_THRESHOLD)"
 
 # Display all values.
-echo -e "${cpu_status} ${memory_status} ${swap_status} ${disk_status} ${battery_status}"
+status=''
+status="${status:+${status} }${cpu_status}"
+status="${status:+${status} }${memory_status}"
+status="${status:+${status} }${swap_status}"
+status="${status:+${status} }${disk_status}"
+status="${status:+${status} }${battery_status}"
+echo -e "$status"

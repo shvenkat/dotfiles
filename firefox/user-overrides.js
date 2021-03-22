@@ -1,14 +1,17 @@
-// TODO:
+// NOTES:
 // * Check the Firefox console for preference-related errors.
 // * Avoid using the Downloads directory as the "cwd" for any shell or process.
-// * Use theme colors to visually identify different profiles **/
-// * Persist site-settings somehow.
+// * Use theme colors to visually identify different profiles.
 
 // EXTENSIONS:
-// * uBlock origin
+// * uBlock Origin
 // * uMatrix: https://github.com/gorhill/uMatrix
+// * Temporary Containers
+// * NeatURL
+// * HTTPS Everywhere
+// * CSS Exfil Protection
+// * CanvasBlocker
 // * Smart Referrer: granular with source<->destination, whitelists
-// * Temporary Containers.
 
 // ----------  OVERRIDE ghacks  ----------------------------------------------
 
@@ -213,6 +216,15 @@ user_pref("devtools.inspector.showUserAgentStyles", true);
 user_pref("devtools.performance.enabled", false);
 // user_pref("devtools.storage.enabled", true);
 // user_pref("devtools.theme", "light");
+
+// Fonts.
+user_pref("font.default.x-western", "sans-serif");
+user_pref("font.minimum-size.x-western", "12");
+user_pref("font.name.monospace.x-western", "Fira Code Retina");
+user_pref("font.name.sans-serif.x-western", "Fira Code Retina");
+user_pref("font.name.serif.x-western", "Fira Code Retina");
+user_pref("font.size.monospace.x-western", "17");
+user_pref("font.size.variable.x-western", "17");
 
 // Misc.
 user_pref("lightweightThemes.selectedThemeID", "firefox-compact-light@mozilla.org");

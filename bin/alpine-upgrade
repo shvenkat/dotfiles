@@ -1,0 +1,127 @@
+#!/bin/bash
+set -e -u
+
+BASE_URL='https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86_64'
+RELEASES='latest-releases.yaml'
+KEYRING='/etc/local/trusted_keys.gpg'
+ISO='alpine-standard-x86_64.iso'
+DIR='/tmp'
+CURRENT_BOOT='/media/usb'
+
+# Verify that the target device is a 2+ GB bootable partition (type 0xc,
+# unformatted, unmounted) on a removable writable USB drive.
+verify_device () {
+    local bootdev="$1"
+    verify_attr () {
+        local value
+        value="$(lsblk --noheadings --raw --output "$1" "$bootdev")"
+        if [[ "$value" != "$2" ]]; then
+            echo "Boot device $bootdev has $1 = '$value', instead of '$2'." 1>&2
+            exit 2
+        fi
+    }
+    verify_attr MOUNTPOINT ''
+    verify_attr FSTYPE ''
+    verify_attr TYPE 'part'
+    verify_attr PARTTYPE '0xc'
+    verify_attr PARTFLAGS '0x80'
+    verify_attr SUBSYSTEMS 'block:scsi:usb:pci'
+    verify_attr HOTPLUG '1'
+    verify_attr RM '1'
+    verify_attr RO '0'
+    local size
+    size="$(lsblk --noheadings --raw --output SIZE --bytes "$bootdev")"
+    if [[ "$size" -lt 2000000000 ]]; then
+        echo "Boot device $bootdev has SIZE = '$size', less than 2 GB." 1>&2
+        exit 2
+    fi
+    echo "Verified that $bootdev is 2+ GB bootable partition on USB storage."
+}
+
+# Create a vFAT filesystem with the label "alpine".
+format_device () {
+    mkfs.vfat -n alpine "$1"
+    echo "Created a vFAT filesystem, labeled 'alpine'."
+}
+
+# Download the latest Alpine "standard" ISO into the current directory.
+download_verify_latest_iso () {
+    rm -f "$RELEASES"
+    wget -q "${BASE_URL}/${RELEASES}"
+    version="$(sed -n -E 's/^ *version: //p' < "$RELEASES" | head -n1)"
+    date="$(sed -n -E 's/^ *date: //p' < "$RELEASES" | head -n1)"
+    if [[ -z "$version" ]]; then
+        echo "Failed to detect latest Alpine release from ${DIR}/${RELEASES}." 1>&2
+        exit 1
+    fi
+    echo "Downloading Alpine ISO $version (standard x86_64), released on $date."
+    iso="alpine-standard-${version}-x86_64.iso"
+    rm -f "$ISO" "${ISO}.asc"
+    wget -q -O "$ISO" "${BASE_URL}/${iso}"
+    wget -q -O "${ISO}.asc" "${BASE_URL}/${iso}.asc"
+    if ! gpgv --keyring "$KEYRING" "${ISO}.asc" "$ISO"; then
+        echo "**Bad ISO**, does not match its PGP signature /tmp/${iso}.asc." 1>&2
+        exit 1
+    fi
+    echo "Verified the PGP signature of the Alpine ISO."
+}
+
+# Unpack and install the ISO, then install the syslinux bootloader.
+install_iso_syslinux () {
+    local bootdev="$1"
+    apk add syslinux
+    setup-bootable -v -s "$ISO" "$bootdev"
+    apk del syslinux
+    echo "Installed Alpine ISO and syslinux bootloader to $bootdev."
+}
+
+# Apply my configuration to the installed device.
+configure_device () {
+    local bootdev="$1"
+    mount "$bootdev" /mnt
+    pushd "$CURRENT_BOOT" >/dev/null
+    cp -a -t /mnt ./*.apkovl.tar.gz cache community testing
+    cp -a -t /mnt/boot/syslinux boot/syslinux/syslinux.cfg
+    popd >/dev/null
+    umount /mnt
+    echo "Configured $bootdev using the current system at $CURRENT_BOOT."
+}
+
+# Cleanup files.
+cleanup () {
+    rm -f "${ISO}.asc" "$ISO" "$RELEASES"
+}
+
+# -- main --
+cd /tmp
+
+# Parse arguments.
+name="$(basename "$0")"
+bootdev=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h,--help)
+            echo "Usage: $name [-h|--help] /dev/sdxN"
+            exit 0
+            ;;
+        -*)
+            echo "Usage: $name [-h|--help] /dev/sdxN"
+            exit 1
+            ;;
+        *)
+            bootdev="$1"
+            break
+    esac
+done
+if [[ -z "$bootdev" ]]; then
+    echo "Usage: $name [-h|--help] /dev/sdxN"
+    exit 1
+fi
+
+verify_device "$bootdev"
+format_device "$bootdev"
+download_verify_latest_iso
+install_iso_syslinux "$bootdev"
+configure_device "$bootdev"
+cleanup
+echo "$bootdev is ready for use. Shutdown and unplug other external media."
