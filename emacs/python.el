@@ -39,9 +39,9 @@
       (remove-hook 'before-save-hook #'py-isort-before-save t)))
 (use-package py-isort
     :defer t
-    :commands (py-isort-before-save)
-    :init
-    (add-hook 'python-mode-hook 'isort-mode))
+    :commands (py-isort-before-save))
+    ;; :init
+    ;; (add-hook 'python-mode-hook 'isort-mode))
 
 ;; Use blacken to automatically format code.
 ;; https://github.com/proofit404/blacken
@@ -50,5 +50,5 @@
     :defer t
     :commands (blacken-mode)
     :init
-    (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column)))
-    (add-hook 'python-mode-hook #'blacken-mode))
+    (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column))))
+    ;; (add-hook 'python-mode-hook #'blacken-mode))
