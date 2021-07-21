@@ -22,6 +22,7 @@
     ; diff = diff-so-fancy | less --tabs=4 -iGRS --pattern '^(Date|added|deleted|modified): '
 [diff]
     algorithm = histogram
+    wsErrorHighlight = all
 [interactive]
     diffFilter = diff-highlight | less --tabs=4 -iGRS
     ; diff-so-fancy breaks the custom diff header expected by interactive git

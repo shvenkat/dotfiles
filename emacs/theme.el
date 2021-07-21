@@ -29,7 +29,7 @@
     '(font-lock-constant-face
         ((t (:foreground "brightyellow" :slant normal))))
     '(font-lock-doc-face
-        ((t (:foreground "brightgreen" :slant normal))))
+        ((t (:foreground "brightyellow" :background "white" :slant normal))))
     '(font-lock-function-name-face
         ((t (:foreground "brightyellow" :slant normal))))
     '(font-lock-keyword-face
@@ -37,7 +37,7 @@
     '(font-lock-preprocessor-face
         ((t (:foreground "brightyellow" :slant normal))))
     '(font-lock-string-face
-        ((t (:foreground "brightcyan" :slant normal))))
+        ((t (:foreground "brightyellow" :background "white" :slant normal))))
     '(font-lock-type-face
         ((t (:foreground "brightyellow" :slant normal))))
     '(font-lock-variable-name-face
