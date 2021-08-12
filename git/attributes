@@ -1,7 +1,10 @@
-# For each tracked file, convert line endings to LF on check-in _if it is a text
-# file_. If the file has been committed with CRLF line endings, no conversion is
-# performed.
-*    text=auto
+# NOTE: Setting the text attribute (text or text=auto) globally (in this file)
+# can be annoying when working with upstream repos with CRLF line endings. In
+# this case, just cloning the repo and checking out the default branch can mark
+# CRLF files as "changed" because git tries to "normalize" line endings to LF.
+# This is prevent switching branches and other headaches.
 
-# Explicitly handle certain files.
-*.py    text diff=python
+# Setting the text attribute causes git to normalize CRLF line endings to LF in
+# tracked files on checkin or checkout.
+# *    text=auto
+# *.py    text diff=python
