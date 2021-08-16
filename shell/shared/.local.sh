@@ -4,10 +4,8 @@
 # ----------  Path  ----------------------------------------------------------
 
 __local_bin="..."
-if [[ -d "$__local_bin" ]]; then
-    if [[ ! "$PATH" =~ "$__local_bin" ]]; then
-        export PATH="${PATH}:${__local_bin}"
-    fi
+if [[ -d "$__local_bin" ]] && [[ ! "$PATH" =~ "$__local_bin" ]]; then
+    export PATH="${PATH}:${__local_bin}"
 fi
 unset __local_bin
 
@@ -36,30 +34,13 @@ fi
 if [[ -n "$BASH_VERSION" && -n "$PS1" && "$TERM" != 'dumb' ]] && tty -s; then
     # Updates $PS1.
     __update_prompt () {
-        PS1="${HOSTNAME:0:4} $(__shrink_path "$(pwd)") ${VIRTUAL_ENV:+V }◀▶ "
-    }
-    # Do this before leaving the old directory.
-    __pre_leave () {
         if [[ -n "$VIRTUAL_ENV" ]]; then
-            deactivate
+            prompt_color="\[\033[91m\]"
+        else
+            prompt_color="\[\033[30m\]"
         fi
-    }
-    # Do this after entering the new directory.
-    __post_enter () {
-        if [[ "$PWD" =~ ^/trusted/path/ && -r "$PWD/.venv/bin/activate" ]]; then
-            source "$PWD/.venv/bin/activate"
-        fi
-        __update_prompt
-    }
-    # Redefine cd, pushd and popd to update the prompt.
-    cd () {
-        __pre_leave && builtin cd "$@" && __post_enter
-    }
-    pushd () {
-        __pre_leave && builtin pushd "$@" && __post_enter
-    }
-    popd () {
-        __pre_leave && builtin popd && __post_enter
+        PS1="${HOSTNAME:0:4} $(__shrink_path "$(pwd)") ${prompt_color}◀▶\[\033[0m\] "
+        unset prompt_color
     }
     # Set the prompt now.
     __update_prompt
