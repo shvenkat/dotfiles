@@ -2,12 +2,6 @@
 
 ;; ----------  COLOR THEME  ----------
 
-;; Enable my custom theme for all new frames.
-(add-hook
-    'after-make-frame-functions
-    (lambda (frame)
-        (enable-theme 'ansi-16)))
-
 ;; Define ansi-16 theme.
 (deftheme ansi-16 "A 16-color theme for light backgrounds like Solarized.")
 (custom-theme-set-faces
@@ -21,6 +15,8 @@
         ((t (:foreground "yellow" :slant normal))))
     '(region
         ((t (:inverse-video t))))
+    '(show-paren-match
+        ((t (:background "white"))))
     ;; font-lock.
     '(font-lock-builtin-face
         ((t (:foreground "brightyellow" :slant normal))))
@@ -56,3 +52,10 @@
 ;;     :foreground (face-attribute 'default :foreground)
 ;;     :background (face-attribute 'default :background)
 ;;     :inverse-video t)
+
+;; Enable my custom theme for the initial frame and all new ones.
+(enable-theme 'ansi-16)
+(add-hook
+    'after-make-frame-functions
+    (lambda (frame)
+        (enable-theme 'ansi-16)))
