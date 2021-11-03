@@ -1,0 +1,11 @@
+{
+    "codeCellConfig": {
+        "fontFamily": "Fira Code",
+        "fontSize": 14
+    },
+        
+    "markdownCellConfig": {
+        "fontFamily": "Droid Sans",
+        "fontSize": 18
+    }
+}
