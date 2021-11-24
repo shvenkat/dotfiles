@@ -1,10 +1,4 @@
 {
-    // CodeMirror
-    // @jupyterlab/codemirror-extension:commands
-    // Text editor settings for all CodeMirror editors.
-    // ************************************************
-
-    // Key Map
-    // Configures the keymap to use
-    "keyMap": "vim"
+    "keyMap": "vim",
+    "theme": "base16-light"
 }

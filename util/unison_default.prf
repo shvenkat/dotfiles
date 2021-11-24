@@ -23,8 +23,10 @@ ignore = Name env
 ignore = Name .venv
 ignore = Name .mypy_cache
 ignore = Name __pycache__
+ignore = Name *.egg-info
 ignore = Name *.pyc
 ignore = Name .ipynb_checkpoints
+ignore = Name .pytest_cache
 
 ## MacOS
 ignore = Name .DS_Store

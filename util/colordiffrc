@@ -1,13 +1,9 @@
-# Example colordiffrc file for light backgrounds
-#
-# Set banner=no to suppress authorship info at top of
-# colordiff output
+# Suppress colordiff author info in output.
 banner=no
-# By default, when colordiff output is being redirected
-# to a file, it detects this and does not colour-highlight
-# To make the patch file *include* colours, change the option
-# below to 'yes'
+# Don't colorize patch files.
 color_patches=no
+# Specify which diff program to use.
+diff_cmd=diff
 #
 # available colours are: white, yellow, green, blue,
 #                        cyan, red, magenta, black,
@@ -24,3 +20,4 @@ oldtext=darkmagenta
 newtext=darkcyan
 diffstuff=darkblue
 cvsstuff=cyan
+difffile=darkblack
