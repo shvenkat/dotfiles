@@ -62,17 +62,18 @@ if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
     }
     # Updates $PS1.
     __update_prompt () {
-        PS1="\[\033[7m\] \[\033[0m\]${HOSTNAME:0:4} $(__shrink_path "$(pwd)")>> "
-    }
-    # Redefine cd, pushd and popd to update the prompt.
-    cd () {
-        builtin cd "$@" && __update_prompt
-    }
-    pushd () {
-        builtin pushd "$@" && __update_prompt
-    }
-    popd () {
-        builtin popd && __update_prompt
+        local prompt_color prompt_suffix
+        if [[ -n "$VIRTUAL_ENV" ]]; then
+            prompt_color="\[\033[91m\]"
+        else
+            prompt_color="\[\033[30m\]"
+        fi
+        if [[ "$OSTYPE" =~ ^darwin ]]; then
+            prompt_suffix="◀▶"
+        else
+            prompt_suffix=">>"
+        fi
+        PS1="\[\033[7m\] \[\033[0m\]${HOSTNAME:0:4} $(__shrink_path "$PWD") ${prompt_color}${prompt_suffix}\[\033[0m\] "
     }
     # Set the prompt now.
     __update_prompt
@@ -81,8 +82,8 @@ if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
     __retval=0
     __show_exit () {
         if [[ "$__retval" -ne 0 ]]; then
-            echo -e "== \\e[31mexit ${__retval}\\e[0m =="
+            echo -e "== \033[31mexit ${__retval}\033[0m =="
         fi
     }
-    PROMPT_COMMAND='__retval=$?; __show_exit; echo'
+    PROMPT_COMMAND='__retval=$?; __show_exit; echo; __update_prompt; history -a'
 fi

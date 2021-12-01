@@ -195,6 +195,7 @@ DOTFILES := \
         tmux-config \
         colordiff-config \
         python-config \
+        jupyter-config \
         less-config \
         htop-config \
         unison-config \
@@ -213,10 +214,28 @@ dotfiles: $(DOTFILES)
 emacs-config: $(HOME)/.emacs.d/init.el
 $(HOME)/.emacs.d/init.el: \
         $(addprefix emacs/, \
-            usepackage_quelpa.el evil.el whitespace.el pairs.el margins.el \
-            menu_and_mode_bars.el theme.el fonts.el splash_message.el \
-            backup.el misc_keys.el mouse.el ido.el editorconfig.el flycheck.el \
-            org.el markdown.el python.el bash.el racket.el custom.el)
+            usepackage_quelpa.el \
+            evil.el \
+            whitespace.el \
+            pairs.el \
+            wrap.el \
+            margins.el \
+            menu_and_mode_bars.el \
+            theme.el \
+            fonts.el \
+            splash_message.el \
+            backup.el \
+            misc_keys.el \
+            mouse.el \
+            ido.el \
+            editorconfig.el \
+            flycheck.el \
+            org.el \
+            markdown.el \
+            python.el \
+            bash.el \
+            racket.el \
+            custom.el)
 
 xfce4-terminal: $(HOME)/.config/xfce4/terminal/terminalrc
 $(HOME)/.config/xfce4/terminal/terminalrc: linux/xfce4_terminalrc
@@ -292,6 +311,16 @@ $(HOME)/.flake8: python/flake8
 $(HOME)/.pylintrc: python/pylintrc
 $(HOME)/.isort.cfg: python/isort.cfg
 
+jupyter-config: $(HOME)/.jupyter/jupyter_notebook_config.py
+jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
+		codemirror-extension notebook-extension docmanager-extension \
+		statusbar-extension toc)
+$(HOME)/.jupyter/jupyter_notebook_config.py: $(HOME)/.jupyter/%: jupyter/%
+$(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
+		codemirror-extension notebook-extension docmanager-extension \
+		statusbar-extension toc \
+		): $(HOME)/.jupyter/lab/user-settings/@jupyterlab/%: jupyter/%
+
 x-config: $(addprefix $(HOME)/,.xinitrc .xmodmaprc)
 $(HOME)/.xinitrc: x/xinitrc
 $(HOME)/.xmodmaprc: x/xmodmaprc
@@ -323,6 +352,10 @@ $(addprefix $(HOME)/, \
         .unison/default.prf \
         .editorconfig \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
+		.jupyter/jupyter_notebook_config.py \
+		$(addprefix .jupyter/lab/user-settings/@jupyterlab/, \
+			codemirror-extension notebook-extension docmanager-extension \
+			statusbar-extension toc) \
         .xinitrc .xmodmaprc \
         .config/firejail \
         .config/fontconfig/fonts.conf \
@@ -592,7 +625,9 @@ isabelle-prog: brew
 	fi
 endif
 
-ifeq ($(OSTYPE),darwin)
+ifeq ($(OSTYPE),linux)
+.PHONY: tex-prog
+else ifeq ($(OSTYPE),darwin)
 tex-prog: brew
 	test -x /Library/TeX/texbin/tex || brew cask install mactex
 endif

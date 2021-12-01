@@ -1,0 +1,141 @@
+# vim: set ft=make : -*- Makefile -*-
+
+set shell := ["bash", "-e", "-o", "pipefail", "-u", "-c"]
+
+
+@help:
+    echo "just is a convenient command runner. Tips for this repo:"
+    echo "List tasks:    just -l"
+    echo "Bash auto-completion (add to your .bashrc):"
+    echo "    which just >/dev/null && complete -W '\$(just --summary)' just"
+
+
+# Install packages used for software development.
+venv-dev:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then python3.8 -m venv .venv; fi
+    . .venv/bin/activate
+    python3 -m pip install -r dev_requirements.txt
+
+
+# Install package in foo/pkg in editable ("dev") mode.
+venv-install pkg:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then python3.8 -m venv .venv; fi
+    . .venv/bin/activate
+    rm -f .venv/lib/python*/site-packages/foo*.egg-link
+    python3 -m pip install -e "distros/{{pkg}}"
+
+
+# Run all linters, tests and format checks.
+@check: mypy flake8 pylint test diff
+
+
+# Run mypy on source code within foo.
+mypy +files="foo":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python3 -m mypy --config-file .mypy.ini --no-error-summary {{files}}
+
+# Run flake8 on source code within foo/.
+flake8 +files="foo":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python3 -m flake8 --config .flake8 {{files}}
+
+# Run pylint on source code within foo/.
+pylint +files="foo":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python3 -m pylint --rcfile .pylintrc --score no --persistent no --jobs 0 {{files}}
+
+
+# Run isort and black on .py files and show the diff.
+diff +files=`find foo tests -name '*.py' -print | tr '\n' ' '`:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    for file in {{files}}; do
+        cat "$file" \
+        | pyupgrade --py38-plus --exit-zero-even-if-changed - \
+        | python3 -m isort --quiet --line-length 99 --settings-path . - \
+        | python3 -m black --quiet --line-length 99 - \
+        | diff -u --label "a/$file" --label "b/$file" "$file" - \
+        || true  # A difference does not indicate an error.
+    done
+
+# Run isort and black on .py files. Save the original with a ~ suffix.
+format +files=`find foo tests -name '*.py' -print | tr '\n' ' '`:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' to install linters."
+        exit 1
+    fi
+    . .venv/bin/activate
+    for new in {{files}}; do
+        old="${new}~"
+        mv "$new" "$old"
+        cat "$old" \
+        | pyupgrade --py38-plus --exit-zero-even-if-changed - \
+        | python3 -m isort --quiet --line-length 99 --settings-path . - \
+        | python3 -m black --quiet --line-length 99 - \
+        > "$new"
+    done
+
+
+# Run the unit tests in tests/unit, except for the slow ones and benchmarks.
+test +files="foo tests/unit":
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' and 'just venv-install xxx' to install the virtual env."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python3 -m pytest -c pytest.ini --quiet --last-failed -m 'not slow and not benchmark' {{files}}
+
+# Run all the unit tests in tests/unit.
+test-all:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' and 'just venv-install xxx' to install the virtual env."
+        exit 1
+    fi
+    . .venv/bin/activate
+    python3 -m pytest -c pytest.ini --quiet --cov=foo --cov-report term-missing \
+        -m 'not benchmark' tests foo
+
+
+# Run the script used for continuous integration.
+ci:
+    #!/bin/sh
+    set -e -u
+    if [ ! -d .venv ]; then
+        echo "First run 'just venv-dev' and 'just venv-install xxx' to install the virtual env."
+        exit 1
+    fi
+    . .venv/bin/activate
+    bin/ci.sh

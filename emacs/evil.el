@@ -8,6 +8,11 @@
     :config
     (evil-mode 1))
 
+(use-package undo-fu
+    :demand
+    :config
+    (evil-set-undo-system 'undo-fu))
+
 ;; Use a configurable prefix key to add custom keybindings.
 ;; https://github.com/cofi/evil-leader
 ;; Load evil-leader immediately to allow custom key bindings in init.el.

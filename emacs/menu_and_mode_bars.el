@@ -22,5 +22,5 @@
                 (concat
                     (if (featurep 'flycheck)
                         (flycheck-mode-line-status-text)
-                        (""))
+                        "")
                     (format-mode-line "  %l:%c  %m"))))))

@@ -86,9 +86,8 @@ case $OSTYPE in
     darwin*)
         PATH="/usr/local/sbin:/sbin:/usr/sbin"
         PATH="${PATH}:/usr/local/opt/coreutils/libexec/gnubin"
+        PATH="${PATH}:/usr/local/opt/findutils/libexec/gnubin"
         PATH="${PATH}:/usr/local/bin:/bin:/usr/bin"
-        PATH="${PATH}:/Library/TeX/texbin"
-        PATH="${PATH}:/Applications/Isabelle2014.app/Contents/Resources/Isabelle2014/bin"
         PATH="${PATH}:/opt/X11/bin"
         PATH="${PATH}:${HOME}/bin"
         export PATH
@@ -99,8 +98,6 @@ case $OSTYPE in
         MANPATH="${MANPATH}:/usr/share/man"
         MANPATH="${MANPATH}:/usr/share/man/en"
         MANPATH="${MANPATH}:/opt/X11/share/man"
-        MANPATH="${MANPATH}:${HOME}/Library/Python/3.6/share/man:"
-        MANPATH="${MANPATH}:${HOME}/Library/Python/2.7/share/man:"
         MANPATH="${MANPATH}:/Applications/Xcode.app/Contents/Developer/usr/share/man"
         MANPATH="${MANPATH}:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man"
         export MANPATH
