@@ -62,7 +62,6 @@ case $OSTYPE in
     linux*)
         PATH="${PATH:-}"
         PATH="$(combine_paths "/usr/local/bin:/bin:/usr/bin" "$PATH")"
-        PATH="$(combine_paths "${HOME}/alt" "${PATH}" --keep-first)"
         PATH="$(combine_paths "/usr/local/sbin:/sbin:/usr/sbin" "$PATH" --keep-first)"
         PATH="$(combine_paths "$PATH" "${HOME}/bin")"
         # PATH="$(combine_paths "$PATH" "${HOME}/.linuxbrew/bin")"

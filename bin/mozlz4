@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+
+# USAGE
+#   mozlz4 -d < foo.json.mozlz4 > foo.json
+#   mozlz4 -c < foo.json > foo.json.mozlz4
+
+import sys
+try:
+    import lz4.block as lz4
+except ImportError:
+    sys.stderr.write("Error: package lz4 not found. Try pip install lz4.\n")
+    sys.exit(1)
+
+MAGIC = b"mozLz40\0"
+USAGE = "Usage error. Use: mozlz4 (-d|-c) < infile > outfile.\n"
+
+if len(sys.argv) != 2:
+    sys.stderr.write(USAGE)
+    sys.exit(1)
+
+if sys.argv[1] == "-c":
+    sys.stdout.buffer.write(MAGIC + lz4.compress(sys.stdin.buffer.read()))
+elif sys.argv[1] == "-d":
+    assert sys.stdin.buffer.read(8) == MAGIC
+    sys.stdout.buffer.write(lz4.decompress(sys.stdin.buffer.read()))
+else:
+    sys.stderr.write(USAGE)
+    sys.exit(1)

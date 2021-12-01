@@ -1,48 +1,211 @@
 #!/bin/bash
-
 set -e -o pipefail -u
 
-MOZ=".mozilla"
-MOZ_CLEAN=".mozilla.ext_cfg"
-MOZ_DIRTY=".mozilla.bak"
-PROFILE_NAME="quick"
-PROFILE_DIR="firefox/6kdj93mi.quick"
-USER_JS=(
-    "${HOME}/.dotfiles/firefox/ghacks-user.js"
-    "${HOME}/.dotfiles/firefox/user-overrides.js"
-)
-SEARCH_JSON="${HOME}/.dotfiles/firefox/search.json.mozlz4"
+USAGE="Usage: $(basename "$0") [--new|--clean|--used] [--debug]"
+HELP="${USAGE}
 
-USAGE="Usage: ff [-h|--help] [-d|--debug] [-c|--clean] [-u|--update]
+Starts firefox in a firejail sandbox, optionally with a new or clean profile.
 
-Starts firefox in a sandbox.
+  --clean    Run firefox starting from a clean profile.
+  --debug    Be verbose.
+  --new      Create a clean profile and run firefox _just to configure it_.
+  --used     (Default) Run firefox without creating or cleaning the profile.
 
-  -c|--clean    Revert ~/$MOZ to the clean state of ~/$MOZ_CLEAN
-  -u|--update   Make the extensions/ directory within the profile
-                writable, so that extensions can be updated.
-  -d|--debug    Be verbose
+On the first run, used --new to create and backup a clean profile. The second
+run will start from this clean profile. Any subsequent run will start with the
+profile as-is, unless --clean is used to start from the backed-up copy of the
+clean profile.
+
+~/.firefox       The profile storage directory.
+    default      The profile name.
+        clean    The clean state, just extensions and config, NO BROWSING.
+        used     The used state.
 "
 
+# Profile and config paths.
+PROFILE_DIR="${HOME}/.firefox/default"
+DOTFILES_FF="${HOME}/.dotfiles/firefox"
+USER_JS=(
+    "${DOTFILES_FF}/ghacks-user.js"
+    "${DOTFILES_FF}/user-overrides.js"
+)
+SEARCH_JSON="${DOTFILES_FF}/search.json.mozlz4"
+EXTENSIONS="${DOTFILES_FF}/extensions.txt"
+
+# Files that indicate that a profile is in use by a running Firefox instance.
+LOCK_FILES=(
+    "cookies.sqlite-wal"
+    "favicons.sqlite-wal"
+    "places.sqlite-wal"
+)
+
+# Profile states.
+STATE_CLEAN="clean"
+STATE_USED="used"
+
+# Operating modes corresponding to the argument: --new/--clean.
+MODE_NEW="new"
+MODE_CLEAN="clean"
+MODE_USED="used"
+
+# Prepares the profile directory in mode $1.
+prepare_profile () {
+    local mode="$1"
+    local dest="${PROFILE_DIR}/${STATE_USED}"
+    local src
+    case "$mode" in
+        "$MODE_NEW")
+            create_new_profile "$dest"
+            ;;
+        "$MODE_CLEAN")
+            src="${PROFILE_DIR}/${STATE_CLEAN}"
+            if [[ ! -d "$src" ]]; then
+                echo "No $STATE_CLEAN profile found. Create one with --new." 1>&2
+                exit 2
+            fi
+            clone_profile "$src" "$dest"
+            ;;
+        "$MODE_USED")
+            if [[ ! -d "$dest" ]]; then
+                echo "No $STATE_USED profile found. Create one with --clean." 1>&2
+                exit 2
+            fi
+            ;;
+        *)
+            echo "Unknown mode: $mode" 1>&2
+            exit 255
+            ;;
+    esac
+}
+
+# Creates a new profile in $1. If $1 already exists, it is first rotated out.
+create_new_profile () {
+    local dest="$1"
+    local extension_dir="${dest}/extensions"
+    local name id sha256 url rest xpi
+    rotate "$dest"
+    mkdir -p "$extension_dir"
+    # Download and verify extensions.
+    while IFS=$'\t' read -r name id sha256 url rest; do
+        xpi="${extension_dir}/${id}.xpi"
+        wget -q -O "$xpi" "$url"
+        if [[ "$(sha256sum "$xpi" | cut -d' ' -f1)" != "$sha256" ]]; then
+            echo "CRITICAL: extension $name checksum failed!!" 1>&2
+            exit 4
+        fi
+    done < "$EXTENSIONS"
+    # Set Firefox preferences.
+    cat "${USER_JS[@]}" > "${dest}/user.js"
+    cat >> "${dest}/user.js" <<'EOF'
+
+// Auto-install extensions found in this profile (1). We make the
+// <profile>/extensions directory read-only for firefox for added security.
+// This is ghacks/arkenfox user.js item # 2660.
+// 1 = this profile
+// 2 = all profiles of this user
+// 4 = bundled with firefox installation
+// 8 = this machine
+user_pref("extensions.autoDisableScopes", 14);
+EOF
+    # Set search engine preferences.
+    cp "${SEARCH_JSON}" "$dest"
+}
+
+# Clones profile $1 to $2, fixing up absolute paths. $1 must exist. If $2
+# already exists, it is first rotated out.
+clone_profile () {
+    local src="$1"
+    local dest="$2"
+    if [[ ! -d "$src" ]]; then
+        echo "Error cloning profile: $src not found."
+        exit 255
+    fi
+    rotate "$dest"
+    cp -a "$src" "$dest"
+}
+
+# Renames $1 with the ~ suffix. If a suffixed one exists, delete it first.
+rotate () {
+    local src="$1"
+    local dest="${src}~"
+    if [[ ! -d "$src" ]]; then
+        return
+    fi
+    if is_locked "$src"; then
+        echo "Error moving $src: currently in use by Firefox." 2>&1
+        exit 8
+    fi
+    if [[ -d "$dest" ]]; then
+        find "$dest" -type f -print0 \
+            | xargs -0 shred --iterations=0 --zero --remove=unlink
+        rm -rf "$dest"
+    fi
+    mv "$src" "$dest"
+}
+
+# Checks whether profile directory $1 is in use by a running Firefox instance.
+is_locked () {
+    local dest="$1"
+    for filename in "${LOCK_FILES[@]}"; do
+        if [[ -f "${dest}/${filename}" ]]; then
+            return 0
+        fi
+    done
+    if firejail --list | grep -q "$dest"; then
+        return 0
+    fi
+    return 1
+}
+
+# Cleans up the profile directory in mode $1.
+cleanup_profile () {
+    local mode="$1"
+    local src="${PROFILE_DIR}/${STATE_USED}"
+    if [[ ! -d "$src" ]]; then
+        echo "Error cleaning up profile: $src not found."
+        exit 255
+    fi
+    case "$mode" in
+        "$MODE_NEW")
+            dest="${PROFILE_DIR}/${STATE_CLEAN}"
+            # Disable auto-installation of extensions after profile creation.
+            cat "${USER_JS[@]}" > "${src}/user.js"
+            clone_profile "$src" "$dest"
+            ;;
+        "$MODE_CLEAN")
+            ;;
+        "$MODE_USED")
+            ;;
+        *)
+            echo "Unknown mode: $mode" 1>&2
+            exit 255
+            ;;
+    esac
+}
+
+
 # Parse arguments.
-clean="false"
+mode="$MODE_USED"
 debug="false"
-update="false"
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -c|--clean)
-            clean="true"
+        --clean)
+            mode="$MODE_CLEAN"
             shift
             ;;
-        -d|--debug)
+        --debug)
             debug="true"
             shift
             ;;
         -h|--help)
-            echo "$USAGE"
+            echo "$HELP"
             exit 0
             ;;
-        -u|--update)
-            update="true"
+        --new)
+            mode="$MODE_NEW"
+            shift
+            ;;
+        --used)
             shift
             ;;
         *)
@@ -53,48 +216,23 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Select the snapshot of .mozilla to use.
-if [[ "$clean" == "true" ]]; then
-    moz="$MOZ_CLEAN"
-else
-    moz="$MOZ_DIRTY"
-fi
-
 # Set debug mode.
 if [[ "$debug" == "true" ]]; then
     set -x
 fi
 
-# Create .mozilla and populate specific files.
-cd "${HOME:?}"
-rm -rf "$MOZ"
-cp -a "$moz" "$MOZ"
-cat "${USER_JS[@]}" > "$MOZ/$PROFILE_DIR/user.js"
-cp "${SEARCH_JSON}" "$MOZ/$PROFILE_DIR/"
+# Prepare the profile and start firefox.
+prepare_profile "$mode"
+profile_dir="${PROFILE_DIR}/${STATE_USED}"
+firejail \
+    --name=ff --quiet \
+    "--noblacklist=${profile_dir}" "--whitelist=${profile_dir}" \
+    "--read-only=${profile_dir}/extensions" \
+    "--read-only=${profile_dir}/user.js" \
+    -- firefox --no-remote --profile "$profile_dir" \
+    &>/dev/null
+cleanup_profile "$mode"
 
-# Run firefox within a sandbox. Make the extensions read-only.
-cmd=(
-    "firejail"
-    "--name=ff" "--quiet"
-    "--noblacklist=\${HOME}/$MOZ" "--whitelist=\${HOME}/$MOZ"
-)
-if [[ "$update" != "true" ]]; then
-    cmd+=("--read-only=\${HOME}/$MOZ/$PROFILE_DIR/extensions")
-fi
-cmd+=("--" "firefox" "-no-remote" "-P" "$PROFILE_NAME")
-if [[ "$debug" == "true" ]]; then
-    "${cmd[@]}"
-else
-    "${cmd[@]}" &>/dev/null
-fi
-
-# firejail --name=ff --quiet \
-#     "--noblacklist=\${HOME}/$MOZ" "--whitelist=\${HOME}/$MOZ" \
-#     "--read-only=\${HOME}/$MOZ/$PROFILE_DIR/extensions" \
-#     -- firefox -no-remote -P "$PROFILE_NAME" >/dev/null
-
-# If the dirty mode was used, snapshot .mozilla for the next use.
-if [[ "$clean" == "false" ]] || [[ "$update" == "true" ]]; then
-    rm -rf "$moz"
-    cp -a "$MOZ" "$moz"
-fi
+# TODO: Block video and sound access using firejail for the default profile.
+# TODO: Block terminal access using firejail for the default profile.
+# TODO: "--read-only=${profile_dir}/search.json.mozlz4" \

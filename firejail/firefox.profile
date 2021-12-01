@@ -22,20 +22,24 @@ whitelist /usr/share/mozilla
 include whitelist-usr-share-common.inc
 
 # Custom file permissions.
-#noblacklist ${HOME}/.mozilla
-#mkdir ${HOME}/.mozilla
-#whitelist ${HOME}/.mozilla
-#read-only .../user.js
+blacklist /opt
+blacklist /run/blkid
+blacklist /run/ifstate*
+blacklist /run/openrc
+blacklist /run/udev
+blacklist /srv
+blacklist /sys
 noexec ${HOME}
-
-# Default file permissions.
 whitelist ${DOWNLOADS}
-noblacklist ${HOME}/.pki
+# noblacklist ${HOME}/.mozilla
+# mkdir ${HOME}/.mozilla
+# whitelist ${HOME}/.mozilla
 noblacklist ${HOME}/.local/share/pki
-mkdir ${HOME}/.pki
 mkdir ${HOME}/.local/share/pki
-whitelist ${HOME}/.pki
 whitelist ${HOME}/.local/share/pki
+noblacklist ${HOME}/.pki
+mkdir ${HOME}/.pki
+whitelist ${HOME}/.pki
 
 # Limit privileges, system resources and isolate.
 apparmor

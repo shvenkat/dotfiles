@@ -1,6 +1,6 @@
 {
-  "version": "1.9.1",
-  "date": 1601942796600,
+  "version": "1.9.2",
+  "date": 1617999705000,
   "preferences": {
     "automaticMode": {
       "active": true,
@@ -20,7 +20,6 @@
     },
     "iconColor": "default",
     "isolation": {
-      "automaticReactivateDelay": 0,
       "global": {
         "navigation": {
           "action": "notsamedomain"
@@ -45,7 +44,8 @@
       "domain": [],
       "mac": {
         "action": "enabled"
-      }
+      },
+      "reactivateDelay": 0
     },
     "browserActionPopup": false,
     "pageAction": true,
@@ -94,7 +94,7 @@
     "statistics": false,
     "ui": {
       "expandPreferences": true,
-      "popupDefaultTab": "isolation-global"
+      "popupDefaultTab": "actions"
     }
   }
 }

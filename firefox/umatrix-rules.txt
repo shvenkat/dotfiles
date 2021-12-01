@@ -1,0 +1,48 @@
+cname-reveal: * true
+https-strict: behind-the-scene false
+matrix-off: about-scheme true
+matrix-off: behind-the-scene true
+matrix-off: chrome-extension-scheme true
+matrix-off: chrome-scheme true
+matrix-off: moz-extension-scheme true
+matrix-off: opera-scheme true
+matrix-off: vivaldi-scheme true
+matrix-off: wyciwyg-scheme true
+noscript-spoof: * true
+referrer-spoof: behind-the-scene false
+[::1] [::1] * allow
+* [::1] * block
+* * * block
+* * css allow
+* * frame block
+* * image allow
+* 127 * block
+* 1st-party * allow
+* 1st-party frame allow
+* localhost * block
+127 127 * allow
+google.com ssl.gstatic.com * allow
+indiegogo.com facebook.net * block
+indiegogo.com iggcdn.com script allow
+indiegogo.com stripe.com * allow
+indiegogo.com stripe.com frame allow
+indiegogo.com twitter.com * block
+jetpens.com www.google.com fetch allow
+jetpens.com www.google.com frame allow
+jetpens.com www.google.com script allow
+jetpens.com www.gstatic.com script allow
+kaiserpermanente.org adobedtm.com * block
+kaiserpermanente.org privacy-policy.truste.com * inherit
+lifevac.net paypal.com frame allow
+lifevac.net paypal.com script allow
+lifevac.net paypalobjects.com script allow
+localhost localhost * allow
+paypal.com paypalobjects.com * allow
+paypal.com paypalobjects.com frame allow
+paypal.com recaptcha.net * allow
+paypal.com recaptcha.net frame allow
+paypal.com www.google.com fetch allow
+paypal.com www.google.com frame allow
+paypal.com www.google.com script allow
+paypal.com www.gstatic.com script allow
+target.com assets.targetimg1.com script allow

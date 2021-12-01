@@ -1,25 +1,8 @@
-// NOTES:
-// * Check the Firefox console for preference-related errors.
-// * Avoid using the Downloads directory as the "cwd" for any shell or process.
-// * Use theme colors to visually identify different profiles.
 
-// EXTENSIONS:
-// * uBlock Origin
-// * uMatrix: https://github.com/gorhill/uMatrix
-// * Temporary Containers
-// * NeatURL
-// * HTTPS Everywhere
-// * CSS Exfil Protection
-// * CanvasBlocker
-// * Smart Referrer: granular with source<->destination, whitelists
-
-// ----------  OVERRIDE ghacks  ----------------------------------------------
+// ----------  OVERRIDE ghacks/arkenfox  -------------------------------------
 
 // See github.com/ghacksuserjs/ghacks-user.js
-user_pref("_user.js.parrot", "overriding ghacks ... in progress");
-
-// 0105d: Is this deprecated?
-// user_pref("browser.library.activity-stream.enabled", false);
+user_pref("_user.js.parrot", "overriding ghacks ... error!");
 
 // 0201: Disable Location-Aware Browsing. This is a fingerprinting risk.
 user_pref("geo.enabled", false);
@@ -29,6 +12,8 @@ user_pref("geo.enabled", false);
 
 // 0302b: Disable auto-INSTALLING extension and theme updates (after the check in 0301b).
 user_pref("extensions.update.autoUpdateDefault", false);
+// 0306: disable extension metadata
+user_pref("extensions.getAddons.cache.enabled", false);
 
 // 0419: Disable 'ignore this warning' on SB warnings.
 user_pref("browser.safebrowsing.allowOverride", false);
@@ -56,8 +41,8 @@ user_pref("places.history.enabled", false);
 user_pref("signon.rememberSignons", false);
 
 // 1244: Enable HTTPS-Only mode [FF76+].
-user_pref("dom.security.https_only_mode", true);
-user_pref("dom.security.https_only_mode_pbm", true);
+// user_pref("dom.security.https_only_mode", true);  // true in arkenfox v87.
+user_pref("dom.security.https_only_mode_pbm", true);  // No effect if above is true.
 // user_pref("dom.security.https_only_mode.upgrade_local", true);
 
 // 1261: Disable 3DES. This is a fingerprinting risk.
@@ -77,12 +62,8 @@ user_pref("network.http.referer.defaultPolicy.pbmode", 2);
 // 1703: Display the container menu when using the "+" button to open a new tab.
 user_pref("privacy.userContext.newTabContainerOnLeftClick.enabled", true);
 
-// 1800: Disable Cisco's OpenH.264 codec.
-user_pref("media.gmp-gmpopenh264.enabled", false);
-user_pref("media.gmp-gmpopenh264.visible", false);
-
-// 2000: Enable WebRTC. Affects 2505 (media device enumeration).
-// user_pref("media.peerconnection.enabled", true);
+// 1820: disable GMP (Gecko Media Plugins)
+// user_pref("media.gmp-provider.enabled", false);
 
 // 2024: Set a default permission for Camera/Microphone.
 // 0=always ask (default), 1=allow, 2=block
@@ -104,8 +85,10 @@ user_pref("dom.webnotifications.serviceworker.enabled", false);
 user_pref("dom.event.clipboardevents.enabled", false);
 
 // 2421: Disable Ion and baseline JIT to harden against JS exploits.
+// Extensions (trusted principals) can still use Ion.
 user_pref("javascript.options.ion", false);
 user_pref("javascript.options.baselinejit", false);
+user_pref("javascript.options.jit_trustedprincipals", true);
 
 // 2502: Disable Battery Status API.
 user_pref("dom.battery.enabled", false);
@@ -126,23 +109,15 @@ user_pref("permissions.default.shortcuts", 2);
 // 2650: Discourage downloading to desktop.
 // 0=desktop, 1=downloads (default), 2=last used
 user_pref("browser.download.folderList", 1);
-// 2651: Don't ask where to download.
-user_pref("browser.download.useDownloadDir", true);
+// 2651: Always ask where to download, for security.
+user_pref("browser.download.useDownloadDir", false);
 // 2654: Disable "open with" in download dialog.
 user_pref("browser.download.forbid_open_with", true);
-
-// 2660: Allow installation of extensions.
-// Auto-install extensions found in this profile (1). This is safe only if the
-// <profile>/extensions directory is not writable by firefox.
-// 1 = this profile
-// 2 = all profiles of this user
-// 4 = bundled with firefox installation
-// 8 = this machine
-// user_pref("extensions.autoDisableScopes", 14);
 
 // 2701: Disable 3rd-party cookies and site-data.
 // 0=Accept cookies and site data
 // 4=(Block) Cross-site and social media trackers (default)
+// 5=(Isolate All) Cross-site cookies (Total Cookie Protection / dynamic FPI)
 // 3=(Block) Cookies from unvisited websites
 // 1=(Block) All third-party cookies
 // 2=(Block) All cookies
@@ -156,7 +131,7 @@ user_pref("_user.js.parrot", "overriding ghacks ... complete");
 
 // ----------  PERSONAL PREFERENCES  -----------------------------------------
 
-user_pref("_user.js.parrot", "applying personal prefs ... in progress");
+user_pref("_user.js.parrot", "applying personal prefs ... error!");
 
 // [SECTION 5000]: PERSONAL
 // WELCOME & WHAT's NEW NOTICES
@@ -171,12 +146,14 @@ user_pref("browser.tabs.warnOnOpen", false);
 user_pref("full-screen-api.warning.delay", 0);
 user_pref("full-screen-api.warning.timeout", 0);
 // CONTENT BEHAVIOR
+user_pref("accessibility.typeaheadfind", false);
 user_pref("clipboard.autocopy", false); // disable autocopy default [LINUX]
 user_pref("layout.spellcheckDefault", 0); // 0=none, 1-multi-line, 2=multi-line & single-line
 // UX BEHAVIOR
 user_pref("browser.backspace_action", 2); // 0=previous page, 1=scroll up, 2=do nothing
 user_pref("browser.tabs.closeWindowWithLastTab", false);
 user_pref("browser.tabs.loadBookmarksInTabs", true); // open bookmarks in a new tab [FF57+]
+user_pref("general.autoScroll", false);
 // UX FEATURES: disable and hide the icons and menus ***/
 user_pref("browser.messaging-system.whatsNewPanel.enabled", false); // What's New [FF69+]
 user_pref("extensions.pocket.enabled", false); // Pocket Account [FF46+]
@@ -184,50 +161,53 @@ user_pref("identity.fxaccounts.enabled", false); // Firefox Accounts & Sync [FF6
 // OTHER
 user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons", false); // disable CFR [FF67+]
 user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", false); // disable CFR [FF67+]
+user_pref("network.manage-offline-status", false); // see bugzilla 620472
+user_pref("xpinstall.signatures.required", true);
 
-// ghacks recommends uBlock Origin over the built-in tracking protection.
+// ETP: enhanced tracking protection. Redundant with arkenfox/user.js v87.
 user_pref("privacy.trackingprotection.enabled", true);  // Default false.
 user_pref("privacy.trackingprotection.pbmode.enabled", true);  // Default true.
 user_pref("privacy.trackingprotection.socialtracking.enabled", true);  // Default false.
 user_pref("privacy.trackingprotection.fingerprinting.enabled", true);  // Default true.
 user_pref("privacy.trackingprotection.cryptomining.enabled", true);  // Default true.
 
-// SEARCH. FIXME: This may be unnecessary if search.json.mozlz4 is configured.
-user_pref("browser.search.defaultenginename", "DuckDuckGo");
-user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
-user_pref("browser.search.hiddenOneOffs", "Google,Amazon.com");
+// SEARCH: Setting these doesn't work. Use search.json.mozlz4 instead.
+// user_pref("browser.search.defaultenginename", "DuckDuckGo");
+// user_pref("browser.urlbar.placeholderName", "DuckDuckGo");
+// user_pref("browser.search.hiddenOneOffs", "Google,Amazon.com");
 
 // Do not reset bookmarks.
 user_pref("browser.bookmarks.restore_default_bookmarks", false);
 
-// Only install signed extensions from whitelisted sources.
+// Only install extensions from whitelisted sources.
 user_pref("xpinstall.whitelist.required", true);
-user_pref("xpinstall.signatures.required", true);
 
-// Search text only on request. Highlight matches.
-user_pref("accessibility.typeaheadfind", false);
+// Highlight all matches.
 user_pref("findbar.highlightAll", true);
 
-// Disable auto-scroll.
-user_pref("general.autoScroll", false);
-
 // Developer Tools.
+user_pref("devtools.accessibility.enabled", false);
+user_pref("devtools.application.enabled", false);
+user_pref("devtools.command-button-measure.enabled", true);
+user_pref("devtools.command-button-rulers.enabled", true);
 user_pref("devtools.inspector.showUserAgentStyles", true);
+user_pref("devtools.memory.enabled", false);
 user_pref("devtools.performance.enabled", false);
-// user_pref("devtools.storage.enabled", true);
-// user_pref("devtools.theme", "light");
+user_pref("devtools.screenshot.audio.enabled", false);
+user_pref("devtools.serviceWorkers.testing.enabled", false);
 
 // Fonts.
 user_pref("font.default.x-western", "sans-serif");
+user_pref("font.name.monospace.x-western", "Fira Code");
+user_pref("font.name.sans-serif.x-western", "Noto Sans");
+user_pref("font.name.serif.x-western", "Noto Serif");
 user_pref("font.minimum-size.x-western", "12");
-user_pref("font.name.monospace.x-western", "Fira Code Retina");
-user_pref("font.name.sans-serif.x-western", "Fira Code Retina");
-user_pref("font.name.serif.x-western", "Fira Code Retina");
-user_pref("font.size.monospace.x-western", "17");
-user_pref("font.size.variable.x-western", "17");
+user_pref("font.size.monospace.x-western", "18");
+user_pref("font.size.variable.x-western", "18");
 
 // Misc.
-user_pref("lightweightThemes.selectedThemeID", "firefox-compact-light@mozilla.org");
+// user_pref("lightweightThemes.selectedThemeID", "firefox-compact-light@mozilla.org");
+user_pref("extensions.activeThemeID", "default-theme@mozilla.org");
 user_pref("reader.color_scheme", "sepia");
 
 user_pref("_user.js.parrot", "applying personal prefs ... complete");

@@ -675,31 +675,53 @@ $(FONTS_DIR)/ebgaramond/EBGaramond-Regular.otf:
 	&& rm -f "$$tar"
 
 font-noto: $(FONTS_DIR)/noto/NotoSans-Regular.ttf
+font-noto: $(FONTS_DIR)/noto/NotoEmoji-Regular.ttf
+
 $(FONTS_DIR)/noto/NotoSans-Regular.ttf:
 	repo="noto-fonts"; \
-	commit="462ad2d2a45df33785980f9d9f56f6369cfc110d"; \
-	url="https://github.com/googlei18n/$${repo}/archive/$${commit}/$${repo}.tar.gz"; \
-	sha="6e96e8b5ac06ea938a92fdec8d9354796794125db03c82ca2219eb66105b03c303745d1a8b60ed711c365fc115971ad8a5e7096957803c7d2d95b8accd46719e"; \
+	commit="20bc5918912503bc1537a407a694738c33c048aa"; \
+	url="https://github.com/googlefonts/$${repo}/archive/$${commit}/$${repo}.tar.gz"; \
+	sha="cc087f7cf4357ddda922e2ed0eb2071e5f0173b3779bb620813d71c7cc89c9c2a30a0c2d150b928071efc839c0cb1a142ed7ea28018c5b4879cbf87b6807d31f"; \
 	dir="$$(dirname "$@")"; \
-	tar="$${dir}/noto.tar.gz"; \
+	tar="$${dir}/$${repo}.tar.gz"; \
 	mkdir -p "$$dir" \
-	&& curl -fsSL -o "$$tar" "$$url" \
+	&& wget -q -O "$$tar" "$$url" \
+	&& [[ "$$sha" == "$$(sha512sum -b "$$tar" | cut -d' ' -f1)" ]] \
+	&& tar --strip-components 4 --wildcards -C "$$dir" -xzf "$$tar" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansMono/NotoSansMono-Bold.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansMono/NotoSansMono-Light.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansMono/NotoSansMono-Medium.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansMono/NotoSansMono-Regular.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSans/NotoSans-Bold*.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSans/NotoSans-Italic.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSans/NotoSans-Light*.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSans/NotoSans-Medium*.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSans/NotoSans-Regular.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSerif/NotoSerif-Bold*.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSerif/NotoSerif-Italic.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSerif/NotoSerif-Light*.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSerif/NotoSerif-Medium*.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSerif/NotoSerif-Regular.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansSymbols/NotoSansSymbols-Bold.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansSymbols/NotoSansSymbols-Light.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansSymbols/NotoSansSymbols-Medium.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansSymbols/NotoSansSymbols-Regular.ttf" \
+	    "$${repo}-$${commit}/hinted/ttf/NotoSansSymbols2/NotoSansSymbols2-Regular.ttf" \
+	&& rm -f "$$tar"
+
+$(FONTS_DIR)/noto/NotoEmoji-Regular.ttf:
+	repo="noto-emoji"; \
+	commit="aac7ccaa4d1dea4543453b96f7d6fc47066a57ff"; \
+	url="https://github.com/googlefonts/$${repo}/archive/$${commit}/$${repo}.tar.gz"; \
+	sha="d497c4ecaf299ade23b1f6a3bc6e98d7dbbb619e51f067496d4a4dbf71693c96de26263af595c0aae86c63dcea8be190718f5477af645d4338989f25cc3ab848"; \
+	dir="$$(dirname "$@")"; \
+	tar="$${dir}/$${repo}.tar.gz"; \
+	mkdir -p "$$dir" \
+	&& wget -q -O "$$tar" "$$url" \
 	&& [[ "$$sha" == "$$(sha512sum -b "$$tar" | cut -d' ' -f1)" ]] \
 	&& tar --strip-components 2 --wildcards -C "$$dir" -xzf "$$tar" \
-	    "$${repo}-$${commit}/hinted/NotoSansMono-Bold.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSansMono-Light.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSansMono-Medium.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSansMono-Regular.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSans-Bold*.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSans-Italic.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSans-Light*.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSans-Medium*.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSans-Regular.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSerif-Bold*.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSerif-Italic.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSerif-Light*.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSerif-Medium*.ttf" \
-	    "$${repo}-$${commit}/hinted/NotoSerif-Regular.ttf" \
+	    "$${repo}-$${commit}/fonts/NotoEmoji-Regular.ttf" \
+	    "$${repo}-$${commit}/fonts/NotoColorEmoji.ttf" \
 	&& rm -f "$$tar"
 
 else ifeq ($(OSTYPE),darwin)

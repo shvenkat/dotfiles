@@ -1,0 +1,44 @@
+#!/bin/sh
+set -e
+
+firejail \
+    --caps.drop=all \
+    --dbus-system=none \
+    --dbus-user=none \
+    --disable-mnt \
+    --ipc-namespace \
+    --memory-deny-write-execute \
+    --net=none \
+    --nice=20 \
+    --no3d \
+    --noautopulse \
+    --nodvd \
+    --nogroups \
+    --nonewprivs \
+    --noroot \
+    --nosound \
+    --notv \
+    --nou2f \
+    --novideo \
+    --private \
+    --private-dev \
+    --private-tmp \
+    --protocol=inet \
+    --read-only=/home/me \
+    --noexec=/etc \
+    --noexec=/home/me \
+    --rlimit-as=64000000 \
+    --rmenv=SSH_AUTH_SOCK \
+    --rmenv=DISPLAY \
+    --seccomp \
+    --x11=none \
+    --blacklist=/opt \
+    --blacklist=/run/blkid \
+    --blacklist=/run/ifstate* \
+    --blacklist=/run/openrc \
+    --blacklist=/run/udev \
+    --blacklist=/sys \
+    --blacklist=/srv \
+    --name=untrusted \
+    --private-bin=bash,cut,find,grep,id,jq,ls,less,python3,sed,sort \
+    "$@"
