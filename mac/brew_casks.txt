@@ -1,0 +1,5 @@
+firefox
+font-fira-code
+google-chrome
+slack
+zoom
