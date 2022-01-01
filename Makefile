@@ -313,12 +313,26 @@ $(HOME)/.isort.cfg: python/isort.cfg
 
 jupyter-config: $(HOME)/.jupyter/jupyter_notebook_config.py
 jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
-		codemirror-extension notebook-extension docmanager-extension \
-		statusbar-extension toc)
+		application-extension \
+		apputils-extension \
+		codemirror-extension \
+		docmanager-extension \
+		extensionmanager-extension \
+		fileeditor-extension \
+		notebook-extension \
+		statusbar-extension \
+		toc-extension)
 $(HOME)/.jupyter/jupyter_notebook_config.py: $(HOME)/.jupyter/%: jupyter/%
 $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
-		codemirror-extension notebook-extension docmanager-extension \
-		statusbar-extension toc \
+		application-extension \
+		apputils-extension \
+		codemirror-extension \
+		docmanager-extension \
+		extensionmanager-extension \
+		fileeditor-extension \
+		notebook-extension \
+		statusbar-extension \
+		toc-extension \
 		): $(HOME)/.jupyter/lab/user-settings/@jupyterlab/%: jupyter/%
 
 x-config: $(addprefix $(HOME)/,.xinitrc .xmodmaprc)
@@ -354,8 +368,15 @@ $(addprefix $(HOME)/, \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
 		.jupyter/jupyter_notebook_config.py \
 		$(addprefix .jupyter/lab/user-settings/@jupyterlab/, \
-			codemirror-extension notebook-extension docmanager-extension \
-			statusbar-extension toc) \
+			application-extension \
+			apputils-extension \
+			codemirror-extension \
+			docmanager-extension \
+			extensionmanager-extension \
+			fileeditor-extension \
+			notebook-extension \
+			statusbar-extension \
+			toc-extension) \
         .xinitrc .xmodmaprc \
         .config/firejail \
         .config/fontconfig/fonts.conf \

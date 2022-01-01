@@ -1,8 +1,18 @@
 {
     "codeCellConfig": {
-        "fontSize": 14
+        "autoClosingBrackets": true,
+        "fontFamily": "monospace",
+        "fontSize": 16,
+        "lineWiseCopyCut": false,
+        "lineWrap": "on",
+        "wordWrapColumn": 100
     },
+    "experimentalDisableDocumentWideUndoRedo": true,
     "markdownCellConfig": {
-        "fontSize": 14
+        "fontFamily": "monospace",
+        "fontSize": 16,
+        "lineWiseCopyCut": false,
+        "lineWrap": "on",
+        "wordWrapColumn": 100
     }
 }

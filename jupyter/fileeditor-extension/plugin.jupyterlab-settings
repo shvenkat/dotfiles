@@ -1,5 +1,7 @@
 {
     "editorConfig": {
-        "fontSize": 14
+        "fontSize": 14,
+        "lineWrap": "on",
+        "wordWrapColumn": 100
     }
 }
