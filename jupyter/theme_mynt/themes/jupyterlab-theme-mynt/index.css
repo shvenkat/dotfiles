@@ -297,7 +297,7 @@ all of MD as it is not optimized for dense, information rich UIs.
 
   --jp-rendermime-error-background: #fdd;
   --jp-rendermime-table-row-background: var(--jp-layout-color0);
-  --jp-rendermime-table-row-hover-background: var(--md-light-blue-50);
+  --jp-rendermime-table-row-hover-background: var(--jp-layout-color0);
 
   /* Dialog specific styles */
 

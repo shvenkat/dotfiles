@@ -7,8 +7,8 @@ BIN="${BIN:-${HOME}/bin}"
 TL_DIR="${TL_DIR:-${HOME}/.texlive}"
 TL_REPO="${TL_REPO:-https://ctan.math.illinois.edu/systems/texlive/tlnet}"
 TL_TAR="install-tl-unx.tar.gz"
-TL_GPG="${TL_GPG:-$(dirname "$0")/texlive.asc}"
-TL_PKGS="${TL_PKGS:-$(dirname "$0")/texlive_pkgs.txt}"
+TL_GPG="${TL_GPG:-$(cd "$(dirname "$0")" && pwd)/texlive.asc}"
+TL_PKGS="${TL_PKGS:-$(cd "$(dirname "$0")" && pwd)/texlive_pkgs.txt}"
 
 # Create a download directory.
 tmp_dir="$(mktemp -d)"

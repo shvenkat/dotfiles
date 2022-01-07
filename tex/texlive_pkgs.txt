@@ -5,4 +5,5 @@ anyfontsize
 dvisvgm
 latex
 latex-bin
+pgf
 tools

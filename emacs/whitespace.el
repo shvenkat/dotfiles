@@ -26,3 +26,9 @@
 ;; Use 4 spaces instead of tabs.
 (setq-default indent-tabs-mode nil)
 (setq-default standard-indent 4)
+
+;; Highlight non-ASCII characters, including Unicode spaces.
+(global-hi-lock-mode 1)
+(setq-default hi-lock-auto-select-face t)
+(add-hook 'after-change-major-mode-hook
+          '(lambda () (hi-lock-set-pattern "[[:nonascii:]]" 'hi-yellow)))
