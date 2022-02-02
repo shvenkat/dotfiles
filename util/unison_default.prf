@@ -27,6 +27,10 @@ ignore = Name *.egg-info
 ignore = Name *.pyc
 ignore = Name .ipynb_checkpoints
 ignore = Name .pytest_cache
+ignore = Name *.so
+
+## JS.
+ignore = Name node_modules
 
 ## MacOS
 ignore = Name .DS_Store

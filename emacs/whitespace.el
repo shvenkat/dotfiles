@@ -28,6 +28,7 @@
 (setq-default standard-indent 4)
 
 ;; Highlight non-ASCII characters, including Unicode spaces.
+;; See https://elpa.gnu.org/packages/markchars.html for smaller sets of spaces.
 (global-hi-lock-mode 1)
 (setq-default hi-lock-auto-select-face t)
 (add-hook 'after-change-major-mode-hook
