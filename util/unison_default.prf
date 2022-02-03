@@ -19,15 +19,15 @@ ignore = Name *~
 ignore = Name .*~
 
 ## Python.
-ignore = Name env
 ignore = Name .venv
-ignore = Name .mypy_cache
 ignore = Name __pycache__
-ignore = Name *.egg-info
-ignore = Name *.pyc
-ignore = Name .ipynb_checkpoints
+ignore = Name .mypy_cache
 ignore = Name .pytest_cache
+ignore = Name build
+ignore = Name dist
+ignore = Name *.egg-info
 ignore = Name *.so
+ignore = Name .ipynb_checkpoints
 
 ## JS.
 ignore = Name node_modules

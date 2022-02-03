@@ -1,20 +1,23 @@
 # Misc
 *~
+.*~
 .DS_Store
 
 # Ephemera
 *.log
 
-# SCM
-/.git/
-
 # Python
+env/
+.venv/
 __pycache__/
 *.pyc
-*.egg*
-/env/
-.ipython/
+.mypy_cache/
+.pytest_cache/
+build/
+dist/
+*.egg-info/
+*.so
+.ipynb_checkpoints/
 
-# Build
-/build/
-/dist/
+# JS.
+node_modules/

@@ -1,0 +1,64 @@
+#!/bin/bash
+
+NAME="$(basename "$0")"
+USAGE="Usage: ${NAME} <path> [<path>...]"
+MAN="${USAGE}
+
+SYNOPSIS
+    For each <path>, replace file content with LFS pointer if the content has
+    not unchanged. If it has, you will get a 'File changed' message; use 'git
+    add' instead. <path> must be relative to the working directory.
+
+    This command is the missing inverse of 'git lfs checkout'. Note that it does
+    not reverse 'git lfs fetch', in that it does not remove large files
+    downloaded to .git/lfs/objects.
+"
+
+
+# Parse arguments.
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            echo "$MAN"
+            exit 0
+            ;;
+        -*)
+            echo "$USAGE" 1>&2
+            exit 1
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+if [[ $# -lt 1 ]]; then
+    echo "$USAGE" 1>&2
+    exit 1
+fi
+
+# Process files one at a time.
+status=0
+for path in "$@"; do
+    if [[ "${path#/}" != "$path" ]]; then
+        echo "Not relative: $path"
+        status=2
+        continue
+    else
+        path="./${path}"
+    fi
+    if [[ ! -e "$path" ]]; then
+        echo "Not found: $path"
+        status=2
+        continue
+    fi
+    current_pointer="$(git lfs clean < "$path")"
+    old_pointer="$(git show "HEAD:${path}")"
+    if [[ "$current_pointer" == "$old_pointer" ]] &&
+           echo "$current_pointer" | grep -q '^oid sha256:'; then
+        echo "$current_pointer" > "$path"
+        git add "$path"
+    else
+        echo "File changed: $path"
+    fi
+done
+exit "$status"
