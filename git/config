@@ -110,6 +110,9 @@
     logg = log --graph --date-order \
         --format=format:'%C(bold cyan)%h%C(reset)  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
 
+    ; All - all branches in graphical format.
+    loga = logg --all
+
     ; Verify - Graph + verification of signed commit/tag
     logv = log --graph --date-order \
         --format=format:'%C(bold cyan)%h%C(reset)  %C(bold black)%G?%C(reset) %GK  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'

@@ -18,6 +18,9 @@ backuploc = central
 ignore = Name *~
 ignore = Name .*~
 
+## Git.
+ignore = Name .git
+
 ## Python.
 ignore = Name .venv
 ignore = Name __pycache__
@@ -37,3 +40,4 @@ ignore = Name .DS_Store
 
 ## Ephemera.
 ignore = Name *.log
+ignore = Name tmp

@@ -64,7 +64,7 @@ rdiff () {
         return 1
     fi
     if [[ "$1" =~ : ]]; then
-        scp "$1" /dev/stdout | cdiff --label "$1" --label "$1" - "$2"
+        scp "$1" /dev/stdout | cdiff --label "$1" --label "$2" - "$2"
     elif [[ "$2" =~ : ]]; then
         scp "$2" /dev/stdout | cdiff --label "$1" --label "$2" "$1" -
     fi

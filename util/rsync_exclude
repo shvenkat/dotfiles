@@ -6,6 +6,9 @@
 # Ephemera
 *.log
 
+# Git
+.git/
+
 # Python
 env/
 .venv/
