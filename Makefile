@@ -322,7 +322,9 @@ jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		notebook-extension \
 		statusbar-extension \
 		toc-extension)
-$(HOME)/.jupyter/jupyter_notebook_config.py: $(HOME)/.jupyter/%: jupyter/%
+jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@retrolab/, \
+		application-extension)
+$(HOME)/.jupyter/jupyter_notebook_config.py \
 $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		application-extension \
 		apputils-extension \
@@ -332,8 +334,10 @@ $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		fileeditor-extension \
 		notebook-extension \
 		statusbar-extension \
-		toc-extension \
-		): $(HOME)/.jupyter/lab/user-settings/@jupyterlab/%: jupyter/%
+		toc-extension) \
+$(addprefix $(HOME)/.jupyter/lab/user-settings/@retrolab/, \
+		application-extension) \
+		: $(HOME)/.jupyter/%: jupyter/%
 
 x-config: $(addprefix $(HOME)/,.xinitrc .xmodmaprc)
 $(HOME)/.xinitrc: x/xinitrc
@@ -379,6 +383,8 @@ $(addprefix $(HOME)/, \
 			notebook-extension \
 			statusbar-extension \
 			toc-extension) \
+		$(addprefix .jupyter/lab/user-settings/@retrolab/, \
+			application-extension) \
         .xinitrc .xmodmaprc \
         .config/firejail \
         .config/fontconfig/fonts.conf \

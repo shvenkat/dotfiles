@@ -1,0 +1,4 @@
+{
+    // Whether to show the top bar or not
+    "visible": false
+}
