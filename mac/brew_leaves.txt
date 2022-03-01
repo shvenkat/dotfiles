@@ -17,5 +17,6 @@ llvm
 postgresql
 python-tk@3.10
 rsync
+shellcheck
 tmux
 unison

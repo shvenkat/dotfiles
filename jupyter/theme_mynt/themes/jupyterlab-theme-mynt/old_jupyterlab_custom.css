@@ -1,0 +1,44 @@
+
+
+/* Eliminate the left margin, allowing the cells to occupy the full width of the window. On a
+ * small laptop screen, this makes a noticeable difference. To do so, place input and output
+ * cell numbers above the cell and aligned with the right edge. */
+.jp-InputArea {
+    flex-direction: column;
+}
+
+.jp-InputPrompt {
+    flex: 0 0 auto;
+}
+
+.jp-OutputArea-child {
+    flex-direction: column;
+}
+
+.jp-OutputPrompt {
+    flex: 0 0 auto;
+}
+
+.jp-mod-presentationMode .jp-Notebook .jp-Cell .jp-InputPrompt,
+.jp-mod-presentationMode .jp-Notebook .jp-Cell .jp-OutputPrompt {
+    flex: 0 0 auto;
+}
+
+/* Center images and tables horizontally within the window. */
+.jp-RenderedImage img {
+    display: block;
+    margin-left: auto;
+    margin-right:auto;
+}
+
+.jp-RenderedSVG img {
+    display: block;
+    margin-left: auto;
+    margin-right:auto;
+}
+
+.jp-OutputArea-output.jp-RenderedHTMLCommon table {
+    display: table;
+    margin-left: auto;
+    margin-right:auto;
+}

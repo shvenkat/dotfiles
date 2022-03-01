@@ -26,6 +26,7 @@ ignore = Name .venv
 ignore = Name __pycache__
 ignore = Name .mypy_cache
 ignore = Name .pytest_cache
+ignore = Name .coverage.*
 ignore = Name build
 ignore = Name dist
 ignore = Name *.egg-info
