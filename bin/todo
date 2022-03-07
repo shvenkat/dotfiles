@@ -322,6 +322,7 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements,too-many-
 
     def init_term() -> None:
         """Initialize the terminal for curses."""
+        curses.putp("smcup".encode())
         curses.noecho()
         curses.cbreak()
         stdscr.keypad(True)
@@ -447,6 +448,7 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements,too-many-
         stdscr.keypad(False)
         curses.echo()
         curses.nocbreak()
+        curses.putp("rmcup".encode())
         curses.endwin()
 
 
