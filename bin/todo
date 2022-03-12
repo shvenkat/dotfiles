@@ -37,12 +37,15 @@ def main() -> None:
 
             # Blah blah...
 
-            - [x]  yy/mm/dd  Foo...
+            - [x]  yy/mm/dd  Task summary. Multiple lines are allowed, but the
+                             first one is displayed.
 
             ## Yada yada...
 
-            - [ ]  today+1   Bar...
-            - [ ]  someday   Quux...
+            - [ ]  today     Current day in local timezone.
+            - [ ]  next      Tomorrow.
+            - [ ]  today+7   Seven days from today.
+            - [ ]  someday   No due date.
 
         Format notes:
 
@@ -194,7 +197,9 @@ def read_task_groups(path: Path) -> List[TaskGroup]:
     def parse_date(line: str) -> datetime.date:  # pylint: disable=all
         date_text = line.lstrip()[5:].split()[0]
         if "/" in date_text:
-            date = datetime.date(*[int(x) for x in date_text.split("/")])
+            date = datetime.datetime.strptime(date_text, "%y/%m/%d").date()
+        elif date_text == "next":
+            date = datetime.date.today() + datetime.timedelta(days=1)
         elif date_text == "today":
             date = datetime.date.today()
         elif date_text.startswith("today+"):
@@ -386,7 +391,10 @@ def interact(  # pylint: disable=too-many-branches,too-many-statements,too-many-
         # Update display.
         update_display()
         # Read key.
-        input_key = stdscr.getkey()
+        try:
+            input_key = stdscr.getkey()
+        except Exception:
+            input_key = "KEY_RESIZE"
         if input_key == "q":
             break
         elif input_key == "j":

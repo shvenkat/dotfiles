@@ -21,6 +21,7 @@
     :config
     (global-evil-leader-mode)
     (evil-leader/set-leader ","))
+(evil-leader/set-key "," 'evil-repeat-find-char-reverse)
 
 ;; Use an emacs port of the vim commentary plugin. This provides normal mode
 ;; bindings to toggle comments, such as:
