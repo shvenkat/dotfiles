@@ -354,6 +354,8 @@ $(HOME)/.config/fontconfig/fonts.conf: util/fonts.conf
 
 $(HOME)/bin/totp: bin/totp
 
+$(HOME)/bin/pwcat: bin/pwcat
+
 $(HOME)/bin/git-lfs-checkin: bin/git-lfs-checkin
 
 # Symlink dotfile.
@@ -390,6 +392,7 @@ $(addprefix $(HOME)/, \
         .config/fontconfig/fonts.conf \
         bin/ff \
         bin/totp \
+        bin/pwcat \
         bin/git-lfs-checkin):
 	mkdir -p "$$(dirname $@)"
 	ln -sfT "$$(bin/relative-path "$$(pwd)/$<" "$$(dirname "$@")")" "$@"

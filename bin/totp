@@ -1,16 +1,55 @@
 #!/usr/bin/env python3
+"""Converts TOTP secret (stdin, base32-encoded) to 6-digit code (stdout)."""
 
-# Converts secret on stdin to TOTP code, according to RFC 6238.
-import base64, hashlib, hmac, struct, sys, time
-digest = hmac.new(
-    base64.b32decode(sys.stdin.read().strip().upper()),  # base32 secret (K).
-    struct.pack(">Q", int(time.time()) // 30),  # 8-byte TOTP counter (C).
-    hashlib.sha1,
-).digest()
-print(
-    "{:0>6}".format(
+import base64, binascii, hashlib, hmac, struct, sys, time
+
+def totp(secret: bytes, seconds: float, digits: int) -> str:
+    """Implements RFC 6238 with HOTP(K,C) = Truncate(HMAC-SHA-1(K,C))."""
+    digest = hmac.new(  # HMAC-SHA1.
+        secret,  # Secret (K).
+        struct.pack(">Q", int(seconds) // 30),  # 8-byte TOTP counter (C).
+        hashlib.sha1,
+    ).digest()
+    return (f"{{:0>{digits}}}").format(  # Truncate.
         # 31 LSB of 4 bytes at offset given by 4 LSB of last byte of digest.
         (struct.unpack(">I", digest[(digest[-1] & 0x0F):][:4])[0] & 0x7FFFFFFF)
-        % (10 ** 6)  # 6 decimal digits.
+        % (10 ** digits)  # Decimal digits.
     )
-)
+
+def test() -> None:
+    """Checks the test vectors in RFC 6238."""
+    for i, (secret, seconds, digits, code) in enumerate([
+        (b"12345678901234567890",          59, 8, "94287082"),
+        (b"12345678901234567890",  1111111109, 8, "07081804"),
+        (b"12345678901234567890",  1234567890, 8, "89005924"),
+        (b"12345678901234567890",  2000000000, 8, "69279037"),
+        (b"12345678901234567890", 20000000000, 8, "65353130"),
+        (b"12345678901234567890",  1234567890, 6,   "005924"),
+        (b"12345678901234567890",  2000000000, 6,   "279037"),
+    ]):
+        if totp(secret, seconds, digits) != code:
+            sys.stderr.write("Failed test vector {}: expected {}, got {}.\n"
+                             .format(i+1, code, totp(secret, seconds, digits)))
+            sys.exit(1)
+
+def main() -> None:
+    """Generates TOTP on stdout from secret on stdin."""
+    secret = sys.stdin.read().strip().replace(" ", "").upper()
+    if not secret:
+        sys.stderr.write("totp: [WARNING] no secret provided.\n")
+    try:
+        code = totp(base64.b32decode(secret), time.time(), 6)
+    except binascii.Error as exc:
+        if str(exc) == "Incorrect padding":
+            sys.stderr.write("totp: [ERROR] invalid secret length.\n")
+            sys.exit(1)
+        else:
+            raise
+    else:
+        sys.stdout.write(code)
+
+if __name__ == "__main__":
+    if any(arg in ("-t", "--test", "test") for arg in sys.argv[1:]):
+        test()
+    else:
+        main()
