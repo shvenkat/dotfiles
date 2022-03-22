@@ -868,3 +868,21 @@ config: dotfiles settings
 # update: dotfiles-update apps-update fonts-update
 
 # clean: dotfiles-clean apps-clean fonts-clean
+
+check: totp-check
+
+.PHONY: totp-check
+totp-check: bin/totp $(HOME)/tmp/totp
+	for l in 10 20; do \
+	    for ((i=0; i<100; i++)); do \
+	        s="$$(dd if=/dev/urandom bs=$$l count=1 2>/dev/null | base32)"; \
+	        x="$$(echo "$$s" | ~/tmp/totp)"; \
+	        y="$$(echo "$$s" | ~/bin/totp -n 2>/dev/null)"; \
+	        if [[ "$$x" != "$$y" ]]; then \
+	            echo "Error: for l=$$l, s=$$s, ~/tmp/totp gave $$x, ~/bin/totp gave $$y"; \
+	        else \
+	            echo -n .; \
+	        fi; \
+	    done; \
+	    echo; \
+	done

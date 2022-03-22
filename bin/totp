@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
-"""Converts TOTP secret (stdin, base32-encoded) to 6-digit code (stdout)."""
+"""Converts TOTP secret (stdin, base32-encoded) to 6-digit code (stdout).
 
-import base64, binascii, hashlib, hmac, struct, sys, time
+Usage: pwcat | totp
+Usage: <from-vault> | totp --now | <to-clipboard>
+Demo: dd if=/dev/urandom bs=20 count=1 2>/dev/null | base32 | totp --now
+Self-test: totp --test
+"""
+
+import base64, binascii, hashlib, hmac, math, struct, sys, time
 
 def totp(secret: bytes, seconds: float, digits: int) -> str:
     """Implements RFC 6238 with HOTP(K,C) = Truncate(HMAC-SHA-1(K,C))."""
@@ -32,13 +38,21 @@ def test() -> None:
                              .format(i+1, code, totp(secret, seconds, digits)))
             sys.exit(1)
 
-def main() -> None:
+def main(delay: bool) -> None:
     """Generates TOTP on stdout from secret on stdin."""
     secret = sys.stdin.read().strip().replace(" ", "").upper()
     if not secret:
         sys.stderr.write("totp: [WARNING] no secret provided.\n")
+    if delay:
+        now = time.time()
+        while (expires_in := math.ceil(now / 30) * 30 - now) < 10:
+            sys.stderr.write(f"\rtotp: Waiting {expires_in:.0f} seconds...")
+            time.sleep(expires_in - int(expires_in))
+            now = time.time()
+        sys.stderr.write("\r")
+    now = time.time()
     try:
-        code = totp(base64.b32decode(secret), time.time(), 6)
+        code = totp(base64.b32decode(secret), now, 6)
     except binascii.Error as exc:
         if str(exc) == "Incorrect padding":
             sys.stderr.write("totp: [ERROR] invalid secret length.\n")
@@ -47,9 +61,12 @@ def main() -> None:
             raise
     else:
         sys.stdout.write(code)
+        sys.stderr.write("totp: Code valid for {:.0f} seconds.\n"
+                         .format(math.ceil(now / 30) * 30 - now))
 
 if __name__ == "__main__":
     if any(arg in ("-t", "--test", "test") for arg in sys.argv[1:]):
         test()
     else:
-        main()
+        delay = not any(arg in ("-n", "--now") for arg in sys.argv[1:])
+        main(delay)
