@@ -19,9 +19,13 @@
 (setq-default whitespace-global-modes t)
 (setq-default whitespace-style
     (quote (face trailing lines-tail space-before-tab::space)))
+;; Long line highlighting should match line wrapping. For this, set
+;; whitespace-line-column to nil, which makes highlighting use the fill-column
+;; value, as set by editorconfig. Don't set to the value of fill-column.
+(setq-default whitespace-line-column nil)
 ;; https://stackoverflow.com/a/11444423
-(add-hook 'after-change-major-mode-hook
-          '(lambda () (setq whitespace-line-column fill-column)))
+;; (add-hook 'after-change-major-mode-hook
+;;           '(lambda () (setq whitespace-line-column fill-column)))
 
 ;; Use 4 spaces instead of tabs.
 (setq-default indent-tabs-mode nil)
