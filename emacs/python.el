@@ -50,5 +50,6 @@
     :defer t
     :commands (blacken-mode)
     :init
-    (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column))))
+    (setq-default blacken-line-length 'fill))
+    ;; (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column))))
     ;; (add-hook 'python-mode-hook #'blacken-mode))
