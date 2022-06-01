@@ -315,6 +315,7 @@ jupyter-config: $(HOME)/.jupyter/jupyter_notebook_config.py
 jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		application-extension \
 		apputils-extension \
+		cell-toolbar-extension \
 		codemirror-extension \
 		docmanager-extension \
 		extensionmanager-extension \
@@ -331,6 +332,7 @@ $(HOME)/.jupyter/jupyter_notebook_config.py \
 $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		application-extension \
 		apputils-extension \
+		cell-toolbar-extension \
 		codemirror-extension \
 		docmanager-extension \
 		extensionmanager-extension \
@@ -384,6 +386,7 @@ $(addprefix $(HOME)/, \
 		$(addprefix .jupyter/lab/user-settings/@jupyterlab/, \
 			application-extension \
 			apputils-extension \
+			cell-toolbar-extension \
 			codemirror-extension \
 			docmanager-extension \
 			extensionmanager-extension \
