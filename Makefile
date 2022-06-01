@@ -319,9 +319,12 @@ jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		docmanager-extension \
 		extensionmanager-extension \
 		fileeditor-extension \
+		filebrowser-extension \
 		notebook-extension \
 		statusbar-extension \
 		toc-extension)
+jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyter-notebook/, \
+		application-extension)
 jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@retrolab/, \
 		application-extension)
 $(HOME)/.jupyter/jupyter_notebook_config.py \
@@ -332,10 +335,13 @@ $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		docmanager-extension \
 		extensionmanager-extension \
 		fileeditor-extension \
+		filebrowser-extension \
 		notebook-extension \
 		statusbar-extension \
 		toc-extension) \
 $(addprefix $(HOME)/.jupyter/lab/user-settings/@retrolab/, \
+		application-extension) \
+$(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyter-notebook/, \
 		application-extension) \
 		: $(HOME)/.jupyter/%: jupyter/%
 
@@ -382,10 +388,13 @@ $(addprefix $(HOME)/, \
 			docmanager-extension \
 			extensionmanager-extension \
 			fileeditor-extension \
+			filebrowser-extension \
 			notebook-extension \
 			statusbar-extension \
 			toc-extension) \
 		$(addprefix .jupyter/lab/user-settings/@retrolab/, \
+			application-extension) \
+		$(addprefix .jupyter/lab/user-settings/@jupyter-notebook/, \
 			application-extension) \
         .xinitrc .xmodmaprc \
         .config/firejail \
