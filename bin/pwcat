@@ -1,2 +1,2 @@
 #!/bin/bash
-read -rs pw; builtin echo -n "${pw:-}"
+read -rs -p "Password: " pw; builtin echo 1>&2; builtin echo -n "${pw:-}"
