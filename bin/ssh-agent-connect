@@ -108,8 +108,8 @@ make_link () {
 # Returns the path to the most recent live non-canonical agent socket.
 find_socket () {
     info_msg "Searching for the latest live agent socket."
-    find /tmp -mindepth 2 -maxdepth 2 \
-        -type s -user "$USER" -wholename '/tmp/ssh-*/agent*' -print0 \
+    find /tmp -mindepth 2 -maxdepth 2 -type s \
+         -user "$USER" -wholename '/tmp/ssh-*/agent*' -print0 2>/dev/null \
     | xargs -0 ls -1t \
     | while read -r socket; do
         if test_socket "$socket"; then
