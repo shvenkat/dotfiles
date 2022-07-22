@@ -42,3 +42,8 @@ ignore = Name .DS_Store
 ## Ephemera.
 ignore = Name *.log
 ignore = Name tmp
+
+## Secrets.
+ignore = Name *.pem
+ignore = Name *.crt
+ignore = Name *.key
