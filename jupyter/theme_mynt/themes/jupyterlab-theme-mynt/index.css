@@ -396,3 +396,9 @@ pre {
 .cm-s-jupyter span.cm-keyword {
   font-weight: normal;
 }
+
+body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell,
+body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::after,
+body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::before {
+    box-shadow: none !important;
+}

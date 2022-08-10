@@ -16,10 +16,13 @@ jq
 just
 lesspipe
 libpq
+libressl
 llvm
 node
+pandoc
 postgresql
 python-tk@3.10
+python-tk@3.9
 rsync
 shellcheck
 tmux
