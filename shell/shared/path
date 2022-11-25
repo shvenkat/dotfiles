@@ -61,14 +61,14 @@ __reverse_path () {
 case $OSTYPE in
     linux*)
         PATH="${PATH:-}"
-        PATH="$(combine_paths "/usr/local/bin:/bin:/usr/bin" "$PATH")"
-        PATH="$(combine_paths "/usr/local/sbin:/sbin:/usr/sbin" "$PATH" --keep-first)"
+        PATH="$(combine_paths "/usr/local/bin:/opt/bin:/bin:/usr/bin" "$PATH")"
+        PATH="$(combine_paths "/usr/local/sbin:/opt/sbin:/sbin:/usr/sbin" "$PATH" --keep-first)"
         PATH="$(combine_paths "$PATH" "${HOME}/bin")"
         # PATH="$(combine_paths "$PATH" "${HOME}/.linuxbrew/bin")"
         export PATH
 
         MANPATH="${MANPATH:-}"
-        MANPATH="$(combine_paths "$MANPATH" /usr/local/share/man:/usr/share/man:/usr/share/man/en)"
+        MANPATH="$(combine_paths "$MANPATH" /usr/local/share/man:/opt/share/man:/usr/share/man:/usr/share/man/en)"
         # MANPATH="$(combine_paths "$MANPATH" "${HOME}/.linuxbrew/share/man")"
         export MANPATH
 

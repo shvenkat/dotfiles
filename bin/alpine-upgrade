@@ -8,27 +8,34 @@ ISO='alpine-standard-x86_64.iso'
 DIR='/tmp'
 CURRENT_BOOT='/media/usb'
 
-# Verify that the target device is a 2+ GB bootable partition (type 0xc,
-# unformatted, unmounted) on a removable writable USB drive.
+# Verify that the device $1 is a 2+ GB bootable partition (type 0xc, unmounted)
+# on a removable writable USB drive. If $2 is "empty", the device must be empty.
+# Otherwise it must have a vFAT filesystem.
 verify_device () {
     local bootdev="$1"
-    verify_attr () {
+
+    # Assert that the $1 attribute of device $bootdev is $2.
+    assert_attr () {
         local value
         value="$(lsblk --noheadings --raw --output "$1" "$bootdev")"
         if [[ "$value" != "$2" ]]; then
-            echo "Boot device $bootdev has $1 = '$value', instead of '$2'." 1>&2
+            echo "Boot device $bootdev has attribute $1 = '$value', instead of '$2'." 1>&2
             exit 2
         fi
     }
-    verify_attr MOUNTPOINT ''
-    verify_attr FSTYPE ''
-    verify_attr TYPE 'part'
-    verify_attr PARTTYPE '0xc'
-    verify_attr PARTFLAGS '0x80'
-    verify_attr SUBSYSTEMS 'block:scsi:usb:pci'
-    verify_attr HOTPLUG '1'
-    verify_attr RM '1'
-    verify_attr RO '0'
+    assert_attr MOUNTPOINT ''
+    if [[ "$2" == "empty" ]]; then
+        assert_attr FSTYPE ''
+    else
+        assert_attr FSTYPE 'vfat'
+    fi
+    assert_attr TYPE 'part'
+    assert_attr PARTTYPE '0xc'
+    assert_attr PARTFLAGS '0x80'
+    assert_attr SUBSYSTEMS 'block:scsi:usb:pci'
+    assert_attr HOTPLUG '1'
+    assert_attr RM '1'
+    assert_attr RO '0'
     local size
     size="$(lsblk --noheadings --raw --output SIZE --bytes "$bootdev")"
     if [[ "$size" -lt 2000000000 ]]; then
@@ -38,7 +45,7 @@ verify_device () {
     echo "Verified that $bootdev is 2+ GB bootable partition on USB storage."
 }
 
-# Create a vFAT filesystem with the label "alpine".
+# Create a vFAT filesystem on device $1 with the label "alpine".
 format_device () {
     mkfs.vfat -n alpine "$1"
     echo "Created a vFAT filesystem, labeled 'alpine'."
@@ -52,7 +59,7 @@ download_verify_latest_iso () {
     date="$(sed -n -E 's/^ *date: //p' < "$RELEASES" | head -n1)"
     if [[ -z "$version" ]]; then
         echo "Failed to detect latest Alpine release from ${DIR}/${RELEASES}." 1>&2
-        exit 1
+        exit 4
     fi
     echo "Downloading Alpine ISO $version (standard x86_64), released on $date."
     iso="alpine-standard-${version}-x86_64.iso"
@@ -61,12 +68,12 @@ download_verify_latest_iso () {
     wget -q -O "${ISO}.asc" "${BASE_URL}/${iso}.asc"
     if ! gpgv --keyring "$KEYRING" "${ISO}.asc" "$ISO"; then
         echo "**Bad ISO**, does not match its PGP signature /tmp/${iso}.asc." 1>&2
-        exit 1
+        exit 4
     fi
     echo "Verified the PGP signature of the Alpine ISO."
 }
 
-# Unpack and install the ISO, then install the syslinux bootloader.
+# Unpack and install the ISO on device $1, then install the syslinux bootloader.
 install_iso_syslinux () {
     local bootdev="$1"
     apk add syslinux
@@ -75,13 +82,17 @@ install_iso_syslinux () {
     echo "Installed Alpine ISO and syslinux bootloader to $bootdev."
 }
 
-# Apply my configuration to the installed device.
+# Apply my configuration to the installed device $1.
 configure_device () {
     local bootdev="$1"
     mount "$bootdev" /mnt
+    if [[ ! -e /mnt/.alpine-release ]]; then
+        echo "Error: Cannot configure $bootdev, missing /.alpine-release." 1>&2
+        exit 2
+    fi
     pushd "$CURRENT_BOOT" >/dev/null
-    cp -a -t /mnt ./*.apkovl.tar.gz cache community testing
-    cp -a -t /mnt/boot/syslinux boot/syslinux/syslinux.cfg
+    rsync -rtcO --delete --modify-window 1 ./*.apkovl.tar.gz cache main community testing /mnt/
+    rsync -rtcO --delete --modify-window 1 boot/syslinux/syslinux.cfg /mnt/boot/syslinux/syslinux.cfg
     popd >/dev/null
     umount /mnt
     echo "Configured $bootdev using the current system at $CURRENT_BOOT."
@@ -97,31 +108,55 @@ cd /tmp
 
 # Parse arguments.
 name="$(basename "$0")"
+usage="Usage: $name [-h|--help] [-c|--create] /dev/sdxN"
+mode="update"
 bootdev=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -h,--help)
-            echo "Usage: $name [-h|--help] /dev/sdxN"
+        -h|--help)
+            echo "$usage"
             exit 0
             ;;
+        -u|--update)
+            mode="update"
+            shift
+            ;;
+        -c|--create)
+            mode="create"
+            shift
+            ;;
         -*)
-            echo "Usage: $name [-h|--help] /dev/sdxN"
+            echo "Invalid argument: $1" 1>&2
+            echo "$usage" 1>&2
             exit 1
             ;;
         *)
+            if [[ -n "$bootdev" ]]; then
+                echo "Error: multiple boot devices specified: $bootdev $1" 1>&2
+                echo "$usage" 1>&2
+                exit 1
+            fi
             bootdev="$1"
-            break
+            shift
+            ;;
     esac
 done
 if [[ -z "$bootdev" ]]; then
-    echo "Usage: $name [-h|--help] /dev/sdxN"
+    echo "Error: no boot device specified" 1>&2
+    echo "$usage" 1>&2
     exit 1
 fi
 
-verify_device "$bootdev"
-format_device "$bootdev"
-download_verify_latest_iso
-install_iso_syslinux "$bootdev"
-configure_device "$bootdev"
-cleanup
-echo "$bootdev is ready for use. Shutdown and unplug other external media."
+if [[ "$mode" == "create" ]]; then
+    verify_device "$bootdev" "empty"
+    format_device "$bootdev"
+    download_verify_latest_iso
+    install_iso_syslinux "$bootdev"
+    configure_device "$bootdev"
+    cleanup
+    echo "Bootable medium created on $bootdev. You may unplug it now."
+else
+    verify_device "$bootdev" "nonempty"
+    configure_device "$bootdev"
+    echo "Bootable medium updated on $bootdev. You may unplug it now."
+fi

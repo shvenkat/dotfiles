@@ -251,13 +251,14 @@ $(HOME)/.zshrc: \
         shell/shared/local
 $(HOME)/.autoenv.zsh: shell/zsh/autoenv.zsh
 
-bash-config: $(addprefix $(HOME)/,.bash_profile .bashrc)
+bash-config: $(addprefix $(HOME)/,.bash_profile .bashrc .bash_logout)
 $(HOME)/.bash_profile: $(addprefix shell/shared/,path env term) \
         shell/bash/bash_profile
 $(HOME)/.bashrc: \
         shell/bash/bashrc \
         $(addprefix shell/shared/,misc less ls source-highlight ssh alias) \
         shell/shared/local
+$(HOME)/.bash_logout: shell/bash/bash_logout
 
 git-config: \
         $(addprefix $(HOME)/.config/git/,config ignore attributes) \
@@ -413,7 +414,7 @@ $(addprefix $(HOME)/, \
 $(addprefix $(HOME)/, \
         .emacs.d/init.el \
         .zprofile .zshrc \
-        .bash_profile .bashrc \
+        .bash_profile .bashrc .bash_logout \
         .tmux.conf):
 	rm -f "$@"
 	mkdir -p "$$(dirname $@)"

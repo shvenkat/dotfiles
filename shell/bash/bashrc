@@ -67,7 +67,7 @@ if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
         if [[ -n "$VIRTUAL_ENV" ]]; then
             prompt_color="\[\033[91m\]"
         else
-            prompt_color="\[\033[30m\]"
+            prompt_color="\[\033[0m\]"
         fi
         if [[ "$OSTYPE" =~ ^darwin ]]; then
             prompt_suffix="◀▶"

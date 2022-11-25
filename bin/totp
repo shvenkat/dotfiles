@@ -37,6 +37,7 @@ def test() -> None:
             sys.stderr.write("Failed test vector {}: expected {}, got {}.\n"
                              .format(i+1, code, totp(secret, seconds, digits)))
             sys.exit(1)
+    sys.stderr.write("All tests passed.\n")
 
 def main(delay: bool) -> None:
     """Generates TOTP on stdout from secret on stdin."""
