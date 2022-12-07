@@ -389,14 +389,24 @@ pre {
   line-height: var(--jp-code-line-height);
 }
 
-.cm-s-jupyter span.cm-operator {
+.cm-s-jupyter span.cm-operator,
+.cm-content span.ͼz {
   font-weight: normal;
 }
 
-.cm-s-jupyter span.cm-keyword {
+.cm-s-jupyter span.cm-keyword,
+.cm-content span.ͼr {
   font-weight: normal;
 }
 
+/* Limit the width of cells. */
+.jp-WindowedPanel-inner {
+    max-width: 80em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Remove unnecessary UI elements/effects. */
 body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell,
 body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::after,
 body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::before {

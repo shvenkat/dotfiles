@@ -27,11 +27,13 @@ ignore = Name __pycache__
 ignore = Name .mypy_cache
 ignore = Name .pytest_cache
 ignore = Name .coverage.*
+ignore = Name htmlcov
 ignore = Name build
 ignore = Name dist
 ignore = Name *.egg-info
 ignore = Name *.so
 ignore = Name .ipynb_checkpoints
+ignore = Name .virtual_documents
 
 ## JS.
 ignore = Name node_modules

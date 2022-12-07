@@ -11,4 +11,4 @@ fi
 
 # xrdb -merge ~/.Xresources
 
-exec dwm
+# exec dwm

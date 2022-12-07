@@ -557,7 +557,8 @@ PROGS := \
         shellcheck-prog \
         docker-prog \
         firefox-prog \
-        racket-prog
+        racket-prog \
+        just-prog
 
 ifeq ($(OSTYPE),darwin)
 PROGS += \
@@ -693,6 +694,13 @@ ifeq ($(OSTYPE),darwin)
 racket-prog: brew
 	command -v racket &>/dev/null || brew install minimal-racket
 endif
+
+just-prog: curl
+	curl -fsSL \
+	    'https://github.com/casey/just/releases/download/1.9.0/just-1.9.0-x86_64-unknown-linux-musl.tar.gz' \
+	| tar -C "${HOME}/bin" -xzf - just just.1
+	mkdir -p "${HOME}/man/man1"
+	mv "${HOME}/bin/just.1" "${HOME}/man/man1"
 
 ifeq ($(OSTYPE),darwin)
 iterm-prog: brew
