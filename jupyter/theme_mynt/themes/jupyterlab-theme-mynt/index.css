@@ -405,10 +405,18 @@ pre {
     margin-left: auto;
     margin-right: auto;
 }
+.jp-MarkdownOutput > p,
+.jp-MarkdownOutput > ol,
+.jp-MarkdownOutput > ul
+{
+    max-width: 80ch;
+    margin-right: auto;
+}
 
 /* Remove unnecessary UI elements/effects. */
 body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell,
 body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::after,
-body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::before {
+body[data-notebook="notebooks"] .jp-Notebook .jp-Notebook-cell::before,
+body[data-notebook="notebooks"] .jp-Notebook > :first-child:last-child::before {
     box-shadow: none !important;
 }

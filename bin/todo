@@ -49,7 +49,10 @@ def main() -> None:
 
         Format notes:
 
-        * '[x]' indicates a completed task, '[ ]' an incomplete one.
+        * '[ ]' = task not started.
+          '[x]' = task completed,
+          '[~]' = task cancelled prior to completion,
+          '[.]' = task in progress.
         * Due date can be absolute (yy/mm/dd), relative to today (today+n) or
           unspecified (someday).
         * Lines other than section header lines (starting with '#') and task
@@ -148,8 +151,10 @@ def find_task_files(path: Path, min_priority: int) -> Dict[Path, int]:
 
 
 class Status(enum.Enum):
-    done = enum.auto()
-    not_done = enum.auto()
+    not_done = " "
+    in_progress = "."
+    done = "x"
+    cancelled = "~"
 
 
 class FileLine(NamedTuple):
@@ -190,9 +195,7 @@ def read_task_groups(path: Path) -> List[TaskGroup]:
     """
 
     def parse_status(line: str) -> Status:  # pylint: disable=all
-        return (
-            Status.done if line[line.index("[") + 1] == "x" else Status.not_done
-        )
+        return Status(line[line.index("[") + 1])
 
     def parse_date(line: str) -> datetime.date:  # pylint: disable=all
         date_text = line.lstrip()[5:].split()[0]
@@ -295,7 +298,7 @@ def format_task_groups(
                 task
                 for task_group in task_groups[path]
                 for task in task_group.tasks
-                if task.status != Status.done
+                if task.status is not Status.done and task.status is not Status.cancelled
             ],
             key=lambda t: (t.date, t.source.line_number),
         )
