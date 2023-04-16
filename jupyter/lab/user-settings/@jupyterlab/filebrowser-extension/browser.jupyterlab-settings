@@ -3,8 +3,4 @@
     // @jupyterlab/filebrowser-extension:browser
     // File Browser settings.
     // *****************************************
-
-    // Use checkboxes to select items
-    // Whether to show checkboxes next to files and folders
-    "showFileCheckboxes": false
 }

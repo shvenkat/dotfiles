@@ -18,13 +18,16 @@ lesspipe
 libpq
 libressl
 llvm
+neatvi
 node
 pandoc
-postgresql
+postgresql@14
 python-tk@3.10
 python-tk@3.9
 rsync
 shellcheck
+sloccount
 tmux
 unison
+wdiff
 wget

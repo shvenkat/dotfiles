@@ -5,7 +5,7 @@ confirmbigdel = true
 confirmmerge = true
 contactquietly = true
 logfile = /tmp/unison.log
-sortbysize = true
+# sortbysize = true
 sshargs = -C
 
 # Backup settings.
