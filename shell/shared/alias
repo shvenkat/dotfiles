@@ -45,6 +45,7 @@ alias v='vim'
 alias vim-vanilla='nvim -n -i NONE'
 alias e='emacsclient -nw -a ""'
 alias ef='emacs -nw'
+alias sqlite='sqlite3 -readonly -header -separator "	"'
 
 # Diff.
 diff-sort () { diff <(sort "$1") <(sort "$2"); }

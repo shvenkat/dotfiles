@@ -6,8 +6,8 @@ First time, and if needed, after each major OS upgrade:
 
     sudo mkdir /var/log/clamav /var/clamav
     sudo chown clamav:wheel /var/log/clamav /var/clamav
-    cp freshclam.conf /usr/local/etc/clamav/freshclam.conf
-    cp clamd.conf /usr/local/etc/clamav/clamd.conf
+    cp freshclam.conf /opt/homebrew/etc/clamav/freshclam.conf
+    cp clamd.conf /opt/homebrew/etc/clamav/clamd.conf
 
 On each reboot:
 

@@ -157,17 +157,17 @@ curl git ruby:
 prereq: brew python3
 
 brew: curl ruby git buildtools
-	if ! test -x /usr/local/bin/brew; then \
-	    url='https://raw.githubusercontent.com/Homebrew/install/master/install'; \
-	    if ! install_rb="$$(curl -fsS "$$url")"; then \
-	        echo -e '\033[31mERROR downloading Homebrew installer\033[0m' \
-	            "from $$url, got:\n$$install_rb"; \
-	        exit 1; \
-	    fi; \
-	    ruby -e "$$install_rb"; \
-	fi
+	# if ! test -x /usr/local/bin/brew; then \
+	#     url='https://raw.githubusercontent.com/Homebrew/install/master/install'; \
+	#     if ! install_rb="$$(curl -fsS "$$url")"; then \
+	#         echo -e '\033[31mERROR downloading Homebrew installer\033[0m' \
+	#             "from $$url, got:\n$$install_rb"; \
+	#         exit 1; \
+	#     fi; \
+	#     ruby -e "$$install_rb"; \
+	# fi
 	if ! which brew &>/dev/null; then \
-	    echo "Error: brew not found. Please add /usr/local/bin to PATH."; \
+	    echo "Error: brew not found. Please add it to PATH."; \
 	    exit 1; \
 	fi
 
@@ -312,7 +312,9 @@ $(HOME)/.flake8: python/flake8
 $(HOME)/.pylintrc: python/pylintrc
 $(HOME)/.isort.cfg: python/isort.cfg
 
-jupyter-config: $(HOME)/.jupyter/jupyter_notebook_config.py
+jupyter-config: \
+        $(HOME)/.jupyter/jupyter_notebook_config.py \
+        $(HOME)/.jupyter/jupyter_server_config.py
 jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		application-extension \
 		apputils-extension \
@@ -330,6 +332,7 @@ jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyter-notebook
 jupyter-config: $(addprefix $(HOME)/.jupyter/lab/user-settings/@retrolab/, \
 		application-extension)
 $(HOME)/.jupyter/jupyter_notebook_config.py \
+$(HOME)/.jupyter/jupyter_server_config.py \
 $(addprefix $(HOME)/.jupyter/lab/user-settings/@jupyterlab/, \
 		application-extension \
 		apputils-extension \
@@ -377,13 +380,13 @@ $(addprefix $(HOME)/, \
         $(addprefix .gnupg/,gpg.conf gpg-agent.conf dirmngr.conf) \
         .inputrc \
         .colordiffrc \
-        .config/htop/htoprc \
         bin/lesspipe \
         .config/source-highlight/esc.style .local/share/source-highlight \
         .unison/default.prf \
         .editorconfig \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
 		.jupyter/jupyter_notebook_config.py \
+		.jupyter/jupyter_server_config.py \
 		$(addprefix .jupyter/lab/user-settings/@jupyterlab/, \
 			application-extension \
 			apputils-extension \
@@ -414,6 +417,7 @@ $(addprefix $(HOME)/, \
 $(addprefix $(HOME)/, \
         .emacs.d/init.el \
         .zprofile .zshrc \
+        .config/htop/htoprc \
         .bash_profile .bashrc .bash_logout \
         .tmux.conf):
 	rm -f "$@"

@@ -1,3 +1,4 @@
+awscli
 bash-completion@2
 black
 blast
@@ -11,19 +12,15 @@ fastme
 findutils
 git-lfs
 gnupg
+htop
 imagemagick
 jq
 just
-lesspipe
 libpq
-libressl
-llvm
-neatvi
-node
 pandoc
 postgresql@14
 python-tk@3.10
-python-tk@3.9
+python-tk@3.11
 rsync
 shellcheck
 sloccount
