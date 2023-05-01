@@ -1,18 +1,74 @@
 {
     "codeCellConfig": {
         "autoClosingBrackets": true,
+        "cursorBlinkRate": 530,
         "fontFamily": "monospace",
         "fontSize": 16,
+        "lineHeight": null,
+        "lineNumbers": false,
+        "lineWrap": "off",
+        "matchBrackets": true,
+        "readOnly": false,
+        "insertSpaces": true,
+        "tabSize": 4,
+        "wordWrapColumn": 100,
+        "rulers": [],
+        "codeFolding": false,
         "lineWiseCopyCut": false,
+        "showTrailingSpace": false
+    },
+    "defaultCell": "code",
+    "kernelShutdown": false,
+    "markdownCellConfig": {
+        "autoClosingBrackets": false,
+        "cursorBlinkRate": 530,
+        "fontFamily": "monospace",
+        "fontSize": 16,
+        "lineHeight": null,
+        "lineNumbers": false,
         "lineWrap": "on",
-        "wordWrapColumn": 100
+        "matchBrackets": false,
+        "readOnly": false,
+        "insertSpaces": true,
+        "tabSize": 4,
+        "wordWrapColumn": 100,
+        "rulers": [],
+        "codeFolding": false,
+        "lineWiseCopyCut": false,
+        "showTrailingSpace": false
+    },
+    "rawCellConfig": {
+        "autoClosingBrackets": false,
+        "cursorBlinkRate": 530,
+        "fontFamily": null,
+        "fontSize": null,
+        "lineHeight": null,
+        "lineNumbers": false,
+        "lineWrap": "on",
+        "matchBrackets": false,
+        "readOnly": false,
+        "insertSpaces": true,
+        "tabSize": 4,
+        "wordWrapColumn": 100,
+        "rulers": [],
+        "codeFolding": false,
+        "lineWiseCopyCut": true,
+        "showTrailingSpace": false
+    },
+    "scrollPastEnd": true,
+    "recordTiming": true,
+    "overscanCount": 1,
+    "maxNumberOutputs": 50,
+    "showEditorForReadOnlyMarkdown": true,
+    "kernelStatus": {
+        "showOnStatusBar": false,
+        "showProgress": true
     },
     "experimentalDisableDocumentWideUndoRedo": true,
-    "markdownCellConfig": {
-        "fontFamily": "monospace",
-        "fontSize": 16,
-        "lineWiseCopyCut": false,
-        "lineWrap": "on",
-        "wordWrapColumn": 100
-    }
+    "showHiddenCellsButton": true,
+    "renderingLayout": "default",
+    "sideBySideLeftMarginOverride": "10px",
+    "sideBySideRightMarginOverride": "10px",
+    "sideBySideOutputRatio": 1,
+    "windowingMode": "full"
 }

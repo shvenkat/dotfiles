@@ -399,11 +399,14 @@ pre {
   font-weight: normal;
 }
 
-/* Limit the width of cells. */
+/* Limit the width of cells. Allow plots and table to stretch to the right.*/
 .jp-WindowedPanel-inner {
     max-width: 80em;
     margin-left: auto;
     margin-right: auto;
+}
+.jp-WindowedPanel-inner div {
+    overflow: visible;
 }
 .jp-MarkdownOutput > p,
 .jp-MarkdownOutput > ol,
