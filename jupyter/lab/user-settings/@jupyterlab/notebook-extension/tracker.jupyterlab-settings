@@ -15,10 +15,10 @@
         "rulers": [],
         "codeFolding": false,
         "lineWiseCopyCut": false,
-        "showTrailingSpace": false
+        "showTrailingSpace": true
     },
     "defaultCell": "code",
-    "kernelShutdown": false,
+    "kernelShutdown": true,
     "markdownCellConfig": {
         "autoClosingBrackets": false,
         "cursorBlinkRate": 530,
@@ -35,7 +35,7 @@
         "rulers": [],
         "codeFolding": false,
         "lineWiseCopyCut": false,
-        "showTrailingSpace": false
+        "showTrailingSpace": true
     },
     "rawCellConfig": {
         "autoClosingBrackets": false,

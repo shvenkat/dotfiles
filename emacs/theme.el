@@ -8,7 +8,7 @@
     'ansi-16
     ;; Built-in.
     '(default
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(error
         ((t (:foreground "brightred" :slant normal))))
     '(warning
@@ -19,25 +19,25 @@
         ((t (:foreground "brightred" :background "white"))))
     ;; font-lock.
     '(font-lock-builtin-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-comment-face
         ((t (:foreground "brightcyan" :slant normal))))
     '(font-lock-constant-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-doc-face
-        ((t (:foreground "brightyellow" :background "white" :extend t :slant normal))))
+        ((t (:foreground "brightgreen" :background "white" :extend t :slant normal))))
     '(font-lock-function-name-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-keyword-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-preprocessor-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-string-face
-        ((t (:foreground "brightyellow" :background "white" :slant normal))))
+        ((t (:foreground "brightgreen" :background "white" :slant normal))))
     '(font-lock-type-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-variable-name-face
-        ((t (:foreground "brightyellow" :slant normal))))
+        ((t (:foreground "brightgreen" :slant normal))))
     '(font-lock-warning-face
         ((t (:foreground "red" :slant normal))))
     ;; Mode line.

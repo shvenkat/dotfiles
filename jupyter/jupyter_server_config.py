@@ -2,4 +2,4 @@
 
 # Allow larger or more dense plots.
 c = get_config()  #noqa
-c.ServerApp.iopub_data_rate_limit = 100000000
+c.ZMQChannelsWebsocketConnection.iopub_data_rate_limit = 100000000

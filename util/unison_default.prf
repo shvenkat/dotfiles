@@ -14,6 +14,9 @@ backuploc = central
 
 # ----  EXCLUDED FILES  ----
 
+## Machine-specific files.
+ignore = Name .env
+
 ## Ad-hoc backup files.
 ignore = Name *~
 ignore = Name .*~

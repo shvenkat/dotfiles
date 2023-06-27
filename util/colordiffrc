@@ -20,4 +20,4 @@ oldtext=darkmagenta
 newtext=darkcyan
 diffstuff=darkblue
 cvsstuff=cyan
-# difffile=darkblack  # Requires colordiff 1.0.19+.
+difffile=darkblack

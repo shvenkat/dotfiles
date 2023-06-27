@@ -1,0 +1,6 @@
+{
+     "overrides": {
+        "jp-property-inspector": "left",
+        "jp-debugger-sidebar": "left"
+    }
+}
