@@ -63,10 +63,10 @@
 [color "grep"]
     context = normal
     selected = normal
-    match = 8
+    match = reverse
     filename = yellow
     function = blue
-    linenumber = white
+    linenumber = normal
     separator = normal
 [color "interactive"]
     prompt = reverse

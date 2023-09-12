@@ -39,6 +39,8 @@ if ! shopt -oq posix && echo $- | grep -q i; then
     . /usr/local/etc/bash_completion
   elif [ -f /usr/local/etc/profile.d/bash_completion.sh ]; then
     . /usr/local/etc/profile.d/bash_completion.sh
+  elif [ -f /opt/homebrew/etc/profile.d/bash_completion.sh ]; then
+    . /opt/homebrew/etc/profile.d/bash_completion.sh
   fi
 fi
 
