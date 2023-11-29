@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e -o pipefail -u -E
+
+NAME="$(basename "$0")"
+USAGE="Usage: $NAME [-h|--help] &"
+
+# Parse arguments.
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        *)
+            echo "$USAGE" 1>&2
+            exit 1
+            ;;
+    esac
+done
+
+while true; do
+    battery_percent="$(pmset -g batt | grep -o '[0-9]\+%' | tr -d '%')"
+    if [[ $battery_percent -lt 25 ]]; then
+        osascript -e "display notification \"Battery at ${battery_percent}%\" with title \"Plug in\""
+    elif [[ $battery_percent -gt 75 ]]; then
+        osascript -e "display notification \"Battery at ${battery_percent}%\" with title \"Unplug\""
+    fi
+    sleep 300
+done

@@ -2,5 +2,5 @@
 
 # ----------  LESS  ----------------------------------------------------------
 
-export LESS='-iSR -j .2'
+export LESS='-iSR -j .1'
 [[ -x "$HOME/bin/lesspipe" ]] && eval "$($HOME/bin/lesspipe --init sh)"
