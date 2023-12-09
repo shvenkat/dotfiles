@@ -20,11 +20,13 @@ while [[ $# -gt 0 ]]; do
 done
 
 while true; do
-    battery_percent="$(pmset -g batt | grep -o '[0-9]\+%' | tr -d '%')"
-    if [[ $battery_percent -lt 25 ]]; then
-        osascript -e "display notification \"Battery at ${battery_percent}%\" with title \"Plug in\""
-    elif [[ $battery_percent -gt 75 ]]; then
-        osascript -e "display notification \"Battery at ${battery_percent}%\" with title \"Unplug\""
+    batt_summary="$(pmset -g batt)"
+    battery_percent="$(echo "$batt_summary" | grep -o '[0-9]\+%' | tr -d '%')"
+    batt_state="$(echo "$batt_summary" | grep -oE ' discharging| charging')"
+    if [[ "$battery_percent" -lt 25 && "$batt_state" == " discharging" ]]; then
+        osascript -e "display notification \"Battery discharging, now at ${battery_percent}%\" with title \"Plug in\""
+    elif [[ "$battery_percent" -gt 75 && "$batt_state" == " charging" ]]; then
+        osascript -e "display notification \"Battery charging, now at ${battery_percent}%\" with title \"Unplug\""
     fi
     sleep 300
 done

@@ -567,7 +567,8 @@ PROGS := \
 ifeq ($(OSTYPE),darwin)
 PROGS += \
         iterm-prog \
-        mactimer
+        mactimer \
+        macbattmon
 endif
 
 .PHONY: progs $(PROGS)
@@ -711,8 +712,8 @@ iterm-prog: brew
 	test -x /Applications/iTerm.app/Contents/MacOS/iTerm2 \
 	    || brew cask install iterm2
 
-mactimer: $(HOME)/bin/mactimer
-$(HOME)/bin/mactimer: bin/mactimer
+mactimer macbattmon: %: $(HOME)/bin/%
+$(HOME)/bin/mactimer $(HOME)/bin/macbattmon: $(HOME)/%: %
 	mkdir -p "$$(dirname $@)"
 	ln -sfT "$$(bin/relative-path "$$(pwd)/$<" "$$(dirname "$@")")" "$@"
 endif
