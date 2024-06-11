@@ -5,6 +5,6 @@
     // *******************************************
 
     // Top Bar Visibility
-    // Whether to show the top bar or not
-    "visible": false
+    // Whether to show the top bar or not, yes for always showing, no for always not showing, automatic for adjusting to screen size
+    "visible": "no"
 }

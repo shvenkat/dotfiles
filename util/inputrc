@@ -1,7 +1,6 @@
 # ----------  KEY BINDINGS  --------------------------------------------------
 
 set editing-mode emacs
-"\C-[": vi-editing-mode
 
 # Least disruptive Ctrl- substitutes for Meta- bindings in the default (emacs) keymap.
 "\C-l": forward-word

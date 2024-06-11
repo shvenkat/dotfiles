@@ -53,3 +53,22 @@
     (setq-default blacken-line-length 'fill))
     ;; (add-hook 'python-mode-hook '(lambda () (setq-local blacken-line-length fill-column))))
     ;; (add-hook 'python-mode-hook #'blacken-mode))
+
+
+;; Configure code navigation using GNU global/gtags.
+(use-package ggtags
+    :defer t
+    :hook (python-mode . ggtags-mode)
+    :config
+     ;; ggtags keymap should take precedence over other evil mode keymaps.
+     (evil-make-overriding-map ggtags-mode-map 'normal)
+     ;; Force update evil keymaps after ggtags-mode is loaded.
+     (add-hook 'ggtags-mode-hook #'evil-normalize-keymaps))
+;; (eval-after-load 'ggtags
+;;   '(progn
+;;      ;; ggtags keymap should take precedence over other evil mode keymaps.
+;;      (evil-make-overriding-map ggtags-mode-map 'normal)
+;;      ;; Force update evil keymaps after ggtags-mode is loaded.
+;;      (add-hook 'ggtags-mode-hook #'evil-normalize-keymaps)
+;;      ;; Enable ggtags for all Python files.
+;;      (add-hook 'python-mode-hook 'ggtags-mode)))

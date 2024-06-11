@@ -1,74 +1,30 @@
 {
+    // Notebook
+    // @jupyterlab/notebook-extension:tracker
+    // Notebook settings.
+    // **************************************
+
+    // Code Cell Configuration
+    // The configuration for all code cells; it will override the CodeMirror default configuration.
     "codeCellConfig": {
-        "autoClosingBrackets": true,
-        "cursorBlinkRate": 530,
-        "fontFamily": "monospace",
-        "fontSize": 16,
-        "lineHeight": null,
         "lineNumbers": false,
-        "lineWrap": "off",
-        "matchBrackets": true,
-        "readOnly": false,
-        "insertSpaces": true,
-        "tabSize": 4,
-        "wordWrapColumn": 100,
-        "rulers": [],
-        "codeFolding": false,
-        "lineWiseCopyCut": false,
-        "showTrailingSpace": true
+        "lineWrap": false,
+        "autoClosingBrackets": true
     },
-    "defaultCell": "code",
-    "kernelShutdown": true,
+
+    // Markdown Cell Configuration
+    // The configuration for all markdown cells; it will override the CodeMirror default configuration.
     "markdownCellConfig": {
-        "autoClosingBrackets": false,
-        "cursorBlinkRate": 530,
-        "fontFamily": "monospace",
-        "fontSize": 16,
-        "lineHeight": null,
         "lineNumbers": false,
-        "lineWrap": "on",
         "matchBrackets": false,
-        "readOnly": false,
-        "insertSpaces": true,
-        "tabSize": 4,
-        "wordWrapColumn": 100,
-        "rulers": [],
-        "codeFolding": false,
-        "lineWiseCopyCut": false,
-        "showTrailingSpace": true
+        "autoClosingBrackets": true
     },
+
+    // Raw Cell Configuration
+    // The configuration for all raw cells; it will override the CodeMirror default configuration.
     "rawCellConfig": {
-        "autoClosingBrackets": false,
-        "cursorBlinkRate": 530,
-        "fontFamily": null,
-        "fontSize": null,
-        "lineHeight": null,
         "lineNumbers": false,
-        "lineWrap": "on",
         "matchBrackets": false,
-        "readOnly": false,
-        "insertSpaces": true,
-        "tabSize": 4,
-        "wordWrapColumn": 100,
-        "rulers": [],
-        "codeFolding": false,
-        "lineWiseCopyCut": true,
-        "showTrailingSpace": false
-    },
-    "scrollPastEnd": true,
-    "recordTiming": true,
-    "overscanCount": 1,
-    "maxNumberOutputs": 50,
-    "showEditorForReadOnlyMarkdown": true,
-    "kernelStatus": {
-        "showOnStatusBar": false,
-        "showProgress": true
-    },
-    "experimentalDisableDocumentWideUndoRedo": true,
-    "showHiddenCellsButton": true,
-    "renderingLayout": "default",
-    "sideBySideLeftMarginOverride": "10px",
-    "sideBySideRightMarginOverride": "10px",
-    "sideBySideOutputRatio": 1,
-    "windowingMode": "full"
+        "autoClosingBrackets": true
+    }
 }
