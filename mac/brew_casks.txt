@@ -1,5 +1,10 @@
 firefox
+font-0xproto-nerd-font
+font-commit-mono
+font-dejavu-sans-mono-nerd-font
+font-droid-sans-mono-nerd-font
 font-fira-code
-google-chrome
-slack
+font-inconsolata-go-nerd-font
+font-monaspace
+font-source-code-pro
 zoom
