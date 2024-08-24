@@ -49,7 +49,7 @@ alias sqlite='sqlite3 -readonly -header -separator "	"'
 
 # Diff.
 diff-sort () { diff <(sort "$1") <(sort "$2"); }
-diff-json () { diff <(jq -S . "$1") <(jq -S . "$2"); }
+diff-json () { diff <(jq -S 'walk(if type == "array" then sort else . end)' "$1") <(jq -S 'walk(if type == "array" then sort else . end)' "$2"); }
 diff-yaml () { diff <(yaml2json "$1" | jq -S .) <(yaml2json "$2" | jq -S .); }
 
 # Stats.
