@@ -31,6 +31,7 @@ ignore = Name __pycache__
 ignore = Name .mypy_cache
 ignore = Name .pytest_cache
 ignore = Name .coverage.*
+ignore = Name .hypothesis
 ignore = Name htmlcov
 ignore = Name build
 ignore = Name dist
@@ -41,6 +42,12 @@ ignore = Name .virtual_documents
 
 ## JS.
 ignore = Name node_modules
+
+## Programming tools.
+ignore = Name GPATH
+ignore = Name GRTAGS
+ignore = Name GTAGS
+ignore = Name gtags.files
 
 ## MacOS
 ignore = Name .DS_Store

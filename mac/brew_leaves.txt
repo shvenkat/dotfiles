@@ -3,7 +3,6 @@ bash-completion@2
 black
 blast
 bowtie2
-cffi
 clamav
 colordiff
 coreutils
@@ -15,9 +14,9 @@ emacs
 fastme
 findutils
 fzf
+gh
 git-lfs
 global
-gnupg
 graphviz
 htop
 igv
@@ -27,6 +26,7 @@ just
 libpq
 llvm
 pandoc
+pass-git-helper
 postgresql@14
 python-tk@3.10
 python-tk@3.11
@@ -39,3 +39,4 @@ tokei
 unison
 wdiff
 wget
+xsv
