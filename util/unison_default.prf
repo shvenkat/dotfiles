@@ -27,6 +27,7 @@ ignore = Name .git
 
 ## Python.
 ignore = Name .venv*
+ignorenot = Name .venv*.sh
 ignore = Name __pycache__
 ignore = Name .mypy_cache
 ignore = Name .pytest_cache

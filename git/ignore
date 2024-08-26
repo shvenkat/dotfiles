@@ -46,8 +46,9 @@ __pycache__/
 *.py[cod]
 
 ## Environments.
+.env*
 env/
-.venv/
+.venv*
 
 ## Sphinx auto-generated documentation.
 docs/sphinx/build
