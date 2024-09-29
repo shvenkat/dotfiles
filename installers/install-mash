@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e -o pipefail -u
+
+tar -xzf Mash-2.3.tar.gz
+cd Mash-2.3/
+brew install autoconf capnp gsl
+autoupdate
+./bootstrap
+./configure --prefix=/Users/shiv/opt/mash --with-capnp="$(brew --prefix capnp)" --with-gsl="$(brew --prefix gsl)"
+make
+make test
+./mash --version
+./mash info test/genomes.msh
+make install
