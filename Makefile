@@ -194,6 +194,7 @@ DOTFILES := \
         git-config \
         tmux-config \
         colordiff-config \
+        glow-config \
         python-config \
         jupyter-config \
         less-config \
@@ -286,6 +287,10 @@ $(HOME)/.inputrc: util/inputrc
 
 colordiff-config: $(HOME)/.colordiffrc
 $(HOME)/.colordiffrc: util/colordiffrc
+
+glow-config: $(HOME)/.config/glow/glow.yml $(HOME)/.config/glow/glow_style.json
+$(HOME)/.config/glow/glow.yml: util/glow.yml
+$(HOME)/.config/glow/glow_style.json: util/glow_style.json
 
 htop-config: $(HOME)/.config/htop/htoprc
 $(HOME)/.config/htop/htoprc: util/htoprc
@@ -380,6 +385,7 @@ $(addprefix $(HOME)/, \
         $(addprefix .gnupg/,gpg.conf gpg-agent.conf dirmngr.conf) \
         .inputrc \
         .colordiffrc \
+        .config/glow/glow.yml .config/glow/glow_style.json \
         bin/lesspipe \
         .config/source-highlight/esc.style .local/share/source-highlight \
         .unison/default.prf \
