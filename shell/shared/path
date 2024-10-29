@@ -84,20 +84,21 @@ case $OSTYPE in
         export PATH
         ;;
     darwin*)
-        PATH="/usr/local/sbin:/sbin:/usr/sbin"
-        PATH="${PATH}:/usr/local/opt/coreutils/libexec/gnubin"
-        PATH="${PATH}:/usr/local/opt/findutils/libexec/gnubin"
-        PATH="${PATH}:/usr/local/bin:/bin:/usr/bin"
-        PATH="${PATH}:/opt/X11/bin"
+        PATH="/usr/local/sbin:/sbin:/usr/sbin:/opt/homebrew/sbin"
+        PATH="${PATH}:/opt/homebrew/opt/coreutils/libexec/gnubin"
+        PATH="${PATH}:/opt/homebrew/opt/findutils/libexec/gnubin"
+        if [[ -d "${HOME}/opt" ]]; then
+            while read -r path; do PATH="$(combine_paths "$PATH" "$path")"; done <<<$(find "${HOME}/opt" -type d -name bin -print)
+        fi
+        PATH="${PATH}:/opt/homebrew/bin"
+        PATH="${PATH}:/bin:/usr/bin"
         PATH="${PATH}:${HOME}/bin"
         export PATH
 
-        MANPATH="/usr/local/opt/coreutils/libexec/gnuman"
+        MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman"
         MANPATH="${MANPATH}:/usr/local/opt/findutils/libexec/gnuman"
-        MANPATH="${MANPATH}:/usr/local/share/man"
+        MANPATH="${MANPATH}:/opt/homebrew/share/man"
         MANPATH="${MANPATH}:/usr/share/man"
-        MANPATH="${MANPATH}:/usr/share/man/en"
-        MANPATH="${MANPATH}:/opt/X11/share/man"
         MANPATH="${MANPATH}:/Applications/Xcode.app/Contents/Developer/usr/share/man"
         MANPATH="${MANPATH}:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man"
         export MANPATH
