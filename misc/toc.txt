@@ -51,9 +51,10 @@
     // A function to create a TOC element for a document heading.
     function createHeadingListItem(heading, list) {
         let listItem = document.createElement('li');
-        // Indent sub-headers. Non-whitespace characters must be used. These are
-        // rendered in a white text color, making them invisible.
-        listItem.innerText = '....'.repeat(heading.level - 1);
+        let indent = document.createElement('span');
+        indent.classList.add('indent');
+        indent.innerText = '....'.repeat(heading.level - 1);
+        listItem.appendChild(indent);
         if (heading.id) {
             let link = document.createElement('a');
             link.href = `#${heading.id}`;
@@ -141,7 +142,7 @@
             padding: 0;
             text-wrap: nowrap;
         }
-        #${containerId} li {
+        #${containerId} li .indent {
             color: #ffffff00;
         }
         #${containerId} a {
