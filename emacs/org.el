@@ -13,6 +13,13 @@
 
 ;; ----------  ORG MODE  ----------
 
+(use-package org
+    :ensure t
+    :init
+    (setq org-adapt-indentation t
+        org-hide-leading-stars t
+        org-odd-levels-only t))
+
 ;; To improve the readability of structured documents that combine text, math,
 ;; code, images, tables and notes, make the following groups of elements appear
 ;; distinct.
@@ -315,3 +322,11 @@
 ;;                          (org-todo-if-needed "DOING")))
 ;;                 (org-todo-if-needed "DOING"))))))))
 ;; (add-hook 'org-checkbox-statistics-hook #'ct/org-summary-checkbox-cookie)
+
+
+;; A Kanban (agenda) view for org-mode.
+(use-package org-kanban
+    :ensure t
+    :after org
+    :init
+    (add-hook 'org-mode-hook (lambda () (global-whitespace-mode -1))))

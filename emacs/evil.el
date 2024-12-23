@@ -38,10 +38,6 @@
     :ensure t
     :after org
     :hook (org-mode . evil-org-mode)
-    :init
-    (setq org-adapt-indentation t
-        org-hide-leading-stars t
-        org-odd-levels-only t)
     :config
     (evil-org-set-key-theme '(navigation insert textobjects additional calendar
                                  shift todo heading)))
