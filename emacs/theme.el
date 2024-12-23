@@ -17,6 +17,8 @@
         ((t (:inverse-video t))))
     '(show-paren-match
         ((t (:foreground "brightred" :background "white"))))
+    '(help-key-binding
+        ((t (:foreground "brightblack" :background "white"))))
     ;; font-lock.
     '(font-lock-builtin-face
         ((t (:foreground "brightgreen" :slant normal))))

@@ -33,5 +33,21 @@
     (evil-commentary-mode))
 
 ;; Use evil bindings for Org mode.
-(use-package org-evil
-    :after org)
+;; There is a choice between org-evil (less actively maintained) and evil-org.
+(use-package evil-org
+    :ensure t
+    :after org
+    :hook (org-mode . evil-org-mode)
+    :init
+    (setq org-adapt-indentation t
+        org-hide-leading-stars t
+        org-odd-levels-only t)
+    :config
+    (evil-org-set-key-theme '(navigation insert textobjects additional calendar
+                                 shift todo heading)))
+    ;; (require 'evil-org-agenda)
+    ;; (evil-org-agenda-set-keys))
+
+
+;; Reconcile evil-org and org-agenda config:
+;; https://github.com/Somelauw/evil-org-mode/issues/108
