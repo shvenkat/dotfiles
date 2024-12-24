@@ -18,7 +18,16 @@
     :init
     (setq org-adapt-indentation t
         org-hide-leading-stars t
-        org-odd-levels-only t))
+        org-odd-levels-only t
+        org-enforce-todo-dependencies t
+        org-enforce-todo-checkbox-dependencies t
+        org-log-done 'time
+        org-log-into-drawer "LOGBOOK"
+        org-todo-keywords '((sequence "TODO(t)" "DOING(i!)" "|" "DONE(d!)") (sequence "|" "CANCELED(c@!)"))
+        org-todo-keyword-faces '(("TODO" . "brightred") ("DOING" . "yellow") ("DONE" . "green") ("CANCELED" . "brightcyan"))
+        org-provide-todo-statistics '(("TODO" "DOING") ("DONE"))
+        org-hierarchical-todo-statistics nil
+        org-checkbox-hierarchical-statistics nil))
 
 ;; To improve the readability of structured documents that combine text, math,
 ;; code, images, tables and notes, make the following groups of elements appear
@@ -235,8 +244,6 @@
 ;; (add-hook 'org-after-todo-statistics-hook #'org-summary-todo)
 
 ;; Block manual state transitions of parents.
-;; (setq org-enforce-todo-dependencies t)
-;; (setq org-enforce-todo-checkbox-dependencies t)
 ;; (setq org-agenda-dim-blocked-tasks t)
 
 ;; Count leaf statistics.
