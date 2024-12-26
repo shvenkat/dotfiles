@@ -13,6 +13,8 @@
         ((t (:foreground "brightred" :slant normal))))
     '(warning
         ((t (:foreground "yellow" :slant normal))))
+    '(shadow
+        ((t (:foreground "brightcyan" :slant normal))))
     '(region
         ((t (:inverse-video t))))
     '(show-paren-match
@@ -47,6 +49,9 @@
         ((t (:foreground "brightcyan" :background "white" :box nil))))
     '(mode-line-inactive
         ((t (:foreground "brightcyan" :background "white" :box nil))))
+    ;; Occur/Replace.
+    '(match
+        ((t (:foreground "blue" :background unspecified))))
     )
 
 ;; Highlight matching delimiter.

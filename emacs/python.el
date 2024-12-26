@@ -72,3 +72,6 @@
 ;;      (add-hook 'ggtags-mode-hook #'evil-normalize-keymaps)
 ;;      ;; Enable ggtags for all Python files.
 ;;      (add-hook 'python-mode-hook 'ggtags-mode)))
+;; Show an outline of top-level functions and classes in a module.
+(evil-leader/set-key-for-mode 'python-mode "o"
+    (lambda () (interactive) (occur "^def\\|^class") (pop-to-buffer "*Occur*")))
