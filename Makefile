@@ -229,6 +229,7 @@ $(HOME)/.emacs.d/init.el: \
             misc_keys.el \
             mouse.el \
             ido.el \
+            gtags.el \
             occur.el \
             editorconfig.el \
             flycheck.el \
