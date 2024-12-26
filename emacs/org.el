@@ -24,7 +24,7 @@
         org-log-done 'time
         org-log-into-drawer "LOGBOOK"
         org-todo-keywords '((sequence "TODO(t)" "DOING(i!)" "|" "DONE(d!)") (sequence "|" "CANCELED(c@!)"))
-        org-todo-keyword-faces '(("TODO" . "brightred") ("DOING" . "yellow") ("DONE" . "green") ("CANCELED" . "brightcyan"))
+        org-todo-keyword-faces '(("TODO" . "blue") ("DOING" . "brightred") ("DONE" . "green") ("CANCELED" . "brightcyan"))
         org-provide-todo-statistics '(("TODO" "DOING") ("DONE"))
         org-hierarchical-todo-statistics nil
         org-checkbox-hierarchical-statistics nil))
