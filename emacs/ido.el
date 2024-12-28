@@ -2,15 +2,20 @@
 
 ;; ----------  FILE / BUFFER NAVIGATION  ----------
 
+;; Display items vertically in the completion minibuffer.
+(setq completions-format "vertical")
+
 ;; Use ido to quickly jump to buffers or files.
 (require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
+(setq
+    ido-enable-flex-matching t
+    ido-everywhere t
+    ido-ignore-directories '("\\`.git/" "\\`__pycache__/" "\\`\\.\\./" "\\`\\./"))
 (ido-mode 1)
 
 ;; Maintain a list of recent files and use ido to jump to any of them.
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
+(setq recentf-max-menu-items 1000)
 (defun recentf-ido-find-file ()
     "Find a recent file using Ido."
     (interactive)

@@ -10,6 +10,7 @@
     (setq
         ggtags-highlight-tag 0.1
         ;; Use ido fuzzy matching for gtags-based completion.
+        ;; See: https://github.com/leoliu/ggtags/issues/56#issuecomment-43165031
         ggtags-completing-read-function
             (lambda (&rest args)
                 (apply #'ido-completing-read
