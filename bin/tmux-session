@@ -1,0 +1,133 @@
+#!/bin/bash
+set -e -o pipefail -u
+
+# Save and restore a tmux session.
+# Derived from https://github.com/tmux-plugins/tmux-resurrect
+#
+# Usage:
+#   tmux-session save [session-file]
+#   tmux-session restore [session-file]
+#
+# Notes:
+#   This program assumes a valid session file in a custom format. If you edit
+#   it, ensure that lines starting with "window" have a valid window layout, and
+#   lines starting with "pane" have sequential pane indices starting from zero
+#   for each window.
+
+default_session_file="${HOME}/.tmux_session"
+delim='	'
+window_format="window${delim}#{session_name}${delim}#{window_index}${delim}#{window_name}${delim}#{window_layout}"
+pane_format="pane${delim}#{session_name}${delim}#{window_index}${delim}#{pane_index}${delim}#{pane_current_path}"
+first_window_index="$(tmux show -gv base-index)"
+
+usage () {
+    echo "Usage:"
+    echo "  tmux-session save [session-file]"
+    echo "  tmux-session restore [session-file]"
+    echo "The default session-file is $default_session_file"
+}
+
+list_windows () {
+    tmux list-windows -a -F "$window_format"
+}
+
+list_panes () {
+    tmux list-panes -a -F "$pane_format"
+}
+
+pane_exists () {
+    local session_name="$1"
+    local window_index="$2"
+    local pane_index="$3"
+    local panes="$4"
+    [[ "$panes" =~ pane"${delim}${session_name}${delim}${window_index}${delim}${pane_index}${delim}" ]]
+}
+
+window_exists () {
+    local session_name="$1"
+    local window_index="$2"
+    local panes="$3"
+    [[ "$panes" =~ pane"${delim}${session_name}${delim}${window_index}${delim}" ]]
+}
+
+session_exists () {
+    local session_name="$1"
+    local panes="$2"
+    [[ "$panes" =~ pane"${delim}${session_name}${delim}" ]]
+}
+
+register_pane () {
+    local session_name="$1"
+    local window_index="$2"
+    local pane_index="$3"
+    echo "$existing_panes"$'\n'"pane${delim}${session_name}${delim}${window_index}${delim}${pane_index}"
+}
+
+save_session () {
+    local session_file="$1"
+    list_windows > "$session_file"
+    list_panes >> "$session_file"
+}
+
+restore_session () {
+    local session_file="$1"
+    local existing_panes session_name window_index window_name window_layout pane_index dir
+    existing_panes="$(list_panes)"
+    # Create sessions, windows and panes that do not yet exist.
+    grep '^pane' "$session_file" |
+    sort -t "$delim" -k2,2 -k3,3n -k4,4n |
+    while IFS="$delim" read -r _ session_name window_index pane_index dir; do
+        if pane_exists "$session_name" "$window_index" "$pane_index" "$existing_panes"; then
+            :  # Do not overwrite the existing pane.
+		elif window_exists "$session_name" "$window_index" "$existing_panes"; then
+            # Create a new pane in the existing window. Shrink it to the minimum size.
+            tmux split-window -t "${session_name}:${window_index}" -c "$dir"
+            tmux resize-pane -t "${session_name}:${window_index}" -U "999"
+            existing_panes="$(register_pane "$session_name" "$window_index" "$pane_index")"
+		elif session_exists "$session_name" "$existing_panes"; then
+            # Create a new window in the existing session.
+            tmux new-window -d -t "${session_name}:${window_index}" -c "$dir"
+            existing_panes="$(register_pane "$session_name" "$window_index" 0)"
+		else
+            # Create a new session. Set the window index if needed.
+            tmux new-session -d -s "$session_name" -c "$dir"
+            if [ "$first_window_index" -ne "$window_index" ]; then
+                tmux move-window -s "${session_name}:${first_window_index}" -t "${session_name}:${window_index}"
+            fi
+            existing_panes="$(register_pane "$session_name" "$window_index" 0)"
+		fi
+	done
+    # Apply window names and layouts.
+    grep '^window' "$session_file" |
+    while IFS="$delim" read -r _ session_name window_index window_name window_layout; do
+        tmux select-layout -t "${session_name}:${window_index}" "$window_layout"
+        tmux rename-window -t "${session_name}:${window_index}" "$window_name"
+    done
+}
+
+# Parse and handle args.
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+    usage 1>&2
+    exit 2
+fi
+if [ $# -eq 2 ]; then
+    session_file="$2"
+else
+    session_file="$default_session_file"
+fi
+case "$1" in
+    save)
+        save_session "$session_file"
+        ;;
+    restore)
+        restore_session "$session_file"
+        ;;
+    help|-h|--help)
+        usage
+        exit 0
+        ;;
+    *)
+        usage 1>&2
+        exit 2
+        ;;
+esac
