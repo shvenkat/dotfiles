@@ -26,6 +26,15 @@
 ;; Add evil keybindings for file and buffer navigation.
 (if (featurep 'evil)
     (progn
+        ;; Fast switching between two buffers.
+        (evil-leader/set-key "s" 'mode-line-other-buffer)
+        ;; Switch buffers using ido.
         (evil-leader/set-key "b" 'ido-switch-buffer)
+        ;; Rotate through windows.
+        (evil-leader/set-key "w" 'evil-window-next)
+        ;; Open files using ido: fuzzy search in current directory and past working directories.
         (evil-leader/set-key "f" 'ido-find-file)
+        ;; Open files in the current project.
+        (evil-leader/set-key "v" 'project-find-file)
+        ;; Open files from the recentf history list.
         (evil-leader/set-key "r" 'recentf-ido-find-file)))
