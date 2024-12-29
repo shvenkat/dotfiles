@@ -6,12 +6,8 @@
 ;; See: https://emacs.stackexchange.com/a/50135
 
 ;; Make the *Occur* window open on the right side at 25% of the frame width.
-(setq
-    display-buffer-alist `(("\\*Occur\\*"
-    display-buffer-in-side-window
-    (side . right)
-    (slot . 0)
-    (window-width . 0.25))))
+(add-to-list 'display-buffer-alist
+    '("\\*Occur\\*" display-buffer-in-side-window (side . right) (slot . 0) (window-width . 0.25)))
 
 ;; Key bindings in the *Occur* buffer.
 (evil-set-initial-state 'occur-mode 'normal)

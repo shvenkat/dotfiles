@@ -3,7 +3,7 @@
 ;; ----------  TEXT MODE  ----------
 
 ;; Customize the display of text documents (as opposed to code).
-;; Use a proportional font, and hide line numbers.
+;; Use a proportional font.
 (add-hook 'text-mode-hook
     (lambda ()
         (progn
@@ -28,6 +28,26 @@
         org-provide-todo-statistics '(("TODO" "DOING") ("DONE"))
         org-hierarchical-todo-statistics nil
         org-checkbox-hierarchical-statistics nil))
+
+;; Org mode key bindings.
+(evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
+(evil-define-key 'normal org-mode-map (kbd "SPC") 'org-tree-to-indirect-buffer)
+(evil-define-key 'normal org-mode-map (kbd "RET")
+    '(lambda ()
+         (interactive)
+         (org-tree-to-indirect-buffer)
+         (windmove-right)))
+
+;; Outline view on the left. Focused item on the right.
+;; Based on https://vimvalley.com/replacing-scrivener-with-emacs-and-vim/
+;;
+;; Only indirect (i.e. focused or narrowed) buffers are on the right. These are
+;; matched by name, which is the org file path, followed by :: and the heading
+;; of item being viewed. Don't use (derived-mode . org-mode) to match the
+;; buffer, as this would also apply to the whole org file used for the outline,
+;; which should be on the left.
+(add-to-list 'display-buffer-alist
+    '(".\\.org::" display-buffer-in-side-window (side . right) (slot . 0) (window-width . 0.5)))
 
 ;; To improve the readability of structured documents that combine text, math,
 ;; code, images, tables and notes, make the following groups of elements appear

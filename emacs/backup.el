@@ -19,3 +19,6 @@
 ;; Do not create lock files. This assumes files are NOT concurrently edited by
 ;; multiple users.
 (setq create-lockfiles nil)
+
+;; To save/restore sessions, see
+;; https://www.gnu.org/software/emacs/manual/html_mono/emacs.html#Saving-Emacs-Sessions.
