@@ -21,6 +21,12 @@
         ((t (:foreground "brightred" :background "white"))))
     '(help-key-binding
         ((t (:foreground "brightblack" :background "white"))))
+    '(line-number
+        ((t (:foreground "white"))))
+    '(line-number-major-tick
+        ((t (:foreground "brightcyan" :background "brightwhite" :weight normal))))
+    '(line-number-current-line
+        ((t (:foreground "brightcyan"))))
     ;; font-lock.
     '(font-lock-builtin-face
         ((t (:foreground "brightgreen" :slant normal))))
