@@ -90,3 +90,23 @@ if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
     }
     PROMPT_COMMAND='__retval=$?; __show_exit; echo; __update_prompt; history -a'
 fi
+
+
+# ----------  AUTOENV  -------------------------------------------------------
+
+# Automatically source (safe) .env files when changing directory.
+# See https://github.com/hyperupcall/autoenv.
+#
+# When executing, autoenv will walk up the directories until the mount point and
+# execute all .env files, beginning at the top (or bottom if AUTOENV_LOWER_FIRST
+# is set). If AUTOENV_ENABLE_LEAVE is set, .env.leave files will be sourced in
+# reverse order.
+
+unset AUTOENV_ASSUME_YES AUTOENV_LOWER_FIRST
+AUTOENV_AUTH_FILE="${HOME}/.autoenv_authorized"  # Or "$HOME/.local/state/autoenv/authorized_list"
+# AUTOENV_NOTAUTH_FILE="$HOME/.local/state/autoenv/not_authorized_list"
+AUTOENV_ENV_FILENAME='.env'
+AUTOENV_ENV_LEAVE_FILENAME='.env.leave'
+AUTOENV_ENABLE_LEAVE='yes'
+# AUTOENV_VIEWER='cat'
+source /opt/homebrew/opt/autoenv/activate.sh
