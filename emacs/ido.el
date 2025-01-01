@@ -37,4 +37,6 @@
         ;; Open files in the current project.
         (evil-leader/set-key "v" 'project-find-file)
         ;; Open files from the recentf history list.
-        (evil-leader/set-key "r" 'recentf-ido-find-file)))
+        (evil-leader/set-key "r" 'recentf-ido-find-file)
+        ;; Find by regexp in the current project.
+        (evil-leader/set-key "x" 'project-find-regexp)))

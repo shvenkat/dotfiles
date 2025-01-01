@@ -23,6 +23,9 @@
     (evil-leader/set-leader ","))
 (evil-leader/set-key "," 'evil-repeat-find-char-reverse)
 
+;; Allow certain existing non-evil key bindings to take precedence.
+(setopt evil-overriding-maps '((xref--xref-buffer-mode-map . normal)))
+
 ;; Use an emacs port of the vim commentary plugin. This provides normal mode
 ;; bindings to toggle comments, such as:
 ;;     gcc   comment/uncomment current line.
