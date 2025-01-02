@@ -1,10 +1,13 @@
 firefox
 font-0xproto-nerd-font
+font-comic-mono
 font-commit-mono
 font-dejavu-sans-mono-nerd-font
 font-droid-sans-mono-nerd-font
 font-fira-code
+font-ibm-plex-mono
 font-inconsolata-go-nerd-font
 font-monaspace
+font-open-sans
 font-source-code-pro
 zoom

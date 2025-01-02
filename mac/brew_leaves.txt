@@ -1,4 +1,5 @@
 autoconf
+autoenv
 awscli
 bash-completion@2
 black
@@ -30,6 +31,7 @@ jq
 just
 libpq
 llvm
+mafft
 minimap2
 pandoc
 pass-git-helper
@@ -38,12 +40,15 @@ postgresql@14
 python-tk@3.10
 python-tk@3.11
 python-tk@3.12
+python-tk@3.13
+python-tk@3.9
 rsync
 samtools
 shellcheck
 sloccount
 tmux
 tokei
+tox
 unison
 wdiff
 wget
