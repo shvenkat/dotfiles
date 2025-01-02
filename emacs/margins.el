@@ -56,4 +56,4 @@
 ;; https://emacs.stackexchange.com/questions/55752/change-line-number-format-with-line-number-mode.
 ;; Instead, we use a lighter text color for line numbers in the theme.
 (setopt display-line-numbers 'relative)
-(setopt display-line-numbers-major-tick 10)
+;; (setopt display-line-numbers-major-tick 10)

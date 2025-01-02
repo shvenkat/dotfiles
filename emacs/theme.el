@@ -26,7 +26,7 @@
     '(line-number-major-tick
         ((t (:foreground "brightcyan" :background "brightwhite" :weight normal))))
     '(line-number-current-line
-        ((t (:foreground "brightcyan"))))
+        ((t (:foreground "white"))))
     ;; font-lock.
     '(font-lock-builtin-face
         ((t (:foreground "brightgreen" :slant normal))))
