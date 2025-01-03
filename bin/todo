@@ -139,9 +139,9 @@ def find_task_files(path: Path, min_priority: int) -> Dict[Path, int]:
     """
     paths = list(path.glob("**/*.md"))
     priorities = {
-        path: int(path.stem.split("_")[-1])
+        path: int(path.stem.split("_")[0])
         for path in paths
-        if all(x in "0123456789" for x in path.stem.split("_")[-1])
+        if all(x in "0123456789" for x in path.stem.split("_")[0])
     }
     return {
         path: priority
@@ -284,7 +284,7 @@ def format_task_groups(
     for path, priority in sorted(
         priorities.items(), key=lambda pp: pp[1], reverse=True
     ):
-        project = " ".join(path.stem.split("_")[:-1])
+        project = " ".join(path.stem.split("_")[1:])
         if lines:
             lines.append((" ", FileLine(path=path, line_number=0)))
         lines.append(

@@ -68,6 +68,8 @@ if [[ -n "$PS1" && "$TERM" != 'dumb' ]] && tty &>/dev/null; then
         local prompt_color prompt_suffix
         if [[ -n "$VIRTUAL_ENV" ]]; then
             prompt_color="\[\033[91m\]"
+        elif [[ -n "$ENV" ]]; then
+            prompt_color="\[\033[34m\]"
         else
             prompt_color="\[\033[0m\]"
         fi
