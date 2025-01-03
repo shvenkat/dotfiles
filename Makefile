@@ -270,8 +270,9 @@ $(HOME)/.config/git/config: git/config
 $(HOME)/.config/git/ignore: git/ignore
 $(HOME)/.config/git/attributes: git/attributes
 
-tmux-config: $(HOME)/.tmux.conf
+tmux-config: $(HOME)/.tmux.conf $(HOME)/bin/tmux-session
 $(HOME)/.tmux.conf: tmux/tmux.conf tmux/colorscheme_solarized_light.conf
+$(HOME)/bin/tmux-session: bin/tmux-session
 
 ssh-config: $(HOME)/bin/ssh-agent-connect
 $(HOME)/bin/ssh-agent-connect: bin/ssh-agent-connect
@@ -383,6 +384,7 @@ $(addprefix $(HOME)/, \
         .config/lxterminal/lxterminal.conf \
         .autoenv.zsh \
         $(addprefix .config/git/,config ignore attributes) \
+        bin/tmux-session \
         bin/ssh-agent-connect \
         $(addprefix .gnupg/,gpg.conf gpg-agent.conf dirmngr.conf) \
         .inputrc \

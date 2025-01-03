@@ -18,7 +18,6 @@ default_session_file="${HOME}/.tmux_session"
 delim='	'
 window_format="window${delim}#{session_name}${delim}#{window_index}${delim}#{window_name}${delim}#{window_layout}"
 pane_format="pane${delim}#{session_name}${delim}#{window_index}${delim}#{pane_index}${delim}#{pane_current_path}"
-first_window_index="$(tmux show -gv base-index)"
 
 usage () {
     echo "Usage:"
@@ -28,11 +27,11 @@ usage () {
 }
 
 list_windows () {
-    tmux list-windows -a -F "$window_format"
+    tmux list-windows -a -F "$window_format" 2>/dev/null || true
 }
 
 list_panes () {
-    tmux list-panes -a -F "$pane_format"
+    tmux list-panes -a -F "$pane_format" 2>/dev/null || true
 }
 
 pane_exists () {
@@ -71,7 +70,7 @@ save_session () {
 
 restore_session () {
     local session_file="$1"
-    local existing_panes session_name window_index window_name window_layout pane_index dir
+    local first_window_index existing_panes session_name window_index window_name window_layout pane_index dir
     existing_panes="$(list_panes)"
     # Create sessions, windows and panes that do not yet exist.
     grep '^pane' "$session_file" |
@@ -91,6 +90,9 @@ restore_session () {
 		else
             # Create a new session. Set the window index if needed.
             tmux new-session -d -s "$session_name" -c "$dir"
+            if [ -z "${first_window_index:-}" ]; then
+                first_window_index="$(tmux show -gv base-index)"
+            fi
             if [ "$first_window_index" -ne "$window_index" ]; then
                 tmux move-window -s "${session_name}:${first_window_index}" -t "${session_name}:${window_index}"
             fi
