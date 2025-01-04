@@ -111,4 +111,3 @@ AUTOENV_ENV_FILENAME='.env'
 AUTOENV_ENV_LEAVE_FILENAME='.env.leave'
 AUTOENV_ENABLE_LEAVE='yes'
 # AUTOENV_VIEWER='cat'
-source /opt/homebrew/opt/autoenv/activate.sh

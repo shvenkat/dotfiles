@@ -259,7 +259,7 @@ $(HOME)/.bash_profile: $(addprefix shell/shared/,path env term) \
         shell/bash/bash_profile
 $(HOME)/.bashrc: \
         shell/bash/bashrc \
-        $(addprefix shell/shared/,misc less ls source-highlight ssh alias) \
+        $(addprefix shell/shared/,autoenv misc less ls source-highlight ssh alias) \
         shell/shared/local
 $(HOME)/.bash_logout: shell/bash/bash_logout
 
