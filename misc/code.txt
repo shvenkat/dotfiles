@@ -1,0 +1,8 @@
+// https://stackoverflow.com/a/71361472
+var code_visible = true;
+function code_toggle() {
+    let action = code_visible ? 'hide' : 'show';
+    $('div[class*="code_cell"]:not(:has(.output))')[action]();
+    $('div.input')[action]();
+    code_visible = !code_visible;
+}

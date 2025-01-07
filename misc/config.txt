@@ -1,0 +1,18 @@
+## Readline key bindings
+
+> By default, readline attempts to bind the control characters treated specially
+> by the kernel's terminal driver to their readline equivalents. (To see how
+> your terminal is configured, run
+>
+>     stty -a
+>
+> Your terminal presumably has Ctrl-w set to werase, so bash binds it to
+> unix-word-rubout. This binding takes precedence over any keybindings that you
+> specify in ~/.inputrc.
+>
+> To avoid this mapping, you need to set the readline variable
+> bind-tty-special-chars to off in your ~/.inputrc file:
+>
+>     set bind-tty-special-chars off
+
+-- https://stackoverflow.com/a/23558325

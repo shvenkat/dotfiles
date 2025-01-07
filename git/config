@@ -108,7 +108,7 @@
 
     ; Graph - one commit per commit in the current branch with ancestry graph.
     logg = log --graph --date-order \
-        --format=format:'%C(bold cyan)%h%C(reset)  %C(bold blue)%<(6,trunc)%ar%C(reset)  %C(bold cyan)%<(10,trunc)%an%C(reset)  %s %C(green)%d%C(reset)'
+        --format=format:'%C(bold cyan)%h%C(reset)  %C(bold blue)%<(10,trunc)%ar%C(reset)  %C(bold cyan)%<(6,trunc)%an%C(reset)  %C(green)%d%C(reset)  %s'
 
     ; All - all branches in graphical format.
     loga = logg --all
