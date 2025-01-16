@@ -3,9 +3,11 @@
 set editing-mode emacs
 
 # Least disruptive Ctrl- substitutes for Meta- bindings in the default (emacs) keymap.
+set bind-tty-special-chars off
 "\C-l": forward-word
 "\C-o": backward-word
 "\C-q": kill-word
+"\C-w": backward-kill-word
 "\C-t": history-search-backward
 "\C-^": history-search-forward
 
@@ -34,7 +36,7 @@ set skip-completed-text On
 set expand-tilde Off
 
 # Search.
-set isearch-terminators "C-j"
+set isearch-terminators "\C-j"
 
 # Misc.
 set enable-keypad On

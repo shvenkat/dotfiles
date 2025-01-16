@@ -1,5 +1,4 @@
 autoconf
-autoenv
 awscli
 bash-completion@2
 black
@@ -17,7 +16,6 @@ emacs
 fastme
 findutils
 fzf
-gh
 git-lfs
 global
 glow
@@ -36,6 +34,7 @@ minimap2
 pandoc
 pass-git-helper
 pigz
+pipx
 postgresql@14
 python-tk@3.10
 python-tk@3.11
