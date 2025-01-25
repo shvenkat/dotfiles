@@ -4,7 +4,7 @@
         "autoClosingBrackets": true,
         "lineNumbers": false,
         "rulers": [
-            100
+            99
         ]
     },
     "markdownCellConfig": {
@@ -12,7 +12,7 @@
         "lineNumbers": false,
         "matchBrackets": false,
         "rulers": [
-            100
+            99
         ]
     },
     "rawCellConfig": {
