@@ -39,4 +39,7 @@
         ;; Open files from the recentf history list.
         (evil-leader/set-key "r" 'recentf-ido-find-file)
         ;; Find by regexp in the current project.
-        (evil-leader/set-key "x" 'project-find-regexp)))
+        (evil-leader/set-key "x" 'project-find-regexp)
+        ;; Minibuffer completions.
+        (evil-define-key nil minibuffer-mode-map (kbd "C-n") 'minibuffer-next-completion)
+        (evil-define-key nil minibuffer-mode-map (kbd "C-p") 'minibuffer-previous-completion)))

@@ -21,6 +21,7 @@ global
 glow
 graphviz
 gsl
+helix
 htop
 hwatch
 igv
@@ -49,6 +50,7 @@ tmux
 tokei
 tox
 unison
+uv
 wdiff
 wget
 xsv

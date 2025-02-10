@@ -26,6 +26,11 @@
   package for each use case, which includes only the modules required and their
   third party dependencies.
 
+  The disadvantage of single-repo single-package is fine-grained semantic
+  versioning of each sub-package. Instead, either sub-package versions are
+  manuall assigned, or sub-packages share the automatic version from the build
+  system (breaking semantic versioning).
+
 ## Testing
 
 * Include a self-test capability so that libraries and/or apps can be tested in
