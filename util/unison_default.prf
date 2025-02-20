@@ -32,6 +32,7 @@ ignorenot = Name .venv*.sh
 ignore = Name __pycache__
 ignore = Name .mypy_cache
 ignore = Name .pytest_cache
+ignore = Name .benchmarks
 ignore = Name .coverage.*
 ignore = Name .hypothesis
 ignore = Name htmlcov
