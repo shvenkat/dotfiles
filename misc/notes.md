@@ -15,3 +15,11 @@ See https://mjg59.dreamwidth.org/66429.html
 }
 
 Enable toolkit.legacyUserProfileCustomizations.stylesheets in about:config.
+
+## Caching static sites (docs)
+
+    wget --wait=2 --random-wait \
+        --recursive --limit 5 --page-requisites --span-hosts \
+        --convert-links --backup-converted --timestamping \
+        -P ~/cache \
+        'https://panel.holoviz.org/getting_started/core_concepts.html'
