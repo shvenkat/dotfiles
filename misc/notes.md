@@ -18,7 +18,7 @@ Enable toolkit.legacyUserProfileCustomizations.stylesheets in about:config.
 
 ## Caching static sites (docs)
 
-    wget --wait=2 --random-wait \
+    wget --server-response --wait=2 --random-wait \
         --recursive --limit 5 --page-requisites --span-hosts \
         --convert-links --backup-converted --timestamping \
         -P ~/cache \
