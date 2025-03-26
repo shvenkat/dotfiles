@@ -55,6 +55,9 @@
     ;; (add-hook 'python-mode-hook #'blacken-mode))
 
 
-;; Show an outline of top-level functions and classes in a module.
+;; Show an outline of module-level functions and classes, and methods of classes.
 (evil-leader/set-key-for-mode 'python-mode "o"
-    (lambda () (interactive) (occur "^def\\|^class") (pop-to-buffer "*Occur*")))
+    (lambda ()
+        (interactive)
+        (occur "^def \\|^class \\|^    def [^_]")
+        (pop-to-buffer "*Occur*")))
