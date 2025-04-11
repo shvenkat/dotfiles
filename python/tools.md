@@ -109,7 +109,7 @@ developed/tested for each run (can be skipped).
 
 ### Panel
 
-Use separate packages/modules for domain logic from app GUI and glue layers.
+Use different packages/modules to separate domain logic from app GUI and glue.
 
 Use either pn.rx/pn.bind (function-based) or Parameter subclasses (class-based)
 to bind domain logic to inputs. The main choice is not between FP or OOP style.
@@ -262,7 +262,7 @@ What is re-executed and when:
   entire app.py script.
 
 Provide feedback to the user during a slow computation. Use pn.panel(...,
-loading_indicator=True) to for minimal feedback. A progress bar is better.
+loading_indicator=True) to provide minimal feedback. A progress bar is better.
 Provide results progressively where appropriate.
 
 Use throttling to "debounce" user input if real-time interactivity is not

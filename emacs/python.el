@@ -61,3 +61,12 @@
         (interactive)
         (occur "^def \\|^class \\|^    def [^_]")
         (pop-to-buffer "*Occur*")))
+
+;; Show relative line numbers in the left margin.
+;; Unfortunately, the spacing between line numbers and the first column of text
+;; cannot be customized; see
+;; https://emacs.stackexchange.com/questions/55752/change-line-number-format-with-line-number-mode.
+;; Instead, we use a lighter text color for line numbers in the theme.
+;; (setopt display-line-numbers 'relative)
+;; (setopt display-line-numbers-major-tick 10)
+(add-hook 'python-mode-hook '(lambda () (setopt display-line-numbers 'relative)))
