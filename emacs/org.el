@@ -33,7 +33,7 @@
 (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
 (evil-define-key 'normal org-mode-map (kbd "SPC") 'org-tree-to-indirect-buffer)
 (evil-define-key 'normal org-mode-map (kbd "RET")
-    '(lambda ()
+    #'(lambda ()
          (interactive)
          (org-tree-to-indirect-buffer)
          (windmove-right)))

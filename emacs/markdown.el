@@ -15,4 +15,4 @@
     (setq markdown-enable-math t)
     :config
     (add-hook 'markdown-mode-hook
-        '(lambda () (set-face-attribute 'markdown-italic-face nil :underline nil))))
+        #'(lambda () (set-face-attribute 'markdown-italic-face nil :underline nil))))

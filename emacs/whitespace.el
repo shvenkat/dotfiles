@@ -36,4 +36,4 @@
 (global-hi-lock-mode 1)
 (setq-default hi-lock-auto-select-face t)
 (add-hook 'after-change-major-mode-hook
-          '(lambda () (hi-lock-set-pattern "[[:nonascii:]]" 'hi-yellow)))
+          #'(lambda () (hi-lock-set-pattern "[[:nonascii:]]" 'hi-yellow)))

@@ -14,7 +14,7 @@
 (evil-define-key 'normal occur-mode-map (kbd "q") 'quit-window)
 (evil-define-key 'normal occur-mode-map (kbd "SPC") 'occur-mode-display-occurrence)
 (evil-define-key 'normal occur-mode-map (kbd "RET")
-    '(lambda ()
+    #'(lambda ()
          (interactive)
          (occur-mode-goto-occurrence-other-window)
          (kill-buffer "*Occur*")))

@@ -69,4 +69,4 @@
 ;; Instead, we use a lighter text color for line numbers in the theme.
 ;; (setopt display-line-numbers 'relative)
 ;; (setopt display-line-numbers-major-tick 10)
-(add-hook 'python-mode-hook '(lambda () (setopt display-line-numbers 'relative)))
+(add-hook 'python-mode-hook #'(lambda () (setopt display-line-numbers 'relative)))
