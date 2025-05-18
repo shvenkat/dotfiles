@@ -20,6 +20,16 @@ When I install/use Python libraries or programs, I need to:
 Recommendation: pip-audit to scan for vulnerabilities. `pip freeze` to record dependencies?
 https://stackoverflow.com/questions/77244199/how-do-i-freeze-the-requirements-of-a-tox-test-environment
 
+When I read data, I want to parse and validate it.
+
+Recommendation: attrs + cattrs. Avoid Pydantic, which defaults to type coersion
+and couples classes to their serialization (default JSON). See
+https://threeofwands.com/why-i-use-attrs-instead-of-pydantic/. attrs + cattrs is
+also a smaller codebase.
+
+> Pydantic has a ton of validation logic magically baked in, whereas attrs gives
+> you the tools to set it up yourself. Hence, less surprises.
+
 ## Installing multiple versions of Python
 
 Multiple versions of Python are useful when testing your package and ensuring

@@ -32,6 +32,7 @@ alias du='du -h'
 alias diff='diff -u'
 alias grep='grep --color --binary-file=without-match'
 alias tab='column -t -s"	"'
+alias xt='xsv table'
 alias glow='glow --config ~/.config/glow/glow.yml'
 cdiff () { colordiff -u "$@" | diff-highlight | less -iRS; }
 complete -f cdiff
@@ -49,7 +50,7 @@ alias vim-vanilla='nvim -n -i NONE'
 alias e='emacsclient -nw -a ""'
 alias ef='emacs -nw'
 alias sqlite='sqlite3 -readonly -header -separator "	"'
-alias sqlite,='sqlite3 -readonly -header -separator ,'
+alias sqlite,='sqlite3 -readonly -header -csv'
 
 # Diff.
 diff-sort () { diff <(sort "$1") <(sort "$2"); }
