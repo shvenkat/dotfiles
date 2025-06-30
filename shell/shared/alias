@@ -33,6 +33,9 @@ alias diff='diff -u'
 alias grep='grep --color --binary-file=without-match'
 alias tab='column -t -s"	"'
 alias xt='xsv table'
+alias xh='xsv headers'
+alias xc='xsv count'
+alias xf='xsv frequency --limit 0'
 alias glow='glow --config ~/.config/glow/glow.yml'
 cdiff () { colordiff -u "$@" | diff-highlight | less -iRS; }
 complete -f cdiff
