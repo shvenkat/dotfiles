@@ -58,7 +58,41 @@
     ;; Occur/Replace.
     '(match
         ((t (:foreground "blue" :background unspecified))))
-    )
+    ;; Magit.
+    '(magit-section
+         ((t (:foreground "black" :background "brightwhite"))))
+    '(magit-section-highlight
+         ((t (:foreground "black" :background "brightcyan"))))
+    '(magit-diff-file-heading
+         ((t (:foreground "brightblack" :background "brightwhite"))))
+    '(magit-diff-file-heading-highlight
+         ((t (:foreground "brightblack" :background "white"))))
+    '(magit-diff-hunk-heading
+         ((t (:foreground "blue" :background "brightwhite"))))
+    '(magit-diff-hunk-heading-highlight
+         ((t (:foreground "blue" :background "white"))))
+    '(magit-diff-added
+         ((t (:foreground "cyan" :background "brightwhite"))))
+    '(magit-diff-added-highlight
+         ((t (:foreground "cyan" :background "white"))))
+    '(magit-diff-removed
+         ((t (:foreground "magenta" :background "brightwhite"))))
+    '(magit-diff-removed-highlight
+         ((t (:foreground "magenta" :background "white"))))
+    '(magit-diff-context
+         ((t (:foreground "brightcyan" :background "brightwhite"))))
+    '(magit-diff-context-highlight
+         ((t (:foreground "black" :background "brightwhite"))))
+    '(magit-diff-file-heading-selection
+         ((t (:foreground "brightblack" :background "brightcyan"))))
+    '(magit-diff-file-hunk-selection
+         ((t (:foreground "blue" :background "brightcyan"))))
+    '(magit-diff-lines-heading
+         ((t (:foreground "blue" :background "brightcyan"))))
+    '(magit-diff-lines-boundary
+         ((t (:foreground "blue" :background "brightcyan"))))
+    '(magit-diff-hunk-region
+         ((t (:background "brightcyan")))))
 
 ;; Highlight matching delimiter.
 ;; (set-face-attribute 'show-paren-match nil

@@ -226,6 +226,7 @@ $(HOME)/.emacs.d/init.el: \
             fonts.el \
             splash_message.el \
             backup.el \
+            magit.el \
             misc_keys.el \
             mouse.el \
             ido.el \
