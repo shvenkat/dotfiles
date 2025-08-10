@@ -62,8 +62,12 @@ case $OSTYPE in
     linux*)
         PATH="${PATH:-}"
         PATH="$(combine_paths "/usr/local/bin:/opt/bin:/bin:/usr/bin" "$PATH")"
+        if [[ -d "${HOME}/opt" ]]; then
+            while read -r path; do PATH="$(combine_paths "$path" "$PATH")"; done <<<$(find "${HOME}/opt" -type d -name bin -print)
+        fi
         PATH="$(combine_paths "/usr/local/sbin:/opt/sbin:/sbin:/usr/sbin" "$PATH" --keep-first)"
         PATH="$(combine_paths "$PATH" "${HOME}/bin")"
+        PATH="$(combine_paths "$PATH" "${HOME}/.local/bin")"
         # PATH="$(combine_paths "$PATH" "${HOME}/.linuxbrew/bin")"
         export PATH
 
@@ -87,12 +91,13 @@ case $OSTYPE in
         PATH="/usr/local/sbin:/sbin:/usr/sbin:/opt/homebrew/sbin"
         PATH="${PATH}:/opt/homebrew/opt/coreutils/libexec/gnubin"
         PATH="${PATH}:/opt/homebrew/opt/findutils/libexec/gnubin"
-        if [[ -d "${HOME}/opt" ]]; then
-            while read -r path; do PATH="$(combine_paths "$PATH" "$path")"; done <<<$(find "${HOME}/opt" -type d -name bin -print)
-        fi
         PATH="${PATH}:/opt/homebrew/bin"
         PATH="${PATH}:/bin:/usr/bin"
         PATH="${PATH}:${HOME}/bin"
+        PATH="${PATH}:${HOME}/.local/bin"
+        if [[ -d "${HOME}/opt" ]]; then
+            while read -r path; do PATH="$(combine_paths "$PATH" "$path")"; done <<<$(find "${HOME}/opt" -type d -name bin -print)
+        fi
         export PATH
 
         MANPATH="/opt/homebrew/opt/coreutils/libexec/gnuman"

@@ -94,3 +94,35 @@ alias x11z='xinit -- :1 vt9 -quiet -nolisten tcp -config xorg.conf.fbdev &'
 # Firejail-ed programs.
 alias es='firejail --name=emacs --quiet -- emacs -nw --daemon &'
 alias ec='firejail --join=emacs -- emacsclient -nw'
+
+# Run programs or functions with a timeout.
+# Usage:
+#   timeout N (cmd|func) [args]
+#
+# Run a command or shell function including an alias to either, and terminate it
+# if it takes longer than N seconds to run. If the command is still running at
+# the end of N seconds, it is sent a TERM signal, and 3 seconds later, KILL-ed.
+#
+# CAVEAT: The command or function runs in the background, so it cannot receive
+# standard input.
+#
+# Derived from: https://stackoverflow.com/a/11056286
+timeout () {
+    set +b
+    timeout_sec="$1"
+    shift
+
+    "$@" &
+    cmd_pid=$!
+
+    {
+        sleep "$timeout_sec" && kill -TERM "$cmd_pid" && sleep 3 && kill -KILL "$cmd_pid"
+    } 2>/dev/null &
+    watcher_pid=$!
+
+    wait "$cmd_pid" 2>/dev/null
+    retval=$?
+    kill -TERM "$watcher_pid"
+    set -b
+    return $retval
+}
