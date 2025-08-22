@@ -720,3 +720,54 @@ Async generators:
 You can use @param.output to indicate which value(s) are "outputs" of a
 Parametrized instance. This can be used to programmatically determine whether
 outputs of one instance can serve as inputs to another.
+
+## Local Database
+
+Here we look at embedded databases that don't require a network connection or
+even a separate process.
+
+### SQLite
+
+Available in stdlib. Reliable, fast (single core), ACID. Multiple processes can
+read and write concurrently. Simple to configure, backup, share as a file.
+Streaming backup and replication (Litestream) is available.
+
+Choose SQLite if any of the following is true:
+- You need multiple concurrent writers, or concurrent readers and writers.
+- You are mostly querying up to a few rows at a time, and these queries use
+  indices not table scans.
+
+**Cursors: to use or not to use?** Cursors in the Python `sqlite3` module are
+semantically distinct from those in the underlying SQLite library. In SQLite,
+each connections has (prepared) statements, each statement creates and uses
+cursors internally (not exposed in the C API) in the SQLite bytecode engine. In
+Python's DB-API2, each connection has cursors, each cursor can execute
+statements. This may be borrowed from MySQL or PostgreSQL terminology. So,
+whether `sqlite3.Cursor` instances are reused or not, does not affect efficiency
+in `libsqlite`. The only impact is only on the Python side, where it might be a
+bit more efficient, particularly if a large number of fast queries are made.
+However, be careful to complete iteration over the results of one query _before_
+executing another.
+
+### DuckDB
+
+Well tested, fast (multi-core), ACID. Only one process can write, and is
+mutually exclusive with multiple readers. Streaming aggregation for datasets too
+big to fit in RAM. Fast, integrated export to NumPy arrays, Pandas dataframes.
+Simple to configure, backup, share as a file. Streaming backup and replication
+(Duckstream) is available, but may not be well supported.
+
+Choose SQLite if all the following are true:
+- You have a single process, or read-only database.
+- Your queries scan substantial portions of tables.
+
+> The interpretation seems to be clear: DuckDB does not seem to work with
+> indices as well as SQLite does (see also the section below) but is blazingly
+> fast when scanning large parts of the table. SQLite is great at using indices
+> but takes its time when it has to look at the whole table.
+
+> Since my workload mainly consists of simple queries which should be well
+> answerable from an index (and it is feasible to just create as many indices as
+> it takes…), I will stay with SQLite for the project.
+
+> - https://www.lukas-barth.net/blog/sqlite-duckdb-benchmark/:
