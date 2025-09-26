@@ -13,6 +13,12 @@
 .idea/
 ltximg/
 
+# GNU global/gtags - source code navigation using tags.
+GPATH
+GRTAGS
+GTAGS
+gtags.files
+
 # Compilers.
 *.o
 *.so

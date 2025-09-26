@@ -744,10 +744,10 @@ cursors internally (not exposed in the C API) in the SQLite bytecode engine. In
 Python's DB-API2, each connection has cursors, each cursor can execute
 statements. This may be borrowed from MySQL or PostgreSQL terminology. So,
 whether `sqlite3.Cursor` instances are reused or not, does not affect efficiency
-in `libsqlite`. The only impact is only on the Python side, where it might be a
-bit more efficient, particularly if a large number of fast queries are made.
-However, be careful to complete iteration over the results of one query _before_
-executing another.
+in `libsqlite`. The only impact is on the Python side, where it might be a bit
+more efficient, particularly for a large number of fast queries. However, be
+careful to complete iteration over the results of one query _before_ executing
+another.
 
 ### DuckDB
 
