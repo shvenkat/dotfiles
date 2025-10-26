@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e -u
+
+# Increases or decreases screen brightness by 2% of the max brightness. This
+# small adjustment is convenient to fine-tune brightness to match ambient
+# lighting.
+
+brightness='/Users/shiv/opt/brightness/bin/brightness'
+if [ ! -x "$brightness" ]; then
+    exit 0
+fi
+
+if [ $# -ne 1 ]; then
+    exit 0
+elif [ "up" = "$1" ]; then
+    delta='0.02'
+elif [ "down" = "$1" ]; then
+    delta='-0.02'
+else
+    exit 0
+fi
+
+current_value="$("$brightness" -l | grep -o -E '[01]\.[0-9]+')"
+desired_value="$(bc -e "x = ${current_value} + ${delta}; if (x < 0.0) x = 0.0; if (x > 1.0) x = 1.0; x")"
+if tty -s; then
+    echo "brightness: ${current_value} -> ${desired_value}"
+fi
+"$brightness" "$desired_value"
