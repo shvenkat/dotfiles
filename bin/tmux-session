@@ -64,6 +64,9 @@ register_pane () {
 
 save_session () {
     local session_file="$1"
+    if [[ -e "$session_file" ]]; then
+        mv "$session_file" "${session_file}~"
+    fi
     list_windows > "$session_file"
     list_panes >> "$session_file"
 }
