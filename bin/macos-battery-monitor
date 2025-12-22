@@ -1,0 +1,21 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+my $status = qx(pmset -g batt);
+if ($status =~ /(\d\d)%; discharging/) {
+    if ($1 < 40) {
+        system(
+            "osascript", "-e",
+            "display notification \"battery discharged to $1\%\" with title \"Plug in charger\""
+        );
+    }
+} elsif ($status =~ /(\d\d)%; charging/) {
+    if ($1 >= 70) {
+        system(
+            "osascript", "-e",
+            "display notification \"battery charged to $1\%\" with title \"Unplug charger\""
+        );
+    }
+}

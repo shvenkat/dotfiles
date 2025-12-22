@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Disabled</key>
+	<false/>
+	<key>ExitTimeOut</key>
+	<integer>10</integer>
+	<key>Label</key>
+	<string>local.shiv.macos-battery-monitor</string>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/shiv/bin/macos-battery-monitor</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StartInterval</key>
+	<integer>720</integer>
+</dict>
+</plist>
