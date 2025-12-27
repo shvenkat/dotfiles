@@ -59,7 +59,7 @@
 (evil-leader/set-key-for-mode 'python-mode "o"
     (lambda ()
         (interactive)
-        (occur "^def \\|^class \\|^    def [^_]")
+        (occur "^class \\|^def \\|^    def [A-Za-z0-9_]+(")
         (pop-to-buffer "*Occur*")))
 
 ;; Show relative line numbers in the left margin.
