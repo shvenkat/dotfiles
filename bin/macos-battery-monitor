@@ -4,14 +4,16 @@ use warnings;
 use strict;
 
 my $status = qx(pmset -g batt);
-if ($status =~ /(\d\d)%; discharging/) {
+if ($status =~ /(\d{1,3})%; discharging/) {
+    print("Battery @ $1\%, discharging");
     if ($1 < 40) {
         system(
             "osascript", "-e",
             "display notification \"battery discharged to $1\%\" with title \"Plug in charger\""
         );
     }
-} elsif ($status =~ /(\d\d)%; charging/) {
+} elsif ($status =~ /(\d{1,3})%; charging/) {
+    print("Battery @ $1\%, charging");
     if ($1 >= 70) {
         system(
             "osascript", "-e",

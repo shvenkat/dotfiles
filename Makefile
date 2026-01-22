@@ -189,6 +189,7 @@ DOTFILES := \
         readline-config \
         ssh-config \
         gnupg-config \
+        vim-config \
         emacs-config \
         editorconfig-config \
         git-config \
@@ -211,6 +212,9 @@ DOTFILES := \
 .PHONY: dotfiles $(DOTFILES)
 
 dotfiles: $(DOTFILES)
+
+vim-config: $(HOME)/.vimrc
+$(HOME)/.vimrc: vimrc
 
 emacs-config: $(HOME)/.emacs.d/init.el
 $(HOME)/.emacs.d/init.el: \
@@ -394,6 +398,7 @@ $(addprefix $(HOME)/, \
         bin/lesspipe \
         .config/source-highlight/esc.style .local/share/source-highlight \
         .unison/default.prf \
+        .vimrc \
         .editorconfig \
         .mypy.ini .flake8 .pylintrc .isort.cfg \
 		.jupyter/jupyter_notebook_config.py \
