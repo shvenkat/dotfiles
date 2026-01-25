@@ -1,0 +1,74 @@
+# This file configures git-graph for a custom branching model that has a
+# long-lived main branch, and ephemeral feat/* and fix/* branches. Place this
+# file in APP_DATA/git-graph/models, where APP_DATA varies by OS:
+#
+#   Windows: C:\Users\<user>\AppData\Roaming\
+#   Linux: ~/.config/
+#   OSX: ~/Library/Application Support/
+
+
+# RegEx patterns for branch groups by persistence, from most persistent to most
+# short-leved branches. This is used to back-trace branches. Branches not
+# matching any pattern are assumed least persistent.
+persistence = [
+    '^(master|main|trunk)$',
+    '^feat.*$',
+    '^fix.*$',
+]
+
+# RegEx patterns for visual ordering of branches, from left to right. Branches
+# not matching any pattern are displayed further to the right.
+order = [
+    '^(master|main|trunk)$',
+    '^fix.*$',
+    '^feat.*$',
+]
+
+# Colors of branches in terminal output.
+[terminal_colors]
+# Each entry is composed of a RegEx pattern and a list of colors that will be
+# used in cyclic order.
+matches = [
+    [
+        '^(master|main|trunk)$',
+        ['black'],
+    ],
+    [
+        '^fix.*$',
+        ['bright_red'],
+    ],
+    [
+        '^feat.*$',
+        ['blue', 'green', 'magenta'],
+    ],
+    [
+        # Only tags that are not on any branch are colored separately.
+        '^tags/.*$',
+        ['bright_magenta'],
+    ],
+]
+# A list of colors that are used for all other branches.
+unknown = ['bright_cyan']
+
+# Colors of branches in SVG output. Same structure as terminal_colors. All named
+# web colors and #rrggbb notation are supported.
+[svg_colors]
+matches = [
+    [
+        '^(master|main|trunk)$',
+        ['black'],
+    ],
+    [
+        '^fix.*$',
+        ['red'],
+    ],
+    [
+        '^feat.*$',
+        ['blue', 'green', 'magenta'],
+    ],
+    [
+        '^tags/.*$',
+        ['cyan'],
+    ],
+]
+unknown = ['gray']

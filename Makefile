@@ -193,6 +193,7 @@ DOTFILES := \
         emacs-config \
         editorconfig-config \
         git-config \
+        git-graph-config \
         tmux-config \
         colordiff-config \
         glow-config \
@@ -274,6 +275,10 @@ git-config: \
 $(HOME)/.config/git/config: git/config
 $(HOME)/.config/git/ignore: git/ignore
 $(HOME)/.config/git/attributes: git/attributes
+
+git-graph-config: $(HOME)/Library/Application\ Support/git-graph/models/custom.toml
+$(HOME)/Library/Application\ Support/git-graph/models/custom.toml: \
+        util/git-graph_models_custom.toml
 
 tmux-config: $(HOME)/.tmux.conf $(HOME)/bin/tmux-session
 $(HOME)/.tmux.conf: tmux/tmux.conf tmux/colorscheme_solarized_light.conf
@@ -425,8 +430,9 @@ $(addprefix $(HOME)/, \
         bin/ff \
         bin/totp \
         bin/pwcat \
-        bin/git-lfs-checkin):
-	mkdir -p "$$(dirname $@)"
+        bin/git-lfs-checkin) \
+        $(HOME)/Library/Application\ Support/git-graph/models/custom.toml:
+	mkdir -p "$$(dirname "$@")"
 	ln -sfT "$$(bin/relative-path "$$(pwd)/$<" "$$(dirname "$@")")" "$@"
 
 # Generate dotfile by concatenation.
@@ -436,8 +442,8 @@ $(addprefix $(HOME)/, \
         .config/htop/htoprc \
         .bash_profile .bashrc .bash_logout \
         .tmux.conf):
-	rm -f "$@"
-	mkdir -p "$$(dirname $@)"
+	mv "$@" "$@~"
+	mkdir -p "$$(dirname "$@")"
 	cat $^ > "$@"
 	chmod -w "$@"
 

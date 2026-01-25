@@ -54,6 +54,7 @@ alias e='emacsclient -nw -a ""'
 alias ef='emacs -nw'
 alias sqlite='sqlite3 -readonly -header -separator "	"'
 alias sqlite,='sqlite3 -readonly -header -csv'
+alias gg="git-graph --model custom --style round --color always --format '%h  %as  %an %d %s' | less -iRS '+/\[.*[0-9].*\]'"
 
 # Diff.
 diff-sort () { diff <(sort "$1") <(sort "$2"); }

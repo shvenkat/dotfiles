@@ -1,6 +1,8 @@
 autoconf
 awscli
 bash-completion@2
+bcftools
+bedtools
 black
 blast
 bowtie2
@@ -16,11 +18,11 @@ emacs
 fastme
 findutils
 fzf
+git-graph
 git-lfs
 global
 glow
 graphviz
-gsl
 helix
 htop
 hwatch
@@ -37,6 +39,7 @@ pass-git-helper
 pigz
 pipx
 postgresql@14
+pstree
 python-tk@3.10
 python-tk@3.11
 python-tk@3.12
@@ -46,6 +49,7 @@ rsync
 samtools
 shellcheck
 sloccount
+tidy-html5
 tmux
 tokei
 tox

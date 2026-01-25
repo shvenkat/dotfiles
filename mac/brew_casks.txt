@@ -7,7 +7,9 @@ font-droid-sans-mono-nerd-font
 font-fira-code
 font-ibm-plex-mono
 font-inconsolata-go-nerd-font
+font-juliamono
 font-monaspace
 font-open-sans
 font-source-code-pro
+kiwix
 zoom
