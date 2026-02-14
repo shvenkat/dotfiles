@@ -16,8 +16,11 @@
 ;; - trailing whitespace.
 ;; https://www.emacswiki.org/emacs/WhiteSpace
 (global-whitespace-mode)
-(setq-default whitespace-global-modes
-    '(markdown-mode org-mode python-mode shell-script-mode text-mode))
+;; If a list of major modes is specified for whitespace-global-modes,
+;; highlighting does not work. So, enable it for all major modes.
+;; (setq-default whitespace-global-modes
+;;     '(markdown-mode org-mode python-mode shell-script-mode text-mode))
+(setq-default whitespace-global-modes t)
 (setq-default whitespace-style
     (quote (face trailing lines-tail space-before-tab::space)))
 ;; Long line highlighting should match line wrapping. For this, set

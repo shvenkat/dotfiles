@@ -442,7 +442,7 @@ $(addprefix $(HOME)/, \
         .config/htop/htoprc \
         .bash_profile .bashrc .bash_logout \
         .tmux.conf):
-	mv "$@" "$@~"
+	if [ -e "$@" ]; then mv "$@" "$@~"; fi
 	mkdir -p "$$(dirname "$@")"
 	cat $^ > "$@"
 	chmod -w "$@"
