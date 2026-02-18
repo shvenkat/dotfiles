@@ -61,11 +61,11 @@
 # NOTE: This utility attempts to The Right Thing on a best-effort basis.
 # Failures may not be reported.
 
-set -u -o pipefail
+set -e -u -o pipefail
 
 CANONICAL_SOCKET="/tmp/ssh-$(id -un)/keymaster"
 CANONICAL_ENV="$(dirname "$CANONICAL_SOCKET")/gatekeeper"
-VERBOSE=${VERBOSE:-FALSE}
+VERBOSE="${VERBOSE:-FALSE}"
 
 
 # Log the given debug message ($1) to stderr.
@@ -73,6 +73,11 @@ info_msg() {
     if [[ "$VERBOSE" != "FALSE" ]]; then
         echo "[$(basename "$0")] INFO: $1" 3>&1 1>&2 2>&3
     fi
+}
+
+# Log the given error message ($1) to stderr.
+error_msg() {
+    echo "[$(basename "$0")] ERROR: $1" 1>&2
 }
 
 
@@ -108,7 +113,7 @@ make_link () {
 # Returns the path to the most recent live non-canonical agent socket.
 find_socket () {
     info_msg "Searching for the latest live agent socket."
-    find /tmp -mindepth 2 -maxdepth 2 -type s \
+    find /tmp/ -mindepth 2 -maxdepth 2 -type s \
          -user "$USER" -wholename '/tmp/ssh-*/agent*' -print0 2>/dev/null \
     | xargs -r -0 ls -1t \
     | while read -r socket; do
@@ -138,7 +143,8 @@ connect_agent () {
     if test -h "$CANONICAL_SOCKET" && test_socket "$CANONICAL_SOCKET"; then
         # If the symlink is valid, just update the environment.
         set_env
-    elif test -n "${SSH_AUTH_SOCK:-}" && test_socket "$SSH_AUTH_SOCK"; then
+    elif test -n "${SSH_AUTH_SOCK:-}" && test_socket "$SSH_AUTH_SOCK" &&
+            [[ "$SSH_AUTH_SOCK" != "$CANONICAL_SOCKET" ]]; then
         # If the socket is known, create the symlink and update the environment.
         make_link "$SSH_AUTH_SOCK"
     else
@@ -157,7 +163,30 @@ connect_agent () {
 }
 
 
-# main.
+# Handle arguments.
+force_start=0
+force_link=0
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --start)
+            force_start=1 ; shift ;;
+        --link)
+            force_link=1 ; shift ;;
+        -h | --help | help)
+            echo 'Usage:'
+            echo "  Automatic mode:  $(basename "$0")"
+            echo '  Start a new agent:  [DISPLAY=ssh-askpass' \
+                'SSH_ASKPASS="$(which ssh-askpass)"]' \
+                "$(basename "$0") --start"
+            echo '  Use a specific agent:  [SSH_AUTH_SOCK=/tmp/.../agent.nnnn]' \
+                "$(basename "$0") --link"
+            exit
+            ;;
+        *)
+            error_msg "Invalid argument: $1" ; exit 2 ;;
+    esac
+done
+# Log whether this is a local or remote session.
 if [[ -n "${SSH_CONNECTION:-}" ]]; then
     # SSH session.
     info_msg "Setting up ssh-agent for an ssh session."
@@ -165,4 +194,17 @@ else
     # local machine login
     info_msg "Setting up ssh-agent for a local session."
 fi
-connect_agent
+# Set up the agent, as requested.
+if [[ "$force_start" -eq 1 ]]; then
+    start_agent
+elif [[ "$force_link" -eq 1 ]]; then
+    if test -n "${SSH_AUTH_SOCK:-}" && test_socket "$SSH_AUTH_SOCK" &&
+            [[ "$SSH_AUTH_SOCK" != "$CANONICAL_SOCKET" ]]; then
+        make_link "$SSH_AUTH_SOCK"
+    else
+        error_msg "Invalid SSH_AUTH_SOCK=${SSH_AUTH_SOCK} with --link."
+        exit 2
+    fi
+else
+    connect_agent
+fi

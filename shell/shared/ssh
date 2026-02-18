@@ -4,7 +4,7 @@
 
 
 # Connect to ssh-agent, starting it if needed.
-alias ssh-agent-clean="find /tmp -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -user $USER -print0 | xargs -0 rm -rf"
+alias ssh-agent-clean="find /tmp/ -mindepth 1 -maxdepth 1 -type d -name 'ssh-*' -user $USER -print0 | xargs -r -0 rm -rf"
 [[ -x "$HOME/bin/ssh-agent-connect" ]] \
     && eval "$("$HOME/bin/ssh-agent-connect")"
 
