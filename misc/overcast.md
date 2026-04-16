@@ -29,7 +29,7 @@ palette.
 NAME       16/8  TERMCOL    L*A*B       HSB
 ---------  ----  ---------  ----------  -----------
 highlight  15/7  brwhite    97  00  10   44  10  99
-focus       7/7  white      92 -00  10   44  11  93
+focus       7/7  white      92 -00  10   44  11  90
 emphasis   14/4  brcyan     76 -06 -02  180   9  75
 text       12/6  brblue     65 -05 -02  180   9  63
 note       11/7  bryellow   60 -06 -03  186  13  59
@@ -57,7 +57,7 @@ emphasis   10/7  brgreen    45 -07 -07  194  25  46
 text       11/7  bryellow   50 -07 -07  195  23  51
 note       12/6  brblue     60 -06 -03  186  13  59
 comment    14/4  brcyan     65 -05 -02  180   9  63
-tint        7/7  white      92 -00  10   44  11  93
+tint        7/7  white      92 -00  10   44  11  90
 backgrnd   15/7  brwhite    97  00  10   44  10  99
 
 violet     13/5  brmagenta  50  15 -45  237  45  77

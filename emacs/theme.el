@@ -92,7 +92,25 @@
     '(magit-diff-lines-boundary
          ((t (:foreground "blue" :background "brightcyan"))))
     '(magit-diff-hunk-region
-         ((t (:background "brightcyan")))))
+         ((t (:background "brightcyan"))))
+    ;; ediff.
+    '(ediff-current-diff-A
+         ((t (:foreground "magenta" :background "white"))))
+    '(ediff-current-diff-B
+         ((t (:foreground "cyan" :background "white"))))
+    '(ediff-fine-diff-A
+         ((t (:foreground "brightwhite" :background "magenta"))))
+    '(ediff-fine-diff-B
+         ((t (:foreground "brightwhite" :background "cyan"))))
+    '(ediff-odd-diff-A
+         ((t (:foreground "black" :background "white"))))
+    '(ediff-odd-diff-B
+         ((t (:foreground "black" :background "white"))))
+    '(ediff-even-diff-A
+         ((t (:foreground "black" :background "white"))))
+    '(ediff-even-diff-B
+         ((t (:foreground "black" :background "white"))))
+    )
 
 ;; Highlight matching delimiter.
 ;; (set-face-attribute 'show-paren-match nil

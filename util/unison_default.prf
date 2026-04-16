@@ -39,6 +39,7 @@ ignore = Name htmlcov
 ignore = Name build
 ignore = Name dist
 ignore = Name *.egg-info
+ignore = Name .eggs
 ignore = Name *.so
 ignore = Name .ipynb_checkpoints
 ignore = Name .virtual_documents
